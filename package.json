@@ -28,7 +28,7 @@
     "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
     "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "NODE_OPTIONS='' husky"
   },
   "dependencies": {
     "@prisma/client": "^7.2.0",
