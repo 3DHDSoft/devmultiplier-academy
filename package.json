@@ -14,8 +14,8 @@
     "url": "https://github.com/3DHDSoft/devmultiplier-academy.git"
   },
   "engines": {
-    "node": ">=20.0.0",
-    "bun": ">=1.0.0"
+    "node": ">=22.0.0",
+    "bun": ">=1.3.5"
   },
   "packageManager": "bun@1.3.5",
   "scripts": {
@@ -25,8 +25,8 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
-    "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
+    "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
