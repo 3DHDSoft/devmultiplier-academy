@@ -14,8 +14,8 @@ The official website for DevMultiplier Academy - helping developers become 10x-1
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
+- Node.js 22+
+- npm, yarn or bun
 
 ### Installation
 
