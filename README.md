@@ -1,7 +1,7 @@
 # 3D HD Soft - DevMultiplier Academy
 
-> **Course Series:** How to become a 10x - 100x developer in the age of AI
-> **Website:** [www.DevMultiplier.com](https://www.DevMultiplier.com)
+> **Course Series:** How to become a 10x - 100x developer in the age of AI **Website:**
+> [www.DevMultiplier.com](https://www.DevMultiplier.com)
 
 The official website for DevMultiplier Academy - helping developers become 10x-100x more effective in the age of AI.
 
@@ -9,7 +9,8 @@ The official website for DevMultiplier Academy - helping developers become 10x-1
 
 ### Prerequisites
 
-- **VS Code** with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- **VS Code** with
+  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - **Docker Desktop** (Windows/Mac) or **Docker Engine** (Linux)
 - **Git**
 
@@ -17,11 +18,11 @@ The official website for DevMultiplier Academy - helping developers become 10x-1
 
 1. Clone the repository
 2. Open in VS Code
-3. When prompted, click **"Reopen in Container"**
-   _(or run Command Palette → "Dev Containers: Reopen in Container")_
+3. When prompted, click **"Reopen in Container"** _(or run Command Palette → "Dev Containers: Reopen in Container")_
 4. Wait for the container to build (~2-3 minutes first time)
 
 That's it! Your environment is ready with:
+
 - ✅ Bun & Node.js 22
 - ✅ PostgreSQL 18 with sample DDD schemas
 - ✅ All VS Code extensions pre-installed
@@ -72,28 +73,30 @@ src/
 
 ### Runtimes & Tools
 
-| Tool | Version | Purpose |
-|------|---------|---------|
-| Bun | Latest | Primary runtime, package manager, test runner |
-| Node.js | 22 LTS | Compatibility when needed |
-| fnm | Latest | Node version management |
-| Git | Latest | Version control |
-| GitHub CLI | Latest | GitHub integration |
+| Tool       | Version | Purpose                                       |
+| ---------- | ------- | --------------------------------------------- |
+| Bun        | Latest  | Primary runtime, package manager, test runner |
+| Node.js    | 22 LTS  | Compatibility when needed                     |
+| fnm        | Latest  | Node version management                       |
+| Git        | Latest  | Version control                               |
+| GitHub CLI | Latest  | GitHub integration                            |
 
 ### Databases
 
-| Database | Port | Credentials | Connection String |
-|----------|------|-------------|-------------------|
-| **PostgreSQL 18** | 5432 | `devuser` / `devpassword` | `postgresql://devuser:devpassword@postgres:5432/devdb` |
+| Database          | Port | Credentials               | Connection String                                      |
+| ----------------- | ---- | ------------------------- | ------------------------------------------------------ |
+| **PostgreSQL 18** | 5433 | `devuser` / `devpassword` | `postgresql://devuser:devpassword@postgres:5433/devdb` |
 
 ### VS Code Extensions (Pre-installed)
 
 **AI & Code Generation:**
+
 - GitHub.copilot
 - GitHub.copilot-chat
 - anthropic.claude-code
 
 **Development & Formatting:**
+
 - dbaeumer.vscode-eslint
 - esbenp.prettier-vscode
 - bradlc.vscode-tailwindcss
@@ -104,12 +107,14 @@ src/
 - inferrinizzard.prettier-sql-vscode
 
 **Database & SQL:**
+
 - mtxr.sqltools (Multi-DB support)
 - mtxr.sqltools-driver-pg (PostgreSQL)
 - doublefint.pgsql
 - bradymholt.pgformatter
 
 **Git & Version Control:**
+
 - eamodio.gitlens
 - donjayamanne.git-extension-pack
 - donjayamanne.githistory
@@ -120,6 +125,7 @@ src/
 - ziyasal.vscode-open-in-github
 
 **Markdown & Documentation:**
+
 - bierner.github-markdown-preview
 - bierner.markdown-checkbox
 - bierner.markdown-emoji
@@ -135,28 +141,33 @@ src/
 - goessner.mdmath
 
 **Productivity & Tools:**
+
 - alefragnani.project-manager
 - mhutchie.git-graph
 - moshfeu.compare-folders
 - kisstkondoros.vscode-codemetrics
 
 **Docker & DevOps:**
+
 - ms-azuretools.vscode-docker
 - docker.docker
 - ms-azuretools.vscode-azureresourcegroups
 
 **.NET & Web Development:**
+
 - ms-dotnettools.csdevkit
 - ms-dotnettools.csharp
 - ms-windows-ai-studio.windows-ai-studio
 - teamsdevapp.vscode-ai-foundry
 
 **Data & Visualization:**
+
 - mechatroner.rainbow-csv
 - kumar-harsh.graphql-for-vscode
 - mohsen1.prettify-json
 
 **Configuration & Other:**
+
 - redhat.vscode-yaml
 - redhat.vscode-xml
 - streetsidesoftware.code-spell-checker
@@ -216,6 +227,7 @@ psql -h postgres -U devuser -d devdb
 ### Useful SQL Queries
 
 **PostgreSQL - List all tables:**
+
 ```sql
 SELECT schemaname, tablename
 FROM pg_tables
@@ -253,14 +265,14 @@ This environment supports all courses in the series:
 
 ## Brand Colors
 
-| Color       | Hex       | Usage                |
-|-------------|-----------|----------------------|
-| Navy        | `#0A1628` | Primary, text        |
-| Blue        | `#3B82F6` | Accent, CTAs         |
-| Cyan        | `#06B6D4` | Secondary accent     |
-| Slate       | `#64748B` | Secondary text       |
-| Light Gray  | `#E2E8F0` | Borders, dividers    |
-| Off White   | `#F8FAFC` | Backgrounds          |
+| Color      | Hex       | Usage             |
+| ---------- | --------- | ----------------- |
+| Navy       | `#0A1628` | Primary, text     |
+| Blue       | `#3B82F6` | Accent, CTAs      |
+| Cyan       | `#06B6D4` | Secondary accent  |
+| Slate      | `#64748B` | Secondary text    |
+| Light Gray | `#E2E8F0` | Borders, dividers |
+| Off White  | `#F8FAFC` | Backgrounds       |
 
 ## Troubleshooting
 
@@ -286,7 +298,7 @@ pg_isready -h postgres -U devuser -d devdb
 
 ### Port conflicts
 
-If ports 5432 or 3000 are already in use:
+If ports 5433 or 3000 are already in use:
 
 1. Stop conflicting services
 2. Or modify ports in `.devcontainer/docker-compose.yml`

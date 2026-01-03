@@ -1,15 +1,15 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-	"name": "TS Node.js",
+  "name": "TS Node.js",
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev-x-academy-web",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	//"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
+  //"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
+  // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
@@ -18,23 +18,23 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 3001, 5432, 8008],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [3000, 3001, 5433, 8008],
 
   "portsAttributes": {
     "3000": { "label": "Next.js App", "onAutoForward": "notify" },
     "3001": { "label": "API Server", "onAutoForward": "notify" },
-    "5432": { "label": "PostgreSQL 18", "onAutoForward": "silent" },
+    "5433": { "label": "PostgreSQL 18", "onAutoForward": "silent" },
     "8008": { "label": "pgAdmin", "onAutoForward": "silent" }
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
-	// postCreateCommand
+  // postCreateCommand
   "postStartCommand": "bash .devcontainer/post-start.sh",
 
-	// Configure tool-specific properties.
+  // Configure tool-specific properties.
   "customizations": {
     "vscode": {
       // find /home/node/.vscode-server/extensions -maxdepth 1 -type d -name "*-*" | sed 's|.*/||' | sort
@@ -104,11 +104,11 @@
     }
   },
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root" // node
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root" // node
 
   "containerEnv": {
-    "DATABASE_URL": "postgresql://admin:academy2026@postgres:5432/academy",
+    "DATABASE_URL": "postgresql://admin:academy2026@postgres:5433/academy",
     "POSTGRES_DB": "academy",
     "POSTGRES_USER": "admin",
     "POSTGRES_PASSWORD": "academy2026",

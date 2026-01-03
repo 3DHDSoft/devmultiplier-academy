@@ -69,7 +69,7 @@ bun add prisma @prisma/client
 
 ```bash
 # .env.local
-DATABASE_URL="postgresql://sa:academy2026@postgres:5432/academy"
+DATABASE_URL="postgresql://sa:academy2026@postgres:5433/academy"
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET=$(openssl rand -base64 32)
 ```
