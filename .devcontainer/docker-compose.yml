@@ -50,7 +50,7 @@ services:
     #image: postgres:latest
     container_name: postgres
     hostname: postgres
-    ports: ['${POSTGRES_PORT:-5433}:5433']
+    ports: ['${POSTGRES_PORT:-5433}:5432']
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-admin}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-academy2026}

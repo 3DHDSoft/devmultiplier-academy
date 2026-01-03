@@ -69,7 +69,7 @@ bun add prisma @prisma/client
 
 ```bash
 # .env.local
-DATABASE_URL="postgresql://sa:academy2026@postgres:5433/academy"
+DATABASE_URL="postgresql://admin:academy2026@postgres:5432/academy"
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET=$(openssl rand -base64 32)
 ```
@@ -90,12 +90,12 @@ bun prisma init
 // prisma/schema.prisma
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ============================================
@@ -326,6 +326,33 @@ model CourseProgress {
   @@index([userId])
   @@map("course_progress")
 }
+```
+
+### Prisma 7 Configuration
+
+For Prisma 7+, the database URL is configured in `prisma.config.ts` instead of the schema file:
+
+**`prisma.config.ts`**
+
+```typescript
+import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  migrations: {
+    path: 'prisma/migrations',
+  },
+  datasource: {
+    url: process.env['DATABASE_URL'],
+  },
+});
+```
+
+Make sure your `.env.local` has:
+
+```bash
+DATABASE_URL="postgresql://admin:academy2026@postgres:5432/academy"
 ```
 
 ### Run Migrations

@@ -85,7 +85,7 @@ src/
 
 | Database          | Port | Credentials               | Connection String                                      |
 | ----------------- | ---- | ------------------------- | ------------------------------------------------------ |
-| **PostgreSQL 18** | 5433 | `devuser` / `devpassword` | `postgresql://devuser:devpassword@postgres:5433/devdb` |
+| **PostgreSQL 18** | 5433 | `devuser` / `devpassword` | `postgresql://devuser:devpassword@postgres:5432/devdb` |
 
 ### VS Code Extensions (Pre-installed)
 
