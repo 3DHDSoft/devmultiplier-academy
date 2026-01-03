@@ -30,7 +30,7 @@ export default function ContactPage() {
           <div className="text-center">
             <h1 className="text-navy text-4xl font-bold tracking-tight sm:text-5xl">Contact Us</h1>
             <p className="text-slate mt-4 text-lg">
-              Have questions about our courses or need help choosing the right plan? We're here to help.
+              Have questions about our courses or need help choosing the right plan? {"We're"} here to help.
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export default function ContactPage() {
 
             {status === 'success' ? (
               <div className="mt-6 rounded-lg bg-green-50 p-6 text-green-800">
-                Thanks for your message! We'll get back to you within 24 hours.
+                Thanks for your message! {"We'll"} get back to you within 24 hours.
               </div>
             ) : (
               <form

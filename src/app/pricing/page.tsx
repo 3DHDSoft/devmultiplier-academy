@@ -30,7 +30,7 @@ export default function PricingPage() {
           <h2 className="text-navy text-2xl font-bold">Frequently Asked Questions</h2>
           <dl className="mt-8 space-y-8">
             <div>
-              <dt className="text-navy font-semibold">What's included in lifetime access?</dt>
+              <dt className="text-navy font-semibold">{"What's"} included in lifetime access?</dt>
               <dd className="text-slate mt-2">
                 Once you purchase a course or bundle, you have permanent access to all current content plus any future
                 updates to that course. No recurring fees.
@@ -39,14 +39,14 @@ export default function PricingPage() {
             <div>
               <dt className="text-navy font-semibold">Can I upgrade from individual courses to the bundle?</dt>
               <dd className="text-slate mt-2">
-                Yes! Contact us and we'll apply the amount you've already paid toward the bundle price.
+                Yes! Contact us and {"we'll"} apply the amount {"you've"} already paid toward the bundle price.
               </dd>
             </div>
             <div>
               <dt className="text-navy font-semibold">Do you offer refunds?</dt>
               <dd className="text-slate mt-2">
-                Yes, we offer a 30-day money-back guarantee on all purchases. If you're not satisfied, contact us for a
-                full refund.
+                Yes, we offer a 30-day money-back guarantee on all purchases. If {"you're"} not satisfied, contact us
+                for a full refund.
               </dd>
             </div>
             <div>
