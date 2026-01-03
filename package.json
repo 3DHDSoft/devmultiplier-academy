@@ -1,12 +1,29 @@
 {
-  "name": "devmultiplier-academy",
+  "name": "dev-x-academy-web",
+  "description": "DevMultiplier Academy website",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "DevMultiplier Academy",
+    "url": "https://DevMultiplier.com",
+    "organization": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3DHDSoft/devmultiplier-academy.git"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier -c 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "format:fix": "prettier -w --list-different 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "prepare": "husky"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -25,7 +42,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "husky": "^9.1.7",
     "prettier": "^3",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

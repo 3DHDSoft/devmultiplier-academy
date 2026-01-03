@@ -12,6 +12,8 @@
   "singleAttributePerLine": true,
   "proseWrap": "always",
   "htmlWhitespaceSensitivity": "css",
+  "plugins": [ "prettier-plugin-tailwindcss" ],
+
   "overrides": [
     {
       "files": [ "*.ts", "*.tsx" ],
