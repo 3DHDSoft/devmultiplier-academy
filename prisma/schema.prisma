@@ -18,7 +18,7 @@ datasource db {
 // ============================================
 
 model User {
-  id            String    @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id            String    @id @default(uuid(7)) @db.Uuid
   email         String?   @unique
   emailVerified DateTime?
   name          String?
@@ -47,7 +47,7 @@ model User {
 }
 
 model Account {
-  id                 String  @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id                 String  @id @default(uuid(7)) @db.Uuid
   userId             String  @db.Uuid
   type               String  // "oauth" or "email"
   provider           String
@@ -68,7 +68,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id           String   @id @default(uuid(7)) @db.Uuid
   sessionToken String   @unique
   userId       String  @db.Uuid
   expires      DateTime
@@ -93,7 +93,7 @@ model VerificationToken {
 // ============================================
 
 model Course {
-  id          String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id          String   @id @default(uuid(7)) @db.Uuid
   slug        String   @unique
   status      String   @default("draft")
   createdAt   DateTime @default(now())
@@ -107,7 +107,7 @@ model Course {
 }
 
 model CourseTranslation {
-  id             String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id             String   @id @default(uuid(7)) @db.Uuid
   courseId       String  @db.Uuid
   locale         String
   title          String
@@ -128,7 +128,7 @@ model CourseTranslation {
 }
 
 model Module {
-  id        String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id        String   @id @default(uuid(7)) @db.Uuid
   courseId  String  @db.Uuid
   order     Int
   createdAt DateTime @default(now())
@@ -143,7 +143,7 @@ model Module {
 }
 
 model ModuleTranslation {
-  id          String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id          String   @id @default(uuid(7)) @db.Uuid
   moduleId    String  @db.Uuid
   locale      String
   title       String
@@ -158,7 +158,7 @@ model ModuleTranslation {
 }
 
 model Lesson {
-  id        String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id        String   @id @default(uuid(7)) @db.Uuid
   moduleId  String  @db.Uuid
   order     Int
   videoUrl  String?
@@ -174,7 +174,7 @@ model Lesson {
 }
 
 model LessonTranslation {
-  id        String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id        String   @id @default(uuid(7)) @db.Uuid
   lessonId  String  @db.Uuid
   locale    String
   title     String
@@ -189,7 +189,7 @@ model LessonTranslation {
 }
 
 model Instructor {
-  id      String @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id      String @id @default(uuid(7)) @db.Uuid
   name    String
   email   String @unique
   bio     String?
@@ -205,7 +205,7 @@ model Instructor {
 // ============================================
 
 model Enrollment {
-  id        String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id        String   @id @default(uuid(7)) @db.Uuid
   userId    String  @db.Uuid
   courseId  String  @db.Uuid
   status    String   @default("active") // active, completed, dropped
@@ -225,7 +225,7 @@ model Enrollment {
 }
 
 model CourseProgress {
-  id              String   @id @default(dbgenerated("uuid_generate_v7()")) @db.Uuid
+  id              String   @id @default(uuid(7)) @db.Uuid
   userId          String  @db.Uuid
   courseId        String  @db.Uuid
   lessonId        String?
