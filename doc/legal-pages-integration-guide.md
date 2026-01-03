@@ -3,10 +3,12 @@
 ## Quick Answer
 
 You'll create legal pages at these routes:
+
 - `/[locale]/terms-of-service/page.tsx`
 - `/[locale]/privacy-policy/page.tsx`
 
 Then link to them from:
+
 1. Footer (on every page)
 2. Signup/Registration forms
 3. Checkout/Payment pages
@@ -41,13 +43,13 @@ app/
 ```typescript
 import { getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ 
-  params: { locale } 
-}: { 
-  params: { locale: string } 
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string }
 }) {
   const t = await getTranslations({ locale, namespace: 'legal' });
-  
+
   return {
     title: t('terms.title'),
     description: t('terms.description')
@@ -109,7 +111,7 @@ export default async function TermsOfServicePage({
           </section>
 
           {/* Add more sections as needed... */}
-          
+
           {/* Contact Section */}
           <section className="mt-12">
             <h2 className="text-2xl font-bold text-purple-700 mb-4 pb-2 border-b-2 border-gray-200">
@@ -155,11 +157,13 @@ export default async function TermsOfServicePage({
 This approach lets you write content in Markdown with React components.
 
 **Install MDX:**
+
 ```bash
 bun add @next/mdx @mdx-js/loader @mdx-js/react @types/mdx
 ```
 
 **`mdx-components.tsx` (in root directory)**
+
 ```typescript
 import type { MDXComponents } from 'mdx/types';
 
@@ -196,6 +200,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 ```
 
 **`content/legal/en/terms-of-service.mdx`**
+
 ```mdx
 ---
 title: Terms of Service
@@ -220,19 +225,20 @@ You must be at least 18 years of age to use our Services...
 ```
 
 **`app/[locale]/terms-of-service/page.tsx` (MDX version)**
+
 ```typescript
 import { getTranslations } from 'next-intl/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
 
-export async function generateMetadata({ 
-  params: { locale } 
-}: { 
-  params: { locale: string } 
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string }
 }) {
   const t = await getTranslations({ locale, namespace: 'legal' });
-  
+
   return {
     title: t('terms.metaTitle'),
     description: t('terms.metaDescription')
@@ -252,9 +258,9 @@ export default async function TermsOfServicePage({
     locale,
     'terms-of-service.mdx'
   );
-  
+
   const source = await fs.readFile(filePath, 'utf-8');
-  
+
   const { content, frontmatter } = await compileMDX({
     source,
     options: { parseFrontmatter: true }
@@ -273,7 +279,7 @@ export default async function TermsOfServicePage({
           <div className="bg-gray-100 rounded-lg p-4 mb-8">
             <strong>Last Updated:</strong> {frontmatter.lastUpdated}
           </div>
-          
+
           <div className="prose prose-lg max-w-none">
             {content}
           </div>
@@ -305,8 +311,8 @@ export default {
       title: 'Slug',
       options: {
         source: 'title.en',
-        maxLength: 96
-      }
+        maxLength: 96,
+      },
     },
     {
       name: 'title',
@@ -316,8 +322,8 @@ export default {
         { name: 'en', type: 'string', title: 'English' },
         { name: 'es', type: 'string', title: 'Spanish' },
         { name: 'pt', type: 'string', title: 'Portuguese' },
-        { name: 'hu', type: 'string', title: 'Hungarian' }
-      ]
+        { name: 'hu', type: 'string', title: 'Hungarian' },
+      ],
     },
     {
       name: 'content',
@@ -328,18 +334,18 @@ export default {
           name: 'en',
           type: 'array',
           title: 'English',
-          of: [{ type: 'block' }]
+          of: [{ type: 'block' }],
         },
         {
           name: 'es',
           type: 'array',
           title: 'Spanish',
-          of: [{ type: 'block' }]
+          of: [{ type: 'block' }],
         },
         // ... other languages
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 };
 ```
 
@@ -393,13 +399,13 @@ Same approach as Terms of Service:
 ```typescript
 import { getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ 
-  params: { locale } 
-}: { 
-  params: { locale: string } 
+export async function generateMetadata({
+  params: { locale }
+}: {
+  params: { locale: string }
 }) {
   const t = await getTranslations({ locale, namespace: 'legal' });
-  
+
   return {
     title: t('privacy.title'),
     description: t('privacy.description')
@@ -443,6 +449,7 @@ export default async function PrivacyPolicyPage({
 ## Step 3: Add Translation Keys
 
 **`messages/en.json`**
+
 ```json
 {
   "legal": {
@@ -490,6 +497,7 @@ export default async function PrivacyPolicyPage({
 ```
 
 **`messages/es.json`**
+
 ```json
 {
   "legal": {
@@ -512,6 +520,7 @@ export default async function PrivacyPolicyPage({
 ```
 
 **`messages/hu.json`**
+
 ```json
 {
   "legal": {
@@ -538,6 +547,7 @@ export default async function PrivacyPolicyPage({
 ## Step 4: Link from Footer
 
 **`components/Footer.tsx`**
+
 ```typescript
 'use client';
 
@@ -604,6 +614,7 @@ export default function Footer() {
 ```
 
 **`app/[locale]/layout.tsx`**
+
 ```typescript
 import Footer from '@/components/Footer';
 
@@ -630,6 +641,7 @@ export default function LocaleLayout({
 ## Step 5: Link from Signup/Registration Forms
 
 **`components/SignupForm.tsx`**
+
 ```typescript
 'use client';
 
@@ -642,7 +654,7 @@ export default function SignupForm() {
   return (
     <form>
       {/* Form fields */}
-      
+
       <div className="mt-4">
         <label className="flex items-start">
           <input type="checkbox" className="mt-1 mr-2" required />
@@ -668,6 +680,7 @@ export default function SignupForm() {
 ```
 
 **Translation:**
+
 ```json
 {
   "auth": {
@@ -688,6 +701,7 @@ export default function SignupForm() {
 ## Step 6: Link from Checkout/Payment Pages
 
 **`app/[locale]/checkout/page.tsx`**
+
 ```typescript
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
@@ -698,7 +712,7 @@ export default function CheckoutPage() {
   return (
     <div>
       {/* Checkout form */}
-      
+
       <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
         <p className="text-sm text-gray-600">
           {t('legal.prefix')}{' '}
@@ -726,18 +740,21 @@ export default function CheckoutPage() {
 ## Summary: Where to Link Legal Pages
 
 ### **Required Locations:**
+
 1. ✅ **Footer** - Every page (most common)
 2. ✅ **Signup/Registration Form** - Checkbox with links
 3. ✅ **Checkout/Payment Page** - Disclaimer with links
 4. ✅ **Account Settings** - Legal section
 
 ### **Optional but Recommended:**
+
 5. **Cookie Consent Banner** - Link to privacy policy
 6. **Email Footer** - All transactional emails
 7. **Mobile App** - Settings menu
 8. **API Documentation** - For developers using your API
 
 ### **File Locations:**
+
 ```
 app/[locale]/
 ├── terms-of-service/page.tsx    ← Terms of Service
@@ -751,6 +768,7 @@ components/
 ```
 
 ### **Translation Files:**
+
 ```
 messages/
 ├── en.json    ← English legal translations
@@ -773,4 +791,5 @@ messages/
 - [ ] Verify SEO metadata for each locale
 - [ ] Test mobile responsiveness
 
-This gives you a complete, multilingual legal page implementation that's SEO-friendly and properly integrated throughout your site! 🚀
+This gives you a complete, multilingual legal page implementation that's SEO-friendly and properly integrated throughout
+your site! 🚀

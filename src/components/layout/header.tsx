@@ -1,25 +1,28 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 const navigation = [
-  { name: "Courses", href: "/courses" },
-  { name: "Pricing", href: "/pricing" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
+  { name: 'Courses', href: '/courses' },
+  { name: 'Pricing', href: '/pricing' },
+  { name: 'About', href: '/about' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-light-gray bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+    <header className="border-light-gray sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link
+          href="/"
+          className="flex items-center"
+        >
           <Image
             src="/logo.svg"
             alt="DevMultiplier Academy"
@@ -36,7 +39,7 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-medium text-slate transition-colors hover:text-navy"
+              className="text-slate hover:text-navy text-sm font-medium transition-colors"
             >
               {item.name}
             </Link>
@@ -45,7 +48,7 @@ export function Header() {
             href="https://podia.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue"
+            className="bg-navy hover:bg-blue rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors"
           >
             Start Learning
           </Link>
@@ -58,11 +61,7 @@ export function Header() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <span className="sr-only">Toggle menu</span>
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6 text-navy" />
-          ) : (
-            <Menu className="h-6 w-6 text-navy" />
-          )}
+          {mobileMenuOpen ? <X className="text-navy h-6 w-6" /> : <Menu className="text-navy h-6 w-6" />}
         </button>
       </nav>
 
@@ -74,7 +73,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="block py-2 text-base font-medium text-slate hover:text-navy"
+                className="text-slate hover:text-navy block py-2 text-base font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
@@ -84,7 +83,7 @@ export function Header() {
               href="https://podia.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 block rounded-lg bg-navy px-4 py-2 text-center text-sm font-semibold text-white hover:bg-blue"
+              className="bg-navy hover:bg-blue mt-4 block rounded-lg px-4 py-2 text-center text-sm font-semibold text-white"
               onClick={() => setMobileMenuOpen(false)}
             >
               Start Learning

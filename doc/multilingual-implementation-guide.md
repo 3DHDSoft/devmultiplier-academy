@@ -20,8 +20,7 @@ Based on the developer market and your AI/tech focus, here's the recommendation:
 ### **Tier 1 - Start with these (2-3 languages):**
 
 1. **English** - Primary language, largest tech market
-2. **Spanish** - 2nd most spoken language globally, growing tech markets in
-   Latin America and Spain
+2. **Spanish** - 2nd most spoken language globally, growing tech markets in Latin America and Spain
 3. **Portuguese** - Brazilian tech market is booming, large developer community
 
 ### **Tier 2 - Add next (4-7 total):**
@@ -29,15 +28,13 @@ Based on the developer market and your AI/tech focus, here's the recommendation:
 4. **Hindi** - Massive Indian developer market, fastest-growing tech economy
 5. **Chinese (Simplified)** - Huge market, strong in AI/tech development
 6. **German** - Strong European tech market, high purchasing power
-7. **Hungarian** - Central/Eastern European market, strong programming culture
-   and education
+7. **Hungarian** - Central/Eastern European market, strong programming culture and education
 
 **Why Hungarian?**
 
 - Hungary has a strong tradition in mathematics and computer science education
 - High concentration of software developers per capita in Central Europe
-- Gateway to Central/Eastern European markets (similar linguistic patterns help
-  with Czech, Slovak, Polish, Romanian)
+- Gateway to Central/Eastern European markets (similar linguistic patterns help with Czech, Slovak, Polish, Romanian)
 - Growing tech hub in Budapest
 - Hungarian developers are known for their strong technical skills
 - Cost-effective market with high engagement potential
@@ -49,15 +46,13 @@ Based on the developer market and your AI/tech focus, here's the recommendation:
 10. **Korean** - Strong tech industry, enthusiastic learners
 11. **Russian** - Large developer community in Eastern Europe
 
-**Recommendation: Start with English + Spanish + Portuguese, then add Hungarian
-in Tier 2**
+**Recommendation: Start with English + Spanish + Portuguese, then add Hungarian in Tier 2**
 
 ---
 
 ## Recommended Approach: next-intl
 
-For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n
-routing because it:
+For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n routing because it:
 
 - Works seamlessly with App Router
 - Better TypeScript support
@@ -69,8 +64,7 @@ routing because it:
 
 - **next-i18next** - Good for Pages Router (older Next.js)
 - **Paraglide JS** - New, lightweight option
-- **Built-in Next.js i18n** - Only works with Pages Router (deprecated in App
-  Router)
+- **Built-in Next.js i18n** - Only works with Pages Router (deprecated in App Router)
 
 ---
 
@@ -195,38 +189,38 @@ bun add next-intl
 **`i18n/config.ts`**
 
 ```typescript
-export const locales = ["en", "es", "pt", "hi", "zh", "de", "hu"] as const;
+export const locales = ['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu'] as const;
 export type Locale = (typeof locales)[number];
 
-export const defaultLocale: Locale = "en";
+export const defaultLocale: Locale = 'en';
 
 export const localeNames: Record<Locale, string> = {
-  en: "English",
-  es: "Español",
-  pt: "Português",
-  hi: "हिन्दी",
-  zh: "中文",
-  de: "Deutsch",
-  hu: "Magyar",
+  en: 'English',
+  es: 'Español',
+  pt: 'Português',
+  hi: 'हिन्दी',
+  zh: '中文',
+  de: 'Deutsch',
+  hu: 'Magyar',
 };
 
 export const localeFlags: Record<Locale, string> = {
-  en: "🇺🇸",
-  es: "🇪🇸",
-  pt: "🇧🇷",
-  hi: "🇮🇳",
-  zh: "🇨🇳",
-  de: "🇩🇪",
-  hu: "🇭🇺",
+  en: '🇺🇸',
+  es: '🇪🇸',
+  pt: '🇧🇷',
+  hi: '🇮🇳',
+  zh: '🇨🇳',
+  de: '🇩🇪',
+  hu: '🇭🇺',
 };
 ```
 
 **`i18n/request.ts`**
 
 ```typescript
-import { getRequestConfig } from "next-intl/server";
-import { notFound } from "next/navigation";
-import { locales } from "./config";
+import { getRequestConfig } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { locales } from './config';
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid
@@ -241,19 +235,18 @@ export default getRequestConfig(async ({ locale }) => {
 **`i18n/routing.ts`**
 
 ```typescript
-import { defineRouting } from "next-intl/routing";
-import { createSharedPathnamesNavigation } from "next-intl/navigation";
-import { locales, defaultLocale } from "./config";
+import { defineRouting } from 'next-intl/routing';
+import { createSharedPathnamesNavigation } from 'next-intl/navigation';
+import { locales, defaultLocale } from './config';
 
 export const routing = defineRouting({
   locales,
   defaultLocale,
-  localePrefix: "as-needed", // or 'always' to force /en/... for English too
+  localePrefix: 'as-needed', // or 'always' to force /en/... for English too
 });
 
 // Lightweight wrappers around Next.js' navigation APIs
-export const { Link, redirect, usePathname, useRouter } =
-  createSharedPathnamesNavigation(routing);
+export const { Link, redirect, usePathname, useRouter } = createSharedPathnamesNavigation(routing);
 ```
 
 ### Step 3: Middleware Configuration
@@ -261,8 +254,8 @@ export const { Link, redirect, usePathname, useRouter } =
 **`middleware.ts`**
 
 ```typescript
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
 export default createMiddleware(routing);
 
@@ -271,11 +264,7 @@ export const config = {
   // - API routes
   // - _next (internal Next.js routes)
   // - static files
-  matcher: [
-    "/",
-    "/(en|es|pt|hi|zh|de|hu)/:path*",
-    "/((?!api|_next|.*\\..*).*)",
-  ],
+  matcher: ['/', '/(en|es|pt|hi|zh|de|hu)/:path*', '/((?!api|_next|.*\\..*).*)'],
 };
 ```
 
@@ -738,27 +727,27 @@ Popular options:
 ```typescript
 // sanity/schemas/course.ts
 export default {
-  name: "course",
-  type: "document",
+  name: 'course',
+  type: 'document',
   i18n: {
-    languages: ["en", "es", "pt", "hi", "zh", "de"],
-    defaultLanguages: ["en"],
+    languages: ['en', 'es', 'pt', 'hi', 'zh', 'de'],
+    defaultLanguages: ['en'],
   },
   fields: [
     {
-      name: "title",
-      type: "string",
+      name: 'title',
+      type: 'string',
       localize: true,
     },
     {
-      name: "description",
-      type: "text",
+      name: 'description',
+      type: 'text',
       localize: true,
     },
     {
-      name: "content",
-      type: "array",
-      of: [{ type: "block" }],
+      name: 'content',
+      type: 'array',
+      of: [{ type: 'block' }],
       localize: true,
     },
   ],
@@ -819,8 +808,8 @@ export default getRequestConfig(async ({ locale }) => {
   return {
     messages: (await import(`../messages/${locale}.json`)).default,
     onError: (error) => {
-      if (error.code === "MISSING_MESSAGE") {
-        console.warn("Missing translation:", error.message);
+      if (error.code === 'MISSING_MESSAGE') {
+        console.warn('Missing translation:', error.message);
       }
     },
     getMessageFallback: ({ key }) => {
@@ -834,22 +823,16 @@ export default getRequestConfig(async ({ locale }) => {
 
 ```typescript
 // app/[locale]/layout.tsx
-import { routing } from "@/i18n/routing";
+import { routing } from '@/i18n/routing';
 
-export async function generateMetadata({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const messages = await getMessages();
 
   return {
     title: messages.meta.title,
     description: messages.meta.description,
     alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((loc) => [loc, `/${loc}`])
-      ),
+      languages: Object.fromEntries(routing.locales.map((loc) => [loc, `/${loc}`])),
     },
   };
 }
@@ -866,13 +849,13 @@ export async function generateMetadata({
 export const metadata = {
   alternates: {
     languages: {
-      en: "/en",
-      es: "/es",
-      pt: "/pt",
-      hi: "/hi",
-      zh: "/zh",
-      de: "/de",
-      hu: "/hu",
+      en: '/en',
+      es: '/es',
+      pt: '/pt',
+      hi: '/hi',
+      zh: '/zh',
+      de: '/de',
+      hu: '/hu',
     },
   },
 };
@@ -882,20 +865,20 @@ export const metadata = {
 
 ```typescript
 // app/sitemap.ts
-import { MetadataRoute } from "next";
-import { locales } from "@/i18n/config";
+import { MetadataRoute } from 'next';
+import { locales } from '@/i18n/config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://devmultiplier.com";
+  const baseUrl = 'https://devmultiplier.com';
 
-  const pages = ["", "/courses", "/about", "/contact"];
+  const pages = ['', '/courses', '/about', '/contact'];
 
   return pages.flatMap((page) =>
     locales.map((locale) => ({
       url: `${baseUrl}/${locale}${page}`,
       lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: page === "" ? 1 : 0.8,
+      changeFrequency: 'weekly' as const,
+      priority: page === '' ? 1 : 0.8,
     }))
   );
 }
@@ -905,16 +888,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 ```typescript
 // app/robots.ts
-import { MetadataRoute } from "next";
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: "/api/",
+      userAgent: '*',
+      allow: '/',
+      disallow: '/api/',
     },
-    sitemap: "https://devmultiplier.com/sitemap.xml",
+    sitemap: 'https://devmultiplier.com/sitemap.xml',
   };
 }
 ```
@@ -950,17 +933,17 @@ export default function robots(): MetadataRoute.Robots {
 
 ```typescript
 // scripts/check-translations.ts
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-const locales = ["en", "es", "pt", "hi", "zh", "de", "hu"];
-const messagesDir = path.join(process.cwd(), "messages");
+const locales = ['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu'];
+const messagesDir = path.join(process.cwd(), 'messages');
 
-function getAllKeys(obj: any, prefix = ""): string[] {
+function getAllKeys(obj: any, prefix = ''): string[] {
   let keys: string[] = [];
   for (const key in obj) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
-    if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+    if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
       keys = keys.concat(getAllKeys(obj[key], fullKey));
     } else {
       keys.push(fullKey);
@@ -970,17 +953,13 @@ function getAllKeys(obj: any, prefix = ""): string[] {
 }
 
 function checkTranslations() {
-  const enMessages = JSON.parse(
-    fs.readFileSync(path.join(messagesDir, "en.json"), "utf-8")
-  );
+  const enMessages = JSON.parse(fs.readFileSync(path.join(messagesDir, 'en.json'), 'utf-8'));
   const enKeys = getAllKeys(enMessages);
 
   locales.forEach((locale) => {
-    if (locale === "en") return;
+    if (locale === 'en') return;
 
-    const messages = JSON.parse(
-      fs.readFileSync(path.join(messagesDir, `${locale}.json`), "utf-8")
-    );
+    const messages = JSON.parse(fs.readFileSync(path.join(messagesDir, `${locale}.json`), 'utf-8'));
     const keys = getAllKeys(messages);
 
     const missing = enKeys.filter((key) => !keys.includes(key));
@@ -988,13 +967,13 @@ function checkTranslations() {
 
     console.log(`\n${locale.toUpperCase()}:`);
     if (missing.length > 0) {
-      console.log("  Missing keys:", missing);
+      console.log('  Missing keys:', missing);
     }
     if (extra.length > 0) {
-      console.log("  Extra keys:", extra);
+      console.log('  Extra keys:', extra);
     }
     if (missing.length === 0 && extra.length === 0) {
-      console.log("  ✓ All translations up to date");
+      console.log('  ✓ All translations up to date');
     }
   });
 }
@@ -1011,14 +990,14 @@ Run with: `bun run scripts/check-translations.ts`
 1. **Lazy Load Translations**
 
    ```typescript
-   const t = useTranslations("courses.dddToCqrs");
+   const t = useTranslations('courses.dddToCqrs');
    // Only loads 'courses.dddToCqrs' namespace
    ```
 
 2. **Static Generation**
 
    ```typescript
-   export const dynamic = "force-static";
+   export const dynamic = 'force-static';
    export function generateStaticParams() {
      return routing.locales.map((locale) => ({ locale }));
    }
@@ -1028,8 +1007,8 @@ Run with: `bun run scripts/check-translations.ts`
    ```typescript
    // middleware.ts
    export const config = {
-     matcher: ["/((?!api|_next|.*\\..*).*)"],
-     runtime: "edge",
+     matcher: ['/((?!api|_next|.*\\..*).*)'],
+     runtime: 'edge',
    };
    ```
 
@@ -1120,8 +1099,8 @@ describe('Internationalization', () => {
 2. Spanish (largest growth market)
 3. Portuguese (Brazilian market)
 
-**Expand in Tier 2:** 4. Hindi (Indian market) 5. Chinese (Chinese market) 6.
-German (European market) 7. Hungarian (Central/Eastern European market)
+**Expand in Tier 2:** 4. Hindi (Indian market) 5. Chinese (Chinese market) 6. German (European market) 7. Hungarian
+(Central/Eastern European market)
 
 **Technical stack:**
 
@@ -1138,5 +1117,5 @@ German (European market) 7. Hungarian (Central/Eastern European market)
 - Competitive advantage in developer education
 - Higher conversion rates in native languages
 
-This setup will give you a solid foundation to scale to 10+ languages while
-maintaining code quality and translation accuracy.
+This setup will give you a solid foundation to scale to 10+ languages while maintaining code quality and translation
+accuracy.
