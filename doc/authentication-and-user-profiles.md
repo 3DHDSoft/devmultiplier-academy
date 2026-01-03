@@ -27,21 +27,21 @@ Auth.js, and next-intl.
 ┌─────────────────────────────────────────────────────────┐
 │  User Authentication + Profile + i18n Flow              │
 ├─────────────────────────────────────────────────────────┤
-│                                                           │
-│  1. User Login/Register                                  │
-│     ↓                                                     │
-│  2. Auth.js validates credentials → PostgreSQL           │
-│     ↓                                                     │
-│  3. Session created with user data (including locale)    │
-│     ↓                                                     │
-│  4. Middleware reads session → applies user's locale     │
-│     ↓                                                     │
-│  5. next-intl uses locale for translations               │
-│     ↓                                                     │
-│  6. User can update language preference                  │
-│     ↓                                                     │
-│  7. Preference saved to database → reflected on reload   │
-│                                                           │
+│                                                         │
+│  1. User Login/Register                                 │
+│     ↓                                                   │
+│  2. Auth.js validates credentials → PostgreSQL          │
+│     ↓                                                   │
+│  3. Session created with user data (including locale)   │
+│     ↓                                                   │
+│  4. Middleware reads session → applies user's locale    │
+│     ↓                                                   │
+│  5. next-intl uses locale for translations              │
+│     ↓                                                   │
+│  6. User can update language preference                 │
+│     ↓                                                   │
+│  7. Preference saved to database → reflected on reload  │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -69,7 +69,7 @@ bun add prisma @prisma/client
 
 ```bash
 # .env.local
-DATABASE_URL="postgresql://user:password@localhost:5432/academy"
+DATABASE_URL="postgresql://sa:academy2026@postgres:5432/academy"
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET=$(openssl rand -base64 32)
 ```

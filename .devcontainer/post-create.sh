@@ -14,7 +14,7 @@ fi
 echo "⏳ Waiting for databases to be ready..."
 
 # Wait for PostgreSQL
-until pg_isready -h postgres -U sa -d adventure_works > /dev/null 2>&1; do
+until pg_isready -h postgres -U admin -d academy > /dev/null 2>&1; do
     echo "  Waiting for PostgreSQL 18..."
     sleep 2
 done
@@ -32,13 +32,13 @@ echo "  🎉 Development Environment Ready!"
 echo "=============================================="
 echo ""
 echo "  📚 Databases available:"
-echo "     • PostgreSQL 18: postgres:5432 (sa/Dev-Multiplier-2026_Str0ng)"
-echo "     • Database: adventure_works"
+echo "     • PostgreSQL 18: postgres:5432 (admin/academy2026)"
+echo "     • Database: academy"
 echo ""
 echo "  🛠️ Useful commands:"
 echo "     • bun run dev        - Start development server"
 echo "     • bun test           - Run tests"
-echo "     • psql -h postgres -U sa -d adventure_works"
+echo "     • psql -h postgres -U admin -d academy"
 echo ""
 echo "  🔧 Optional tools (start with --profile tools):"
 echo "     • pgAdmin:     http://localhost:8008"

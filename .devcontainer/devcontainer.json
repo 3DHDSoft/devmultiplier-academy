@@ -108,10 +108,10 @@
 	// "remoteUser": "root" // node
 
   "containerEnv": {
-    "DATABASE_URL": "postgresql://sa:Dev-Multiplier-2026_Str0ng@postgres:5432/adventure_works",
-    "POSTGRES_DB": "adventure_works",
-    "POSTGRES_USER": "sa",
-    "POSTGRES_PASSWORD": "Dev-Multiplier-2026_Str0ng",
+    "DATABASE_URL": "postgresql://admin:academy2026@postgres:5432/academy",
+    "POSTGRES_DB": "academy",
+    "POSTGRES_USER": "admin",
+    "POSTGRES_PASSWORD": "academy2026",
     "NODE_ENV": "development"
   }
 }
