@@ -13,16 +13,21 @@
     "type": "git",
     "url": "https://github.com/3DHDSoft/devmultiplier-academy.git"
   },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix"
+  "engines": {
+    "node": ">=20.0.0",
+    "bun": ">=1.0.0"
   },
+  "packageManager": "bun@1.3.5",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "format": "prettier -c 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
-    "format:fix": "prettier -w --list-different 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,json}'",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
   "dependencies": {
@@ -34,6 +39,11 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --cache --fix",
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{ts,tsx,js,jsx,css,md,json}": "prettier --write"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
