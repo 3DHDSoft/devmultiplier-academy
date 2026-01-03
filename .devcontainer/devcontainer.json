@@ -1,0 +1,117 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "TS Node.js",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev-x-academy-web",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	//"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [3000, 3001, 5432, 8008],
+
+  "portsAttributes": {
+    "3000": { "label": "Next.js App", "onAutoForward": "notify" },
+    "3001": { "label": "API Server", "onAutoForward": "notify" },
+    "5432": { "label": "PostgreSQL 18", "onAutoForward": "silent" },
+    "8008": { "label": "pgAdmin", "onAutoForward": "silent" }
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+	// postCreateCommand
+  "postStartCommand": "bash .devcontainer/post-start.sh",
+
+	// Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      // find /home/node/.vscode-server/extensions -maxdepth 1 -type d -name "*-*" | sed 's|.*/||' | sort
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "humao.rest-client",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "eamodio.gitlens",
+        "dbaeumer.vscode-eslint",
+        "ms-azuretools.vscode-docker",
+        "ms-dotnettools.csdevkit",
+        "ms-vscode.vscode-typescript-next",
+        "ms-dotnettools.csharp",
+        "alefragnani.project-manager",
+        "anthropic.claude-code",
+        "bierner.github-markdown-preview",
+        "bierner.markdown-checkbox",
+        "bierner.markdown-emoji",
+        "bierner.markdown-footnotes",
+        "bierner.markdown-mermaid",
+        "bierner.markdown-preview-github-styles",
+        "bierner.markdown-yaml-preamble",
+        "bradymholt.pgformatter",
+        "codezombiech.gitignore",
+        "davidanson.vscode-markdownlint",
+        "docker.docker",
+        "donjayamanne.git-extension-pack",
+        "donjayamanne.githistory",
+        "doublefint.pgsql",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "goessner.mdmath",
+        "huizhou.githd",
+        "inferrinizzard.prettier-sql-vscode",
+        "kisstkondoros.vscode-codemetrics",
+        "kumar-harsh.graphql-for-vscode",
+        "mdickin.markdown-shortcuts",
+        "mechatroner.rainbow-csv",
+        "mhutchie.git-graph",
+        "mohsen1.prettify-json",
+        "moshfeu.compare-folders",
+        "ms-azuretools.vscode-azureresourcegroups",
+        "ms-windows-ai-studio.windows-ai-studio",
+        "redhat.vscode-xml",
+        "shd101wyy.markdown-preview-enhanced",
+        "rvest.vs-code-prettier-eslint",
+        "teamsdevapp.vscode-ai-foundry",
+        "yzhang.markdown-all-in-one",
+        "yzane.markdown-pdf",
+        "ziyasal.vscode-open-in-github"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "typescript.preferences.importModuleSpecifier": "relative"
+      }
+    }
+  },
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root" // node
+
+  "containerEnv": {
+    "DATABASE_URL": "postgresql://sa:Dev-Multiplier-2026_Str0ng@postgres:5432/adventure_works",
+    "POSTGRES_DB": "adventure_works",
+    "POSTGRES_USER": "sa",
+    "POSTGRES_PASSWORD": "Dev-Multiplier-2026_Str0ng",
+    "NODE_ENV": "development"
+  }
+}
