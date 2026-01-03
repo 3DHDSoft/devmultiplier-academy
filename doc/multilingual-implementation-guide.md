@@ -618,13 +618,23 @@ export default function Navigation() {
 
 ### Option 1: Database-Driven (Recommended for Scale)
 
+**Best for:** Large catalogs, frequently updated content, admin dashboards, multiple editors
+
+#### Full Schema Design
+
 ```typescript
 // Database schema example (Prisma)
+
 model Course {
   id          String   @id @default(cuid())
   slug        String   @unique
+  status      String   @default('draft') // draft, published, archived
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   translations CourseTranslation[]
-  // ... other fields
+  modules      Module[]
+  instructors  Instructor[]
 }
 
 model CourseTranslation {
@@ -633,27 +643,301 @@ model CourseTranslation {
   locale      String
   title       String
   description String
-  content     String   @db.Text
-  course      Course   @relation(fields: [courseId], references: [id])
+  content     String   @db.Text // Rich text or Markdown
+  thumbnail   String?  // URL to thumbnail
+  seoTitle    String?
+  seoDescription String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([courseId, locale])
+  @@index([locale])
+  @@index([courseId])
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  courseId    String
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  translations ModuleTranslation[]
+  lessons     Lesson[]
+
+  @@index([courseId])
+}
+
+model ModuleTranslation {
+  id          String   @id @default(cuid())
+  moduleId    String
+  locale      String
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([moduleId, locale])
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  moduleId    String
+  order       Int
+  videoUrl    String?
+  duration    Int?     // in minutes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  translations LessonTranslation[]
+
+  @@index([moduleId])
+}
+
+model LessonTranslation {
+  id          String   @id @default(cuid())
+  lessonId    String
+  locale      String
+  title       String
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, locale])
+}
+
+model Instructor {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  bio         String?
+  avatar      String?
+  createdAt   DateTime @default(now())
+
+  courses     Course[]
 }
 ```
 
-**Fetching localized course:**
+#### Optimized Fetching with Caching
 
 ```typescript
+import { unstable_cache } from 'next/cache';
+import { prisma } from '@/lib/prisma';
+
+// Cache course data for 1 hour
+const getCourseWithCache = unstable_cache(
+  async (slug: string, locale: string) => {
+    return prisma.course.findUnique({
+      where: { slug },
+      include: {
+        translations: {
+          where: { locale },
+          select: {
+            title: true,
+            description: true,
+            content: true,
+            seoTitle: true,
+            seoDescription: true,
+          },
+        },
+        modules: {
+          orderBy: { order: 'asc' },
+          include: {
+            translations: {
+              where: { locale },
+              select: { title: true, description: true },
+            },
+            lessons: {
+              orderBy: { order: 'asc' },
+              include: {
+                translations: {
+                  where: { locale },
+                  select: { title: true, content: true, duration: true },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  },
+  ['course', 'slug', 'locale'],
+  {
+    tags: ['course'],
+    revalidate: 3600, // 1 hour
+  }
+);
+
 async function getCourse(slug: string, locale: string) {
+  const course = await getCourseWithCache(slug, locale);
+
+  if (!course) {
+    return null;
+  }
+
+  // Flatten for easier access
+  return {
+    ...course,
+    title: course.translations[0]?.title,
+    description: course.translations[0]?.description,
+    content: course.translations[0]?.content,
+  };
+}
+
+// Revalidate cache when course is updated
+export async function invalidateCourseCache(courseId: string) {
+  revalidateTag('course');
+}
+```
+
+#### Batch Translation Updates
+
+```typescript
+// API route to update multiple translations at once
+// app/api/admin/courses/[id]/translations/route.ts
+
+import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: NextRequest, { params: { id } }: { params: { id: string } }) {
+  const { translations } = await req.json();
+
+  try {
+    // Update all translations in a transaction
+    const result = await prisma.$transaction(
+      translations.map((t: any) =>
+        prisma.courseTranslation.upsert({
+          where: {
+            courseId_locale: {
+              courseId: id,
+              locale: t.locale,
+            },
+          },
+          update: {
+            title: t.title,
+            description: t.description,
+            content: t.content,
+            seoTitle: t.seoTitle,
+            seoDescription: t.seoDescription,
+          },
+          create: {
+            courseId: id,
+            locale: t.locale,
+            title: t.title,
+            description: t.description,
+            content: t.content,
+            seoTitle: t.seoTitle,
+            seoDescription: t.seoDescription,
+          },
+        })
+      )
+    );
+
+    // Revalidate all locales
+    revalidateTag('course');
+
+    return NextResponse.json(result);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+```
+
+#### Querying All Locales
+
+```typescript
+// Get all available locales for a course
+async function getCourseAllLocales(slug: string) {
   const course = await prisma.course.findUnique({
     where: { slug },
-    include: {
+    select: {
+      id: true,
+      slug: true,
       translations: {
-        where: { locale },
+        select: {
+          locale: true,
+          title: true,
+          updatedAt: true,
+        },
       },
     },
   });
 
   return course;
+}
+
+// Check translation coverage (which locales have translations)
+async function getTranslationCoverage(courseId: string) {
+  const locales = ['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu'];
+
+  const translations = await prisma.courseTranslation.findMany({
+    where: { courseId },
+    select: { locale: true },
+  });
+
+  const available = new Set(translations.map((t) => t.locale));
+  const missing = locales.filter((l) => !available.has(l));
+
+  return {
+    available: Array.from(available),
+    missing,
+    coverage: (available.size / locales.length) * 100,
+  };
+}
+```
+
+#### Performance Considerations
+
+1. **Indexes:** Add indexes on `locale`, `courseId`, and composite unique constraints for faster queries
+2. **Pagination:** For large courses, paginate modules/lessons
+3. **Materialized Views:** Consider creating a denormalized view for frequently accessed data
+4. **Replication:** For read-heavy applications, replicate translation data to a read replica
+5. **CDN:** Cache translated content headers with cache control
+
+#### Admin Dashboard Integration
+
+```typescript
+// Example: Get courses needing translation
+async function getCoursesNeedingTranslation(locale: string) {
+  return prisma.course.findMany({
+    where: {
+      status: 'published',
+      translations: {
+        none: {
+          locale,
+        },
+      },
+    },
+    select: {
+      id: true,
+      slug: true,
+      translations: {
+        where: { locale: 'en' },
+        select: { title: true },
+      },
+    },
+  });
+}
+
+// Track translation completion
+async function getTranslationStats() {
+  const locales = ['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu'];
+  const stats = [];
+
+  for (const locale of locales) {
+    const count = await prisma.courseTranslation.count({ where: { locale } });
+    stats.push({ locale, count });
+  }
+
+  return stats;
 }
 ```
 

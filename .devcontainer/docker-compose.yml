@@ -48,22 +48,22 @@ services:
 
   postgres:
     # https://hub.docker.com/r/postgis/postgis
-    image: postgis/postgis:18-3.6-alpine  # PostgreSQL 18 with PostGIS 3.6 + all contrib extensions - PostgreSQL 18.1 (Debian 18.1-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+    image: postgis/postgis:18-3.6-alpine # PostgreSQL 18 with PostGIS 3.6 + all contrib extensions - PostgreSQL 18.1 (Debian 18.1-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
     #image: postgis/postgis:18-3.6  # PostgreSQL 18 with PostGIS 3.6 + all contrib extensions - PostgreSQL 18.1 (Debian 18.1-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
     #image: postgis/postgis:latest  # PostgreSQL 17.5 (Debian 17.5-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
     #image: postgres:latest
     container_name: postgres
     hostname: postgres
-    ports: ["${POSTGRES_PORT:-5432}:5432"]
+    ports: ['${POSTGRES_PORT:-5432}:5432']
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-sa}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-YourVeryStr0ngPassword}
-      POSTGRES_NON_ROOT_USER: ${POSTGRES_NON_ROOT_USER:-test}
-      POSTGRES_NON_ROOT_PASSWORD: ${POSTGRES_NON_ROOT_PASSWORD:-test}
-      POSTGRES_DB: ${POSTGRES_DB:-adventure_works}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_NON_ROOT_USER: ${POSTGRES_NON_ROOT_USER:-academy_user}
+      POSTGRES_NON_ROOT_PASSWORD: ${POSTGRES_NON_ROOT_PASSWORD:-academy_password}
+      POSTGRES_DB: ${POSTGRES_DB:-academy}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS:-"--encoding=UTF8 --locale=en_US.UTF-8"}
-      PGDATA: ${PGDATA:-/var/lib/postgresql/18/docker}  # PostgreSQL 18+ uses version-specific PGDATA
+      PGDATA: ${PGDATA:-/var/lib/postgresql/18/docker} # PostgreSQL 18+ uses version-specific PGDATA
       POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_HOST_AUTH_METHOD:-scram-sha-256}
     volumes:
       - postgres_data:/var/lib/postgresql
@@ -72,7 +72,7 @@ services:
       - ./config/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/01-init-user-db.sh:ro
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: ${HEALTHCHECK_INTERVAL:-10s}
       timeout: ${HEALTHCHECK_TIMEOUT:-8s}
       retries: ${HEALTHCHECK_RETRIES:-10}
@@ -97,7 +97,7 @@ services:
     image: dpage/pgadmin4:9.11
     container_name: pgadmin
     hostname: pgadmin
-    ports: ["${PGADMIN_PORT:-8008}:80"]
+    ports: ['${PGADMIN_PORT:-8008}:80']
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-YourVeryStr0ngPassword}
