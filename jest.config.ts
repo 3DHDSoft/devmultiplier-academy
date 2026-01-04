@@ -10,7 +10,7 @@ const config: Config = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
-    '^.+\\.(ts|tsx)$': ['@swc/jest'],
+    '^.+\\.(ts|tsx)$': ['@swc/jest', {}],
   },
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.stories.tsx', '!src/app/**'],
 };
