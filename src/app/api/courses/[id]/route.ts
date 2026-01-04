@@ -105,12 +105,12 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
       seoTitle: course.translations[0]?.seoTitle,
       seoDescription: course.translations[0]?.seoDescription,
       instructors: course.instructors,
-      modules: course.modules.map((module: any) => ({
+      modules: course.modules.map((module: (typeof course.modules)[number]) => ({
         id: module.id,
         order: module.order,
         title: module.translations[0]?.title || 'Untitled Module',
         description: module.translations[0]?.description,
-        lessons: module.lessons.map((lesson: any) => ({
+        lessons: module.lessons.map((lesson: (typeof module.lessons)[number]) => ({
           id: lesson.id,
           order: lesson.order,
           title: lesson.translations[0]?.title || 'Untitled Lesson',

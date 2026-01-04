@@ -1,8 +1,8 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
     const userLocale = session?.user?.locale || 'en';
@@ -45,7 +45,7 @@ export async function GET(_req: NextRequest) {
     });
 
     // Format response with translation fallback
-    const formattedCourses = courses.map((course: any) => ({
+    const formattedCourses = courses.map((course: (typeof courses)[number]) => ({
       id: course.id,
       slug: course.slug,
       title: course.translations[0]?.title || 'Untitled Course',

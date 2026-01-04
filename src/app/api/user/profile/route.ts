@@ -9,7 +9,7 @@ const updateProfileSchema = z.object({
   avatar: z.string().url().optional(),
 });
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
 

@@ -7,7 +7,7 @@ const enrollmentSchema = z.object({
   courseId: z.string().uuid('Invalid course ID'),
 });
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
 
@@ -47,7 +47,7 @@ export async function GET(_req: NextRequest) {
     });
 
     // Format response with translation fallbacks
-    const formattedEnrollments = enrollments.map((enrollment: any) => ({
+    const formattedEnrollments = enrollments.map((enrollment: (typeof enrollments)[number]) => ({
       id: enrollment.id,
       courseId: enrollment.course.id,
       courseSlug: enrollment.course.slug,

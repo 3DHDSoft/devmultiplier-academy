@@ -1,6 +1,6 @@
 'use client';
 
-export default function Error({ error: _error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="text-center">

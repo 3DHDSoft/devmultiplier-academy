@@ -69,11 +69,11 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Language</p>
-              <p className="font-medium text-gray-900">{(session.user as any)?.locale || 'English'}</p>
+              <p className="font-medium text-gray-900">{(session.user as { locale?: string })?.locale || 'English'}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Timezone</p>
-              <p className="font-medium text-gray-900">{(session.user as any)?.timezone || 'UTC'}</p>
+              <p className="font-medium text-gray-900">{(session.user as { timezone?: string })?.timezone || 'UTC'}</p>
             </div>
           </div>
         </div>

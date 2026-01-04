@@ -100,14 +100,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Calculate if module is complete
-    const module = lesson.module;
+    const lessonModule = lesson.module;
     const totalLessonsInModule = await prisma.lesson.count({
-      where: { moduleId: module.id },
+      where: { moduleId: lessonModule.id },
     });
 
     const completedLessonsInModule = await prisma.lesson.count({
       where: {
-        moduleId: module.id,
+        moduleId: lessonModule.id,
       },
       // This is a simplified approach - in production,
       // you'd track which specific lessons are complete

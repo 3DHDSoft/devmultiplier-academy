@@ -45,12 +45,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Verify module belongs to this course
-    const module = await prisma.module.findUnique({
+    const courseModule = await prisma.module.findUnique({
       where: { id: moduleId },
       select: { courseId: true },
     });
 
-    if (!module || module.courseId !== courseId) {
+    if (!courseModule || courseModule.courseId !== courseId) {
       return NextResponse.json({ error: 'Module not found' }, { status: 404 });
     }
 

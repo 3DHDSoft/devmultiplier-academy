@@ -25,6 +25,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, _request) {
+        // eslint-disable-line @typescript-eslint/no-unused-vars
         try {
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
@@ -74,7 +75,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           };
 
           return returnUser;
-        } catch (error) {
+        } catch (_error) {
+          // eslint-disable-line @typescript-eslint/no-unused-vars
           return null;
         }
       },
