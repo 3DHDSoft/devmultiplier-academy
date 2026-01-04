@@ -8,6 +8,9 @@ vi.mock('next/navigation', () => ({
       push: vi.fn(),
       replace: vi.fn(),
       prefetch: vi.fn(),
+      back: vi.fn(),
+      forward: vi.fn(),
+      refresh: vi.fn(),
     };
   },
   usePathname() {
@@ -15,6 +18,9 @@ vi.mock('next/navigation', () => ({
   },
   useSearchParams() {
     return new URLSearchParams();
+  },
+  useParams() {
+    return {};
   },
 }));
 
@@ -31,17 +37,23 @@ vi.mock('next-auth/react', () => ({
   SessionProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-// Suppress console errors in tests
-const originalError = console.error;
-beforeAll(() => {
-  console.error = vi.fn((...args: unknown[]) => {
-    if (typeof args[0] === 'string' && args[0].includes('Warning: ReactDOM.render')) {
-      return;
-    }
-    originalError.call(console, ...args);
-  });
-});
-
-afterAll(() => {
-  console.error = originalError;
-});
+// Mock Prisma client
+vi.mock('@/lib/prisma', () => ({
+  prisma: {
+    user: {
+      findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    course: {
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+    },
+    enrollment: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+    },
+  },
+}));
