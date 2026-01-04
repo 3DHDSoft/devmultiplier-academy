@@ -27,6 +27,16 @@ API Test Breakdown:
 
 ---
 
+## Test Scripts
+
+```bash
+bun run test           # Run all unit tests
+bun run test:watch     # Watch mode
+bun run test:coverage  # With coverage report
+bun run test:ui        # Visual UI for tests
+bun run e2e            # Playwright E2E tests (separate)
+```
+
 ## Test Files Created
 
 ### `src/app/api/__tests__/courses.test.ts`
