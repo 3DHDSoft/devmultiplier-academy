@@ -31,6 +31,7 @@
     "prepare": "NODE_OPTIONS='' husky"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -49,7 +50,7 @@
     "*.{ts,tsx,js,jsx,css,md,json}": "prettier --write"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^7.2.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^22",
     "@types/react": "^19",
@@ -59,7 +60,7 @@
     "husky": "^9.1.7",
     "prettier": "^3",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "prisma": "^5.22.0",
+    "prisma": "^7.2.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
