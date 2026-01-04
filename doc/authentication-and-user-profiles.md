@@ -88,6 +88,11 @@ bun prisma init
 
 ```prisma
 // prisma/schema.prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client"
@@ -103,7 +108,7 @@ datasource db {
 // ============================================
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
   email         String?   @unique
   emailVerified DateTime?
   name          String?
@@ -132,8 +137,8 @@ model User {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
+  id                 String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId             String  @db.Uuid
   type               String  // "oauth" or "email"
   provider           String
   providerAccountId  String
@@ -153,9 +158,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
   sessionToken String   @unique
-  userId       String
+  userId       String  @db.Uuid
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -178,7 +183,7 @@ model VerificationToken {
 // ============================================
 
 model Course {
-  id          String   @id @default(cuid())
+  id          String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
   slug        String   @unique
   status      String   @default("draft")
   createdAt   DateTime @default(now())
@@ -192,8 +197,8 @@ model Course {
 }
 
 model CourseTranslation {
-  id             String   @id @default(cuid())
-  courseId       String
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  courseId       String  @db.Uuid
   locale         String
   title          String
   description    String
@@ -213,8 +218,8 @@ model CourseTranslation {
 }
 
 model Module {
-  id        String   @id @default(cuid())
-  courseId  String
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  courseId  String  @db.Uuid
   order     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -228,8 +233,8 @@ model Module {
 }
 
 model ModuleTranslation {
-  id          String   @id @default(cuid())
-  moduleId    String
+  id          String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  moduleId    String  @db.Uuid
   locale      String
   title       String
   description String?
@@ -243,8 +248,8 @@ model ModuleTranslation {
 }
 
 model Lesson {
-  id        String   @id @default(cuid())
-  moduleId  String
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  moduleId  String  @db.Uuid
   order     Int
   videoUrl  String?
   duration  Int?     // in minutes
@@ -259,8 +264,8 @@ model Lesson {
 }
 
 model LessonTranslation {
-  id        String   @id @default(cuid())
-  lessonId  String
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  lessonId  String  @db.Uuid
   locale    String
   title     String
   content   String   @db.Text
@@ -274,7 +279,7 @@ model LessonTranslation {
 }
 
 model Instructor {
-  id      String @id @default(cuid())
+  id      String @id @default(dbgenerated("uuidv7()")) @db.Uuid
   name    String
   email   String @unique
   bio     String?
@@ -290,9 +295,9 @@ model Instructor {
 // ============================================
 
 model Enrollment {
-  id        String   @id @default(cuid())
-  userId    String
-  courseId  String
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId    String  @db.Uuid
+  courseId  String  @db.Uuid
   status    String   @default("active") // active, completed, dropped
   progress  Int      @default(0)        // 0-100 percentage
   completedAt DateTime?
@@ -310,9 +315,9 @@ model Enrollment {
 }
 
 model CourseProgress {
-  id              String   @id @default(cuid())
-  userId          String
-  courseId        String
+  id              String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId          String  @db.Uuid
+  courseId        String  @db.Uuid
   lessonId        String?
   modulesComplete Int      @default(0)
   lessonsComplete Int      @default(0)
@@ -360,6 +365,12 @@ DATABASE_URL="postgresql://admin:academy2026@postgres:5432/academy"
 ```bash
 bun prisma migrate dev --name init
 ```
+
+## To Do
+
+- Creating API endpoints?
+- Setting up authentication with Auth.js?
+- Building UI components?
 
 ---
 
@@ -1287,3 +1298,53 @@ respecting user preferences ✅ **Progress Tracking** for course enrollments ✅
 **Type Safety** with Prisma and TypeScript
 
 All integrated seamlessly with next-intl for a truly personalized experience!
+
+---
+
+## API Endpoint Architecture
+
+### Understanding the Components
+
+When building API endpoints, it's important to understand that these aren't separate alternatives - they should **all be
+used together**:
+
+**What they actually are:**
+
+1. **Traditional REST endpoints** - The architectural pattern (GET, POST, PATCH, DELETE HTTP methods)
+2. **Using Next.js App Router API routes** - WHERE you implement them (`/app/api/*` directory structure)
+3. **With proper error handling & validation** - A QUALITY standard (input validation, error responses, logging)
+4. **Type-safe with Prisma** - TYPE SAFETY throughout (TypeScript types + Prisma generated types)
+
+### Recommended Approach
+
+The **RIGHT approach combines all of them:**
+
+✅ **REST endpoints** - Standard HTTP verbs (GET /api/courses, POST /api/enrollments, etc.) ✅ **In Next.js App
+Router** - Located in `/app/api/courses/route.ts`, `/app/api/enrollments/route.ts` ✅ **With validation & error
+handling** - Using Zod for input validation and structured error responses ✅ **Type-safe with Prisma** - End-to-end
+TypeScript + Prisma Client for database queries
+
+### Pros of Combined Approach
+
+- Type-safe end-to-end (schema → database → API → client)
+- Next.js handles routing automatically
+- Built-in middleware support
+- Easy to integrate with Auth.js for authentication
+- Better developer experience and fewer bugs
+
+### Phase 1 Implementation Plan
+
+Create all essential endpoints using:
+
+- ✅ Next.js App Router API routes
+- ✅ Prisma for type-safe database queries
+- ✅ Zod for input validation
+- ✅ Proper error handling with structured responses
+- ✅ Authentication guards where needed
+
+**Endpoints to create:**
+
+- User Management (profile, language preference)
+- Courses (list, get by ID with translations)
+- Enrollments (list, create, get progress)
+- Progress tracking (update course progress)

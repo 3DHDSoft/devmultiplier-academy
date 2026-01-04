@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { Pricing } from '@/components/sections/pricing';
 import { CTA } from '@/components/sections/cta';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Pricing | DevMultiplier Academy',
   description:

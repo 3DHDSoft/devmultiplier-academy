@@ -1,18 +1,61 @@
 # Prisma Introduction
 
 Prisma is a next-generation ORM (Object-Relational Mapping) tool that makes working with databases easier and more
-type-safe. This project uses Prisma to manage the PostgreSQL database.
+type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
 
 ## Project Configuration
 
 This project uses:
 
 - **Database**: PostgreSQL 18 with PostGIS 3.6
+- **Prisma Version**: 7+ (latest)
 - **Prisma Schema**: `prisma/schema.prisma`
-- **Prisma Config**: `prisma.config.ts`
+- **Prisma Config**: `prisma.config.ts` (Prisma 7+ requirement)
 - **Generated Client**: `src/generated/prisma`
+- **ID Generation**: PostgreSQL 18 native `uuidv7()` (time-ordered UUIDs)
 
 ## Getting Started
+
+### Prisma 7+ Configuration
+
+In Prisma 7+, the database connection is configured in `prisma.config.ts` instead of the schema file:
+
+**`prisma.config.ts`**
+
+```typescript
+import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  migrations: {
+    path: 'prisma/migrations',
+  },
+  datasource: {
+    url: process.env['DATABASE_URL'],
+  },
+});
+```
+
+**`prisma/schema.prisma`**
+
+```prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // URL is now configured in prisma.config.ts
+}
+```
+
+Make sure your `.env.local` has the DATABASE_URL:
+
+```bash
+DATABASE_URL="postgresql://admin:academy2026@postgres:5432/academy"
+```
 
 ### CONNECT EXISTING DATABASE
 
@@ -41,6 +84,43 @@ Then, define your models in `prisma/schema.prisma` and run `prisma migrate dev` 
 
 ```bash
 bunx prisma migrate dev --name init
+```
+
+## Prisma 7 Schema Best Practices
+
+### ID Generation with UUID v7
+
+This project uses PostgreSQL 18's native `uuidv7()` function for time-ordered UUIDs:
+
+```prisma
+model User {
+  id    String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  email String   @unique
+  // ... other fields
+}
+```
+
+**Benefits of UUID v7:**
+
+- ✅ Time-ordered (better for indexing than UUID v4)
+- ✅ Native PostgreSQL 18 support (no extensions needed)
+- ✅ Sortable by creation time
+- ✅ Better performance in distributed systems
+
+### Prisma Client Generation
+
+In Prisma 7, the client is generated to a custom output directory:
+
+```typescript
+// src/generated/prisma/index.ts is auto-generated
+import { PrismaClient } from '@/generated/prisma';
+
+const prisma = new PrismaClient();
+
+// Type-safe queries
+const user = await prisma.user.findUnique({
+  where: { id: userId },
+});
 ```
 
 ## Common Commands

@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "users" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "name" TEXT,
@@ -18,7 +18,7 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "accounts" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "userId" UUID NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE "accounts" (
 
 -- CreateTable
 CREATE TABLE "sessions" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "sessionToken" TEXT NOT NULL,
     "userId" UUID NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE "verificationtokens" (
 
 -- CreateTable
 CREATE TABLE "Course" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "slug" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'draft',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -64,7 +64,7 @@ CREATE TABLE "Course" (
 
 -- CreateTable
 CREATE TABLE "course_translations" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "courseId" UUID NOT NULL,
     "locale" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE "course_translations" (
 
 -- CreateTable
 CREATE TABLE "modules" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "courseId" UUID NOT NULL,
     "order" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -92,7 +92,7 @@ CREATE TABLE "modules" (
 
 -- CreateTable
 CREATE TABLE "module_translations" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "moduleId" UUID NOT NULL,
     "locale" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE "module_translations" (
 
 -- CreateTable
 CREATE TABLE "lessons" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "moduleId" UUID NOT NULL,
     "order" INTEGER NOT NULL,
     "videoUrl" TEXT,
@@ -118,7 +118,7 @@ CREATE TABLE "lessons" (
 
 -- CreateTable
 CREATE TABLE "lesson_translations" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "lessonId" UUID NOT NULL,
     "locale" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE "lesson_translations" (
 
 -- CreateTable
 CREATE TABLE "instructors" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "bio" TEXT,
@@ -142,7 +142,7 @@ CREATE TABLE "instructors" (
 
 -- CreateTable
 CREATE TABLE "enrollments" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "userId" UUID NOT NULL,
     "courseId" UUID NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'active',
@@ -156,7 +156,7 @@ CREATE TABLE "enrollments" (
 
 -- CreateTable
 CREATE TABLE "course_progress" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" UUID NOT NULL DEFAULT uuidv7(),
     "userId" UUID NOT NULL,
     "courseId" UUID NOT NULL,
     "lessonId" TEXT,

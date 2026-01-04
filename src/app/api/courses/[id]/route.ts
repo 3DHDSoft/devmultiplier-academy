@@ -1,0 +1,133 @@
+import { auth } from '@/auth';
+import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await auth();
+    const userLocale = session?.user?.locale || 'en';
+    const courseId = params.id;
+
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      select: {
+        id: true,
+        slug: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        translations: {
+          where: { locale: userLocale },
+          select: {
+            title: true,
+            description: true,
+            content: true,
+            thumbnail: true,
+            seoTitle: true,
+            seoDescription: true,
+          },
+        },
+        instructors: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+          },
+        },
+        modules: {
+          orderBy: { order: 'asc' },
+          select: {
+            id: true,
+            order: true,
+            translations: {
+              where: { locale: userLocale },
+              select: {
+                title: true,
+                description: true,
+              },
+            },
+            lessons: {
+              orderBy: { order: 'asc' },
+              select: {
+                id: true,
+                order: true,
+                videoUrl: true,
+                duration: true,
+                translations: {
+                  where: { locale: userLocale },
+                  select: {
+                    title: true,
+                    content: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        enrollments: session?.user?.email
+          ? {
+              where: {
+                user: { email: session.user.email },
+              },
+              select: {
+                id: true,
+                status: true,
+                progress: true,
+                completedAt: true,
+                enrolledAt: true,
+              },
+            }
+          : false,
+        _count: {
+          select: { enrollments: true },
+        },
+      },
+    });
+
+    if (!course) {
+      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+    }
+
+    // Check if course is published (or user is admin/instructor)
+    if (course.status !== 'published') {
+      return NextResponse.json({ error: 'Course not available' }, { status: 403 });
+    }
+
+    // Format response with translation fallbacks
+    const formattedCourse = {
+      id: course.id,
+      slug: course.slug,
+      title: course.translations[0]?.title || 'Untitled Course',
+      description: course.translations[0]?.description || '',
+      content: course.translations[0]?.content || '',
+      thumbnail: course.translations[0]?.thumbnail,
+      seoTitle: course.translations[0]?.seoTitle,
+      seoDescription: course.translations[0]?.seoDescription,
+      instructors: course.instructors,
+      modules: course.modules.map((module: any) => ({
+        id: module.id,
+        order: module.order,
+        title: module.translations[0]?.title || 'Untitled Module',
+        description: module.translations[0]?.description,
+        lessons: module.lessons.map((lesson: any) => ({
+          id: lesson.id,
+          order: lesson.order,
+          title: lesson.translations[0]?.title || 'Untitled Lesson',
+          content: lesson.translations[0]?.content || '',
+          videoUrl: lesson.videoUrl,
+          duration: lesson.duration,
+        })),
+      })),
+      enrollmentCount: course._count.enrollments,
+      userEnrollment: session?.user?.email ? course.enrollments?.[0] : null,
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt,
+    };
+
+    return NextResponse.json(formattedCourse);
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    return NextResponse.json({ error: 'Failed to fetch course' }, { status: 500 });
+  }
+}
