@@ -13,13 +13,13 @@ const enrollmentSchema = z.object({
 describe('POST /api/enrollments', () => {
   describe('authentication', () => {
     it('should reject unauthenticated requests', () => {
-      const session = null;
+      const session = null as null | { user?: { email?: string } };
       const isAuthenticated = !!session?.user?.email;
       expect(isAuthenticated).toBe(false);
     });
 
     it('should accept authenticated requests with valid session', () => {
-      const session = {
+      const session: { user: { email: string; id: string; locale: string } } = {
         user: {
           email: 'user@example.com',
           id: '123',
@@ -114,7 +114,7 @@ describe('POST /api/enrollments', () => {
 describe('GET /api/enrollments', () => {
   describe('authentication', () => {
     it('should require authentication', () => {
-      const session = null;
+      const session = null as null | { user?: { email?: string } };
       const isAuthenticated = !!session?.user?.email;
       expect(isAuthenticated).toBe(false);
     });
@@ -160,7 +160,7 @@ describe('GET /api/enrollments', () => {
       const enrollment = {
         id: 'e1',
         course: {
-          translations: [], // Empty for requested locale
+          translations: [] as Array<{ title?: string }>,
         },
       };
 

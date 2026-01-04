@@ -50,8 +50,8 @@ describe('Progress Tracking API', () => {
     });
 
     it('should detect incomplete modules', () => {
-      const completedLessons = 3;
-      const totalLessonsInModule = 5;
+      const completedLessons: number = 3;
+      const totalLessonsInModule: number = 5;
       const moduleComplete = completedLessons === totalLessonsInModule;
 
       expect(moduleComplete).toBe(false);

@@ -7,9 +7,7 @@ import { z } from 'zod';
  */
 
 const languageSchema = z.object({
-  locale: z.enum(['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu'], {
-    errorMap: () => ({ message: 'Invalid locale' }),
-  }),
+  locale: z.enum(['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu']),
 });
 
 describe('PATCH /api/user/language', () => {
@@ -41,13 +39,13 @@ describe('PATCH /api/user/language', () => {
 
   describe('authentication', () => {
     it('should require authentication', () => {
-      const session = null;
+      const session = null as null | { user?: { email?: string } };
       const isAuthenticated = !!session?.user?.email;
       expect(isAuthenticated).toBe(false);
     });
 
     it('should accept authenticated requests', () => {
-      const session = {
+      const session: { user: { email: string; id: string } } = {
         user: {
           email: 'user@example.com',
           id: 'user-123',

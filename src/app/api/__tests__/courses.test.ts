@@ -59,9 +59,9 @@ describe('GET /api/courses', () => {
         status: 'published' as const,
         translations: [
           {
-            title: 'Domain-Driven Design',
-            description: 'Learn DDD patterns',
-            thumbnail: 'https://example.com/thumb.jpg',
+            title: 'Domain-Driven Design' as string,
+            description: 'Learn DDD patterns' as string,
+            thumbnail: 'https://example.com/thumb.jpg' as string,
           },
         ],
         enrollments: [{ id: 'e1', status: 'active' as const, progress: 50 }],
@@ -86,7 +86,7 @@ describe('GET /api/courses', () => {
       const rawCourse = {
         id: '123',
         slug: 'test-course',
-        translations: [], // No translation for requested locale
+        translations: [] as Array<{ title?: string; description?: string; thumbnail?: string }>,
       };
 
       const title = rawCourse.translations[0]?.title || 'Untitled Course';

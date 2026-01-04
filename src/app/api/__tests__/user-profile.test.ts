@@ -15,7 +15,7 @@ const updateProfileSchema = z.object({
 describe('GET /api/user/profile', () => {
   describe('authentication', () => {
     it('should require authentication', () => {
-      const session = null;
+      const session = null as null | { user?: { email?: string } };
       const isAuthenticated = !!session?.user?.email;
       expect(isAuthenticated).toBe(false);
     });
