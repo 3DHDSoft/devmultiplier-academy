@@ -24,8 +24,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, _request) {
-         
+      async authorize(credentials) {
         try {
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
@@ -75,8 +74,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           };
 
           return returnUser;
-        } catch (_error) {
-           
+        } catch {
           return null;
         }
       },

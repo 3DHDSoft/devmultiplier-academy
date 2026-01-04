@@ -144,7 +144,7 @@ describe('POST /api/auth/register', () => {
 
       expect(newUser.email).toBe('newuser@example.com');
       expect(newUser.status).toBe('active');
-      expect((newUser as any).password).toBeUndefined(); // Password not returned
+      expect(Object.prototype.hasOwnProperty.call(newUser, 'password')).toBeFalsy(); // Password not returned
     });
 
     it('should not return password in response', () => {
@@ -154,7 +154,7 @@ describe('POST /api/auth/register', () => {
         name: 'John Doe',
       };
 
-      expect((user as any).password).toBeUndefined();
+      expect(Object.prototype.hasOwnProperty.call(user, 'password')).toBeFalsy();
     });
   });
 

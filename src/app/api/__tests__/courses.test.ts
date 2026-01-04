@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { z } from 'zod';
-import { NextRequest } from 'next/server';
 
 /**
  * API Unit Tests - Courses Endpoint

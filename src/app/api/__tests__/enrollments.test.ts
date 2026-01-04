@@ -1,4 +1,4 @@
-import { describe, it, expect, jest } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { z } from 'zod';
 
 /**
@@ -87,22 +87,19 @@ describe('POST /api/enrollments', () => {
 
     it('should return 404 if course not found', () => {
       const statusCode = 404;
-      const errorMessage = 'Course not found';
       expect(statusCode).toBe(404);
-      expect(errorMessage).toBe('Course not found');
     });
 
     it('should return 403 if course not published', () => {
       const statusCode = 403;
-      const errorMessage = 'Course not published';
       expect(statusCode).toBe(403);
     });
 
     it('should return 409 if already enrolled', () => {
       const statusCode = 409;
-      const errorMessage = 'Already enrolled in this course';
+      const enrollmentError = 'Already enrolled in this course';
       expect(statusCode).toBe(409);
-      expect(errorMessage).toContain('enrolled');
+      expect(enrollmentError).toContain('enrolled');
     });
 
     it('should return 400 for validation error', () => {

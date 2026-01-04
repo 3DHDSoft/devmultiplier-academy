@@ -1,4 +1,4 @@
-import { describe, it, expect, jest } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { z } from 'zod';
 
 /**
@@ -49,7 +49,7 @@ describe('GET /api/user/profile', () => {
 
       expect(user.email).toBeDefined();
       expect(user.name).toBeDefined();
-      expect((user as any).password).toBeUndefined();
+      expect(Object.prototype.hasOwnProperty.call(user, 'password')).toBeFalsy();
     });
   });
 
