@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { LanguageSelector } from '@/components/ui/language-selector';
 
 const navigation = [
   { name: 'Courses', href: '/courses' },
@@ -44,13 +45,18 @@ export function Header() {
               {item.name}
             </Link>
           ))}
+          <LanguageSelector />
           <Link
-            href="https://podia.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/login"
+            className="text-slate hover:text-navy text-sm font-medium transition-colors"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
             className="bg-navy hover:bg-blue rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors"
           >
-            Start Learning
+            Get Started
           </Link>
         </div>
 
@@ -79,14 +85,25 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
+            <hr className="my-2 border-gray-200" />
+            <div className="flex items-center justify-between py-2">
+              <span className="text-slate text-base font-medium">Language</span>
+              <LanguageSelector />
+            </div>
+            <hr className="my-2 border-gray-200" />
             <Link
-              href="https://podia.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-navy hover:bg-blue mt-4 block rounded-lg px-4 py-2 text-center text-sm font-semibold text-white"
+              href="/login"
+              className="text-slate hover:text-navy block py-2 text-base font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Start Learning
+              Login
+            </Link>
+            <Link
+              href="/register"
+              className="bg-navy hover:bg-blue mt-2 block rounded-lg px-4 py-2 text-center text-sm font-semibold text-white"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Get Started
             </Link>
           </div>
         </div>
