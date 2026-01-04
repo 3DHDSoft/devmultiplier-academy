@@ -27,7 +27,13 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
     "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:debug": "playwright test --debug",
+    "e2e:headed": "playwright test --headed",
     "prepare": "NODE_OPTIONS='' husky"
   },
   "dependencies": {
@@ -50,18 +56,27 @@
     "*.{ts,tsx,js,jsx,css,md,json}": "prettier --write"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@prisma/client": "^7.2.0",
+    "@swc/core": "^1.15.8",
+    "@swc/jest": "^0.2.39",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "prettier": "^3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "prisma": "^7.2.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
