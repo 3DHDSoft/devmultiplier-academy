@@ -40,18 +40,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="rounded-lg bg-white p-8 shadow-xl">
+        <div className="rounded-lg bg-white p-6 shadow-xl">
           {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-bold text-gray-900">Dev Academy</h1>
-            <p className="text-gray-600">Sign in to your account</p>
+          <div className="mb-6 text-center">
+            <h1 className="mb-1 text-2xl font-bold text-gray-900">Dev Academy</h1>
+            <p className="text-sm text-gray-600">Sign in to your account</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3">
               <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
@@ -59,13 +59,13 @@ export default function LoginPage() {
           {/* Login Form */}
           <form
             onSubmit={handleSubmit}
-            className="space-y-6"
+            className="space-y-4"
           >
             {/* Email Field */}
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-gray-700"
               >
                 Email Address
               </label>
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 transition outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               />
             </div>
@@ -85,7 +85,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-gray-700"
               >
                 Password
               </label>
@@ -96,7 +96,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 transition outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               />
             </div>
@@ -105,7 +105,7 @@ export default function LoginPage() {
             <div className="flex justify-end">
               <Link
                 href="/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-700"
+                className="text-xs text-blue-600 hover:text-blue-700"
               >
                 Forgot password?
               </Link>
@@ -115,21 +115,21 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-blue-600 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="my-6 flex items-center">
+          <div className="my-4 flex items-center">
             <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-3 text-sm text-gray-500">or</span>
+            <span className="px-3 text-xs text-gray-500">or</span>
             <div className="flex-1 border-t border-gray-300"></div>
           </div>
 
           {/* Sign Up Link */}
-          <p className="text-center text-gray-600">
+          <p className="text-center text-sm text-gray-600">
             Don&apos;t have an account?{' '}
             <Link
               href="/register"
@@ -140,7 +140,7 @@ export default function LoginPage() {
           </p>
 
           {/* Demo Credentials Info */}
-          <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
             <p className="text-xs text-blue-800">
               <strong>Demo:</strong> Use any email address with password of at least 8 characters during registration.
             </p>

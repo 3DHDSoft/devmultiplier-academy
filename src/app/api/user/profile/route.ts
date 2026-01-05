@@ -7,6 +7,8 @@ const updateProfileSchema = z.object({
   name: z.string().optional(),
   bio: z.string().max(500).optional(),
   avatar: z.string().url().optional(),
+  locale: z.string().optional(),
+  timezone: z.string().optional(),
 });
 
 export async function GET() {
@@ -57,9 +59,11 @@ export async function PATCH(req: NextRequest) {
     const user = await prisma.user.update({
       where: { email: session.user.email },
       data: {
-        ...(validatedData.name && { name: validatedData.name }),
-        ...(validatedData.bio && { bio: validatedData.bio }),
-        ...(validatedData.avatar && { avatar: validatedData.avatar }),
+        ...(validatedData.name !== undefined && { name: validatedData.name }),
+        ...(validatedData.bio !== undefined && { bio: validatedData.bio }),
+        ...(validatedData.avatar !== undefined && { avatar: validatedData.avatar }),
+        ...(validatedData.locale !== undefined && { locale: validatedData.locale }),
+        ...(validatedData.timezone !== undefined && { timezone: validatedData.timezone }),
       },
       select: {
         id: true,

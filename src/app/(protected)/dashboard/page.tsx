@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -31,22 +31,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold text-gray-900">Dev Academy</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">{session.user?.email}</span>
-            <button
-              onClick={() => signOut({ redirectTo: '/login' })}
-              className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </nav>
-
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Welcome Section */}
