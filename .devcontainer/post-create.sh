@@ -10,6 +10,25 @@ if [ -f "package.json" ]; then
     bun install
 fi
 
+# Install Playwright browsers
+echo ""
+echo "🎭 Installing Playwright browsers..."
+bunx playwright install 2>&1 | while IFS= read -r line; do
+    if [[ "$line" =~ ^\|.*\|.*% ]]; then
+        # Progress bar line - overwrite in place
+        printf "\r\033[K   %s" "$line"
+    elif [[ "$line" =~ "downloaded to" ]]; then
+        # Extract browser name and version, show completion
+        browser_info=$(echo "$line" | sed 's/ downloaded to.*//')
+        printf "\r\033[K   ✅ %s\n" "$browser_info"
+    elif [[ "$line" =~ ^Downloading ]]; then
+        # Show what's being downloaded - in place (will be overwritten by progress)
+        printf "\r\033[K   ⬇️  %s" "$line"
+    fi
+done
+echo "   📁 All browsers cached in ~/.cache/ms-playwright/"
+echo ""
+
 # Wait for databases to be fully ready
 echo "⏳ Waiting for databases to be ready..."
 
@@ -35,9 +54,13 @@ echo "  📚 Databases available:"
 echo "     • PostgreSQL 18: postgres:5432 (admin/academy2026)"
 echo "     • Database: academy"
 echo ""
+echo "  🎭 Testing tools:"
+echo "     • Playwright: Chromium, Firefox, WebKit"
+echo ""
 echo "  🛠️ Useful commands:"
 echo "     • bun run dev        - Start development server"
 echo "     • bun test           - Run tests"
+echo "     • bun run e2e        - Run end-to-end tests"
 echo "     • psql -h postgres -U admin -d academy"
 echo ""
 echo "  🔧 Optional tools (start with --profile tools):"

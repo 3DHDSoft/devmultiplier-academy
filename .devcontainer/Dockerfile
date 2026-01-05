@@ -38,6 +38,8 @@ RUN apt-get update && apt-get upgrade -y && export DEBIAN_FRONTEND=noninteractiv
   libfreetype6 \
   libfontconfig1 \
   libdbus-1-3 \
+  libnspr4 \
+  libnss3 \
   # Playwright additional dependencies (Webkit, Firefox, Chromium)
   libgtk-4-1 \
   libgraphene-1.0-0 \
