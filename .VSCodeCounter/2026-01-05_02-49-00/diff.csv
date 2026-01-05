@@ -1,0 +1,4 @@
+"filename", "language", "Docker", "HTML", "comment", "blank", "total"
+"/workspaces/dev-x-academy-web/.devcontainer/Dockerfile", "Docker", 54, 0, 3, 0, 57
+"/workspaces/dev-x-academy-web/playwright-report/index.html", "HTML", 0, 82, 0, 3, 85
+"Total", "-", 54, 82, 3, 3, 142
