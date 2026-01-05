@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './lib/prisma';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { logLogin } from './lib/login-logger';
 
 // Validate required environment variables
 if (!process.env.NEXTAUTH_SECRET) {
@@ -25,9 +26,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        let userEmail = '';
+        let userId = '';
+
         try {
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
+          userEmail = validatedCredentials.email;
 
           // Find user in database
           const user = await prisma.user.findUnique({
@@ -46,24 +51,66 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           // User not found
           if (!user) {
+            // Log failed login attempt
+            await logLogin({
+              userId: 'unknown',
+              email: userEmail,
+              success: false,
+              failureReason: 'User not found',
+              userName: null,
+            }).catch((err) => console.error('Failed to log login:', err));
             return null;
           }
 
+          userId = user.id;
+
           // Check account status
           if (user.status !== 'active') {
+            // Log failed login attempt
+            await logLogin({
+              userId: user.id,
+              email: userEmail,
+              success: false,
+              failureReason: 'Account is not active',
+              userName: user.name,
+            }).catch((err) => console.error('Failed to log login:', err));
             throw new Error('Account is not active');
           }
 
           // Verify password
           if (!user.password) {
+            // Log failed login attempt
+            await logLogin({
+              userId: user.id,
+              email: userEmail,
+              success: false,
+              failureReason: 'Password not set',
+              userName: user.name,
+            }).catch((err) => console.error('Failed to log login:', err));
             throw new Error('Password not set for this account');
           }
 
           const isPasswordValid = await bcrypt.compare(validatedCredentials.password, user.password);
 
           if (!isPasswordValid) {
+            // Log failed login attempt
+            await logLogin({
+              userId: user.id,
+              email: userEmail,
+              success: false,
+              failureReason: 'Invalid password',
+              userName: user.name,
+            }).catch((err) => console.error('Failed to log login:', err));
             return null;
           }
+
+          // Log successful login
+          await logLogin({
+            userId: user.id,
+            email: userEmail,
+            success: true,
+            userName: user.name,
+          }).catch((err) => console.error('Failed to log login:', err));
 
           // Return user object matching User type
           const returnUser: User = {
@@ -74,7 +121,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           };
 
           return returnUser;
-        } catch {
+        } catch (error) {
+          // Log error if we have user info
+          if (userId && userEmail) {
+            await logLogin({
+              userId,
+              email: userEmail,
+              success: false,
+              failureReason: error instanceof Error ? error.message : 'Unknown error',
+              userName: null,
+            }).catch((err) => console.error('Failed to log login:', err));
+          }
           return null;
         }
       },

@@ -38,6 +38,12 @@
     "prepare": "NODE_OPTIONS='' husky"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.67.3",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
+    "@opentelemetry/resources": "^2.2.0",
+    "@opentelemetry/sdk-node": "^0.208.0",
+    "@opentelemetry/semantic-conventions": "^1.38.0",
     "@prisma/adapter-pg": "^7.2.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
@@ -48,6 +54,7 @@
     "next-intl": "^4.7.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "resend": "^6.6.0",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.3.5"
   },

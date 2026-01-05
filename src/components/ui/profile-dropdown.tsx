@@ -72,7 +72,10 @@ function md5(str: string): string {
   x[(((str.length + 8) >> 6) << 4) + 14] = str.length * 8;
 
   for (let i = 0; i < x.length; i += 16) {
-    const oldA = a, oldB = b, oldC = c, oldD = d;
+    const oldA = a,
+      oldB = b,
+      oldC = c,
+      oldD = d;
 
     a = md5ff(a, b, c, d, x[i + 0], 7, 0xd76aa478);
     d = md5ff(d, a, b, c, x[i + 1], 12, 0xe8c7b756);
@@ -204,11 +207,12 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
       {/* Avatar Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-navy text-sm font-semibold text-white transition-colors hover:bg-blue focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2"
+        className="bg-navy hover:bg-blue focus:ring-navy flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
         {avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element -- User-provided avatar URL, not part of app bundle
           <img
             src={avatarUrl}
             alt={user.name || 'Profile'}

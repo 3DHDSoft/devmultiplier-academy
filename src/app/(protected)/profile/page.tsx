@@ -77,7 +77,10 @@ function md5(str: string): string {
   x[(((str.length + 8) >> 6) << 4) + 14] = str.length * 8;
 
   for (let i = 0; i < x.length; i += 16) {
-    const oldA = a, oldB = b, oldC = c, oldD = d;
+    const oldA = a,
+      oldB = b,
+      oldC = c,
+      oldD = d;
 
     a = md5ff(a, b, c, d, x[i + 0], 7, 0xd76aa478);
     d = md5ff(d, a, b, c, x[i + 1], 12, 0xe8c7b756);
@@ -275,7 +278,7 @@ export default function ProfilePage() {
   if (status === 'loading' || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-navy" />
+        <Loader2 className="text-navy h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -325,7 +328,7 @@ export default function ProfilePage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                  className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
                 />
               </div>
 
@@ -362,7 +365,7 @@ export default function ProfilePage() {
                 value={formData.bio}
                 onChange={handleChange}
                 maxLength={500}
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
                 placeholder="Tell us about yourself..."
               />
               <p className="mt-1 text-xs text-gray-500">{formData.bio.length}/500 characters</p>
@@ -383,10 +386,11 @@ export default function ProfilePage() {
                   name="avatar"
                   value={formData.avatar}
                   onChange={handleChange}
-                  className="block flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                  className="focus:border-navy focus:ring-navy block flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
                   placeholder="https://example.com/avatar.jpg"
                 />
                 {formData.avatar && (
+                  // eslint-disable-next-line @next/next/no-img-element -- User-provided avatar URL preview, not part of app bundle
                   <img
                     src={formData.avatar}
                     alt="Avatar preview"
@@ -413,7 +417,7 @@ export default function ProfilePage() {
                   name="locale"
                   value={formData.locale}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                  className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
                 >
                   <option value="en">English</option>
                   <option value="es">Spanish</option>
@@ -432,12 +436,12 @@ export default function ProfilePage() {
                 >
                   Timezone
                 </label>
-<select
+                <select
                   id="timezone"
                   name="timezone"
                   value={formData.timezone}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy"
+                  className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
                 >
                   <option value="UTC">UTC - Coordinated Universal Time</option>
 
@@ -579,7 +583,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="flex items-center gap-2 rounded-lg bg-navy px-5 py-2 text-sm font-medium text-white transition hover:bg-blue disabled:opacity-50"
+              className="bg-navy hover:bg-blue flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-medium text-white transition disabled:opacity-50"
             >
               {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
               {isSaving ? 'Saving...' : 'Save Changes'}
