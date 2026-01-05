@@ -104,11 +104,11 @@ Tests are located in the `e2e/` directory:
 
 ```
 e2e/
-├── accessibility.spec.ts   # Accessibility and keyboard navigation
-├── auth.spec.ts           # Login/register page tests
-├── homepage.spec.ts       # Homepage functionality
-├── legal.spec.ts          # Privacy policy, ToS, redirects
-└── navigation.spec.ts     # Course pages and navigation
+├── 📁 accessibility.spec.ts  # Accessibility and keyboard navigation
+├── 📁 auth.spec.ts           # Login/register page tests
+├── 📁 homepage.spec.ts       # Homepage functionality
+├── 📁 legal.spec.ts          # Privacy policy, ToS, redirects
+└── 📁 navigation.spec.ts     # Course pages and navigation
 ```
 
 ## Included Test Suites

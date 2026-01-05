@@ -39,16 +39,16 @@ graph TD
 
 ```
 app/
-└── [locale]/
-    ├── layout.tsx
-    ├── page.tsx           Home
-    ├── terms-of-service/
-    │   └── page.tsx       Terms page
-    ├── privacy-policy/
-    │   └── page.tsx       Privacy page
-    ├── courses/
-    │   └── ...
-    └── ...other pages
+└── 📁 [locale]/
+    ├── 📁 layout.tsx
+    ├── 📁 page.tsx           Home
+    ├── 📁 terms-of-service/
+    │   └── 📁 page.tsx       Terms page
+    ├── 📁 privacy-policy/
+    │   └── 📁 page.tsx       Privacy page
+    ├── 📁 courses/
+    │   └── 📁 ...
+    └── 📁 ...other pages
 ```
 
 ---
@@ -776,24 +776,24 @@ export default function CheckoutPage() {
 
 ```
 app/[locale]/
-├── terms-of-service/page.tsx    ← Terms of Service
-├── privacy-policy/page.tsx      ← Privacy Policy
-└── layout.tsx                   ← Includes Footer component
+├── 📁 terms-of-service/page.tsx    ← Terms of Service
+├── 📁 privacy-policy/page.tsx      ← Privacy Policy
+└── 📁 layout.tsx                   ← Includes Footer component
 
 components/
-├── Footer.tsx                   ← Links to legal pages
-├── SignupForm.tsx              ← Checkbox agreement
-└── CookieConsent.tsx           ← Privacy policy link
+├── 📁 Footer.tsx                   ← Links to legal pages
+├── 📁 SignupForm.tsx              ← Checkbox agreement
+└── 📁 CookieConsent.tsx           ← Privacy policy link
 ```
 
 ### **Translation Files:**
 
 ```
 messages/
-├── en.json    ← English legal translations
-├── es.json    ← Spanish legal translations
-├── pt.json    ← Portuguese legal translations
-└── hu.json    ← Hungarian legal translations
+├── 📁 en.json    ← English legal translations
+├── 📁 es.json    ← Spanish legal translations
+├── 📁 pt.json    ← Portuguese legal translations
+└── 📁 hu.json    ← Hungarian legal translations
 ```
 
 ---

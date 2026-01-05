@@ -43,11 +43,13 @@ sequenceDiagram
     participant App as Next.js App
 
     Dev->>Schema: Edit data models
-    Dev->>Migrate: bun exec prisma migrate dev
+    Dev->>Migrate: Run: "bun exec prisma migrate dev"
+    Migrate->>Schema: Read schema changes
     Migrate->>Migrate: Create migration file
     Migrate->>DB: Apply SQL migration
-    Gen->>Gen: Generate TypeScript types
-    Gen->>App: Update Prisma Client
+    Migrate->>Gen: Trigger generate
+    Gen->>Schema: Read schema
+    Gen->>App: Generate Prisma Client
     App->>DB: Query with type safety
 ```
 
@@ -76,7 +78,7 @@ export default defineConfig({
 
 **`prisma/schema.prisma`**
 
-```prisma
+```graphql
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -129,7 +131,7 @@ bunx prisma migrate dev --name init
 
 This project uses PostgreSQL 18's native `uuidv7()` function for time-ordered UUIDs:
 
-```prisma
+```graphql
 model User {
   id    String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
   email String   @unique
@@ -218,7 +220,7 @@ DATABASE_URL="postgresql://admin:academy2026@postgres:5432/academy"
 
 The schema is defined in `prisma/schema.prisma`. Currently configured with:
 
-```prisma
+```graphql
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"

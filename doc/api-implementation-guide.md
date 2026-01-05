@@ -446,19 +446,19 @@ export async function POST(req: NextRequest) {
 
 ```
 src/app/api/
-├── user/
-│   ├── profile/
-│   │   └── route.ts   GET, PATCH user profile
-│   └── language/
-│       └── route.ts   PATCH language preference
-├── courses/
-│   ├── route.ts       GET all courses
-│   └── [id]/
-│       └── route.ts   GET course details
-└── enrollments/
-    ├── route.ts       GET, POST enrollments
-    └── [id]/
-        └── route.ts   GET enrollment details
+├── 📁 user/
+│   ├── 📁 profile/
+│   │   └── 📁 route.ts   GET, PATCH user profile
+│   └── 📁 language/
+│       └── 📁 route.ts   PATCH language preference
+├── 📁 courses/
+│   ├── 📁 route.ts       GET all courses
+│   └── 📁 [id]/
+│       └── 📁 route.ts   GET course details
+└── 📁 enrollments/
+    ├── 📁 route.ts       GET, POST enrollments
+    └── 📁 [id]/
+        └── 📁 route.ts   GET enrollment details
 ```
 
 ## Testing Your Endpoints

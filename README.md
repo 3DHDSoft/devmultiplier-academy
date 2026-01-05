@@ -53,20 +53,20 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── about/
-│   ├── contact/
-│   ├── courses/
-│   ├── pricing/
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── layout/            # Header, Footer
-│   ├── sections/          # Page sections (Hero, Courses, etc.)
-│   └── ui/                # Reusable UI components
-└── lib/
-    └── utils.ts           # Utility functions
+├── 📁 app/                    # Next.js App Router pages
+│   ├── 📁 about/
+│   ├── 📁 contact/
+│   ├── 📁 courses/
+│   ├── 📁 pricing/
+│   ├── 📁 globals.css
+│   ├── 📁 layout.tsx
+│   └── 📁 page.tsx
+├── 📁 components/
+│   ├── 📁 layout/            # Header, Footer
+│   ├── 📁 sections/          # Page sections (Hero, Courses, etc.)
+│   └── 📁 ui/                # Reusable UI components
+└── 📁 lib/
+    └── 📁 utils.ts           # Utility functions
 ```
 
 ## Environment Overview
@@ -179,16 +179,16 @@ Both databases include identical DDD-inspired schemas demonstrating:
 ### Bounded Contexts (as schemas)
 
 ```
-├── Orders/
-│   ├── Orders          (Aggregate Root)
-│   ├── OrderItems      (Child Entity)
-│   └── DomainEvents    (Event Store)
-├── Inventory/
-│   ├── Products        (Aggregate Root)
-│   └── StockMovements  (Child Entity)
-└── Customers/
-    ├── Customers       (Aggregate Root)
-    └── Addresses       (Value Object as table)
+├── 📁 Orders/
+│   ├── 📁 Orders          (Aggregate Root)
+│   ├── 📁 OrderItems      (Child Entity)
+│   └── 📁 DomainEvents    (Event Store)
+├── 📁 Inventory/
+│   ├── 📁 Products        (Aggregate Root)
+│   └── 📁 StockMovements  (Child Entity)
+└── 📁 Customers/
+    ├── 📁 Customers       (Aggregate Root)
+    └── 📁 Addresses       (Value Object as table)
 ```
 
 ### Key DDD Patterns Demonstrated

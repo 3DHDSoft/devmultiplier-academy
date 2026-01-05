@@ -97,81 +97,81 @@ graph TD
 
 ```
 dev-x-academy-web/
-├── src/
-│   └── lib/
-│       └── utils.ts
-├── public/
-├── doc/
-├── components.json
-├── eslint.config.mjs
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-├── tsconfig.json
-└── .prettierrc                   # Prettier configuration
+├── 📁 src/
+│   └── 📁 lib/
+│       └── 📁 utils.ts
+├── 📁 public/
+├── 📁 doc/
+├── 📁 components.json
+├── 📁 eslint.config.mjs
+├── 📁 next.config.ts
+├── 📁 package.json
+├── 📁 postcss.config.mjs
+├── 📁 tsconfig.json
+└── 📁 .prettierrc                   # Prettier configuration
 ```
 
 ### Target Structure (After Implementation)
 
 ```
 dev-x-academy-web/
-├── src/
-│   ├── app/
-│   │   ├── [locale]/             # Locale-based routing (NEW)
-│   │   │   ├── layout.tsx        # Root layout with locale (MODIFIED)
-│   │   │   ├── page.tsx          # Home page (MOVED)
-│   │   │   ├── about/
-│   │   │   │   └── page.tsx
-│   │   │   ├── contact/
-│   │   │   │   └── page.tsx
-│   │   │   ├── courses/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── [slug]/
-│   │   │   │       └── page.tsx  # NEW: Individual course pages
-│   │   │   ├── pricing/
-│   │   │   │   └── page.tsx
-│   │   │   ├── privacy-policy/   # NEW
-│   │   │   │   └── page.tsx
-│   │   │   └── terms-of-service/ # NEW
-│   │   │       └── page.tsx
-│   │   └── api/
-│   │       └── ...
-│   ├── components/
-│   │   ├── LanguageSwitcher.tsx  # NEW
-│   │   ├── layout/
-│   │   │   ├── footer.tsx
-│   │   │   └── header.tsx
-│   │   ├── sections/
-│   │   │   ├── courses.tsx
-│   │   │   ├── cta.tsx
-│   │   │   ├── hero.tsx
-│   │   │   └── pricing.tsx
-│   │   └── ui/
-│   │       └── button.tsx
-│   ├── lib/
-│   │   └── utils.ts
-│   ├── i18n/                     # NEW: i18n configuration
-│   │   ├── config.ts
-│   │   ├── request.ts
-│   │   └── routing.ts
-│   └── middleware.ts             # NEW: Locale detection & routing
-├── messages/                     # NEW: Translation files
-│   ├── en.json
-│   ├── es.json
-│   ├── pt.json
-│   ├── hi.json
-│   ├── zh.json
-│   ├── de.json
-│   └── hu.json
-├── public/
-├── doc/
-├── .prettierrc
-├── components.json
-├── eslint.config.mjs
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-└── tsconfig.json
+├── 📁 src/
+│   ├── 📁 app/
+│   │   ├── 📁 [locale]/             # Locale-based routing (NEW)
+│   │   │   ├── 📁 layout.tsx        # Root layout with locale (MODIFIED)
+│   │   │   ├── 📁 page.tsx          # Home page (MOVED)
+│   │   │   ├── 📁 about/
+│   │   │   │   └── 📁 page.tsx
+│   │   │   ├── 📁 contact/
+│   │   │   │   └── 📁 page.tsx
+│   │   │   ├── 📁 courses/
+│   │   │   │   ├── 📁 page.tsx
+│   │   │   │   └── 📁 [slug]/
+│   │   │   │       └── 📁 page.tsx  # NEW: Individual course pages
+│   │   │   ├── 📁 pricing/
+│   │   │   │   └── 📁 page.tsx
+│   │   │   ├── 📁 privacy-policy/   # NEW
+│   │   │   │   └── 📁 page.tsx
+│   │   │   └── 📁 terms-of-service/ # NEW
+│   │   │       └── 📁 page.tsx
+│   │   └── 📁 api/
+│   │       └── 📁 ...
+│   ├── 📁 components/
+│   │   ├── 📁 LanguageSwitcher.tsx  # NEW
+│   │   ├── 📁 layout/
+│   │   │   ├── 📁 footer.tsx
+│   │   │   └── 📁 header.tsx
+│   │   ├── 📁 sections/
+│   │   │   ├── 📁 courses.tsx
+│   │   │   ├── 📁 cta.tsx
+│   │   │   ├── 📁 hero.tsx
+│   │   │   └── 📁 pricing.tsx
+│   │   └── 📁 ui/
+│   │       └── 📁 button.tsx
+│   ├── 📁 lib/
+│   │   └── 📁 utils.ts
+│   ├── 📁 i18n/                     # NEW: i18n configuration
+│   │   ├── 📁 config.ts
+│   │   ├── 📁 request.ts
+│   │   └── 📁 routing.ts
+│   └── 📁 middleware.ts             # NEW: Locale detection & routing
+├── 📁 messages/                     # NEW: Translation files
+│   ├── 📁 en.json
+│   ├── 📁 es.json
+│   ├── 📁 pt.json
+│   ├── 📁 hi.json
+│   ├── 📁 zh.json
+│   ├── 📁 de.json
+│   └── 📁 hu.json
+├── 📁 public/
+├── 📁 doc/
+├── 📁 .prettierrc
+├── 📁 components.json
+├── 📁 eslint.config.mjs
+├── 📁 next.config.ts
+├── 📁 package.json
+├── 📁 postcss.config.mjs
+└── 📁 tsconfig.json
 ```
 
 ---
@@ -945,17 +945,17 @@ async function getTranslationStats() {
 
 ```
 content/
-├── courses/
-│   ├── en/
-│   │   ├── ddd-to-cqrs.mdx
-│   │   ├── ddd-to-schema.mdx
-│   │   └── ...
-│   ├── es/
-│   │   ├── ddd-to-cqrs.mdx
-│   │   └── ...
-│   └── pt/
-│       ├── ddd-to-cqrs.mdx
-│       └── ...
+├── 📁 courses/
+│   ├── 📁 en/
+│   │   ├── 📁 ddd-to-cqrs.mdx
+│   │   ├── 📁 ddd-to-schema.mdx
+│   │   └── 📁 ...
+│   ├── 📁 es/
+│   │   ├── 📁 ddd-to-cqrs.mdx
+│   │   └── 📁 ...
+│   └── 📁 pt/
+│       ├── 📁 ddd-to-cqrs.mdx
+│       └── 📁 ...
 ```
 
 **Using MDX with next-intl:**

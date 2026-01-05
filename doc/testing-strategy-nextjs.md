@@ -238,34 +238,40 @@ graph TD
     style E2E_TEST fill:#ff6b6b,stroke:#c92a2a
 ```
 
+**Legend:**
+
+- 🧪 Unit tests (co-located with source) - Green in diagrams
+- 🧪 Integration tests - Yellow in diagrams
+- 🎭 E2E tests (Playwright) - Red in diagrams
+
 ### Directory Layout
 
 ```
 📦 my-nextjs-app/
 ├── 📁 src/
 │   ├── 📁 components/
-│   │   └── 📁 Button/
-│   │       ├── 📄 Button.tsx
-│   │       ├── 🧪 Button.test.tsx        ← Unit test (co-located)
-│   │       └── 📄 index.ts
+│   │   └── 📁 📁 Button/
+│   │       ├── 📁 📄 Button.tsx
+│   │       ├── 📁 🧪 Button.test.tsx        ← Unit test (co-located)
+│   │       └── 📁 📄 index.ts
 │   ├── 📁 hooks/
-│   │   ├── 📄 useAuth.ts
-│   │   └── 🧪 useAuth.test.ts            ← Hook unit test
+│   │   ├── 📁 📄 useAuth.ts
+│   │   └── 📁 🧪 useAuth.test.ts            ← Hook unit test
 │   ├── 📁 lib/
-│   │   ├── 📄 utils.ts
-│   │   └── 🧪 utils.test.ts              ← Utility unit test
-│   └── 📁 app/
+│   │   ├── 📁 📄 utils.ts
+│   │   └── 📁 🧪 utils.test.ts              ← Utility unit test
+│   └── 📁 📁 app/
 ├── 📁 tests/
 │   ├── 📁 integration/
-│   │   ├── 🧪 checkout-flow.test.tsx     ← Integration test
-│   │   └── 🧪 auth-flow.test.tsx         ← Integration test
-│   └── 📁 e2e/
-│       ├── 🎭 user-registration.spec.ts  ← E2E test
-│       ├── 🎭 purchase-flow.spec.ts      ← E2E test
-│       └── 🎭 admin-dashboard.spec.ts    ← E2E test
-├── 📄 vitest.config.ts
-├── 📄 playwright.config.ts
-└── 📄 package.json
+│   │   ├── 📁 🧪 checkout-flow.test.tsx     ← Integration test
+│   │   └── 📁 🧪 auth-flow.test.tsx         ← Integration test
+│   └── 📁 📁 e2e/
+│       ├── 📁 🎭 user-registration.spec.ts  ← E2E test
+│       ├── 📁 🎭 purchase-flow.spec.ts      ← E2E test
+│       └── 📁 🎭 admin-dashboard.spec.ts    ← E2E test
+├── 📁 📄 vitest.config.ts
+├── 📁 📄 playwright.config.ts
+└── 📁 📄 package.json
 ```
 
 **Legend:**

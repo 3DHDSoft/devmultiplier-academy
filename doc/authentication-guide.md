@@ -426,23 +426,23 @@ openssl rand -base64 32
 
 ```
 src/
-├── auth.ts                     # Main Auth.js config
-├── middleware.ts               # Route protection
-├── app/
-│   ├── login/
-│   │   └── page.tsx            # Login page
-│   ├── register/
-│   │   └── page.tsx            # Registration page
-│   ├── dashboard/
-│   │   └── page.tsx            # Protected dashboard
-│   └── api/
-│       └── auth/
-│           ├── [...nextauth]/
-│           │   └── route.ts    # Auth.js handlers
-│           ├── register/
-│           │   └── route.ts    # Registration API
-│           └── logout/
-│               └── route.ts    # Logout endpoint
+├── 📁 auth.ts                     # Main Auth.js config
+├── 📁 middleware.ts               # Route protection
+├── 📁 app/
+│   ├── 📁 login/
+│   │   └── 📁 page.tsx            # Login page
+│   ├── 📁 register/
+│   │   └── 📁 page.tsx            # Registration page
+│   ├── 📁 dashboard/
+│   │   └── 📁 page.tsx            # Protected dashboard
+│   └── 📁 api/
+│       └── 📁 auth/
+│           ├── 📁 [...nextauth]/
+│           │   └── 📁 route.ts    # Auth.js handlers
+│           ├── 📁 register/
+│           │   └── 📁 route.ts    # Registration API
+│           └── 📁 logout/
+│               └── 📁 route.ts    # Logout endpoint
 ```
 
 ---
