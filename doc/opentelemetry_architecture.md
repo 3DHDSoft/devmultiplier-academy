@@ -17,7 +17,9 @@ Complete technical documentation of the OpenTelemetry observability stack for de
 
 ## Overview
 
-The dev-academy-web application uses OpenTelemetry for distributed tracing, sending telemetry data to Grafana Cloud Tempo for storage and analysis. This setup provides end-to-end visibility into application performance, request flows, and error tracking.
+The dev-academy-web application uses OpenTelemetry for distributed tracing, sending telemetry data to Grafana Cloud
+Tempo for storage and analysis. This setup provides end-to-end visibility into application performance, request flows,
+and error tracking.
 
 ### Key Capabilities
 
@@ -104,7 +106,8 @@ graph TB
 
 **File**: [`instrumentation.node.ts`](../instrumentation.node.ts)
 
-This file initializes the OpenTelemetry SDK and runs in the Node.js server process. It's automatically loaded by Next.js 16+ at startup.
+This file initializes the OpenTelemetry SDK and runs in the Node.js server process. It's automatically loaded by Next.js
+16+ at startup.
 
 ```typescript
 // Key responsibilities:
@@ -136,6 +139,7 @@ export async function register() {
 Provides helper functions for creating custom spans in application code.
 
 **Key Functions**:
+
 - `withSpan<T>()`: Execute function within traced span
 - `startSpan()`: Manually create and manage spans
 - `addSpanAttributes()`: Add custom attributes to active span
@@ -145,6 +149,7 @@ Provides helper functions for creating custom spans in application code.
 The exporter sends trace data to Grafana Cloud using the OTLP/HTTP protocol.
 
 **Configuration**:
+
 - **Protocol**: HTTP
 - **Endpoint**: `https://otlp-gateway-prod-us-east-3.grafana.net/otlp/v1/traces`
 - **Authentication**: Basic Auth with instanceID:token
@@ -226,12 +231,9 @@ Base64("<instanceID>:<grafana_cloud_token>")
 ```
 
 **Example**:
-```bash
-# Plain text (DO NOT commit):
-REMOVED_SECRET=
 
-# Base64 encoded:
-REMOVED_SECRET
+```bash
+# Example removed for security. Do not include real tokens in documentation.
 ```
 
 ### Resource Attributes
@@ -247,6 +249,7 @@ const resource = resourceFromAttributes({
 ```
 
 **Additional auto-detected attributes**:
+
 - `process.pid`: Process ID
 - `process.runtime.name`: "nodejs"
 - `process.runtime.version`: "22.21.0"
@@ -256,6 +259,7 @@ const resource = resourceFromAttributes({
 ### Auto-Instrumentation Configuration
 
 **Enabled Instrumentations**:
+
 - `@opentelemetry/instrumentation-http`: HTTP server/client
 - `@opentelemetry/instrumentation-undici`: Modern fetch/HTTP client
 - `@opentelemetry/instrumentation-pg`: PostgreSQL queries
@@ -264,6 +268,7 @@ const resource = resourceFromAttributes({
 - And 30+ more libraries...
 
 **Disabled Instrumentations**:
+
 - `@opentelemetry/instrumentation-fs`: File system (too noisy)
 - `@opentelemetry/instrumentation-dns`: DNS lookups (too noisy)
 - `@opentelemetry/instrumentation-fastify`: Not used
@@ -286,6 +291,7 @@ graph LR
 ```
 
 **Next.js Built-in Spans**:
+
 - `BaseServer.handleRequest`: Root HTTP request span
 - `NextNodeServer.findPageComponents`: Component resolution
 - `NextNodeServer.createComponentTree`: React tree building
@@ -391,6 +397,7 @@ The SDK uses `BatchSpanProcessor` for efficient export:
 ### Sampling Strategy
 
 Currently using **AlwaysOnSampler** (100% sampling):
+
 - All traces are captured and exported
 - Suitable for development and low-to-medium traffic
 - Consider `ParentBasedSampler` or `TraceIdRatioBasedSampler` for production
@@ -398,11 +405,13 @@ Currently using **AlwaysOnSampler** (100% sampling):
 ### Memory Overhead
 
 **Estimated overhead per trace**:
+
 - Root span: ~2-4 KB
 - Child spans: ~1-2 KB each
 - Typical Next.js request: 8-10 spans = ~15-20 KB
 
 **For 1000 req/min**:
+
 - ~15-20 MB/min trace data generated
 - Batch processor manages memory efficiently
 
@@ -427,9 +436,10 @@ authentication error: invalid authentication credentials
 **Cause**: Incorrect Base64 encoding of credentials
 
 **Solution**:
+
 ```bash
 # Correct format: instanceID:token
-REMOVED_SECRET
+# echo -n "<instanceID>:<grafana_cloud_token>" | base64
 ```
 
 Update both `.env` and `.env.local` with correct value.
@@ -442,23 +452,27 @@ TypeError: Header name must be a valid HTTP token ["{"Authorization":"Basic ..."
 
 **Cause**: Environment variable being used directly as header name instead of being parsed
 
-**Solution**: The `instrumentation.node.ts` file includes special parsing logic that deletes the env var after parsing to prevent this issue.
+**Solution**: The `instrumentation.node.ts` file includes special parsing logic that deletes the env var after parsing
+to prevent this issue.
 
 #### 3. No Traces Appearing in Grafana
 
 **Diagnostic Steps**:
 
 1. Check environment variables are loaded:
+
 ```typescript
 console.log('Endpoint:', process.env.OTEL_EXPORTER_OTLP_ENDPOINT);
 ```
 
 2. Enable debug logging in `instrumentation.node.ts`:
+
 ```typescript
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 ```
 
 3. Check network connectivity:
+
 ```bash
 curl -X POST https://otlp-gateway-prod-us-east-3.grafana.net/otlp/v1/traces \
   -H "Authorization: Basic MTQ4Njg0Nzp..." \
@@ -488,6 +502,7 @@ await context.with(context.active(), async () => {
 **Cause**: Too many spans queued for export
 
 **Solutions**:
+
 - Reduce `maxQueueSize` in BatchSpanProcessor
 - Implement sampling strategy
 - Increase export frequency
@@ -504,6 +519,7 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
 ```
 
 This logs:
+
 - Span creation/ending
 - Export attempts
 - Batch processing
@@ -527,11 +543,13 @@ for i in {1..3}; do curl http://localhost:3000/; done
 ### Credential Management
 
 **DO NOT**:
+
 - Commit `.env.local` to version control
 - Log credentials in application code
 - Share Base64-encoded tokens publicly
 
 **DO**:
+
 - Use `.env.local` for local development (gitignored)
 - Use environment variables in production
 - Rotate Grafana Cloud tokens periodically
@@ -540,6 +558,7 @@ for i in {1..3}; do curl http://localhost:3000/; done
 ### Sensitive Data in Traces
 
 **Automatically captured**:
+
 - HTTP headers (may contain auth tokens)
 - Query parameters (may contain PII)
 - Database queries (may contain sensitive data)
@@ -547,12 +566,14 @@ for i in {1..3}; do curl http://localhost:3000/; done
 **Mitigation strategies**:
 
 1. **Attribute filtering**:
+
 ```typescript
 // Don't capture authorization headers
 span.setAttribute('http.headers', filterSensitiveHeaders(headers));
 ```
 
 2. **SQL query sanitization**:
+
 ```typescript
 // Postgres instrumentation can be configured to mask values
 {
@@ -564,6 +585,7 @@ span.setAttribute('http.headers', filterSensitiveHeaders(headers));
 ```
 
 3. **Custom sanitization**:
+
 ```typescript
 export function sanitizeSpanAttributes(span: Span) {
   // Remove PII before export
@@ -611,45 +633,43 @@ graph LR
 
 ### HTTP Spans
 
-| Attribute | Example | Description |
-|-----------|---------|-------------|
-| `http.method` | `"GET"` | HTTP request method |
-| `http.route` | `"/"` | Matched route pattern |
-| `http.target` | `"/api/user"` | Request URL path |
-| `http.status_code` | `200` | HTTP response status |
-| `http.request.method` | `"POST"` | Request method (OTLP v2) |
-| `http.response.status_code` | `500` | Response status (OTLP v2) |
+| Attribute                   | Example       | Description               |
+| --------------------------- | ------------- | ------------------------- |
+| `http.method`               | `"GET"`       | HTTP request method       |
+| `http.route`                | `"/"`         | Matched route pattern     |
+| `http.target`               | `"/api/user"` | Request URL path          |
+| `http.status_code`          | `200`         | HTTP response status      |
+| `http.request.method`       | `"POST"`      | Request method (OTLP v2)  |
+| `http.response.status_code` | `500`         | Response status (OTLP v2) |
 
 ### Next.js Spans
 
-| Attribute | Example | Description |
-|-----------|---------|-------------|
-| `next.span_name` | `"GET /"` | Descriptive span name |
-| `next.span_type` | `"BaseServer.handleRequest"` | Next.js operation type |
-| `next.route` | `"/"` | Next.js route |
-| `next.rsc` | `false` | Is React Server Component |
-| `next.clientComponentLoadCount` | `13` | Number of client components |
+| Attribute                       | Example                      | Description                 |
+| ------------------------------- | ---------------------------- | --------------------------- |
+| `next.span_name`                | `"GET /"`                    | Descriptive span name       |
+| `next.span_type`                | `"BaseServer.handleRequest"` | Next.js operation type      |
+| `next.route`                    | `"/"`                        | Next.js route               |
+| `next.rsc`                      | `false`                      | Is React Server Component   |
+| `next.clientComponentLoadCount` | `13`                         | Number of client components |
 
 ### Database Spans
 
-| Attribute | Example | Description |
-|-----------|---------|-------------|
-| `db.system` | `"postgresql"` | Database system |
-| `db.statement` | `"SELECT * FROM users WHERE id = $1"` | SQL query |
-| `db.name` | `"academy"` | Database name |
-| `db.user` | `"admin"` | Database user |
+| Attribute      | Example                               | Description     |
+| -------------- | ------------------------------------- | --------------- |
+| `db.system`    | `"postgresql"`                        | Database system |
+| `db.statement` | `"SELECT * FROM users WHERE id = $1"` | SQL query       |
+| `db.name`      | `"academy"`                           | Database name   |
+| `db.user`      | `"admin"`                             | Database user   |
 
 ### Network Spans
 
-| Attribute | Example | Description |
-|-----------|---------|-------------|
-| `server.address` | `"api.example.com"` | Target server hostname |
-| `server.port` | `443` | Target server port |
-| `network.peer.address` | `"192.168.1.1"` | IP address |
-| `url.full` | `"https://api.example.com/users"` | Full URL |
+| Attribute              | Example                           | Description            |
+| ---------------------- | --------------------------------- | ---------------------- |
+| `server.address`       | `"api.example.com"`               | Target server hostname |
+| `server.port`          | `443`                             | Target server port     |
+| `network.peer.address` | `"192.168.1.1"`                   | IP address             |
+| `url.full`             | `"https://api.example.com/users"` | Full URL               |
 
 ---
 
-**Last Updated**: 2026-01-05
-**Version**: 1.0.0
-**Maintainer**: Dev Multiplier Team
+**Last Updated**: 2026-01-05 **Version**: 1.0.0 **Maintainer**: Dev Multiplier Team
