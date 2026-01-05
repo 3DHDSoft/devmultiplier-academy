@@ -1,0 +1,237 @@
+Date : 2026-01-05 22:48:24
+Directory : /workspaces/dev-x-academy-web
+Total : 128 files,  22888 codes, 671 comments, 4492 blanks, all 28051 lines
+
+Languages
++----------------------+------------+------------+------------+------------+------------+
+| language             | files      | code       | comment    | blank      | total      |
++----------------------+------------+------------+------------+------------+------------+
+| source.markdown.math |         18 |      8,281 |          0 |      2,434 |     10,715 |
+| JSON                 |          7 |      5,717 |          0 |          7 |      5,724 |
+| TypeScript JSX       |         30 |      3,701 |        140 |        402 |      4,243 |
+| TypeScript           |         49 |      3,231 |        311 |        549 |      4,091 |
+| JSON with Comments   |          3 |      1,071 |         12 |        886 |      1,969 |
+| Prisma               |          1 |        204 |         17 |         49 |        270 |
+| pgsql                |          3 |        196 |         58 |         72 |        326 |
+| Shell Script         |          5 |        135 |         49 |         32 |        216 |
+| YAML                 |          1 |         83 |         27 |         11 |        121 |
+| Docker               |          1 |         76 |          9 |          6 |         91 |
+| Properties           |          3 |         69 |         35 |         23 |        127 |
+| JavaScript           |          3 |         68 |          3 |          8 |         79 |
+| PostCSS              |          1 |         42 |          4 |          7 |         53 |
+| XML                  |          2 |         14 |          6 |          6 |         26 |
+| (Read Error)         |          1 |          0 |          0 |          0 |          0 |
++----------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                           | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                              |        128 |     22,888 |        671 |      4,492 |     28,051 |
+| . (Files)                                                                                      |         21 |      7,210 |         96 |      1,030 |      8,336 |
+| .claude                                                                                        |          1 |          0 |          0 |          0 |          0 |
+| .devcontainer                                                                                  |          8 |        412 |        107 |         63 |        582 |
+| .devcontainer (Files)                                                                          |          6 |        347 |         70 |         45 |        462 |
+| .devcontainer/config                                                                           |          2 |         65 |         37 |         18 |        120 |
+| .devcontainer/config/postgres                                                                  |          2 |         65 |         37 |         18 |        120 |
+| cache                                                                                          |          1 |          6 |          0 |          0 |          6 |
+| doc                                                                                            |         17 |      8,046 |          0 |      2,346 |     10,392 |
+| e2e                                                                                            |          6 |        155 |         16 |         35 |        206 |
+| prisma                                                                                         |          4 |        400 |         75 |        121 |        596 |
+| prisma (Files)                                                                                 |          1 |        204 |         17 |         49 |        270 |
+| prisma/migrations                                                                              |          3 |        196 |         58 |         72 |        326 |
+| prisma/migrations/20260103230420_init                                                          |          1 |        175 |         52 |         65 |        292 |
+| prisma/migrations/20260105155934_add_login_logs                                                |          1 |         20 |          5 |          6 |         31 |
+| prisma/migrations/20260105161426_add_isadmin_field                                             |          1 |          1 |          1 |          1 |          3 |
+| public                                                                                         |          2 |         14 |          6 |          6 |         26 |
+| scripts                                                                                        |          3 |        131 |         21 |         31 |        183 |
+| src                                                                                            |         65 |      6,514 |        350 |        860 |      7,724 |
+| src (Files)                                                                                    |          3 |        183 |         16 |         21 |        220 |
+| src/__tests__                                                                                  |          2 |        114 |          6 |         17 |        137 |
+| src/app                                                                                        |         40 |      4,604 |        186 |        614 |      5,404 |
+| src/app (Files)                                                                                |          6 |        151 |          4 |         19 |        174 |
+| src/app/(auth)                                                                                 |          3 |        356 |         24 |         46 |        426 |
+| src/app/(auth) (Files)                                                                         |          1 |          5 |          0 |          3 |          8 |
+| src/app/(auth)/login                                                                           |          1 |        127 |         10 |         16 |        153 |
+| src/app/(auth)/register                                                                        |          1 |        224 |         14 |         27 |        265 |
+| src/app/(protected)                                                                            |          5 |      1,099 |         23 |        108 |      1,230 |
+| src/app/(protected) (Files)                                                                    |          1 |          5 |          0 |          3 |          8 |
+| src/app/(protected)/admin                                                                      |          1 |        283 |          4 |         20 |        307 |
+| src/app/(protected)/admin/logins                                                               |          1 |        283 |          4 |         20 |        307 |
+| src/app/(protected)/dashboard                                                                  |          1 |         82 |          4 |         12 |         98 |
+| src/app/(protected)/profile                                                                    |          1 |        538 |         12 |         54 |        604 |
+| src/app/(protected)/security                                                                   |          1 |        191 |          3 |         19 |        213 |
+| src/app/about                                                                                  |          1 |         79 |          5 |          8 |         92 |
+| src/app/api                                                                                    |         20 |      1,775 |         79 |        309 |      2,163 |
+| src/app/api/__tests__                                                                          |          6 |        793 |         32 |        168 |        993 |
+| src/app/api/admin                                                                              |          1 |         35 |          3 |          5 |         43 |
+| src/app/api/admin/login-logs                                                                   |          1 |         35 |          3 |          5 |         43 |
+| src/app/api/auth                                                                               |          3 |         65 |          4 |         14 |         83 |
+| src/app/api/auth/[...nextauth]                                                                 |          1 |          2 |          0 |          2 |          4 |
+| src/app/api/auth/logout                                                                        |          1 |         11 |          1 |          3 |         15 |
+| src/app/api/auth/register                                                                      |          1 |         52 |          3 |          9 |         64 |
+| src/app/api/courses                                                                            |          2 |        184 |          4 |         12 |        200 |
+| src/app/api/courses (Files)                                                                    |          1 |         59 |          2 |          5 |         66 |
+| src/app/api/courses/[id]                                                                       |          1 |        125 |          2 |          7 |        134 |
+| src/app/api/enrollments                                                                        |          2 |        184 |          5 |         29 |        218 |
+| src/app/api/enrollments (Files)                                                                |          1 |        119 |          4 |         19 |        142 |
+| src/app/api/enrollments/[id]                                                                   |          1 |         65 |          1 |         10 |         76 |
+| src/app/api/progress                                                                           |          3 |        367 |         29 |         54 |        450 |
+| src/app/api/progress/[courseId]                                                                |          3 |        367 |         29 |         54 |        450 |
+| src/app/api/progress/[courseId] (Files)                                                        |          1 |         95 |          5 |         14 |        114 |
+| src/app/api/progress/[courseId]/lesson                                                         |          1 |        144 |         14 |         21 |        179 |
+| src/app/api/progress/[courseId]/module                                                         |          1 |        128 |         10 |         19 |        157 |
+| src/app/api/user                                                                               |          3 |        147 |          2 |         27 |        176 |
+| src/app/api/user/language                                                                      |          1 |         47 |          0 |          8 |         55 |
+| src/app/api/user/login-history                                                                 |          1 |         23 |          2 |          7 |         32 |
+| src/app/api/user/profile                                                                       |          1 |         77 |          0 |         12 |         89 |
+| src/app/contact                                                                                |          1 |        144 |          4 |         12 |        160 |
+| src/app/courses                                                                                |          1 |        111 |          6 |         10 |        127 |
+| src/app/pricing                                                                                |          1 |         62 |          1 |          6 |         69 |
+| src/app/privacy-policy                                                                         |          1 |        419 |         20 |         44 |        483 |
+| src/app/terms-of-service                                                                       |          1 |        408 |         20 |         52 |        480 |
+| src/components                                                                                 |         11 |        914 |         37 |        104 |      1,055 |
+| src/components/layout                                                                          |          3 |        243 |          8 |         18 |        269 |
+| src/components/sections                                                                        |          4 |        309 |         18 |         32 |        359 |
+| src/components/ui                                                                              |          4 |        362 |         11 |         54 |        427 |
+| src/components/ui (Files)                                                                      |          3 |        342 |         11 |         49 |        402 |
+| src/components/ui/__tests__                                                                    |          1 |         20 |          0 |          5 |         25 |
+| src/lib                                                                                        |          9 |        699 |        105 |        104 |        908 |
+| src/lib (Files)                                                                                |          7 |        630 |        102 |         89 |        821 |
+| src/lib/__tests__                                                                              |          2 |         69 |          3 |         15 |         87 |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| filename                                                                                       | language             | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| /workspaces/dev-x-academy-web/.claude/settings.local.json                                      | (Read Error)         |          0 |          0 |          0 |          0 |
+| /workspaces/dev-x-academy-web/.devcontainer/.env                                               | Properties           |         22 |          6 |          4 |         32 |
+| /workspaces/dev-x-academy-web/.devcontainer/Dockerfile                                         | Docker               |         76 |          9 |          6 |         91 |
+| /workspaces/dev-x-academy-web/.devcontainer/config/postgres/init-user-db.sh                    | Shell Script         |         30 |         24 |          8 |         62 |
+| /workspaces/dev-x-academy-web/.devcontainer/config/postgres/postgresql.conf                    | Properties           |         35 |         13 |         10 |         58 |
+| /workspaces/dev-x-academy-web/.devcontainer/devcontainer.json                                  | JSON with Comments   |        105 |         12 |         10 |        127 |
+| /workspaces/dev-x-academy-web/.devcontainer/docker-compose.yml                                 | YAML                 |         83 |         27 |         11 |        121 |
+| /workspaces/dev-x-academy-web/.devcontainer/post-create.sh                                     | Shell Script         |         52 |         14 |          9 |         75 |
+| /workspaces/dev-x-academy-web/.devcontainer/post-start.sh                                      | Shell Script         |          9 |          2 |          5 |         16 |
+| /workspaces/dev-x-academy-web/.env                                                             | Properties           |         12 |         16 |          9 |         37 |
+| /workspaces/dev-x-academy-web/.markdownlint.json                                               | JSON                 |         13 |          0 |          1 |         14 |
+| /workspaces/dev-x-academy-web/.ncurc.json                                                      | JSON                 |          3 |          0 |          1 |          4 |
+| /workspaces/dev-x-academy-web/.prettierrc                                                      | JSON                 |         43 |          0 |          2 |         45 |
+| /workspaces/dev-x-academy-web/README.md                                                        | source.markdown.math |        235 |          0 |         88 |        323 |
+| /workspaces/dev-x-academy-web/bun.lock                                                         | JSON with Comments   |        933 |          0 |        875 |      1,808 |
+| /workspaces/dev-x-academy-web/cache/config.json                                                | JSON                 |          6 |          0 |          0 |          6 |
+| /workspaces/dev-x-academy-web/components.json                                                  | JSON                 |         22 |          0 |          1 |         23 |
+| /workspaces/dev-x-academy-web/doc/OPENTELEMETRY_SETUP.md                                       | source.markdown.math |        307 |          0 |        129 |        436 |
+| /workspaces/dev-x-academy-web/doc/SECURITY_FEATURES.md                                         | source.markdown.math |        278 |          0 |        110 |        388 |
+| /workspaces/dev-x-academy-web/doc/api-endpoints.md                                             | source.markdown.math |        511 |          0 |        161 |        672 |
+| /workspaces/dev-x-academy-web/doc/api-implementation-guide.md                                  | source.markdown.math |        563 |          0 |        136 |        699 |
+| /workspaces/dev-x-academy-web/doc/api_tests.md                                                 | source.markdown.math |        359 |          0 |        134 |        493 |
+| /workspaces/dev-x-academy-web/doc/api_tests_quick_ref.md                                       | source.markdown.math |        251 |          0 |         84 |        335 |
+| /workspaces/dev-x-academy-web/doc/authentication-and-user-profiles.md                          | source.markdown.math |      1,085 |          0 |        269 |      1,354 |
+| /workspaces/dev-x-academy-web/doc/authentication-guide.md                                      | source.markdown.math |        494 |          0 |        162 |        656 |
+| /workspaces/dev-x-academy-web/doc/legal-pages-integration-guide.md                             | source.markdown.math |        686 |          0 |        133 |        819 |
+| /workspaces/dev-x-academy-web/doc/multilingual-implementation-guide.md                         | source.markdown.math |      1,164 |          0 |        247 |      1,411 |
+| /workspaces/dev-x-academy-web/doc/playwright.md                                                | source.markdown.math |        287 |          0 |        116 |        403 |
+| /workspaces/dev-x-academy-web/doc/playwright_setup.md                                          | source.markdown.math |        170 |          0 |         81 |        251 |
+| /workspaces/dev-x-academy-web/doc/prisma-introduction.md                                       | source.markdown.math |        234 |          0 |         94 |        328 |
+| /workspaces/dev-x-academy-web/doc/rest-api-vs-prisma-comparison.md                             | source.markdown.math |        588 |          0 |        174 |        762 |
+| /workspaces/dev-x-academy-web/doc/testing-strategy-nextjs.md                                   | source.markdown.math |        708 |          0 |        168 |        876 |
+| /workspaces/dev-x-academy-web/doc/testing.md                                                   | source.markdown.math |        156 |          0 |         61 |        217 |
+| /workspaces/dev-x-academy-web/doc/testing_overview.md                                          | source.markdown.math |        205 |          0 |         87 |        292 |
+| /workspaces/dev-x-academy-web/e2e/accessibility.spec.ts                                        | TypeScript           |         34 |          6 |          5 |         45 |
+| /workspaces/dev-x-academy-web/e2e/auth.spec.ts                                                 | TypeScript           |         38 |          5 |         11 |         54 |
+| /workspaces/dev-x-academy-web/e2e/failing-video.spec.ts                                        | TypeScript           |          6 |          2 |          2 |         10 |
+| /workspaces/dev-x-academy-web/e2e/homepage.spec.ts                                             | TypeScript           |         22 |          1 |          5 |         28 |
+| /workspaces/dev-x-academy-web/e2e/legal.spec.ts                                                | TypeScript           |         31 |          2 |          6 |         39 |
+| /workspaces/dev-x-academy-web/e2e/navigation.spec.ts                                           | TypeScript           |         24 |          0 |          6 |         30 |
+| /workspaces/dev-x-academy-web/eslint.config.mjs                                                | JavaScript           |         26 |          3 |          3 |         32 |
+| /workspaces/dev-x-academy-web/instrumentation.node.ts                                          | TypeScript           |         82 |         24 |         15 |        121 |
+| /workspaces/dev-x-academy-web/instrumentation.ts                                               | TypeScript           |          5 |          7 |          2 |         14 |
+| /workspaces/dev-x-academy-web/middleware.ts                                                    | TypeScript           |         19 |         12 |          7 |         38 |
+| /workspaces/dev-x-academy-web/next.config.ts                                                   | TypeScript           |         18 |          0 |          3 |         21 |
+| /workspaces/dev-x-academy-web/package-lock.json                                                | JSON                 |      5,538 |          0 |          1 |      5,539 |
+| /workspaces/dev-x-academy-web/package.json                                                     | JSON                 |         92 |          0 |          1 |         93 |
+| /workspaces/dev-x-academy-web/playwright.config.ts                                             | TypeScript           |         27 |         27 |          7 |         61 |
+| /workspaces/dev-x-academy-web/postcss.config.mjs                                               | JavaScript           |          6 |          0 |          2 |          8 |
+| /workspaces/dev-x-academy-web/prisma.config.ts                                                 | TypeScript           |         11 |          2 |          2 |         15 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260103230420_init/migration.sql              | pgsql                |        175 |         52 |         65 |        292 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260105155934_add_login_logs/migration.sql    | pgsql                |         20 |          5 |          6 |         31 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260105161426_add_isadmin_field/migration.sql | pgsql                |          1 |          1 |          1 |          3 |
+| /workspaces/dev-x-academy-web/prisma/schema.prisma                                             | Prisma               |        204 |         17 |         49 |        270 |
+| /workspaces/dev-x-academy-web/public/icon.svg                                                  | XML                  |          6 |          3 |          3 |         12 |
+| /workspaces/dev-x-academy-web/public/logo.svg                                                  | XML                  |          8 |          3 |          3 |         14 |
+| /workspaces/dev-x-academy-web/reset.sh                                                         | Shell Script         |          4 |          1 |          1 |          6 |
+| /workspaces/dev-x-academy-web/scripts/make-admin.ts                                            | TypeScript           |         41 |          6 |         11 |         58 |
+| /workspaces/dev-x-academy-web/scripts/test-email.ts                                            | TypeScript           |         50 |          7 |         11 |         68 |
+| /workspaces/dev-x-academy-web/scripts/verify-testing-setup.sh                                  | Shell Script         |         40 |          8 |          9 |         57 |
+| /workspaces/dev-x-academy-web/src/__tests__/auth.test.ts                                       | TypeScript           |         54 |          3 |          8 |         65 |
+| /workspaces/dev-x-academy-web/src/__tests__/models.test.ts                                     | TypeScript           |         60 |          3 |          9 |         72 |
+| /workspaces/dev-x-academy-web/src/app/(auth)/layout.tsx                                        | TypeScript JSX       |          5 |          0 |          3 |          8 |
+| /workspaces/dev-x-academy-web/src/app/(auth)/login/page.tsx                                    | TypeScript JSX       |        127 |         10 |         16 |        153 |
+| /workspaces/dev-x-academy-web/src/app/(auth)/register/page.tsx                                 | TypeScript JSX       |        224 |         14 |         27 |        265 |
+| /workspaces/dev-x-academy-web/src/app/(protected)/admin/logins/page.tsx                        | TypeScript JSX       |        283 |          4 |         20 |        307 |
+| /workspaces/dev-x-academy-web/src/app/(protected)/dashboard/page.tsx                           | TypeScript JSX       |         82 |          4 |         12 |         98 |
+| /workspaces/dev-x-academy-web/src/app/(protected)/layout.tsx                                   | TypeScript JSX       |          5 |          0 |          3 |          8 |
+| /workspaces/dev-x-academy-web/src/app/(protected)/profile/page.tsx                             | TypeScript JSX       |        538 |         12 |         54 |        604 |
+| /workspaces/dev-x-academy-web/src/app/(protected)/security/page.tsx                            | TypeScript JSX       |        191 |          3 |         19 |        213 |
+| /workspaces/dev-x-academy-web/src/app/about/page.tsx                                           | TypeScript JSX       |         79 |          5 |          8 |         92 |
+| /workspaces/dev-x-academy-web/src/app/api/__tests__/courses.test.ts                            | TypeScript           |         92 |          6 |         17 |        115 |
+| /workspaces/dev-x-academy-web/src/app/api/__tests__/enrollments.test.ts                        | TypeScript           |        152 |          4 |         28 |        184 |
+| /workspaces/dev-x-academy-web/src/app/api/__tests__/progress.test.ts                           | TypeScript           |        154 |          6 |         40 |        200 |
+| /workspaces/dev-x-academy-web/src/app/api/__tests__/register.test.ts                           | TypeScript           |        174 |          6 |         39 |        219 |
+| /workspaces/dev-x-academy-web/src/app/api/__tests__/user-language.test.ts                      | TypeScript           |         98 |          4 |         21 |        123 |
+| /workspaces/dev-x-academy-web/src/app/api/__tests__/user-profile.test.ts                       | TypeScript           |        123 |          6 |         23 |        152 |
+| /workspaces/dev-x-academy-web/src/app/api/admin/login-logs/route.ts                            | TypeScript           |         35 |          3 |          5 |         43 |
+| /workspaces/dev-x-academy-web/src/app/api/auth/[...nextauth]/route.ts                          | TypeScript           |          2 |          0 |          2 |          4 |
+| /workspaces/dev-x-academy-web/src/app/api/auth/logout/route.ts                                 | TypeScript           |         11 |          1 |          3 |         15 |
+| /workspaces/dev-x-academy-web/src/app/api/auth/register/route.ts                               | TypeScript           |         52 |          3 |          9 |         64 |
+| /workspaces/dev-x-academy-web/src/app/api/courses/[id]/route.ts                                | TypeScript           |        125 |          2 |          7 |        134 |
+| /workspaces/dev-x-academy-web/src/app/api/courses/route.ts                                     | TypeScript           |         59 |          2 |          5 |         66 |
+| /workspaces/dev-x-academy-web/src/app/api/enrollments/[id]/route.ts                            | TypeScript           |         65 |          1 |         10 |         76 |
+| /workspaces/dev-x-academy-web/src/app/api/enrollments/route.ts                                 | TypeScript           |        119 |          4 |         19 |        142 |
+| /workspaces/dev-x-academy-web/src/app/api/progress/[courseId]/lesson/route.ts                  | TypeScript           |        144 |         14 |         21 |        179 |
+| /workspaces/dev-x-academy-web/src/app/api/progress/[courseId]/module/route.ts                  | TypeScript           |        128 |         10 |         19 |        157 |
+| /workspaces/dev-x-academy-web/src/app/api/progress/[courseId]/route.ts                         | TypeScript           |         95 |          5 |         14 |        114 |
+| /workspaces/dev-x-academy-web/src/app/api/user/language/route.ts                               | TypeScript           |         47 |          0 |          8 |         55 |
+| /workspaces/dev-x-academy-web/src/app/api/user/login-history/route.ts                          | TypeScript           |         23 |          2 |          7 |         32 |
+| /workspaces/dev-x-academy-web/src/app/api/user/profile/route.ts                                | TypeScript           |         77 |          0 |         12 |         89 |
+| /workspaces/dev-x-academy-web/src/app/contact/page.tsx                                         | TypeScript JSX       |        144 |          4 |         12 |        160 |
+| /workspaces/dev-x-academy-web/src/app/courses/page.tsx                                         | TypeScript JSX       |        111 |          6 |         10 |        127 |
+| /workspaces/dev-x-academy-web/src/app/error.tsx                                                | TypeScript JSX       |         17 |          0 |          2 |         19 |
+| /workspaces/dev-x-academy-web/src/app/global-error.tsx                                         | TypeScript JSX       |         21 |          0 |          2 |         23 |
+| /workspaces/dev-x-academy-web/src/app/globals.css                                              | PostCSS              |         42 |          4 |          7 |         53 |
+| /workspaces/dev-x-academy-web/src/app/layout.tsx                                               | TypeScript JSX       |         51 |          0 |          3 |         54 |
+| /workspaces/dev-x-academy-web/src/app/page.tsx                                                 | TypeScript JSX       |         14 |          0 |          2 |         16 |
+| /workspaces/dev-x-academy-web/src/app/pricing/page.tsx                                         | TypeScript JSX       |         62 |          1 |          6 |         69 |
+| /workspaces/dev-x-academy-web/src/app/privacy-policy/page.tsx                                  | TypeScript JSX       |        419 |         20 |         44 |        483 |
+| /workspaces/dev-x-academy-web/src/app/providers.tsx                                            | TypeScript JSX       |          6 |          0 |          3 |          9 |
+| /workspaces/dev-x-academy-web/src/app/terms-of-service/page.tsx                                | TypeScript JSX       |        408 |         20 |         52 |        480 |
+| /workspaces/dev-x-academy-web/src/auth.ts                                                      | TypeScript           |        155 |         15 |         15 |        185 |
+| /workspaces/dev-x-academy-web/src/auth.types.ts                                                | TypeScript           |         16 |          0 |          3 |         19 |
+| /workspaces/dev-x-academy-web/src/components/layout/footer.tsx                                 | TypeScript JSX       |         92 |          4 |          7 |        103 |
+| /workspaces/dev-x-academy-web/src/components/layout/header.tsx                                 | TypeScript JSX       |        138 |          4 |          8 |        150 |
+| /workspaces/dev-x-academy-web/src/components/layout/layout-wrapper.tsx                         | TypeScript JSX       |         13 |          0 |          3 |         16 |
+| /workspaces/dev-x-academy-web/src/components/sections/courses.tsx                              | TypeScript JSX       |         96 |          8 |          9 |        113 |
+| /workspaces/dev-x-academy-web/src/components/sections/cta.tsx                                  | TypeScript JSX       |         63 |          2 |          7 |         72 |
+| /workspaces/dev-x-academy-web/src/components/sections/hero.tsx                                 | TypeScript JSX       |         42 |          6 |          7 |         55 |
+| /workspaces/dev-x-academy-web/src/components/sections/pricing.tsx                              | TypeScript JSX       |        108 |          2 |          9 |        119 |
+| /workspaces/dev-x-academy-web/src/components/ui/__tests__/button.test.tsx                      | TypeScript JSX       |         20 |          0 |          5 |         25 |
+| /workspaces/dev-x-academy-web/src/components/ui/button.tsx                                     | TypeScript JSX       |         30 |          0 |          5 |         35 |
+| /workspaces/dev-x-academy-web/src/components/ui/language-selector.tsx                          | TypeScript JSX       |         90 |          3 |         13 |        106 |
+| /workspaces/dev-x-academy-web/src/components/ui/profile-dropdown.tsx                           | TypeScript JSX       |        222 |          8 |         31 |        261 |
+| /workspaces/dev-x-academy-web/src/globals.d.ts                                                 | TypeScript           |         12 |          1 |          3 |         16 |
+| /workspaces/dev-x-academy-web/src/lib/__tests__/api.test.ts                                    | TypeScript           |         63 |          3 |         13 |         79 |
+| /workspaces/dev-x-academy-web/src/lib/__tests__/utils.test.ts                                  | TypeScript           |          6 |          0 |          2 |          8 |
+| /workspaces/dev-x-academy-web/src/lib/admin-middleware.ts                                      | TypeScript           |         24 |          8 |          8 |         40 |
+| /workspaces/dev-x-academy-web/src/lib/email-service.ts                                         | TypeScript           |        223 |         23 |         16 |        262 |
+| /workspaces/dev-x-academy-web/src/lib/ip-utils.ts                                              | TypeScript           |         71 |         17 |         17 |        105 |
+| /workspaces/dev-x-academy-web/src/lib/login-logger.ts                                          | TypeScript           |        243 |         30 |         30 |        303 |
+| /workspaces/dev-x-academy-web/src/lib/prisma.ts                                                | TypeScript           |          8 |          0 |          5 |         13 |
+| /workspaces/dev-x-academy-web/src/lib/tracer.ts                                                | TypeScript           |         56 |         24 |         11 |         91 |
+| /workspaces/dev-x-academy-web/src/lib/utils.ts                                                 | TypeScript           |          5 |          0 |          2 |          7 |
+| /workspaces/dev-x-academy-web/tsconfig.json                                                    | JSON with Comments   |         33 |          0 |          1 |         34 |
+| /workspaces/dev-x-academy-web/vitest.config.mjs                                                | JavaScript           |         36 |          0 |          3 |         39 |
+| /workspaces/dev-x-academy-web/vitest.setup.ts                                                  | TypeScript           |         52 |          4 |          5 |         61 |
+| Total                                                                                          |                      |     22,888 |        671 |      4,492 |     28,051 |
++------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+

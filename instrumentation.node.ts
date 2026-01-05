@@ -16,6 +16,10 @@ import {
   ATTR_SERVICE_VERSION,
   SEMRESATTRS_DEPLOYMENT_ENVIRONMENT,
 } from '@opentelemetry/semantic-conventions';
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+
+// Enable debug logging
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 // Service configuration
 const resource = resourceFromAttributes({
@@ -25,14 +29,46 @@ const resource = resourceFromAttributes({
 });
 
 // Configure OTLP exporter for Grafana Cloud
+console.log('🔧 Configuring OTLP Exporter:');
+console.log('  URL:', process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318/v1/traces');
+console.log('  Headers configured:', !!process.env.OTEL_EXPORTER_OTLP_HEADERS);
+
+// Parse headers from environment variable
+console.log('  Raw OTEL_EXPORTER_OTLP_HEADERS:', process.env.OTEL_EXPORTER_OTLP_HEADERS);
+
+// Clear the env var to prevent OTLPTraceExporter from reading it directly
+const headersEnv = process.env.OTEL_EXPORTER_OTLP_HEADERS;
+delete process.env.OTEL_EXPORTER_OTLP_HEADERS;
+
+// Parse headers - support both JSON format and key=value format
+let headers: Record<string, string> = {};
+if (headersEnv) {
+  if (headersEnv.startsWith('{')) {
+    // JSON format: {"Authorization":"Basic ..."}
+    headers = JSON.parse(headersEnv);
+  } else {
+    // key=value format: Authorization=Basic ...
+    const pairs = headersEnv.split(',');
+    pairs.forEach(pair => {
+      const [key, ...valueParts] = pair.split('=');
+      if (key && valueParts.length > 0) {
+        headers[key.trim()] = valueParts.join('=').trim();
+      }
+    });
+  }
+}
+
+console.log('  Parsed headers type:', typeof headers);
+console.log('  Parsed headers:', headers);
+console.log('  Parsed headers keys:', Object.keys(headers));
+
+// Append /v1/traces to the endpoint if not already present
+const endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318';
+const url = endpoint.endsWith('/v1/traces') ? endpoint : `${endpoint}/v1/traces`;
+
 const traceExporter = new OTLPTraceExporter({
-  url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318/v1/traces',
-  headers: {
-    // Grafana Cloud authentication
-    ...(process.env.OTEL_EXPORTER_OTLP_HEADERS
-      ? JSON.parse(process.env.OTEL_EXPORTER_OTLP_HEADERS)
-      : {}),
-  },
+  url,
+  headers,
 });
 
 // Initialize OpenTelemetry SDK
