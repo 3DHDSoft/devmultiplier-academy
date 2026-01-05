@@ -16,7 +16,7 @@
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 3001, 5433, 8008],
+  "forwardPorts": [3000, 3001, 5433, 8008, 9323],
 
   "portsAttributes": {
     "3000": { "label": "Next.js App", "onAutoForward": "notify" },
@@ -36,22 +36,6 @@
     "vscode": {
       // find /home/node/.vscode-server/extensions -maxdepth 1 -type d -name "*-*" | sed 's|.*/||' | sort
       "extensions": [
-        "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss",
-        "prisma.prisma",
-        "mtxr.sqltools",
-        "mtxr.sqltools-driver-pg",
-        "humao.rest-client",
-        "redhat.vscode-yaml",
-        "streetsidesoftware.code-spell-checker",
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "eamodio.gitlens",
-        "dbaeumer.vscode-eslint",
-        "ms-azuretools.vscode-docker",
-        "ms-dotnettools.csdevkit",
-        "ms-vscode.vscode-typescript-next",
-        "ms-dotnettools.csharp",
         "alefragnani.project-manager",
         "anthropic.claude-code",
         "bierner.github-markdown-preview",
@@ -61,17 +45,25 @@
         "bierner.markdown-mermaid",
         "bierner.markdown-preview-github-styles",
         "bierner.markdown-yaml-preamble",
+        "bradlc.vscode-tailwindcss",
         "bradymholt.pgformatter",
         "codezombiech.gitignore",
         "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
         "docker.docker",
         "donjayamanne.git-extension-pack",
         "donjayamanne.githistory",
         "doublefint.pgsql",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "george-alisson.html-preview-vscode",
         "github.vscode-github-actions",
         "github.vscode-pull-request-github",
         "goessner.mdmath",
         "huizhou.githd",
+        "humao.rest-client",
         "inferrinizzard.prettier-sql-vscode",
         "kisstkondoros.vscode-codemetrics",
         "kumar-harsh.graphql-for-vscode",
@@ -82,13 +74,24 @@
         "mohsen1.prettify-json",
         "moshfeu.compare-folders",
         "ms-azuretools.vscode-azureresourcegroups",
+        "ms-azuretools.vscode-docker",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-playwright.playwright",
+        "ms-vscode.vscode-typescript-next",
         "ms-windows-ai-studio.windows-ai-studio",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "prisma.prisma",
         "redhat.vscode-xml",
-        "shd101wyy.markdown-preview-enhanced",
+        "redhat.vscode-yaml",
         "rvest.vs-code-prettier-eslint",
-        "uctakeoff.vscode-counter",
+        "shd101wyy.markdown-preview-enhanced",
+        "streetsidesoftware.code-spell-checker",
         "teamsdevapp.vscode-ai-foundry",
         "tomoyukim.vscode-mermaid-editor",
+        "uctakeoff.vscode-counter",
+        "vitest.explorer",
         "vstirbu.vscode-mermaid-preview",
         "yzhang.markdown-all-in-one",
         "yzane.markdown-pdf",
@@ -100,7 +103,12 @@
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit"
         },
-        "typescript.preferences.importModuleSpecifier": "relative"
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "markdownlint.config": {
+          "extends": "markdownlint/style/prettier",
+          "default": true
+        },
+        "http.proxyStrictSSL": false
       }
     }
   },

@@ -14,16 +14,20 @@ fi
 echo ""
 echo "🎭 Installing Playwright browsers..."
 bunx playwright install 2>&1 | while IFS= read -r line; do
-    if [[ "$line" =~ ^\|.*\|.*% ]]; then
-        # Progress bar line - overwrite in place
-        printf "\r\033[K   %s" "$line"
+    if [[ "$line" =~ ^Downloading ]]; then
+        # Extract browser name and version
+        browser_info=$(echo "$line" | sed 's/ from.*//')
+        # Show what's being downloaded
+        printf "   ⬇️  %s\n" "$browser_info"
+        first_progress=1
+    elif [[ "$line" =~ ^\| ]]; then
+        # Progress bar line - update in-place
+        printf "   %s\r" "$line"
+        first_progress=0
     elif [[ "$line" =~ "downloaded to" ]]; then
-        # Extract browser name and version, show completion
-        browser_info=$(echo "$line" | sed 's/ downloaded to.*//')
-        printf "\r\033[K   ✅ %s\n" "$browser_info"
-    elif [[ "$line" =~ ^Downloading ]]; then
-        # Show what's being downloaded - in place (will be overwritten by progress)
-        printf "\r\033[K   ⬇️  %s" "$line"
+        # Extract version, clear progress bar and replace downloading line
+        version=$(echo "$line" | sed 's/ downloaded to.*//')
+        printf "\033[K\033[A\033[K   ✅ %s\n" "$version"
     fi
 done
 echo "   📁 All browsers cached in ~/.cache/ms-playwright/"

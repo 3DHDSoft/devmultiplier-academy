@@ -28,9 +28,26 @@ test.describe('Authentication Pages', () => {
   test('should validate email format on login', async ({ page }) => {
     await page.goto('/login');
     const emailInput = page.locator('input[type="email"]');
-    await emailInput.fill('invalid-email');
-    await emailInput.blur();
-    // Browser HTML5 validation will trigger
-    await expect(emailInput).toBeFocused();
+
+    // Test that email input exists and is visible
+    await expect(emailInput).toBeVisible();
+
+    // Clear any existing value and set valid email
+    await emailInput.clear();
+    await emailInput.type('valid@example.com');
+
+    // Verify the value was entered
+    const value = await emailInput.inputValue();
+    expect(value).toBe('valid@example.com');
+
+    // Test HTML5 validation - input should be valid with proper email
+    const isValid = await emailInput.evaluate((el: HTMLInputElement) => el.checkValidity());
+    expect(isValid).toBe(true);
+
+    // Now test with invalid email
+    await emailInput.clear();
+    await emailInput.type('invalid-email');
+    const isInvalid = await emailInput.evaluate((el: HTMLInputElement) => !el.checkValidity());
+    expect(isInvalid).toBe(true);
   });
 });
