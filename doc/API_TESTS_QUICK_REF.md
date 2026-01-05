@@ -3,18 +3,47 @@
 ✅ **Status:** All 117 tests passing 📊 **Coverage:** 6 test files, 993 lines of test code ⏱️ **Runtime:** ~45 seconds
 🎯 **Focus:** Validation, authentication, error handling
 
+## Test Coverage Overview
+
+```mermaid
+graph TB
+    subgraph API["API Tests (44 tests)"]
+        Courses["Courses<br/>10 tests"]
+        Enrollments["Enrollments<br/>15 tests"]
+        Profile["User Profile<br/>10 tests"]
+        Language["User Language<br/>14 tests"]
+        Register["Register<br/>16 tests"]
+        Progress["Progress<br/>20 tests"]
+    end
+
+    subgraph Util["Utility Tests (73 tests)"]
+        Auth["Auth Schema<br/>6 tests"]
+        Models["Data Models<br/>4 tests"]
+        APIUtils["API Utils<br/>6 tests"]
+        Utils["Utilities<br/>1 test"]
+        Button["UI Button<br/>4 tests"]
+    end
+
+    Total["Total: 117 Tests ✅"]
+
+    API --> Total
+    Util --> Total
+
+    style Total fill:#51cf66,stroke:#2f9e44,color:#fff
+```
+
 ---
 
 ## Quick Stats
 
 ```
 Total Test Suites:  11 ✅
-  - 5 API endpoint test files
-  - 6 other test files (utils, models, auth, etc.)
+  - 6 API endpoint test files
+  - 5 other test files (utils, models, auth, etc.)
 
 Total Tests:        117 ✅
-  - 44 API tests (new)
-  - 73 existing tests
+  - 44 API tests
+  - 73 utility/component tests
 
 API Test Breakdown:
   ├── Courses endpoint (10 tests)
@@ -22,7 +51,7 @@ API Test Breakdown:
   ├── User Profile endpoint (10 tests)
   ├── User Language endpoint (14 tests)
   ├── Auth Register endpoint (16 tests)
-  └── Progress Tracking (22 tests)
+  └── Progress Tracking (20 tests)
 ```
 
 ---
@@ -283,7 +312,7 @@ hu - Hungarian
 
 - [API_TESTS.md](./API_TESTS.md) - Detailed test documentation
 - [doc/api-implementation-guide.md](./doc/api-implementation-guide.md) - API patterns
-- [TESTING.md](./TESTING.md) - Jest configuration
+- [TESTING.md](./TESTING.md) - Vitest configuration
 - [TESTING_OVERVIEW.md](./TESTING_OVERVIEW.md) - Testing overview
 
 ---
@@ -298,4 +327,8 @@ hu - Hungarian
 
 ---
 
-**Created:** January 4, 2026 **Framework:** Jest + Zod **Status:** ✅ Production Ready
+**Created:** January 4, 2026 **Framework:** Vitest + Zod **Status:** ✅ Production Ready
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

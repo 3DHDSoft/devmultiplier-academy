@@ -27,7 +27,7 @@ done
 # Check configuration files
 echo ""
 echo "⚙️  Configuration Files:"
-for file in playwright.config.ts jest.config.ts jest.setup.ts TESTING.md PLAYWRIGHT.md PLAYWRIGHT_SETUP.md TESTING_OVERVIEW.md; do
+for file in playwright.config.ts vitest.config.mjs vitest.setup.ts TESTING.md PLAYWRIGHT.md PLAYWRIGHT_SETUP.md TESTING_OVERVIEW.md; do
   if [ -f "$file" ]; then
     echo "  ✓ $file"
   fi
@@ -51,6 +51,6 @@ echo "3. View reports:    bunx playwright show-report"
 echo ""
 echo "For more info, see:"
 echo "  - TESTING_OVERVIEW.md (quick reference)"
-echo "  - TESTING.md (Jest guide)"
+echo "  - TESTING.md (Vitest guide)"
 echo "  - PLAYWRIGHT.md (Playwright guide)"
 echo "  - PLAYWRIGHT_SETUP.md (prerequisites)"

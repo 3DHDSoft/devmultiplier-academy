@@ -2,14 +2,47 @@
 
 This project now has complete testing infrastructure for both unit and end-to-end testing.
 
+## Testing Stack Overview
+
+```mermaid
+graph TB
+    subgraph Unit["📋 Unit & Integration Tests"]
+        Vitest["Vitest 4.x"]
+        RTL["React Testing Library"]
+        HappyDOM["happy-dom"]
+        Vitest --> RTL
+        Vitest --> HappyDOM
+    end
+
+    subgraph E2E["🎭 End-to-End Tests"]
+        Playwright["Playwright 1.57"]
+        Browsers["Chrome, Firefox, Safari<br/>+ Mobile Devices"]
+        Playwright --> Browsers
+    end
+
+    subgraph Config["⚙️ Configuration"]
+        VitestConfig["vitest.config.mjs"]
+        PlaywrightConfig["playwright.config.ts"]
+        Setup["vitest.setup.ts"]
+        VitestConfig --> Setup
+    end
+
+    Unit --> Config
+    E2E --> Config
+
+    style Unit fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style E2E fill:#ffe0b2,stroke:#f57c00,color:#000
+    style Config fill:#f1f3f5,stroke:#495057,color:#000
+```
+
 ## Quick Navigation
 
-### 📋 Unit Testing (Jest)
+### 📋 Unit Testing (Vitest 4.x)
 
 - **Setup Guide:** [TESTING.md](./TESTING.md)
 - **Command:** `bun run test`
 - **Coverage:** [TESTING.md#test-coverage](./TESTING.md#test-coverage)
-- **Status:** ✅ 21 tests passing
+- **Status:** ✅ 117 tests passing
 
 ### 🎭 E2E Testing (Playwright)
 
@@ -33,12 +66,13 @@ bun run type-check      # Type check TypeScript
 ### Testing
 
 ```bash
-# Unit Tests
-bun run test            # Run all Jest tests
+# Unit Tests (Vitest)
+bun run test            # Run all Vitest tests
 bun run test:watch     # Watch mode
-bun run test:coverage  # Coverage report
+bun run test:coverage  # Coverage report (v8)
+bun run test:ui        # Interactive UI mode
 
-# E2E Tests
+# E2E Tests (Playwright)
 bun run e2e            # Run Playwright tests
 bun run e2e:ui         # Interactive UI mode
 bun run e2e:debug      # Debug mode
@@ -58,7 +92,7 @@ bun run format:fix     # Auto-fix formatting
 
 ## Testing Strategy
 
-### Unit Tests (Jest)
+### Unit Tests (Vitest)
 
 **When to use:** Logic, utilities, components, data validation
 
@@ -69,6 +103,7 @@ bun run format:fix     # Auto-fix formatting
 - ✅ API response handling
 - ✅ Component logic
 - ✅ Utility functions
+- ✅ API route handlers
 
 **Location:** `src/__tests__/` and `src/*/__tests__/`
 
@@ -99,7 +134,7 @@ bun run format:fix     # Auto-fix formatting
 
 ### Already Configured ✅
 
-- Jest configuration
+- Vitest configuration
 - Playwright configuration
 - Browser profiles (Desktop + Mobile)
 - Test file examples
@@ -144,13 +179,15 @@ bunx playwright show-report
 
 ## Key Features
 
-### Jest
+### Vitest
 
-- ✅ TypeScript support via SWC
+- ✅ TypeScript support
 - ✅ Path aliases (@/\*) configured
-- ✅ Coverage reports available
+- ✅ Coverage reports available (v8)
 - ✅ Watch mode for development
 - ✅ @testing-library/react ready
+- ✅ Interactive UI mode
+- ✅ Fast execution with happy-dom
 
 ### Playwright
 
@@ -201,7 +238,7 @@ bunx playwright show-report
 
 | Document                                                             | Purpose                         |
 | -------------------------------------------------------------------- | ------------------------------- |
-| [TESTING.md](./TESTING.md)                                           | Jest unit testing guide         |
+| [TESTING.md](./TESTING.md)                                           | Vitest unit testing guide       |
 | [PLAYWRIGHT.md](./PLAYWRIGHT.md)                                     | Playwright E2E testing guide    |
 | [PLAYWRIGHT_SETUP.md](./PLAYWRIGHT_SETUP.md)                         | Prerequisites & setup checklist |
 | [TESTING.md#writing-new-tests](./TESTING.md#writing-new-tests)       | How to write unit tests         |
@@ -213,7 +250,7 @@ bunx playwright show-report
 
 **Unit tests fail:**
 
-- Check `jest.config.ts` path aliases
+- Check `vitest.config.mjs` path aliases
 - Ensure TypeScript compiles: `bun run type-check`
 
 **E2E tests fail:**
@@ -247,4 +284,8 @@ bunx playwright show-report
 
 ---
 
-**Last Updated:** January 4, 2026 **Testing Frameworks:** Jest + Playwright **Status:** ✅ Ready for development
+**Last Updated:** January 4, 2026 **Testing Frameworks:** Vitest + Playwright **Status:** ✅ Ready for development
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

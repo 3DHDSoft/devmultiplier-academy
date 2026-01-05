@@ -6,18 +6,34 @@ Complete guide for implementing REST API endpoints with Next.js App Router, Pris
 
 All API endpoints follow this consistent architecture:
 
-```
-Request
-  ↓
-[1] Authentication Check (if required)
-  ↓
-[2] Request Validation (Zod schemas)
-  ↓
-[3] Prisma Query (Type-safe database access)
-  ↓
-[4] Response Formatting (Fallbacks for translations)
-  ↓
-[5] Error Handling (Structured error responses)
+```mermaid
+flowchart TD
+    A["1. Authentication<br/>Check session"] --> B["2. Validation<br/>Zod schema"]
+    B --> C["3. Authorization<br/>Check permissions"]
+    C --> D["4. Database Query<br/>Prisma"]
+    D --> E["5. Transform Data<br/>Format response"]
+    E --> F["6. Send Response<br/>JSON"]
+
+    A -->|No session| Err1["401 Unauthorized"]
+    C -->|Forbidden| Err2["403 Forbidden"]
+    B -->|Invalid| Err3["400 Bad Request"]
+    D -->|Not found| Err4["404 Not Found"]
+    D -->|Error| Err5["500 Server Error"]
+
+    Err1 --> ErrorResp["Error Response"]
+    Err2 --> ErrorResp
+    Err3 --> ErrorResp
+    Err4 --> ErrorResp
+    Err5 --> ErrorResp
+    F --> Success["Success Response"]
+
+    style A fill:#a3e4d7,stroke:#1abc9c
+    style B fill:#a3e4d7,stroke:#1abc9c
+    style C fill:#a3e4d7,stroke:#1abc9c
+    style D fill:#a3e4d7,stroke:#1abc9c
+    style E fill:#a3e4d7,stroke:#1abc9c
+    style Success fill:#51cf66,stroke:#2f9e44,color:#fff
+    style ErrorResp fill:#ff6b6b,stroke:#c92a2a,color:#fff
 ```
 
 ---
@@ -432,20 +448,18 @@ export async function POST(req: NextRequest) {
 src/app/api/
 ├── user/
 │   ├── profile/
-│   │   └── route.ts          # GET, PATCH user profile
+│   │   └── route.ts   GET, PATCH user profile
 │   └── language/
-│       └── route.ts          # PATCH language preference
+│       └── route.ts   PATCH language preference
 ├── courses/
-│   ├── route.ts              # GET all courses
+│   ├── route.ts       GET all courses
 │   └── [id]/
-│       └── route.ts          # GET course details
+│       └── route.ts   GET course details
 └── enrollments/
-    ├── route.ts              # GET, POST enrollments
+    ├── route.ts       GET, POST enrollments
     └── [id]/
-        └── route.ts          # GET enrollment details
+        └── route.ts   GET enrollment details
 ```
-
----
 
 ## Testing Your Endpoints
 
@@ -453,16 +467,17 @@ src/app/api/
 
 ```typescript
 // __tests__/api/enrollments.test.ts
+import { describe, it, expect, vi, Mock } from 'vitest';
 import { POST } from '@/app/api/enrollments/route';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
-jest.mock('@/auth');
-jest.mock('@/lib/prisma');
+vi.mock('@/auth');
+vi.mock('@/lib/prisma');
 
 describe('POST /api/enrollments', () => {
   it('should create enrollment for authenticated user', async () => {
-    (auth as jest.Mock).mockResolvedValue({
+    (auth as Mock).mockResolvedValue({
       user: { email: 'test@example.com', locale: 'en' },
     });
 
@@ -476,7 +491,7 @@ describe('POST /api/enrollments', () => {
   });
 
   it('should return 401 if not authenticated', async () => {
-    (auth as jest.Mock).mockResolvedValue(null);
+    (auth as Mock).mockResolvedValue(null);
 
     const req = new NextRequest('http://localhost:3000/api/enrollments', {
       method: 'POST',
@@ -677,3 +692,7 @@ export async function GET(req: NextRequest) {
   });
 }
 ```
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

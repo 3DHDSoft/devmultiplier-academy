@@ -4,34 +4,33 @@ A comprehensive guide to implementing a robust testing strategy for modern Next.
 
 ## The Testing Pyramid
 
-A well-structured test suite follows the testing pyramid principle: many fast unit tests at the base, fewer integration tests in the middle, and selective end-to-end tests at the top.
+A well-structured test suite follows the testing pyramid principle: many fast unit tests at the base, fewer integration
+tests in the middle, and selective end-to-end tests at the top.
 
-```mermaid
-graph TB
-    subgraph pyramid [" "]
-        direction TB
-        E2E["🌐 E2E Tests<br/>Few, Slow, High Confidence"]
-        INT["🔗 Integration Tests<br/>Moderate Amount, Medium Speed"]
-        UNIT["⚡ Unit Tests<br/>Many, Fast, Focused"]
-    end
-    
-    E2E --> INT
-    INT --> UNIT
-    
-    style E2E fill:#ff6b6b,stroke:#c92a2a,color:#fff
-    style INT fill:#ffd43b,stroke:#f59f00,color:#000
-    style UNIT fill:#51cf66,stroke:#2f9e44,color:#fff
+```
+                    ┌─────────┐
+                   ╱           ╲
+                  ╱   🌐 E2E    ╲
+                 ╱   Few, Slow    ╲
+                ╱  High Confidence ╲
+               ├────────────────────┤
+              ╱                      ╲
+             ╱   🔗 Integration       ╲
+            ╱    Moderate Amount,       ╲
+           ╱       Medium Speed          ╲
+          ├───────────────────────────────┤
+         ╱                                 ╲
+        ╱        ⚡ Unit Tests              ╲
+       ╱       Many, Fast, Focused            ╲
+      ╱                                        ╲
+     └──────────────────────────────────────────┘
 ```
 
-```mermaid
-graph LR
-    subgraph legend [" "]
-        direction LR
-        L1["🔺 Top: E2E - Real browsers, full stack"]
-        L2["🔶 Middle: Integration - Components together"]
-        L3["🟢 Base: Unit - Isolated functions/components"]
-    end
-```
+**Legend:**
+
+- 🔺 **Top: E2E** - Real browsers, full stack
+- 🔶 **Middle: Integration** - Components together
+- 🟢 **Base: Unit** - Isolated functions/components
 
 ## Test Flow Overview
 
@@ -42,7 +41,7 @@ flowchart TD
         UNIT -->|Pass| INT[Run Integration Tests]
         INT -->|Pass| COMMIT[Commit Code]
     end
-    
+
     subgraph CI ["CI/CD Pipeline"]
         COMMIT --> PR[Pull Request]
         PR --> UNIT_CI[Unit Tests]
@@ -55,7 +54,7 @@ flowchart TD
         MERGE -->|No| FIX[Fix Issues]
         FIX --> CODE
     end
-    
+
     style UNIT fill:#51cf66,stroke:#2f9e44
     style INT fill:#ffd43b,stroke:#f59f00
     style UNIT_CI fill:#51cf66,stroke:#2f9e44
@@ -73,12 +72,14 @@ flowchart TD
 **Tools:** Vitest or Jest + React Testing Library
 
 **Characteristics:**
+
 - Execute in milliseconds
 - No external dependencies (database, API, browser)
 - Mock all external services
 - High code coverage target (80%+)
 
 **What to test:**
+
 - Utility functions and helpers
 - Custom React hooks
 - Individual component rendering
@@ -87,6 +88,7 @@ flowchart TD
 - State management reducers
 
 **Example scenarios:**
+
 - Does the `formatCurrency()` function handle edge cases?
 - Does the `useAuth` hook return correct states?
 - Does the Button component render with correct styles?
@@ -98,12 +100,14 @@ flowchart TD
 **Tools:** Vitest or Jest + React Testing Library + MSW (Mock Service Worker)
 
 **Characteristics:**
+
 - Execute in seconds
 - May mock external APIs but test real component interactions
 - Test data flow between components
 - Verify context providers work correctly
 
 **What to test:**
+
 - Form submission flows (validation → submit → feedback)
 - Component hierarchies with shared state
 - API integration with mocked responses
@@ -111,6 +115,7 @@ flowchart TD
 - Authentication flows with mocked providers
 
 **Example scenarios:**
+
 - Does the checkout form validate, submit, and show confirmation?
 - Does the data table fetch, filter, and paginate correctly?
 - Do protected routes redirect unauthenticated users?
@@ -122,12 +127,14 @@ flowchart TD
 **Tools:** Playwright
 
 **Characteristics:**
+
 - Execute in seconds to minutes
 - Run against a real or staging environment
 - Test the full stack (UI → API → Database)
 - High confidence but slower feedback
 
 **What to test:**
+
 - Critical business flows (signup, purchase, checkout)
 - Cross-browser compatibility
 - Authentication and authorization
@@ -135,6 +142,7 @@ flowchart TD
 - Performance-critical user paths
 
 **Example scenarios:**
+
 - Can a new user complete registration and access the dashboard?
 - Can a customer complete a purchase from cart to confirmation?
 - Does the admin panel correctly update database records?
@@ -150,24 +158,24 @@ graph TB
         VITEST --> RTL
         RTL --> MSW
     end
-    
+
     subgraph e2e ["E2E Testing"]
         PLAY["Playwright<br/>Browser Automation"]
         BROWSERS["Chromium | Firefox | WebKit"]
         PLAY --> BROWSERS
     end
-    
+
     subgraph support ["Supporting Tools"]
         USER_EVENT["@testing-library/user-event"]
         COVERAGE["@vitest/coverage-v8"]
         FAKER["@faker-js/faker"]
     end
-    
+
     RTL --> USER_EVENT
     VITEST --> COVERAGE
     PLAY --> FAKER
     MSW --> FAKER
-    
+
     style VITEST fill:#51cf66,stroke:#2f9e44
     style RTL fill:#51cf66,stroke:#2f9e44
     style PLAY fill:#ff6b6b,stroke:#c92a2a
@@ -176,20 +184,20 @@ graph TB
 
 ### Primary Testing Tools
 
-| Tool | Purpose | Install Command |
-|------|---------|-----------------|
-| Vitest | Unit & integration test runner | `bun add -d vitest @vitejs/plugin-react` |
-| React Testing Library | Component testing utilities | `bun add -d @testing-library/react @testing-library/jest-dom` |
-| Playwright | E2E browser testing | `bun add -d @playwright/test` |
-| MSW | API mocking | `bun add -d msw` |
+| Tool                  | Purpose                        | Install Command                                               |
+| --------------------- | ------------------------------ | ------------------------------------------------------------- |
+| Vitest                | Unit & integration test runner | `bun add -d vitest @vitejs/plugin-react`                      |
+| React Testing Library | Component testing utilities    | `bun add -d @testing-library/react @testing-library/jest-dom` |
+| Playwright            | E2E browser testing            | `bun add -d @playwright/test`                                 |
+| MSW                   | API mocking                    | `bun add -d msw`                                              |
 
 ### Supporting Tools
 
-| Tool | Purpose | Install Command |
-|------|---------|-----------------|
+| Tool                        | Purpose                     | Install Command                          |
+| --------------------------- | --------------------------- | ---------------------------------------- |
 | @testing-library/user-event | Realistic user interactions | `bun add -d @testing-library/user-event` |
-| vitest-coverage-v8 | Code coverage reports | `bun add -d @vitest/coverage-v8` |
-| @faker-js/faker | Generate test data | `bun add -d @faker-js/faker` |
+| vitest-coverage-v8          | Code coverage reports       | `bun add -d @vitest/coverage-v8`         |
+| @faker-js/faker             | Generate test data          | `bun add -d @faker-js/faker`             |
 
 ## Project Structure
 
@@ -200,29 +208,29 @@ graph TD
         TESTS["📁 tests/"]
         CONFIG["📄 Config Files"]
     end
-    
+
     subgraph src_details ["src/ Details"]
         COMP["📁 components/<br/>*.tsx + *.test.tsx"]
         HOOKS["📁 hooks/<br/>*.ts + *.test.ts"]
         LIB["📁 lib/<br/>*.ts + *.test.ts"]
         APP["📁 app/"]
     end
-    
+
     subgraph test_details ["tests/ Details"]
         INT_TEST["📁 integration/<br/>*-flow.test.tsx"]
         E2E_TEST["📁 e2e/<br/>*.spec.ts"]
     end
-    
+
     subgraph config_details ["Config Files"]
         VITEST["📄 vitest.config.ts"]
         PLAY["📄 playwright.config.ts"]
         PKG["📄 package.json"]
     end
-    
+
     SRC --> src_details
     TESTS --> test_details
     CONFIG --> config_details
-    
+
     style COMP fill:#51cf66,stroke:#2f9e44
     style HOOKS fill:#51cf66,stroke:#2f9e44
     style LIB fill:#51cf66,stroke:#2f9e44
@@ -233,34 +241,38 @@ graph TD
 ### Directory Layout
 
 ```
-my-nextjs-app/
-├── src/
-│   ├── components/
-│   │   ├── Button/
-│   │   │   ├── Button.tsx
-│   │   │   ├── Button.test.tsx      ← Unit test (co-located)
-│   │   │   └── index.ts
-│   │   └── ...
-│   ├── hooks/
-│   │   ├── useAuth.ts
-│   │   └── useAuth.test.ts          ← Hook unit test
-│   ├── lib/
-│   │   ├── utils.ts
-│   │   └── utils.test.ts            ← Utility unit test
-│   └── app/
-│       └── ...
-├── tests/
-│   ├── integration/                  ← Integration tests
-│   │   ├── checkout-flow.test.tsx
-│   │   └── auth-flow.test.tsx
-│   └── e2e/                          ← Playwright E2E tests
-│       ├── user-registration.spec.ts
-│       ├── purchase-flow.spec.ts
-│       └── admin-dashboard.spec.ts
-├── vitest.config.ts
-├── playwright.config.ts
-└── package.json
+📦 my-nextjs-app/
+├── 📁 src/
+│   ├── 📁 components/
+│   │   └── 📁 Button/
+│   │       ├── 📄 Button.tsx
+│   │       ├── 🧪 Button.test.tsx        ← Unit test (co-located)
+│   │       └── 📄 index.ts
+│   ├── 📁 hooks/
+│   │   ├── 📄 useAuth.ts
+│   │   └── 🧪 useAuth.test.ts            ← Hook unit test
+│   ├── 📁 lib/
+│   │   ├── 📄 utils.ts
+│   │   └── 🧪 utils.test.ts              ← Utility unit test
+│   └── 📁 app/
+├── 📁 tests/
+│   ├── 📁 integration/
+│   │   ├── 🧪 checkout-flow.test.tsx     ← Integration test
+│   │   └── 🧪 auth-flow.test.tsx         ← Integration test
+│   └── 📁 e2e/
+│       ├── 🎭 user-registration.spec.ts  ← E2E test
+│       ├── 🎭 purchase-flow.spec.ts      ← E2E test
+│       └── 🎭 admin-dashboard.spec.ts    ← E2E test
+├── 📄 vitest.config.ts
+├── 📄 playwright.config.ts
+└── 📄 package.json
 ```
+
+**Legend:**
+
+- 🧪 Unit tests (co-located with source) - Green in diagrams
+- 🧪 Integration tests - Yellow in diagrams
+- 🎭 E2E tests (Playwright) - Red in diagrams
 
 ## Configuration Files
 
@@ -277,20 +289,12 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
-    include: [
-      'src/**/*.test.{ts,tsx}',
-      'tests/integration/**/*.test.{ts,tsx}'
-    ],
+    include: ['src/**/*.test.{ts,tsx}', 'tests/integration/**/*.test.{ts,tsx}'],
     exclude: ['tests/e2e/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'tests/',
-        '**/*.d.ts',
-        '**/*.config.{ts,js}',
-      ],
+      exclude: ['node_modules/', 'tests/', '**/*.d.ts', '**/*.config.{ts,js}'],
     },
   },
   resolve: {
@@ -401,20 +405,20 @@ sequenceDiagram
     participant E2E as E2E Test
     participant App as Application
     participant DB as Database
-    
+
     Note over Dev,DB: Unit Test (Fast, Isolated)
     Dev->>Unit: Run test
     Unit->>Unit: Mock dependencies
     Unit->>Unit: Test single function
     Unit-->>Dev: Result (ms)
-    
+
     Note over Dev,DB: Integration Test (Medium)
     Dev->>Int: Run test
     Int->>App: Render components
     Int->>Int: Mock API (MSW)
     Int->>App: Simulate user actions
     Int-->>Dev: Result (seconds)
-    
+
     Note over Dev,DB: E2E Test (Full Stack)
     Dev->>E2E: Run test
     E2E->>App: Launch browser
@@ -474,10 +478,10 @@ describe('Button', () => {
   it('calls onClick handler when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
-    
+
     render(<Button onClick={handleClick}>Click me</Button>);
     await user.click(screen.getByRole('button'));
-    
+
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
@@ -671,8 +675,10 @@ test.describe('Data Operations', () => {
     await expect(page.getByText('$29.99')).toBeVisible();
 
     // Edit the product
-    await page.getByRole('row', { name: /test product/i })
-      .getByRole('button', { name: /edit/i }).click();
+    await page
+      .getByRole('row', { name: /test product/i })
+      .getByRole('button', { name: /edit/i })
+      .click();
     await page.getByLabel(/price/i).clear();
     await page.getByLabel(/price/i).fill('39.99');
     await page.getByRole('button', { name: /save/i }).click();
@@ -681,8 +687,10 @@ test.describe('Data Operations', () => {
     await expect(page.getByText('$39.99')).toBeVisible();
 
     // Delete the product
-    await page.getByRole('row', { name: /test product/i })
-      .getByRole('button', { name: /delete/i }).click();
+    await page
+      .getByRole('row', { name: /test product/i })
+      .getByRole('button', { name: /delete/i })
+      .click();
     await page.getByRole('button', { name: /confirm/i }).click();
 
     // Verify deletion
@@ -744,30 +752,30 @@ flowchart LR
         PUSH["Push to main/develop"]
         PR["Pull Request"]
     end
-    
+
     subgraph jobs ["Parallel Jobs"]
         direction TB
         J1["🟢 unit-integration<br/>bun run test:coverage"]
         J2["🔴 e2e<br/>bun run test:e2e"]
     end
-    
+
     subgraph artifacts ["Artifacts"]
         COV["📊 Coverage Report<br/>Codecov"]
         REPORT["📋 Playwright Report<br/>On Failure"]
     end
-    
+
     subgraph result ["Result"]
         PASS["✅ All Passed"]
         FAIL["❌ Failed"]
     end
-    
+
     PUSH --> jobs
     PR --> jobs
     J1 --> COV
     J2 --> REPORT
     J1 --> result
     J2 --> result
-    
+
     style J1 fill:#51cf66,stroke:#2f9e44
     style J2 fill:#ff6b6b,stroke:#c92a2a
     style PASS fill:#51cf66,stroke:#2f9e44
@@ -814,11 +822,11 @@ jobs:
 
 ## Coverage Targets
 
-| Test Type | Coverage Target | Notes |
-|-----------|-----------------|-------|
-| Unit Tests | 80%+ | Focus on business logic and utilities |
-| Integration Tests | Key user flows | All major features covered |
-| E2E Tests | Critical paths | Registration, checkout, core workflows |
+| Test Type         | Coverage Target | Notes                                  |
+| ----------------- | --------------- | -------------------------------------- |
+| Unit Tests        | 80%+            | Focus on business logic and utilities  |
+| Integration Tests | Key user flows  | All major features covered             |
+| E2E Tests         | Critical paths  | Registration, checkout, core workflows |
 
 ## Summary
 
@@ -853,8 +861,9 @@ A robust testing strategy combines multiple testing approaches:
 2. **Integration tests** verify components work together correctly
 3. **E2E tests** ensure critical user journeys function properly
 
-Start with unit tests for new code, add integration tests for complex features, and reserve E2E tests for critical business flows. This balanced approach maximizes confidence while keeping the test suite fast and maintainable.
+Start with unit tests for new code, add integration tests for complex features, and reserve E2E tests for critical
+business flows. This balanced approach maximizes confidence while keeping the test suite fast and maintainable.
 
 ---
 
-*DevMultiplier Academy - Building 10x-100x Developers in the Age of AI*
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

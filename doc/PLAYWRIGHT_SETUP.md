@@ -1,5 +1,26 @@
 # Playwright Setup - Prerequisites & Configuration
 
+## Playwright Setup Checklist
+
+```mermaid
+graph TB
+    A["System Requirements"] -->|Node 22+<br/>Bun 1.3.5+| B["✅ Installed"]
+    B --> C["Browser Binaries"]
+    C -->|First run auto-download| D["✅ Ready"]
+    D --> E["Test Configuration"]
+    E -->|playwright.config.ts| F["✅ Set Up"]
+    F --> G["Run Tests"]
+    G -->|bun run e2e| H["✅ Executing"]
+
+    style A fill:#e7f5ff,stroke:#1971c2
+    style B fill:#51cf66,stroke:#2f9e44,color:#fff
+    style C fill:#e7f5ff,stroke:#1971c2
+    style D fill:#51cf66,stroke:#2f9e44,color:#fff
+    style E fill:#e7f5ff,stroke:#1971c2
+    style F fill:#51cf66,stroke:#2f9e44,color:#fff
+    style H fill:#339af0,stroke:#1971c2,color:#fff
+```
+
 ## ✅ Installation Status
 
 | Component            | Status        | Version       |
@@ -57,10 +78,12 @@ Ready-to-run test files:
 Added to package.json:
 
 ```json
-"e2e": "playwright test",
-"e2e:ui": "playwright test --ui",
-"e2e:debug": "playwright test --debug",
-"e2e:headed": "playwright test --headed"
+{
+  "e2e": "playwright test",
+  "e2e:ui": "playwright test --ui",
+  "e2e:debug": "playwright test --debug",
+  "e2e:headed": "playwright test --headed"
+}
 ```
 
 ## Initial Setup (First Time Only)
@@ -221,3 +244,7 @@ For issues:
 1. Check [Playwright troubleshooting](https://playwright.dev/docs/troubleshooting)
 2. Review test output with `bunx playwright show-report`
 3. Run with debug mode: `bun run e2e:debug`
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

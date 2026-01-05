@@ -3,6 +3,23 @@
 Prisma is a next-generation ORM (Object-Relational Mapping) tool that makes working with databases easier and more
 type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
 
+## Database Architecture
+
+```mermaid
+graph TD
+    App["Next.js App<br/>Server & Client"] -->|Prisma Client| PrismaLib["Prisma ORM<br/>Type-Safe Layer"]
+    PrismaLib -->|Generated Code| Schema["prisma/schema.prisma<br/>Data Models"]
+    PrismaLib -->|SQL Queries| DB[("PostgreSQL 18<br/>with PostGIS 3.6")]
+
+    Schema -->|Migrations| Migrations["prisma/migrations/<br/>Version History"]
+    Migrations -->|Applied to| DB
+
+    Config["prisma.config.ts<br/>Configuration"] -.->|Environment| PrismaLib
+
+    style PrismaLib fill:#194c98,stroke:#1971c2,color:#fff
+    style DB fill:#2d5a3d,stroke:#2f9e44,color:#fff
+```
+
 ## Project Configuration
 
 This project uses:
@@ -13,6 +30,26 @@ This project uses:
 - **Prisma Config**: `prisma.config.ts` (Prisma 7+ requirement)
 - **Generated Client**: `src/generated/prisma`
 - **ID Generation**: PostgreSQL 18 native `uuidv7()` (time-ordered UUIDs)
+
+## Prisma Workflow
+
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Schema as schema.prisma
+    participant Migrate as prisma migrate
+    participant Gen as prisma generate
+    participant DB as PostgreSQL
+    participant App as Next.js App
+
+    Dev->>Schema: Edit data models
+    Dev->>Migrate: bun exec prisma migrate dev
+    Migrate->>Migrate: Create migration file
+    Migrate->>DB: Apply SQL migration
+    Gen->>Gen: Generate TypeScript types
+    Gen->>App: Update Prisma Client
+    App->>DB: Query with type safety
+```
 
 ## Getting Started
 
@@ -48,7 +85,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   // URL is now configured in prisma.config.ts
-}
+}}
 ```
 
 Make sure your `.env.local` has the DATABASE_URL:
@@ -282,3 +319,7 @@ bun run dev
 - [Prisma Schema Reference](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference)
 - [Prisma Client API Reference](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference)
 - [PostgreSQL Extensions Guide](https://www.postgresql.org/docs/current/contrib.html)
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

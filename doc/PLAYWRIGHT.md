@@ -5,11 +5,47 @@
 Playwright is configured for end-to-end testing across multiple browsers (Chromium, Firefox, WebKit) and devices
 (Desktop and Mobile). Tests automatically start the Next.js dev server before running.
 
+## E2E Test Architecture
+
+```mermaid
+graph TD
+    subgraph Dev["Development"]
+        App["Next.js App<br/>localhost:3000"]
+    end
+
+    subgraph Test["Playwright Tests"]
+        Config["playwright.config.ts"]
+        Fixtures["Test Fixtures"]
+        Specs["Test Specs<br/>*.spec.ts"]
+    end
+
+    subgraph Browsers["Browser Environments"]
+        Chromium["🔵 Chromium<br/>Desktop"]
+        Firefox["🦊 Firefox<br/>Desktop"]
+        Safari["🧭 Safari<br/>Desktop + Mobile"]
+    end
+
+    Specs -->|Launch| App
+    Config -->|Configure| Specs
+    Fixtures -->|Provide| Specs
+
+    Specs -->|Run against| Chromium
+    Specs -->|Run against| Firefox
+    Specs -->|Run against| Safari
+
+    Chromium -->|Report| Results["Results"]
+    Firefox -->|Report| Results
+    Safari -->|Report| Results
+
+    style App fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style Results fill:#51cf66,stroke:#2f9e44,color:#fff
+```
+
 ## Setup & Prerequisites
 
 ✅ **Already installed:**
 
-- @playwright/test
+- @playwright/test (1.57.0)
 - playwright.config.ts configured
 - E2E test examples created
 
@@ -360,3 +396,7 @@ lsof -i :3000  # Check what's using port 3000
 - [Best Practices](https://playwright.dev/docs/best-practices)
 - [Debugging Guide](https://playwright.dev/docs/debug)
 - [API Reference](https://playwright.dev/docs/api/class-test)
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

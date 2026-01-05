@@ -7,6 +7,36 @@ This document describes the comprehensive API unit tests created for all major e
 **Total API Tests:** 117 tests across 6 test files **Status:** ✅ All passing **Coverage:** Validation, authentication,
 error cases, response formatting
 
+## Test Execution Pipeline
+
+```mermaid
+flowchart TD
+    A["Run: bun run test"] --> B["Vitest discovers tests<br/>in src/app/api/__tests__/**"]
+    B --> C["Load vitest.setup.ts<br/>Mock Auth.js & Prisma"]
+    C --> D["Execute API tests<br/>in parallel"]
+
+    D --> Courses["courses.test.ts<br/>9 tests"]
+    D --> Enrollments["enrollments.test.ts<br/>17 tests"]
+    D --> Progress["progress.test.ts<br/>20 tests"]
+    D --> Register["register.test.ts<br/>19 tests"]
+    D --> Language["user-language.test.ts<br/>14 tests"]
+    D --> Profile["user-profile.test.ts<br/>17 tests"]
+
+    Courses --> E["Collect results"]
+    Enrollments --> E
+    Progress --> E
+    Register --> E
+    Language --> E
+    Profile --> E
+
+    E --> F{All pass?}
+    F -->|Yes| G["✅ 117/117 tests passed"]
+    F -->|No| H["❌ Show failures"]
+
+    style G fill:#51cf66,stroke:#2f9e44,color:#fff
+    style H fill:#ff6b6b,stroke:#c92a2a,color:#fff
+```
+
 ---
 
 ## Test Files
@@ -450,9 +480,13 @@ All 117 tests pass in ~45 seconds.
 ## Related Documentation
 
 - [api-implementation-guide.md](./api-implementation-guide.md) - API patterns these tests validate
-- [TESTING.md](./TESTING.md) - Jest configuration and general testing guide
+- [TESTING.md](./TESTING.md) - Vitest configuration and general testing guide
 - [TESTING_OVERVIEW.md](./TESTING_OVERVIEW.md) - Quick reference for all testing
 
 ---
 
-**Last Updated:** January 4, 2026 **Test Framework:** Jest **Status:** ✅ All 117 tests passing
+**Last Updated:** January 4, 2026 **Test Framework:** Vitest **Status:** ✅ All 117 tests passing
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

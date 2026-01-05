@@ -15,14 +15,54 @@ The Dev Academy platform uses **Auth.js v5** (NextAuth) with:
 
 ## Architecture
 
+Auth.js handles authentication with a middleware-first approach:
+
+```mermaid
+sequenceDiagram
+    participant User as User/Browser
+    participant Middleware
+    participant Auth as Auth.js
+    participant DB as Prisma
+    participant Route as Protected Route
+
+    User->>Middleware: Request to /dashboard
+    Middleware->>Auth: Check session?
+    Auth->>DB: Load session from DB
+    DB->>Auth: Session found?
+
+    alt Session Valid
+        Auth->>Middleware: ✅ Session OK
+        Middleware->>Route: Allow access
+        Route->>User: Render page
+    else No Session
+        Auth->>Middleware: ❌ No session
+        Middleware->>User: Redirect to /login
+    end
 ```
-User Request
-  ↓
-[Middleware] Check authentication
-  ↓
-[Protected Route?] → Yes → Redirect to /login (if no session)
-  ↓                    No → Continue
-[Page/API] Use session data
+
+## Authentication Flow
+
+```mermaid
+graph TD
+    Start["User visits /login"] --> Form["Login Form"]
+    Form --> Submit["Submit credentials"]
+    Submit --> Validate["CredentialsProvider.authorize"]
+
+    Validate --> FindUser["Find user in DB"]
+    FindUser --> Hash["Compare password hash"]
+
+    Hash --> Match{Password<br/>matches?}
+    Match -->|No| Fail["❌ Auth failed"]
+    Match -->|Yes| Success["✅ Create JWT"]
+
+    Success --> Session["Store session in DB"]
+    Session --> Redirect["Redirect to /dashboard"]
+    Fail --> Error["Show error message"]
+    Error --> Form
+
+    style Success fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Fail fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Redirect fill:#339af0,stroke:#1971c2,color:#fff
 ```
 
 ---
@@ -108,20 +148,20 @@ export async function middleware(request: NextRequest) {
 
 ### Registration Flow
 
-```
-User enters form → POST /api/auth/register
-  ↓
-Validate input (Zod schema)
-  ↓
-Check if email exists
-  ↓
-Hash password (bcrypt)
-  ↓
-Create user in database
-  ↓
-Auto sign-in with credentials
-  ↓
-Redirect to /dashboard
+```mermaid
+flowchart TD
+    A["User enters form"] --> B["POST /api/auth/register"]
+    B --> C["Validate input<br/>(Zod schema)"]
+    C --> D{"Email<br/>exists?"}
+    D -->|Yes| E["❌ Return 409 Conflict"]
+    D -->|No| F["Hash password<br/>(bcrypt)"]
+    F --> G["Create user in database"]
+    G --> H["Auto sign-in<br/>with credentials"]
+    H --> I["Redirect to /dashboard"]
+
+    style A fill:#e3f2fd,stroke:#1976d2
+    style I fill:#51cf66,stroke:#2f9e44,color:#fff
+    style E fill:#ff6b6b,stroke:#c92a2a,color:#fff
 ```
 
 **Example:**
@@ -154,20 +194,23 @@ const user = await prisma.user.create({
 
 ### Login Flow
 
-```
-User enters email/password → POST /api/auth/signin
-  ↓
-Auth.js calls CredentialsProvider.authorize()
-  ↓
-Find user by email
-  ↓
-Compare password with bcrypt
-  ↓
-Generate JWT + Session
-  ↓
-Set session cookie
-  ↓
-Redirect to /dashboard
+```mermaid
+flowchart TD
+    A["User enters email/password"] --> B["POST /api/auth/signin"]
+    B --> C["Auth.js calls<br/>CredentialsProvider.authorize()"]
+    C --> D["Find user by email"]
+    D --> E{"User<br/>found?"}
+    E -->|No| F["❌ Auth failed"]
+    E -->|Yes| G["Compare password<br/>with bcrypt"]
+    G --> H{"Password<br/>matches?"}
+    H -->|No| F
+    H -->|Yes| I["Generate JWT + Session"]
+    I --> J["Set session cookie"]
+    J --> K["Redirect to /dashboard"]
+
+    style A fill:#e3f2fd,stroke:#1976d2
+    style K fill:#51cf66,stroke:#2f9e44,color:#fff
+    style F fill:#ff6b6b,stroke:#c92a2a,color:#fff
 ```
 
 **Client Usage:**
@@ -190,14 +233,15 @@ if (result?.ok) {
 
 ### Logout Flow
 
-```
-User clicks sign out → signOut()
-  ↓
-Clear session cookie
-  ↓
-Clear JWT from localStorage
-  ↓
-Redirect to /login
+```mermaid
+flowchart TD
+    A["User clicks sign out"] --> B["signOut()"]
+    B --> C["Clear session cookie"]
+    C --> D["Clear JWT from localStorage"]
+    D --> E["Redirect to /login"]
+
+    style A fill:#e3f2fd,stroke:#1976d2
+    style E fill:#51cf66,stroke:#2f9e44,color:#fff
 ```
 
 **Usage:**
@@ -382,23 +426,23 @@ openssl rand -base64 32
 
 ```
 src/
-├── auth.ts                          # Main Auth.js config
-├── middleware.ts                    # Route protection
+├── auth.ts                     # Main Auth.js config
+├── middleware.ts               # Route protection
 ├── app/
 │   ├── login/
-│   │   └── page.tsx                # Login page
+│   │   └── page.tsx            # Login page
 │   ├── register/
-│   │   └── page.tsx                # Registration page
+│   │   └── page.tsx            # Registration page
 │   ├── dashboard/
-│   │   └── page.tsx                # Protected dashboard
+│   │   └── page.tsx            # Protected dashboard
 │   └── api/
 │       └── auth/
 │           ├── [...nextauth]/
-│           │   └── route.ts        # Auth.js handlers
+│           │   └── route.ts    # Auth.js handlers
 │           ├── register/
-│           │   └── route.ts        # Registration API
+│           │   └── route.ts    # Registration API
 │           └── logout/
-│               └── route.ts        # Logout endpoint
+│               └── route.ts    # Logout endpoint
 ```
 
 ---
@@ -605,3 +649,7 @@ AUTH_DEBUG=true
 4. **To do:** Add OAuth providers (Google, GitHub)
 5. **To do:** Add password reset functionality
 6. **To do:** Add email verification
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

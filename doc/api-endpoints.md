@@ -2,6 +2,39 @@
 
 Complete reference for all REST API endpoints in the Dev Academy platform.
 
+## API Architecture
+
+```mermaid
+graph TD
+    Client["Client Request"] -->|HTTP| Router["Next.js Route Handler"]
+    Router -->|1. Auth| Auth["Check Session"]
+    Auth -->|Valid| Authorize["2. Authorize User"]
+    Auth -->|Invalid| Unauth["❌ 401 Unauthorized"]
+
+    Authorize -->|Permitted| Validate["3. Validate Input"]
+    Authorize -->|Forbidden| Forbidden["❌ 403 Forbidden"]
+
+    Validate -->|Valid| Query["4. Query Database"]
+    Validate -->|Invalid| BadReq["❌ 400 Bad Request"]
+
+    Query -->|Success| Transform["5. Transform Response"]
+    Query -->|Not Found| NotFound["❌ 404 Not Found"]
+    Query -->|Error| ServerErr["❌ 500 Server Error"]
+
+    Transform -->|JSON| Response["✅ 200/201 Response"]
+    Response -->|HTTP| Client
+
+    Unauth -->|HTTP| Client
+    Forbidden -->|HTTP| Client
+    BadReq -->|HTTP| Client
+    NotFound -->|HTTP| Client
+    ServerErr -->|HTTP| Client
+
+    style Response fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Unauth fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Forbidden fill:#ffa94d,stroke:#fd7e14,color:#000
+```
+
 ## Authentication
 
 All endpoints except `/api/courses` require authentication via Auth.js session. Include authentication headers in
@@ -632,3 +665,7 @@ const enrollment = await enrollResponse.json();
 const coursesResponse = await fetch('/api/courses');
 const courses = await coursesResponse.json();
 ```
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

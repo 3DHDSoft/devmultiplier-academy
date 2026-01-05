@@ -66,6 +66,29 @@ For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n r
 - **Paraglide JS** - New, lightweight option
 - **Built-in Next.js i18n** - Only works with Pages Router (deprecated in App Router)
 
+## i18n Flow Architecture
+
+```mermaid
+graph TD
+    Browser["🌍 Browser Request<br/>GET /es/courses"] --> Middleware["Middleware"]
+    Middleware -->|Detect locale| Routing["Routing"]
+
+    Routing -->|Locale = 'es'| Config["Load Config<br/>from i18n/config.ts"]
+    Config -->|Get messages| Messages["Load messages/es.json"]
+
+    Messages -->|Pass to provider| Provider["NextIntlClientProvider<br/>locale='es'<br/>messages={...}"]
+    Provider -->|Wrap children| Page["Page Component"]
+
+    Page -->|useTranslations| Trans["t('courses.title')"]
+    Trans -->|Look up key| Lookup["Find key in<br/>messages/es.json"]
+    Lookup -->|Return value| Render["✅ Render translated text"]
+
+    style Middleware fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style Config fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style Messages fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style Render fill:#51cf66,stroke:#2f9e44,color:#fff
+```
+
 ---
 
 ## Project Structure
@@ -75,29 +98,6 @@ For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n r
 ```
 dev-x-academy-web/
 ├── src/
-│   ├── app/
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── about/
-│   │   │   └── page.tsx
-│   │   ├── contact/
-│   │   │   └── page.tsx
-│   │   ├── courses/
-│   │   │   └── page.tsx
-│   │   └── pricing/
-│   │       └── page.tsx
-│   ├── components/
-│   │   ├── layout/
-│   │   │   ├── footer.tsx
-│   │   │   └── header.tsx
-│   │   ├── sections/
-│   │   │   ├── courses.tsx
-│   │   │   ├── cta.tsx
-│   │   │   ├── hero.tsx
-│   │   │   └── pricing.tsx
-│   │   └── ui/
-│   │       └── button.tsx
 │   └── lib/
 │       └── utils.ts
 ├── public/
@@ -108,7 +108,7 @@ dev-x-academy-web/
 ├── package.json
 ├── postcss.config.mjs
 ├── tsconfig.json
-└── .prettierrc                       # Prettier configuration
+└── .prettierrc                   # Prettier configuration
 ```
 
 ### Target Structure (After Implementation)
@@ -117,9 +117,9 @@ dev-x-academy-web/
 dev-x-academy-web/
 ├── src/
 │   ├── app/
-│   │   ├── [locale]/                # Locale-based routing (NEW)
-│   │   │   ├── layout.tsx           # Root layout with locale (MODIFIED)
-│   │   │   ├── page.tsx             # Home page (MOVED)
+│   │   ├── [locale]/             # Locale-based routing (NEW)
+│   │   │   ├── layout.tsx        # Root layout with locale (MODIFIED)
+│   │   │   ├── page.tsx          # Home page (MOVED)
 │   │   │   ├── about/
 │   │   │   │   └── page.tsx
 │   │   │   ├── contact/
@@ -127,17 +127,17 @@ dev-x-academy-web/
 │   │   │   ├── courses/
 │   │   │   │   ├── page.tsx
 │   │   │   │   └── [slug]/
-│   │   │   │       └── page.tsx     # NEW: Individual course pages
+│   │   │   │       └── page.tsx  # NEW: Individual course pages
 │   │   │   ├── pricing/
 │   │   │   │   └── page.tsx
-│   │   │   ├── privacy-policy/      # NEW
+│   │   │   ├── privacy-policy/   # NEW
 │   │   │   │   └── page.tsx
-│   │   │   └── terms-of-service/    # NEW
+│   │   │   └── terms-of-service/ # NEW
 │   │   │       └── page.tsx
 │   │   └── api/
 │   │       └── ...
 │   ├── components/
-│   │   ├── LanguageSwitcher.tsx     # NEW
+│   │   ├── LanguageSwitcher.tsx  # NEW
 │   │   ├── layout/
 │   │   │   ├── footer.tsx
 │   │   │   └── header.tsx
@@ -150,12 +150,12 @@ dev-x-academy-web/
 │   │       └── button.tsx
 │   ├── lib/
 │   │   └── utils.ts
-│   ├── i18n/                        # NEW: i18n configuration
+│   ├── i18n/                     # NEW: i18n configuration
 │   │   ├── config.ts
 │   │   ├── request.ts
 │   │   └── routing.ts
-│   └── middleware.ts                # NEW: Locale detection & routing
-├── messages/                         # NEW: Translation files
+│   └── middleware.ts             # NEW: Locale detection & routing
+├── messages/                     # NEW: Translation files
 │   ├── en.json
 │   ├── es.json
 │   ├── pt.json
@@ -622,7 +622,7 @@ export default function Navigation() {
 
 #### Full Schema Design
 
-```typescript
+```graphql
 // Database schema example (Prisma)
 
 model Course {
@@ -1302,6 +1302,7 @@ Run with: `bun run scripts/check-translations.ts`
 
 ```typescript
 // __tests__/i18n.test.tsx
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import HomePage from '@/app/[locale]/page';
@@ -1403,3 +1404,7 @@ describe('Internationalization', () => {
 
 This setup will give you a solid foundation to scale to 10+ languages while maintaining code quality and translation
 accuracy.
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

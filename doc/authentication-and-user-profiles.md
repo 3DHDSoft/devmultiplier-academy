@@ -23,26 +23,25 @@ Auth.js, and next-intl.
 
 ### Architecture Diagram
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  User Authentication + Profile + i18n Flow              │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  1. User Login/Register                                 │
-│     ↓                                                   │
-│  2. Auth.js validates credentials → PostgreSQL          │
-│     ↓                                                   │
-│  3. Session created with user data (including locale)   │
-│     ↓                                                   │
-│  4. Middleware reads session → applies user's locale    │
-│     ↓                                                   │
-│  5. next-intl uses locale for translations              │
-│     ↓                                                   │
-│  6. User can update language preference                 │
-│     ↓                                                   │
-│  7. Preference saved to database → reflected on reload  │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    User["User"] -->|1. Login/Register| Auth["Auth.js"]
+    Auth -->|2. Validate| DB1[("PostgreSQL<br/>Check credentials")]
+    DB1 -->|3. Valid| Session["Create Session<br/>with user data"]
+    Session -->|4. Store| DB2[("PostgreSQL<br/>_prisma_sessions")]
+
+    Request["User Request"] -->|5. Middleware| Middleware["Check Session<br/>Get locale"]
+    Middleware -->|6. Load locale| Config["next-intl config"]
+    Config -->|7. Load messages| Messages["messages/[locale].json"]
+    Messages -->|8. Render page| Page["Page in user's language"]
+
+    UserProfile["User Profile Page"] -->|9. Update language| API["PATCH /api/user/language"]
+    API -->|10. Save| DB3[("PostgreSQL<br/>Update user locale")]
+    DB3 -->|11. Reflect| Page
+
+    style Auth fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style Session fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style Page fill:#51cf66,stroke:#2f9e44,color:#fff
 ```
 
 ### Key Integration Points
@@ -86,7 +85,7 @@ bun prisma init
 
 ### Complete Prisma Schema
 
-```prisma
+```graphql
 // prisma/schema.prisma
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
@@ -1348,3 +1347,7 @@ Create all essential endpoints using:
 - Courses (list, get by ID with translations)
 - Enrollments (list, create, get progress)
 - Progress tracking (update course progress)
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

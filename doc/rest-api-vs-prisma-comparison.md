@@ -2,6 +2,36 @@
 
 Comprehensive comparison of direct Prisma access vs REST API abstraction layer for PostgreSQL database operations.
 
+## Architecture Comparison
+
+```mermaid
+graph TB
+    subgraph REST["🌐 REST API Layer"]
+        direction LR
+        Client2["Client<br/>Browser/Mobile/External"]
+        API["REST API Endpoint<br/>Route Handler"]
+        PrismaLib2["Prisma Client"]
+        DB2[("PostgreSQL<br/>Database")]
+        Client2 -->|HTTP| API
+        API -->|Prisma| PrismaLib2
+        PrismaLib2 -->|SQL| DB2
+    end
+
+    subgraph Prisma["🔌 Direct Prisma Access"]
+        direction LR
+        Client["Next.js Server<br/>Components/API"]
+        PrismaLib["Prisma Client"]
+        DB1[("PostgreSQL<br/>Database")]
+        Client -->|Direct| PrismaLib
+        PrismaLib -->|SQL| DB1
+    end
+
+    REST ~~~ Prisma
+
+    style REST fill:#fff3e0,stroke:#e65100,color:#000
+    style Prisma fill:#e7f5ff,stroke:#1971c2,color:#000
+```
+
 ## Quick Comparison Table
 
 | Aspect                      | Prisma (Direct)         | REST API Layer              |
@@ -725,3 +755,7 @@ For **DevMultiplier Academy**, I recommend:
    - Real-time notifications (WebSockets)
 
 This gives you the best of both worlds: **rapid development + future scalability**.
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

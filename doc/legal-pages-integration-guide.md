@@ -14,22 +14,41 @@ Then link to them from:
 3. Checkout/Payment pages
 4. Account settings
 
+## Legal Pages Flow
+
+```mermaid
+graph TD
+    User["User"] -->|Visit site| Home["Home Page"]
+    Home -->|Click footer link| Legal["Legal Page<br/>Terms or Privacy"]
+    Legal -->|Read content| Content["Content loaded<br/>from translation JSON"]
+
+    Signup["Registration Page"] -->|Accept terms| Accept["Show legal text"]
+    Accept -->|User confirms| TOS["✅ Stored in DB"]
+
+    Admin["Admin/Developer"] -->|Update legal text| JSON["Edit translation<br/>JSON file"]
+    JSON -->|Deploy| Prod["Live on website"]
+
+    style Legal fill:#a3e4d7,stroke:#1abc9c,color:#000
+    style TOS fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Content fill:#fff3e0,stroke:#f57c00,color:#000
+```
+
 ---
 
 ## File Structure
 
 ```
 app/
-├── [locale]/
-│   ├── layout.tsx
-│   ├── page.tsx                     # Home page
-│   ├── terms-of-service/
-│   │   └── page.tsx                 # Terms of Service page
-│   ├── privacy-policy/
-│   │   └── page.tsx                 # Privacy Policy page
-│   ├── courses/
-│   │   └── ...
-│   └── ...
+└── [locale]/
+    ├── layout.tsx
+    ├── page.tsx           Home
+    ├── terms-of-service/
+    │   └── page.tsx       Terms page
+    ├── privacy-policy/
+    │   └── page.tsx       Privacy page
+    ├── courses/
+    │   └── ...
+    └── ...other pages
 ```
 
 ---
@@ -201,7 +220,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 **`content/legal/en/terms-of-service.mdx`**
 
-```mdx
+```markdown
 ---
 title: Terms of Service
 lastUpdated: 2025-12-30
@@ -793,3 +812,7 @@ messages/
 
 This gives you a complete, multilingual legal page implementation that's SEO-friendly and properly integrated throughout
 your site! 🚀
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_
