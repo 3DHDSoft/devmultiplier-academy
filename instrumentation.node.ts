@@ -23,7 +23,7 @@ import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 
 // Enable error-level logging only (change to DiagLogLevel.DEBUG for verbose debugging)
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
-// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+//diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 // Service configuration
 const resource = resourceFromAttributes({
@@ -51,7 +51,7 @@ if (headersEnv) {
   } else {
     // key=value format: Authorization=Basic ...
     const pairs = headersEnv.split(',');
-    pairs.forEach(pair => {
+    pairs.forEach((pair) => {
       const [key, ...valueParts] = pair.split('=');
       if (key && valueParts.length > 0) {
         headers[key.trim()] = valueParts.join('=').trim();
@@ -73,9 +73,7 @@ const traceExporter = new OTLPTraceExporter({
 });
 
 // Configure OTLP metrics exporter for Grafana Cloud
-const metricsUrl = endpoint.endsWith('/v1/metrics')
-  ? endpoint
-  : endpoint.replace(/\/v1\/traces$/, '') + '/v1/metrics';
+const metricsUrl = endpoint.endsWith('/v1/metrics') ? endpoint : endpoint.replace(/\/v1\/traces$/, '') + '/v1/metrics';
 
 const metricExporter = new OTLPMetricExporter({
   url: metricsUrl,
@@ -101,11 +99,7 @@ const sdk = new NodeSDK({
         ignoreIncomingRequestHook: (request) => {
           // Ignore health checks and static assets
           const url = request.url || '';
-          return (
-            url.includes('/_next/static') ||
-            url.includes('/favicon.ico') ||
-            url === '/health'
-          );
+          return url.includes('/_next/static') || url.includes('/favicon.ico') || url === '/health';
         },
       },
       // Auto-instrument fetch calls (includes undici)
@@ -125,7 +119,7 @@ const sdk = new NodeSDK({
 
 // Start the SDK
 sdk.start();
-// console.log('✅ OpenTelemetry instrumentation initialized');
+console.log('✅ OpenTelemetry instrumentation initialized');
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

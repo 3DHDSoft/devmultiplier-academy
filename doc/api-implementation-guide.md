@@ -478,6 +478,16 @@ export async function POST(req: NextRequest) {
         └── 📄 route.ts      # GET enrollment details
 ```
 
+**Legend:**
+
+- 📦 Root API directory
+- 🛣️ Route handlers (API endpoints)
+- 👤 User-related endpoints
+- 📚 Course management
+- 📝 Enrollment management
+- 🌐 Language/locale endpoints
+- 🔢 Dynamic route segments
+
 ## Testing Your Endpoints
 
 ### Unit Test Example

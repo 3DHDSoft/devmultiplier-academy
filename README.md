@@ -320,3 +320,7 @@ The site auto-deploys to Vercel on push to the `main` branch.
 ## License
 
 © 2025 DevMultiplier Academy. A 3D HD Soft, LLC company. All rights reserved.
+
+---
+
+_DevMultiplier Academy - 3D HD Soft - DevMultiplier Academy_

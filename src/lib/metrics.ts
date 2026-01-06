@@ -8,13 +8,7 @@
  */
 
 import { metrics } from '@opentelemetry/api';
-import type {
-  Counter,
-  Histogram,
-  UpDownCounter,
-  MetricOptions,
-  Attributes,
-} from '@opentelemetry/api';
+import type { Counter, Histogram, UpDownCounter, MetricOptions, Attributes } from '@opentelemetry/api';
 
 // Get the global meter for this service
 const meter = metrics.getMeter('dev-academy-web', '1.0.0');
@@ -337,15 +331,7 @@ export function recordLoginAttempt(attributes: {
   country?: string;
   city?: string;
 }) {
-  const {
-    success,
-    userId,
-    failureReason,
-    isNewLocation,
-    isSuspicious,
-    country,
-    city,
-  } = attributes;
+  const { success, userId, failureReason, isNewLocation, isSuspicious, country, city } = attributes;
 
   const commonAttrs: Attributes = {
     'user.success': success,
@@ -377,12 +363,7 @@ export function recordLoginAttempt(attributes: {
 /**
  * Record page view metrics
  */
-export function recordPageView(attributes: {
-  path: string;
-  userId?: string;
-  isUnique?: boolean;
-  duration?: number;
-}) {
+export function recordPageView(attributes: { path: string; userId?: string; isUnique?: boolean; duration?: number }) {
   const { path, userId, isUnique, duration } = attributes;
 
   const commonAttrs: Attributes = {
@@ -447,29 +428,20 @@ export function updateActiveSessions(change: number, attributes?: Attributes) {
 /**
  * Create a custom counter
  */
-export function createCounter(
-  name: string,
-  options?: MetricOptions,
-): Counter {
+export function createCounter(name: string, options?: MetricOptions): Counter {
   return meter.createCounter(name, options) as Counter;
 }
 
 /**
  * Create a custom histogram
  */
-export function createHistogram(
-  name: string,
-  options?: MetricOptions,
-): Histogram {
+export function createHistogram(name: string, options?: MetricOptions): Histogram {
   return meter.createHistogram(name, options) as Histogram;
 }
 
 /**
  * Create a custom up-down counter
  */
-export function createUpDownCounter(
-  name: string,
-  options?: MetricOptions,
-): UpDownCounter {
+export function createUpDownCounter(name: string, options?: MetricOptions): UpDownCounter {
   return meter.createUpDownCounter(name, options) as UpDownCounter;
 }
