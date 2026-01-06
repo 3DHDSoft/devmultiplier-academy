@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { recordApiCall } from './metrics';
 
 export interface GeoLocation {
   country?: string;
@@ -49,6 +50,11 @@ export async function getUserAgent(): Promise<string | null> {
  * Rate limit: 45 requests per minute
  */
 export async function getGeoLocationFromIP(ip: string): Promise<GeoLocation> {
+  const startTime = Date.now();
+  let success = false;
+  let statusCode: number | undefined;
+  let errorType: string | undefined;
+
   try {
     // Skip geolocation for localhost/private IPs
     if (!ip || ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.')) {
@@ -63,8 +69,11 @@ export async function getGeoLocationFromIP(ip: string): Promise<GeoLocation> {
       next: { revalidate: 86400 }, // Cache for 24 hours
     });
 
+    statusCode = response.status;
+
     if (!response.ok) {
       console.error('Failed to fetch geolocation:', response.statusText);
+      errorType = `http_${statusCode}`;
       return {};
     }
 
@@ -72,9 +81,11 @@ export async function getGeoLocationFromIP(ip: string): Promise<GeoLocation> {
 
     if (data.status !== 'success') {
       console.error('Geolocation API returned error:', data);
+      errorType = 'api_error';
       return {};
     }
 
+    success = true;
     return {
       country: data.country,
       city: data.city,
@@ -84,7 +95,18 @@ export async function getGeoLocationFromIP(ip: string): Promise<GeoLocation> {
     };
   } catch (error) {
     console.error('Error fetching geolocation:', error);
+    errorType = error instanceof Error ? error.name : 'unknown_error';
     return {};
+  } finally {
+    // Record API call metrics
+    recordApiCall({
+      service: 'ip-api.com',
+      endpoint: '/json',
+      duration: Date.now() - startTime,
+      statusCode,
+      success,
+      error: errorType,
+    });
   }
 }
 

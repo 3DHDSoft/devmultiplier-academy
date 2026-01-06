@@ -3,13 +3,16 @@
  *
  * Configures OpenTelemetry with:
  * - Automatic instrumentation for HTTP, Prisma, and more
- * - OTLP exporter for Grafana Cloud
+ * - OTLP trace exporter for Grafana Cloud Tempo
+ * - OTLP metrics exporter for Grafana Cloud Prometheus
  * - Custom resource attributes
  */
 
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 import {
   ATTR_SERVICE_NAME,
@@ -69,10 +72,27 @@ const traceExporter = new OTLPTraceExporter({
   headers,
 });
 
+// Configure OTLP metrics exporter for Grafana Cloud
+const metricsUrl = endpoint.endsWith('/v1/metrics')
+  ? endpoint
+  : endpoint.replace(/\/v1\/traces$/, '') + '/v1/metrics';
+
+const metricExporter = new OTLPMetricExporter({
+  url: metricsUrl,
+  headers,
+});
+
+// Configure metric reader with 60-second export interval
+const metricReader = new PeriodicExportingMetricReader({
+  exporter: metricExporter,
+  exportIntervalMillis: 60000, // Export every 60 seconds
+});
+
 // Initialize OpenTelemetry SDK
 const sdk = new NodeSDK({
   resource,
   traceExporter,
+  metricReader,
   instrumentations: [
     getNodeAutoInstrumentations({
       // Auto-instrument HTTP requests

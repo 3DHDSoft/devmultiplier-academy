@@ -10,12 +10,14 @@
  */
 
 import { Resend } from 'resend';
+import { recordEmailSent } from './metrics';
 
 interface EmailOptions {
   to: string;
   subject: string;
   html: string;
   text?: string;
+  type?: string;
 }
 
 // Resend email provider
@@ -26,6 +28,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  * In production, replace this with actual email service integration
  */
 export async function sendEmail(options: EmailOptions): Promise<void> {
+  const startTime = Date.now();
+  let success = false;
+  let errorType: string | undefined;
+
   try {
     // For development/demo: log to console
     if (process.env.RESEND_API_KEY == 'development') {
@@ -43,9 +49,20 @@ export async function sendEmail(options: EmailOptions): Promise<void> {
       html: options.html,
     });
     console.log(`✅ Email sent to ${options.to}: ${options.subject}`);
+    success = true;
   } catch (error) {
     console.error('Failed to send email:', error);
+    errorType = error instanceof Error ? error.name : 'unknown_error';
     // Don't throw - email failures shouldn't break the app
+  } finally {
+    // Record email metrics
+    recordEmailSent({
+      type: options.type || 'general',
+      recipient: options.to,
+      success,
+      duration: Date.now() - startTime,
+      error: errorType,
+    });
   }
 }
 
@@ -149,7 +166,7 @@ If this was you, you can safely ignore this email.
 - Dev Academy Security Team
   `;
 
-  await sendEmail({ to: email, subject, html, text });
+  await sendEmail({ to: email, subject, html, text, type: 'new_location_alert' });
 }
 
 /**
@@ -257,5 +274,5 @@ What should you do?
 - Dev Academy Security Team
   `;
 
-  await sendEmail({ to: email, subject, html, text });
+  await sendEmail({ to: email, subject, html, text, type: 'failed_login_alert' });
 }

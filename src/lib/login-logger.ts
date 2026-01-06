@@ -2,6 +2,7 @@ import { prisma } from './prisma';
 import { getClientIP, getUserAgent, getGeoLocationFromIP, getGeoLocationFromCloudflare } from './ip-utils';
 import { sendNewLocationAlert, sendFailedLoginAlert } from './email-service';
 import { withSpan, addSpanAttributes, addSpanEvent } from './tracer';
+import { recordLoginAttempt, recordDbQuery, newLocationLoginCounter, suspiciousLoginCounter } from './metrics';
 
 export interface LoginLogData {
   userId: string;
@@ -56,6 +57,7 @@ export async function logLogin(data: LoginLogData): Promise<void> {
         });
 
         // Create login log entry
+        const dbStartTime = Date.now();
         const loginLog = await prisma.loginLog.create({
           data: {
             userId: data.userId,
@@ -72,6 +74,14 @@ export async function logLogin(data: LoginLogData): Promise<void> {
           },
         });
 
+        // Record database query metrics
+        recordDbQuery({
+          operation: 'create',
+          table: 'loginLog',
+          duration: Date.now() - dbStartTime,
+          success: true,
+        });
+
         addSpanEvent('login_log_created', {
           'log.id': loginLog.id,
         });
@@ -79,6 +89,16 @@ export async function logLogin(data: LoginLogData): Promise<void> {
         console.log(
           `Login logged for user ${data.email} from ${ipAddress || 'Unknown'} (${geoLocation.city}, ${geoLocation.country})`
         );
+
+        // Record login attempt metrics
+        recordLoginAttempt({
+          success: data.success,
+          userId: data.userId !== 'unknown' ? data.userId : undefined,
+          email: data.email,
+          failureReason: data.failureReason,
+          country: geoLocation.country || undefined,
+          city: geoLocation.city || undefined,
+        });
 
         // Handle security notifications (only for real users, not 'unknown')
         if (data.userId !== 'unknown') {
@@ -156,6 +176,13 @@ async function checkAndNotifyNewLocation(
             'notification.location': `${geoLocation.city}, ${geoLocation.country}`,
           });
 
+          // Record new location login metric
+          newLocationLoginCounter.add(1, {
+            'user.id': userId,
+            'geo.country': geoLocation.country,
+            'geo.city': geoLocation.city || 'unknown',
+          });
+
           await sendNewLocationAlert(
             email,
             userName || null,
@@ -225,6 +252,14 @@ async function checkAndNotifyFailedAttempts(
           addSpanEvent('failed_attempts_threshold_reached', {
             threshold: FAILED_ATTEMPT_THRESHOLD,
             actual_count: recentFailedAttempts,
+          });
+
+          // Record suspicious login metric
+          suspiciousLoginCounter.add(1, {
+            'user.email': email,
+            'failed.attempts': recentFailedAttempts,
+            'geo.country': geoLocation.country || 'unknown',
+            'geo.city': geoLocation.city || 'unknown',
           });
 
           // Only send alert on the 3rd, 6th, 9th attempt, etc. to avoid spam
