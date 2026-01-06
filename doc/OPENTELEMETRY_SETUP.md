@@ -11,24 +11,24 @@ includes:
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ Next.js Application                                         │
-├─────────────────────────────────────────────────────────────┤
-│ instrumentation.ts (Entry Point)                            │
-│   └─> instrumentation.node.ts (Node.js SDK Configuration)   │
-│                                                              │
-│ Custom Spans:                                                │
-│   - src/lib/tracer.ts (Utilities)                           │
-│   - src/lib/login-logger.ts (Security Tracing)              │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              │ OTLP/HTTP
-                              ▼
-                   ┌──────────────────────┐
-                   │   Grafana Cloud      │
-                   │   Tempo (Traces)     │
-                   └──────────────────────┘
+```mermaid
+graph TB
+    subgraph app["Next.js Application"]
+        subgraph custom["Custom Spans"]
+            tracer["src/lib/tracer.ts<br/>(Utilities)"]
+            logger["src/lib/login-logger.ts<br/>(Security Tracing)"]
+        end
+
+        entry["instrumentation.ts<br/>(Entry Point)"]
+        sdk["instrumentation.node.ts<br/>(Node.js SDK Configuration)"]
+        entry --> sdk
+    end
+
+    app -->|OTLP/HTTP| grafana["Grafana Cloud<br/>Tempo (Traces)"]
+
+    style app fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style grafana fill:#f4a261,stroke:#333,stroke-width:2px
+    style custom fill:#e9ecef,stroke:#666,stroke-width:1px
 ```
 
 ## Features Instrumented
@@ -433,3 +433,7 @@ For local testing without Grafana Cloud:
 5. **Set up alerts** for security events
 
 Happy monitoring! 🚀
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

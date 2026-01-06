@@ -165,9 +165,11 @@ sequenceDiagram
     participant Exporter as OTLP Exporter
     participant Grafana as Grafana Cloud
 
+      %% Note: The OpenTelemetry SDK does not send trace data directly to the OTLP Exporter. Spans are first collected by the Span Processor, which then forwards them in batches to the OTLP Exporter for transmission to Grafana Cloud.
+
     Client->>NextJS: HTTP Request (GET /)
     activate NextJS
-
+    %% OTel->>Exporter: via Span Processor
     NextJS->>OTel: Auto-instrumentation creates root span
     activate OTel
 
@@ -343,32 +345,24 @@ export async function GET(request: Request) {
 
 ```mermaid
 stateDiagram-v2
-    [*] --> RequestReceived
-    RequestReceived --> SpanCreated: Auto-instrumentation
-    SpanCreated --> SpanActive: Span starts
-
-    SpanActive --> ChildSpanCreated: Nested operation
-    ChildSpanCreated --> ChildSpanActive
-    ChildSpanActive --> ChildSpanEnded
-    ChildSpanEnded --> SpanActive
-
-    SpanActive --> AttributesAdded: Add metadata
-    AttributesAdded --> SpanActive
-
-    SpanActive --> SpanEnded: Operation completes
-    SpanEnded --> BatchProcessor: Span collected
-
-    BatchProcessor --> BatchProcessor: Wait for batch size<br/>or timeout (5s)
-    BatchProcessor --> ExportAttempt: Batch ready
-
-    ExportAttempt --> ExportSuccess: OTLP POST 200
-    ExportAttempt --> ExportRetry: OTLP POST 5xx
-
-    ExportRetry --> ExportAttempt: Retry with backoff
-    ExportRetry --> ExportFailed: Max retries exceeded
-
-    ExportSuccess --> [*]
-    ExportFailed --> [*]
+  [*] --> RequestReceived
+  RequestReceived --> SpanCreated
+  SpanCreated --> SpanActive
+  SpanActive --> ChildSpanCreated
+  ChildSpanCreated --> ChildSpanActive
+  ChildSpanActive --> ChildSpanEnded
+  ChildSpanEnded --> SpanActive
+  SpanActive --> AttributesAdded
+  AttributesAdded --> SpanActive
+  SpanActive --> SpanEnded
+  SpanEnded --> BatchProcessor
+  BatchProcessor --> ExportAttempt
+  ExportAttempt --> ExportSuccess
+  ExportAttempt --> ExportRetry
+  ExportRetry --> ExportAttempt
+  ExportRetry --> ExportFailed
+  ExportSuccess --> [*]
+  ExportFailed --> [*]
 ```
 
 ### Span Lifecycle Stages
@@ -673,3 +667,7 @@ graph LR
 ---
 
 **Last Updated**: 2026-01-05 **Version**: 1.0.0 **Maintainer**: Dev Multiplier Team
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_
