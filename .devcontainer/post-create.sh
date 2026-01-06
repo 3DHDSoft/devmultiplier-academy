@@ -43,6 +43,14 @@ until pg_isready -h postgres -U admin -d academy > /dev/null 2>&1; do
 done
 echo "✅ PostgreSQL 18 is ready"
 
+# Fix observability configuration file permissions
+echo "🔧 Setting observability configuration permissions..."
+chmod 644 .devcontainer/prometheus/prometheus.yml
+chmod 644 .devcontainer/grafana/provisioning/datasources/prometheus.yml
+chmod 644 .devcontainer/grafana/provisioning/dashboards/dashboards.yml
+chmod 644 .devcontainer/grafana/dashboards/*.json
+echo "✅ Observability configurations are readable"
+
 # # Run initialization scripts if they exist
 # if [ -f ".devcontainer/scripts/init-databases.sh" ]; then
 #     echo "🗄️ Running database initialization..."

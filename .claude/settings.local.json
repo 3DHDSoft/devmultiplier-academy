@@ -19,7 +19,8 @@
       "Bash(env)",
       "Bash(mkdir:*)",
       "Bash(tree:*)",
-      "Bash(docker-compose config:*)"
+      "Bash(docker-compose config:*)",
+      "Bash(docker ps:*)"
     ]
   }
 }
