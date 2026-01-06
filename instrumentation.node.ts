@@ -18,8 +18,9 @@ import {
 } from '@opentelemetry/semantic-conventions';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 
-// Enable debug logging
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+// Enable error-level logging only (change to DiagLogLevel.DEBUG for verbose debugging)
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 // Service configuration
 const resource = resourceFromAttributes({
@@ -29,15 +30,13 @@ const resource = resourceFromAttributes({
 });
 
 // Configure OTLP exporter for Grafana Cloud
-console.log('🔧 Configuring OTLP Exporter:');
-console.log('  URL:', process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318/v1/traces');
-console.log('  Headers configured:', !!process.env.OTEL_EXPORTER_OTLP_HEADERS);
+// Uncomment these lines for debugging exporter configuration:
+// console.log('🔧 Configuring OTLP Exporter:');
+// console.log('  URL:', process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318/v1/traces');
+// console.log('  Headers configured:', !!process.env.OTEL_EXPORTER_OTLP_HEADERS);
 
-// Parse headers from environment variable
-console.log('  Raw OTEL_EXPORTER_OTLP_HEADERS:', process.env.OTEL_EXPORTER_OTLP_HEADERS);
-
-// Clear the env var to prevent OTLPTraceExporter from reading it directly
 const headersEnv = process.env.OTEL_EXPORTER_OTLP_HEADERS;
+// console.log('  Raw OTEL_EXPORTER_OTLP_HEADERS:', process.env.OTEL_EXPORTER_OTLP_HEADERS);
 delete process.env.OTEL_EXPORTER_OTLP_HEADERS;
 
 // Parse headers - support both JSON format and key=value format
@@ -57,10 +56,9 @@ if (headersEnv) {
     });
   }
 }
-
-console.log('  Parsed headers type:', typeof headers);
-console.log('  Parsed headers:', headers);
-console.log('  Parsed headers keys:', Object.keys(headers));
+// console.log('  Parsed headers type:', typeof headers);
+// console.log('  Parsed headers:', headers);
+// console.log('  Parsed headers keys:', Object.keys(headers));
 
 // Append /v1/traces to the endpoint if not already present
 const endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318';
@@ -107,14 +105,13 @@ const sdk = new NodeSDK({
 
 // Start the SDK
 sdk.start();
+// console.log('✅ OpenTelemetry instrumentation initialized');
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
   sdk
     .shutdown()
-    .then(() => console.log('OpenTelemetry SDK shut down successfully'))
-    .catch((error) => console.log('Error shutting down OpenTelemetry SDK', error))
+    // .then(() => console.log('OpenTelemetry SDK shut down successfully'))
+    .catch((error) => console.error('Error shutting down OpenTelemetry SDK', error))
     .finally(() => process.exit(0));
 });
-
-console.log('✅ OpenTelemetry instrumentation initialized');
