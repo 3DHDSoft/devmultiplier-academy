@@ -6,16 +6,18 @@ Comprehensive comparison of direct Prisma access vs REST API abstraction layer f
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TB
+}}}%%
+graph TB
     subgraph REST["🌐 REST API Layer"]
         direction LR
         Client2["Client<br/>Browser/Mobile/External"]
@@ -38,8 +40,17 @@ Comprehensive comparison of direct Prisma access vs REST API abstraction layer f
 
     REST ~~~ Prisma
 
-    style REST fill:#fef3c7,stroke:#fcd34d,color:#92400e
-    style Prisma fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style REST fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000000
+    style Prisma fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000000
+    style Client2 fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style API fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style PrismaLib2 fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style DB2 fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style Client fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style PrismaLib fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style DB1 fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Quick Comparison Table

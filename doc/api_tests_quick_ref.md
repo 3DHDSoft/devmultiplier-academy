@@ -7,39 +7,53 @@
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
+  'primaryColor': '#e8f4f8',
   'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryBorderColor': '#94a3b8',
+  'lineColor': '#64748b',
+  'secondaryColor': '#f0fdf4',
+  'tertiaryColor': '#fefce8',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#1e293b',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TB
-    subgraph API["API Tests (44 tests)"]
-        Courses["Courses<br/>10 tests"]
-        Enrollments["Enrollments<br/>15 tests"]
-        Profile["User Profile<br/>10 tests"]
-        Language["User Language<br/>14 tests"]
-        Register["Register<br/>16 tests"]
-        Progress["Progress<br/>20 tests"]
-    end
+}}}%%
+graph TB
+  subgraph API["API Tests (44 tests)"]
+    Courses["Courses<br/>10 tests"]
+    Enrollments["Enrollments<br/>15 tests"]
+    Profile["User Profile<br/>10 tests"]
+    Language["User Language<br/>14 tests"]
+    Register["Register<br/>16 tests"]
+    Progress["Progress<br/>20 tests"]
+  end
 
-    subgraph Util["Utility Tests (73 tests)"]
-        Auth["Auth Schema<br/>6 tests"]
-        Models["Data Models<br/>4 tests"]
-        APIUtils["API Utils<br/>6 tests"]
-        Utils["Utilities<br/>1 test"]
-        Button["UI Button<br/>4 tests"]
-    end
+  subgraph Util["Utility Tests (73 tests)"]
+    Auth["Auth Schema<br/>6 tests"]
+    Models["Data Models<br/>4 tests"]
+    APIUtils["API Utils<br/>6 tests"]
+    Utils["Utilities<br/>1 test"]
+    Button["UI Button<br/>4 tests"]
+  end
 
-    Total["Total: 117 Tests ✅"]
+  Total["Total: 117 Tests ✅"]
 
-    API --> Total
-    Util --> Total
+  API --> Total
+  Util --> Total
 
-    style Total fill:#dcfce7,stroke:#86efac,color:#166534
+  style API fill:#dbeafe,stroke:#3b82f6,color:#1e40af,stroke-width:2px
+  style Util fill:#f0fdf4,stroke:#22c55e,color:#166534,stroke-width:2px
+  style Total fill:#065f46,stroke:#047857,color:#ffffff,stroke-width:2px
+  style Courses fill:#ffffff,stroke:#93c5fd,color:#1e293b,stroke-width:1.5px
+  style Enrollments fill:#ffffff,stroke:#93c5fd,color:#1e293b,stroke-width:1.5px
+  style Profile fill:#ffffff,stroke:#93c5fd,color:#1e293b,stroke-width:1.5px
+  style Language fill:#ffffff,stroke:#93c5fd,color:#1e293b,stroke-width:1.5px
+  style Register fill:#ffffff,stroke:#93c5fd,color:#1e293b,stroke-width:1.5px
+  style Progress fill:#ffffff,stroke:#93c5fd,color:#1e293b,stroke-width:1.5px
+  style Auth fill:#ffffff,stroke:#86efac,color:#1e293b,stroke-width:1.5px
+  style Models fill:#ffffff,stroke:#86efac,color:#1e293b,stroke-width:1.5px
+  style APIUtils fill:#ffffff,stroke:#86efac,color:#1e293b,stroke-width:1.5px
+  style Utils fill:#ffffff,stroke:#86efac,color:#1e293b,stroke-width:1.5px
+  style Button fill:#ffffff,stroke:#86efac,color:#1e293b,stroke-width:1.5px
 ```
 
 ---

@@ -9,16 +9,18 @@ Playwright is configured for end-to-end testing across multiple browsers (Chromi
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
+}}}%%
+graph TD
     subgraph Dev["Development"]
         App["Next.js App<br/>localhost:3000"]
     end
@@ -47,8 +49,19 @@ Playwright is configured for end-to-end testing across multiple browsers (Chromi
     Firefox -->|Report| Results
     Safari -->|Report| Results
 
-    style App fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Results fill:#dcfce7,stroke:#86efac,color:#166534
+    style Dev fill:#f8fafc,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Test fill:#f8fafc,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Browsers fill:#f8fafc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style App fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Config fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Fixtures fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Specs fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style Chromium fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Firefox fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Safari fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Results fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Setup & Prerequisites
@@ -113,12 +126,12 @@ bunx playwright test --update-snapshots
 Tests are located in the `e2e/` directory:
 
 ```
-e2e/
-├── 📁 accessibility.spec.ts  # Accessibility and keyboard navigation
-├── 📁 auth.spec.ts           # Login/register page tests
-├── 📁 homepage.spec.ts       # Homepage functionality
-├── 📁 legal.spec.ts          # Privacy policy, ToS, redirects
-└── 📁 navigation.spec.ts     # Course pages and navigation
+📦 e2e/
+├── 🎭 accessibility.spec.ts   # Accessibility and keyboard navigation
+├── 🎭 auth.spec.ts            # Login/register page tests
+├── 🎭 homepage.spec.ts        # Homepage functionality
+├── 🎭 legal.spec.ts           # Privacy policy, ToS, redirects
+└── 🎭 navigation.spec.ts      # Course pages and navigation
 ```
 
 ## Included Test Suites

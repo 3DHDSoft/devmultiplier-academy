@@ -4,16 +4,18 @@
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#93c5fd',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#86efac',
+  'tertiaryColor': '#67e8f9',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TB
+}}}%%
+graph TB
     A["System Requirements"] -->|Node 22+<br/>Bun 1.3.5+| B["✅ Installed"]
     B --> C["Browser Binaries"]
     C -->|First run auto-download| D["✅ Ready"]
@@ -22,13 +24,16 @@
     F --> G["Run Tests"]
     G -->|bun run e2e| H["✅ Executing"]
 
-    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style B fill:#dcfce7,stroke:#86efac,color:#166534
-    style C fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style D fill:#dcfce7,stroke:#86efac,color:#166534
-    style E fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style F fill:#dcfce7,stroke:#86efac,color:#166534
-    style H fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style A fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style C fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style D fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style E fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style F fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style G fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style H fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## ✅ Installation Status

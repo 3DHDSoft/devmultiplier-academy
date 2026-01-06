@@ -32,6 +32,18 @@ and error tracking.
 ## Architecture Diagram
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#94a3b8',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
+  'background': '#ffffff',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 graph TB
     subgraph "Next.js Application"
         A[Next.js Server] -->|HTTP Request| B[OpenTelemetry SDK]
@@ -66,10 +78,24 @@ graph TB
         M --> N[Grafana UI]
     end
 
-    style B fill:#4CAF50
-    style E fill:#2196F3
-    style K fill:#FF9800
-    style N fill:#9C27B0
+    style A fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+    style C fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style D fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style E fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style F fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style G fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style H fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style I fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+    style J fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+    style K fill:#fecaca,stroke:#dc2626,color:#000000,stroke-width:2px
+    style L fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style M fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style N fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
+
+    classDef subgraphStyle fill:#f8fafc,stroke:#cbd5e1,color:#000000,stroke-width:1px
 ```
 
 ## Technology Stack
@@ -158,18 +184,34 @@ The exporter sends trace data to Grafana Cloud using the OTLP/HTTP protocol.
 ## Data Flow
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#3b82f6',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#1d4ed8',
+  'lineColor': '#000000',
+  'actorBkg': '#3b82f6',
+  'actorBorder': '#1d4ed8',
+  'actorTextColor': '#ffffff',
+  'signalColor': '#000000',
+  'signalTextColor': '#000000',
+  'noteBkgColor': '#f59e0b',
+  'noteTextColor': '#000000',
+  'noteBorderColor': '#d97706',
+  'activationBkgColor': '#22c55e',
+  'activationBorderColor': '#16a34a',
+  'background': '#ffffff',
+  'textColor': '#000000',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 sequenceDiagram
-%%{init: {'theme': 'default'
+    participant Client
     participant NextJS as Next.js Server
     participant OTel as OpenTelemetry SDK
     participant Exporter as OTLP Exporter
     participant Grafana as Grafana Cloud
 
-      %% Note: The OpenTelemetry SDK does not send trace data directly to the OTLP Exporter. Spans are first collected by the Span Processor, which then forwards them in batches to the OTLP Exporter for transmission to Grafana Cloud.
-
     Client->>NextJS: HTTP Request (GET /)
     activate NextJS
-    %% OTel->>Exporter: via Span Processor
     NextJS->>OTel: Auto-instrumentation creates root span
     activate OTel
 
@@ -280,16 +322,35 @@ const resource = resourceFromAttributes({
 ### Automatic Instrumentation
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#93c5fd',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#c4b5fd',
+  'tertiaryColor': '#67e8f9',
+  'background': '#ffffff',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 graph LR
     A[HTTP Request] --> B{Auto-Instrumentation}
-%%{init: {'theme': 'default'Root Span Created]
+    B --> C[Root Span Created]
     C --> D[Request Processing]
     D -->|DB Query| E[Postgres Span]
     D -->|External API| F[Undici Span]
     D -->|Internal Logic| G[Next.js Spans]
 
-    style B fill:#4CAF50
-    style C fill:#2196F3
+    style A fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style C fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style D fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style E fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style F fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style G fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 **Next.js Built-in Spans**:
@@ -344,10 +405,24 @@ export async function GET(request: Request) {
 ## Trace Lifecycle
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#93c5fd',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#c4b5fd',
+  'tertiaryColor': '#67e8f9',
+  'background': '#ffffff',
+  'textColor': '#000000',
+  'labelBoxBkgColor': '#f1f5f9',
+  'labelBoxBorderColor': '#64748b',
+  'labelTextColor': '#000000',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 stateDiagram-v2
   [*] --> RequestReceived
   RequestReceived --> SpanCreated
-%%{init: {'theme': 'default'ive
+  SpanCreated --> SpanActive
   SpanActive --> ChildSpanCreated
   ChildSpanCreated --> ChildSpanActive
   ChildSpanActive --> ChildSpanEnded
@@ -591,11 +666,23 @@ export function sanitizeSpanAttributes(span: Span) {
 ### Grafana Cloud Services
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#93c5fd',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#c4b5fd',
+  'tertiaryColor': '#67e8f9',
+  'background': '#ffffff',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 graph LR
     A[dev-academy-web] -->|Traces| B[Tempo]
     A -->|Logs| C[Loki]
     A -->|Metrics| D[Prometheus/Mimir]
-%%{init: {'theme': 'default'
+
     B --> E[Grafana UI]
     C --> E
     D --> E
@@ -604,7 +691,13 @@ graph LR
     E -->|Correlate by timestamp| C
     E -->|Exemplars link to| B
 
-    style E fill:#9C27B0
+    style A fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style C fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style D fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style E fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ### Future Enhancements

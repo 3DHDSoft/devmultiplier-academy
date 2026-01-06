@@ -36,16 +36,18 @@ tests in the middle, and selective end-to-end tests at the top.
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TD
+}}}%%
+flowchart TD
     subgraph Development ["Development Workflow"]
         CODE[Write Code] --> UNIT[Run Unit Tests]
         UNIT -->|Pass| INT[Run Integration Tests]
@@ -65,12 +67,21 @@ tests in the middle, and selective end-to-end tests at the top.
         FIX --> CODE
     end
 
-    style UNIT fill:#dcfce7,stroke:#86efac,color:#166534
-    style INT fill:#fef3c7,stroke:#fcd34d,color:#92400e
-    style UNIT_CI fill:#dcfce7,stroke:#86efac,color:#166534
-    style INT_CI fill:#fef3c7,stroke:#fcd34d,color:#92400e
-    style E2E_CI fill:#fee2e2,stroke:#fca5a5,color:#991b1b
-    style DEPLOY fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Development fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000000
+    style CI fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000000
+    style CODE fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style UNIT fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style INT fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style COMMIT fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style PR fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style UNIT_CI fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style INT_CI fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style E2E_CI fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+    style MERGE fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style DEPLOY fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style FIX fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Testing Layers Explained
@@ -161,16 +172,18 @@ tests in the middle, and selective end-to-end tests at the top.
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TB
+}}}%%
+graph TB
     subgraph unit_int ["Unit & Integration Testing"]
         VITEST["Vitest<br/>Test Runner"]
         RTL["React Testing Library<br/>Component Testing"]
@@ -196,10 +209,19 @@ tests in the middle, and selective end-to-end tests at the top.
     PLAY --> FAKER
     MSW --> FAKER
 
-    style VITEST fill:#dcfce7,stroke:#86efac,color:#166534
-    style RTL fill:#dcfce7,stroke:#86efac,color:#166534
-    style PLAY fill:#fee2e2,stroke:#fca5a5,color:#991b1b
-    style MSW fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style unit_int fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000000
+    style e2e fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#000000
+    style support fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000000
+    style VITEST fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style RTL fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style MSW fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style PLAY fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+    style BROWSERS fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style USER_EVENT fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style COVERAGE fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style FAKER fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ### Primary Testing Tools
@@ -223,16 +245,18 @@ tests in the middle, and selective end-to-end tests at the top.
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
+}}}%%
+graph TD
     subgraph root ["my-nextjs-app/"]
         SRC["📁 src/"]
         TESTS["📁 tests/"]
@@ -261,11 +285,24 @@ tests in the middle, and selective end-to-end tests at the top.
     TESTS --> test_details
     CONFIG --> config_details
 
-    style COMP fill:#dcfce7,stroke:#86efac,color:#166534
-    style HOOKS fill:#dcfce7,stroke:#86efac,color:#166534
-    style LIB fill:#dcfce7,stroke:#86efac,color:#166534
-    style INT_TEST fill:#fef3c7,stroke:#fcd34d,color:#92400e
-    style E2E_TEST fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style root fill:#f8fafc,stroke:#2563eb,stroke-width:2px,color:#000000
+    style src_details fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000000
+    style test_details fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000000
+    style config_details fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000000
+    style SRC fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style TESTS fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style CONFIG fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style COMP fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style HOOKS fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style LIB fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style APP fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style INT_TEST fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style E2E_TEST fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+    style VITEST fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style PLAY fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style PKG fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 **Legend:**
@@ -280,28 +317,28 @@ tests in the middle, and selective end-to-end tests at the top.
 📦 my-nextjs-app/
 ├── 📁 src/
 │   ├── 📁 components/
-│   │   └── 📁 📁 Button/
-│   │       ├── 📁 📄 Button.tsx
-│   │       ├── 📁 🧪 Button.test.tsx        ← Unit test (co-located)
-│   │       └── 📁 📄 index.ts
+│   │   └── 📁 Button/
+│   │       ├── 📄 Button.tsx
+│   │       ├── 🧪 Button.test.tsx           ← Unit test (co-located)
+│   │       └── 📄 index.ts
 │   ├── 📁 hooks/
-│   │   ├── 📁 📄 useAuth.ts
-│   │   └── 📁 🧪 useAuth.test.ts            ← Hook unit test
+│   │   ├── 📄 useAuth.ts
+│   │   └── 🧪 useAuth.test.ts               ← Hook unit test
 │   ├── 📁 lib/
-│   │   ├── 📁 📄 utils.ts
-│   │   └── 📁 🧪 utils.test.ts              ← Utility unit test
-│   └── 📁 📁 app/
+│   │   ├── 📄 utils.ts
+│   │   └── 🧪 utils.test.ts                 ← Utility unit test
+│   └── 📁 app/
 ├── 📁 tests/
 │   ├── 📁 integration/
-│   │   ├── 📁 🧪 checkout-flow.test.tsx     ← Integration test
-│   │   └── 📁 🧪 auth-flow.test.tsx         ← Integration test
-│   └── 📁 📁 e2e/
-│       ├── 📁 🎭 user-registration.spec.ts  ← E2E test
-│       ├── 📁 🎭 purchase-flow.spec.ts      ← E2E test
-│       └── 📁 🎭 admin-dashboard.spec.ts    ← E2E test
-├── 📁 📄 vitest.config.ts
-├── 📁 📄 playwright.config.ts
-└── 📁 📄 package.json
+│   │   ├── 🧪 checkout-flow.test.tsx        ← Integration test
+│   │   └── 🧪 auth-flow.test.tsx            ← Integration test
+│   └── 📁 e2e/
+│       ├── 🎭 user-registration.spec.ts     ← E2E test
+│       ├── 🎭 purchase-flow.spec.ts         ← E2E test
+│       └── 🎭 admin-dashboard.spec.ts       ← E2E test
+├── 📄 vitest.config.ts
+├── 📄 playwright.config.ts
+└── 📄 package.json
 ```
 
 **Legend:**
@@ -435,16 +472,25 @@ vi.stubEnv('NEXT_PUBLIC_API_URL', 'http://localhost:3000/api');
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#3b82f6',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#1d4ed8',
+  'lineColor': '#000000',
+  'actorBkg': '#3b82f6',
+  'actorBorder': '#1d4ed8',
+  'actorTextColor': '#ffffff',
+  'signalColor': '#000000',
+  'signalTextColor': '#000000',
+  'noteBkgColor': '#fcd34d',
+  'noteTextColor': '#000000',
+  'noteBorderColor': '#d97706',
+  'activationBkgColor': '#86efac',
+  'activationBorderColor': '#16a34a',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%sequenceDiagram
+}}}%%
+sequenceDiagram
     participant Dev as Developer
     participant Unit as Unit Test
     participant Int as Integration Test
@@ -794,16 +840,18 @@ test.describe('Data Operations', () => {
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart LR
+}}}%%
+flowchart LR
     subgraph trigger ["Trigger"]
         PUSH["Push to main/develop"]
         PR["Pull Request"]
@@ -832,10 +880,20 @@ test.describe('Data Operations', () => {
     J1 --> result
     J2 --> result
 
-    style J1 fill:#dcfce7,stroke:#86efac,color:#166534
-    style J2 fill:#fee2e2,stroke:#fca5a5,color:#991b1b
-    style PASS fill:#dcfce7,stroke:#86efac,color:#166534
-    style FAIL fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style trigger fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000000
+    style jobs fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000000
+    style artifacts fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#000000
+    style result fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000000
+    style PUSH fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style PR fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style J1 fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style J2 fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+    style COV fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style REPORT fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style PASS fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style FAIL fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ### GitHub Actions Workflow
@@ -887,18 +945,21 @@ jobs:
 ## Summary
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
-  'background': '#ffffff',
-  'textColor': '#334155',
-  'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%mindmap
-  root((Testing<br/>Strategy))
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#bbf7d0',
+    'secondaryColor': '#fef08a',
+    'tertiaryColor': '#fbcfe8',
+    'primaryTextColor': '#000000',
+    'secondaryTextColor': '#000000',
+    'tertiaryTextColor': '#000000',
+    'lineColor': '#000000',
+    'textColor': '#000000'
+  }
+}}%%
+mindmap
+  root((Testing Strategy))
     Unit Tests
       Fast feedback
       80%+ coverage

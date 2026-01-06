@@ -8,14 +8,14 @@ All API endpoints follow this consistent architecture:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#6366f1',
+  'primaryTextColor': '#ffffff',
+  'primaryBorderColor': '#4f46e5',
+  'lineColor': '#475569',
+  'secondaryColor': '#8b5cf6',
+  'tertiaryColor': '#06b6d4',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#1e293b',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
 }}}%%
 flowchart TD
@@ -38,13 +38,19 @@ flowchart TD
     Err5 --> ErrorResp
     F --> Success["Success Response"]
 
-    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style B fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style C fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style D fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style E fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Success fill:#dcfce7,stroke:#86efac,color:#166534
-    style ErrorResp fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style A fill:#6366f1,stroke:#4f46e5,color:#ffffff,stroke-width:2px
+    style B fill:#8b5cf6,stroke:#7c3aed,color:#ffffff,stroke-width:2px
+    style C fill:#6366f1,stroke:#4f46e5,color:#ffffff,stroke-width:2px
+    style D fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style E fill:#8b5cf6,stroke:#7c3aed,color:#ffffff,stroke-width:2px
+    style F fill:#6366f1,stroke:#4f46e5,color:#ffffff,stroke-width:2px
+    style Err1 fill:#f97316,stroke:#ea580c,color:#ffffff,stroke-width:2px
+    style Err2 fill:#f97316,stroke:#ea580c,color:#ffffff,stroke-width:2px
+    style Err3 fill:#f97316,stroke:#ea580c,color:#ffffff,stroke-width:2px
+    style Err4 fill:#f97316,stroke:#ea580c,color:#ffffff,stroke-width:2px
+    style Err5 fill:#f97316,stroke:#ea580c,color:#ffffff,stroke-width:2px
+    style Success fill:#10b981,stroke:#059669,color:#ffffff,stroke-width:2px
+    style ErrorResp fill:#ef4444,stroke:#dc2626,color:#ffffff,stroke-width:2px
 ```
 
 ---
@@ -456,20 +462,20 @@ export async function POST(req: NextRequest) {
 ## File Structure
 
 ```
-src/app/api/
+📦 src/app/api/
 ├── 📁 user/
 │   ├── 📁 profile/
-│   │   └── 📁 route.ts   GET, PATCH user profile
+│   │   └── 📄 route.ts      # GET, PATCH user profile
 │   └── 📁 language/
-│       └── 📁 route.ts   PATCH language preference
+│       └── 📄 route.ts      # PATCH language preference
 ├── 📁 courses/
-│   ├── 📁 route.ts       GET all courses
+│   ├── 📄 route.ts          # GET all courses
 │   └── 📁 [id]/
-│       └── 📁 route.ts   GET course details
+│       └── 📄 route.ts      # GET course details
 └── 📁 enrollments/
-    ├── 📁 route.ts       GET, POST enrollments
+    ├── 📄 route.ts          # GET, POST enrollments
     └── 📁 [id]/
-        └── 📁 route.ts   GET enrollment details
+        └── 📄 route.ts      # GET enrollment details
 ```
 
 ## Testing Your Endpoints

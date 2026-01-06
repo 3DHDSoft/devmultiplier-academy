@@ -66,7 +66,7 @@ src/
 │   ├── 📁 sections/          # Page sections (Hero, Courses, etc.)
 │   └── 📁 ui/                # Reusable UI components
 └── 📁 lib/
-    └── 📁 utils.ts           # Utility functions
+    └── 📄 utils.ts           # Utility functions
 ```
 
 ## Environment Overview

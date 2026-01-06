@@ -19,16 +19,18 @@ All metrics are exported to **Grafana Cloud Prometheus** via OTLP/HTTP protocol.
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TB
+}}}%%
+flowchart TB
     subgraph App["Application Code"]
         MW["Middleware"]
         Auth["Auth/Login"]
@@ -45,12 +47,17 @@ All metrics are exported to **Grafana Cloud Prometheus** via OTLP/HTTP protocol.
     MetricReader --> Exporter["OTLP Exporter"]
     Exporter --> Grafana[("Grafana Cloud<br/>Prometheus")]
 
-    style App fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
-    style Metrics fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style MeterProvider fill:#e0e7ff,stroke:#a5b4fc,color:#3730a3
-    style MetricReader fill:#ede9fe,stroke:#c4b5fd,color:#5b21b6
-    style Exporter fill:#f3e8ff,stroke:#d8b4fe,color:#7c3aed
-    style Grafana fill:#ffedd5,stroke:#fdba74,color:#9a3412
+    style App fill:#e2e8f0,stroke:#64748b,stroke-width:2px,color:#000000
+    style MW fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Auth fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style API fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Metrics fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style MeterProvider fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style MetricReader fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Exporter fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Grafana fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ### Files

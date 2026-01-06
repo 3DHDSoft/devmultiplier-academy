@@ -6,16 +6,18 @@ This project now has complete testing infrastructure for both unit and end-to-en
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TB
+}}}%%
+graph TB
     subgraph Unit["📋 Unit & Integration Tests"]
         Vitest["Vitest 4.x"]
         RTL["React Testing Library"]
@@ -40,9 +42,19 @@ This project now has complete testing infrastructure for both unit and end-to-en
     Unit --> Config
     E2E --> Config
 
-    style Unit fill:#dcfce7,stroke:#86efac,color:#166534
-    style E2E fill:#fef3c7,stroke:#fcd34d,color:#92400e
-    style Config fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style Unit fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000000
+    style E2E fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#000000
+    style Config fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000000
+    style Vitest fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style RTL fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style HappyDOM fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Playwright fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style Browsers fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style VitestConfig fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style PlaywrightConfig fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Setup fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Quick Navigation

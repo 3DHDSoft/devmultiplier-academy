@@ -70,16 +70,18 @@ For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n r
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
+}}}%%
+graph TD
     Browser["🌍 Browser Request<br/>GET /es/courses"] --> Middleware["Middleware"]
     Middleware -->|Detect locale| Routing["Routing"]
 
@@ -93,10 +95,18 @@ For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n r
     Trans -->|Look up key| Lookup["Find key in<br/>messages/es.json"]
     Lookup -->|Return value| Render["✅ Render translated text"]
 
-    style Middleware fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Config fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Messages fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Render fill:#dcfce7,stroke:#86efac,color:#166534
+    style Browser fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Middleware fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style Routing fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Config fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Messages fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Provider fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Page fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Trans fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Lookup fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Render fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ---
@@ -106,82 +116,82 @@ For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n r
 ### Current Structure
 
 ```
-dev-x-academy-web/
+📦 dev-x-academy-web/
 ├── 📁 src/
 │   └── 📁 lib/
-│       └── 📁 utils.ts
+│       └── 📄 utils.ts
 ├── 📁 public/
 ├── 📁 doc/
-├── 📁 components.json
-├── 📁 eslint.config.mjs
-├── 📁 next.config.ts
-├── 📁 package.json
-├── 📁 postcss.config.mjs
-├── 📁 tsconfig.json
-└── 📁 .prettierrc                   # Prettier configuration
+├── 📄 components.json
+├── 📄 eslint.config.mjs
+├── 📄 next.config.ts
+├── 📄 package.json
+├── 📄 postcss.config.mjs
+├── 📄 tsconfig.json
+└── 📄 .prettierrc                   # Prettier configuration
 ```
 
 ### Target Structure (After Implementation)
 
 ```
-dev-x-academy-web/
+📦 dev-x-academy-web/
 ├── 📁 src/
 │   ├── 📁 app/
 │   │   ├── 📁 [locale]/             # Locale-based routing (NEW)
-│   │   │   ├── 📁 layout.tsx        # Root layout with locale (MODIFIED)
-│   │   │   ├── 📁 page.tsx          # Home page (MOVED)
+│   │   │   ├── 📄 layout.tsx        # Root layout with locale (MODIFIED)
+│   │   │   ├── 📄 page.tsx          # Home page (MOVED)
 │   │   │   ├── 📁 about/
-│   │   │   │   └── 📁 page.tsx
+│   │   │   │   └── 📄 page.tsx
 │   │   │   ├── 📁 contact/
-│   │   │   │   └── 📁 page.tsx
+│   │   │   │   └── 📄 page.tsx
 │   │   │   ├── 📁 courses/
-│   │   │   │   ├── 📁 page.tsx
+│   │   │   │   ├── 📄 page.tsx
 │   │   │   │   └── 📁 [slug]/
-│   │   │   │       └── 📁 page.tsx  # NEW: Individual course pages
+│   │   │   │       └── 📄 page.tsx  # NEW: Individual course pages
 │   │   │   ├── 📁 pricing/
-│   │   │   │   └── 📁 page.tsx
+│   │   │   │   └── 📄 page.tsx
 │   │   │   ├── 📁 privacy-policy/   # NEW
-│   │   │   │   └── 📁 page.tsx
+│   │   │   │   └── 📄 page.tsx
 │   │   │   └── 📁 terms-of-service/ # NEW
-│   │   │       └── 📁 page.tsx
+│   │   │       └── 📄 page.tsx
 │   │   └── 📁 api/
-│   │       └── 📁 ...
+│   │       └── ...
 │   ├── 📁 components/
-│   │   ├── 📁 LanguageSwitcher.tsx  # NEW
+│   │   ├── 📄 LanguageSwitcher.tsx  # NEW
 │   │   ├── 📁 layout/
-│   │   │   ├── 📁 footer.tsx
-│   │   │   └── 📁 header.tsx
+│   │   │   ├── 📄 footer.tsx
+│   │   │   └── 📄 header.tsx
 │   │   ├── 📁 sections/
-│   │   │   ├── 📁 courses.tsx
-│   │   │   ├── 📁 cta.tsx
-│   │   │   ├── 📁 hero.tsx
-│   │   │   └── 📁 pricing.tsx
+│   │   │   ├── 📄 courses.tsx
+│   │   │   ├── 📄 cta.tsx
+│   │   │   ├── 📄 hero.tsx
+│   │   │   └── 📄 pricing.tsx
 │   │   └── 📁 ui/
-│   │       └── 📁 button.tsx
+│   │       └── 📄 button.tsx
 │   ├── 📁 lib/
-│   │   └── 📁 utils.ts
+│   │   └── 📄 utils.ts
 │   ├── 📁 i18n/                     # NEW: i18n configuration
-│   │   ├── 📁 config.ts
-│   │   ├── 📁 request.ts
-│   │   └── 📁 routing.ts
-│   └── 📁 middleware.ts             # NEW: Locale detection & routing
+│   │   ├── 📄 config.ts
+│   │   ├── 📄 request.ts
+│   │   └── 📄 routing.ts
+│   └── 📄 middleware.ts             # NEW: Locale detection & routing
 ├── 📁 messages/                     # NEW: Translation files
-│   ├── 📁 en.json
-│   ├── 📁 es.json
-│   ├── 📁 pt.json
-│   ├── 📁 hi.json
-│   ├── 📁 zh.json
-│   ├── 📁 de.json
-│   └── 📁 hu.json
+│   ├── 📄 en.json
+│   ├── 📄 es.json
+│   ├── 📄 pt.json
+│   ├── 📄 hi.json
+│   ├── 📄 zh.json
+│   ├── 📄 de.json
+│   └── 📄 hu.json
 ├── 📁 public/
 ├── 📁 doc/
-├── 📁 .prettierrc
-├── 📁 components.json
-├── 📁 eslint.config.mjs
-├── 📁 next.config.ts
-├── 📁 package.json
-├── 📁 postcss.config.mjs
-└── 📁 tsconfig.json
+├── 📄 .prettierrc
+├── 📄 components.json
+├── 📄 eslint.config.mjs
+├── 📄 next.config.ts
+├── 📄 package.json
+├── 📄 postcss.config.mjs
+└── 📄 tsconfig.json
 ```
 
 ---
@@ -954,18 +964,18 @@ async function getTranslationStats() {
 ### Option 2: File-Based (Good for Starting)
 
 ```
-content/
+📦 content/
 ├── 📁 courses/
 │   ├── 📁 en/
-│   │   ├── 📁 ddd-to-cqrs.mdx
-│   │   ├── 📁 ddd-to-schema.mdx
-│   │   └── 📁 ...
+│   │   ├── 📄 ddd-to-cqrs.mdx
+│   │   ├── 📄 ddd-to-schema.mdx
+│   │   └── ...
 │   ├── 📁 es/
-│   │   ├── 📁 ddd-to-cqrs.mdx
-│   │   └── 📁 ...
+│   │   ├── 📄 ddd-to-cqrs.mdx
+│   │   └── ...
 │   └── 📁 pt/
-│       ├── 📁 ddd-to-cqrs.mdx
-│       └── 📁 ...
+│       ├── 📄 ddd-to-cqrs.mdx
+│       └── ...
 ```
 
 **Using MDX with next-intl:**

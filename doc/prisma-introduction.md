@@ -7,16 +7,18 @@ type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#93c5fd',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#c4b5fd',
+  'tertiaryColor': '#67e8f9',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
+}}}%%
+graph TD
     App["Next.js App<br/>Server & Client"] -->|Prisma Client| PrismaLib["Prisma ORM<br/>Type-Safe Layer"]
     PrismaLib -->|Generated Code| Schema["prisma/schema.prisma<br/>Data Models"]
     PrismaLib -->|SQL Queries| DB[("PostgreSQL 18<br/>with PostGIS 3.6")]
@@ -26,8 +28,14 @@ type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
 
     Config["prisma.config.ts<br/>Configuration"] -.->|Environment| PrismaLib
 
-    style PrismaLib fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style DB fill:#dcfce7,stroke:#86efac,color:#166534
+    style App fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Config fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style PrismaLib fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Schema fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Migrations fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style DB fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Project Configuration
@@ -45,16 +53,25 @@ This project uses:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#3b82f6',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#1d4ed8',
+  'lineColor': '#000000',
+  'actorBkg': '#3b82f6',
+  'actorBorder': '#1d4ed8',
+  'actorTextColor': '#ffffff',
+  'signalColor': '#000000',
+  'signalTextColor': '#000000',
+  'noteBkgColor': '#f59e0b',
+  'noteTextColor': '#000000',
+  'noteBorderColor': '#d97706',
+  'activationBkgColor': '#22c55e',
+  'activationBorderColor': '#16a34a',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%sequenceDiagram
+}}}%%
+sequenceDiagram
     participant Dev as Developer
     participant Schema as schema.prisma
     participant Migrate as prisma migrate

@@ -24,7 +24,7 @@ Auth.js, and next-intl.
 ### Architecture Diagram
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e2e8f0', 'primaryTextColor': '#1e293b', 'primaryBorderColor': '#cbd5e1', 'lineColor': '#94a3b8', 'secondaryColor': '#f1f5f9', 'tertiaryColor': '#f8fafc', 'background': '#ffffff', 'textColor': '#334155', 'fontFamily': 'system-ui, -apple-system, sans-serif'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#bfdbfe', 'primaryTextColor': '#000000', 'primaryBorderColor': '#3b82f6', 'lineColor': '#000000', 'secondaryColor': '#ddd6fe', 'tertiaryColor': '#a5f3fc', 'background': '#ffffff', 'textColor': '#000000', 'edgeLabelBackground': '#e2e8f0', 'fontFamily': 'system-ui, -apple-system, sans-serif'}}}%%
 graph TD
     User["User"] -->|1. Login/Register| Auth["Auth.js"]
     Auth -->|2. Validate| DB1[("PostgreSQL<br/>Check credentials")]
@@ -40,9 +40,21 @@ graph TD
     API -->|10. Save| DB3[("PostgreSQL<br/>Update user locale")]
     DB3 -->|11. Reflect| Page
 
-    style Auth fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Session fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style Page fill:#dcfce7,stroke:#86efac,color:#166534
+    style User fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Auth fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style DB1 fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Session fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style DB2 fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Request fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Middleware fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style Config fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Messages fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Page fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+    style UserProfile fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style API fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+    style DB3 fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ### Key Integration Points

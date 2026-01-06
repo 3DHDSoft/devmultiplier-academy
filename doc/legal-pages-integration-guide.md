@@ -18,16 +18,18 @@ Then link to them from:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
+}}}%%
+graph TD
     User["User"] -->|Visit site| Home["Home Page"]
     Home -->|Click footer link| Legal["Legal Page<br/>Terms or Privacy"]
     Legal -->|Read content| Content["Content loaded<br/>from translation JSON"]
@@ -38,9 +40,18 @@ Then link to them from:
     Admin["Admin/Developer"] -->|Update legal text| JSON["Edit translation<br/>JSON file"]
     JSON -->|Deploy| Prod["Live on website"]
 
-    style Legal fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style TOS fill:#dcfce7,stroke:#86efac,color:#166534
-    style Content fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style User fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Home fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Legal fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Content fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style Signup fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Accept fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style TOS fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+    style Admin fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style JSON fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Prod fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ---
@@ -48,17 +59,17 @@ Then link to them from:
 ## File Structure
 
 ```
-app/
+📦 app/
 └── 📁 [locale]/
-    ├── 📁 layout.tsx
-    ├── 📁 page.tsx           Home
+    ├── 📄 layout.tsx
+    ├── 📄 page.tsx              # Home
     ├── 📁 terms-of-service/
-    │   └── 📁 page.tsx       Terms page
+    │   └── 📄 page.tsx          # Terms page
     ├── 📁 privacy-policy/
-    │   └── 📁 page.tsx       Privacy page
+    │   └── 📄 page.tsx          # Privacy page
     ├── 📁 courses/
-    │   └── 📁 ...
-    └── 📁 ...other pages
+    │   └── ...
+    └── ...other pages
 ```
 
 ---
@@ -785,25 +796,27 @@ export default function CheckoutPage() {
 ### **File Locations:**
 
 ```
-app/[locale]/
-├── 📁 terms-of-service/page.tsx    ← Terms of Service
-├── 📁 privacy-policy/page.tsx      ← Privacy Policy
-└── 📁 layout.tsx                   ← Includes Footer component
+📦 app/[locale]/
+├── 📁 terms-of-service/
+│   └── 📄 page.tsx                 # Terms of Service
+├── 📁 privacy-policy/
+│   └── 📄 page.tsx                 # Privacy Policy
+└── 📄 layout.tsx                   # Includes Footer component
 
-components/
-├── 📁 Footer.tsx                   ← Links to legal pages
-├── 📁 SignupForm.tsx              ← Checkbox agreement
-└── 📁 CookieConsent.tsx           ← Privacy policy link
+📦 components/
+├── 📄 Footer.tsx                   # Links to legal pages
+├── 📄 SignupForm.tsx               # Checkbox agreement
+└── 📄 CookieConsent.tsx            # Privacy policy link
 ```
 
 ### **Translation Files:**
 
 ```
-messages/
-├── 📁 en.json    ← English legal translations
-├── 📁 es.json    ← Spanish legal translations
-├── 📁 pt.json    ← Portuguese legal translations
-└── 📁 hu.json    ← Hungarian legal translations
+📦 messages/
+├── 📄 en.json    # English legal translations
+├── 📄 es.json    # Spanish legal translations
+├── 📄 pt.json    # Portuguese legal translations
+└── 📄 hu.json    # Hungarian legal translations
 ```
 
 ---

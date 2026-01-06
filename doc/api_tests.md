@@ -11,16 +11,17 @@ error cases, response formatting
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#6366f1',
+  'primaryTextColor': '#ffffff',
+  'primaryBorderColor': '#4f46e5',
+  'lineColor': '#475569',
+  'secondaryColor': '#8b5cf6',
+  'tertiaryColor': '#06b6d4',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#1e293b',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TD
+}}}%%
+flowchart TD
     A["Run: bun run test"] --> B["Vitest discovers tests<br/>in src/app/api/__tests__/**"]
     B --> C["Load vitest.setup.ts<br/>Mock Auth.js & Prisma"]
     C --> D["Execute API tests<br/>in parallel"]
@@ -43,8 +44,20 @@ error cases, response formatting
     F -->|Yes| G["✅ 117/117 tests passed"]
     F -->|No| H["❌ Show failures"]
 
-    style G fill:#dcfce7,stroke:#86efac,color:#166534
-    style H fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style A fill:#6366f1,stroke:#4f46e5,color:#ffffff,stroke-width:2px
+    style B fill:#8b5cf6,stroke:#7c3aed,color:#ffffff,stroke-width:2px
+    style C fill:#8b5cf6,stroke:#7c3aed,color:#ffffff,stroke-width:2px
+    style D fill:#6366f1,stroke:#4f46e5,color:#ffffff,stroke-width:2px
+    style Courses fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style Enrollments fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style Progress fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style Register fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style Language fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style Profile fill:#0ea5e9,stroke:#0284c7,color:#ffffff,stroke-width:2px
+    style E fill:#8b5cf6,stroke:#7c3aed,color:#ffffff,stroke-width:2px
+    style F fill:#f59e0b,stroke:#d97706,color:#ffffff,stroke-width:2px
+    style G fill:#10b981,stroke:#059669,color:#ffffff,stroke-width:2px
+    style H fill:#ef4444,stroke:#dc2626,color:#ffffff,stroke-width:2px
 ```
 
 ---

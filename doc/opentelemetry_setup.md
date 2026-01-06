@@ -13,16 +13,18 @@ includes:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TB
+}}}%%
+graph TB
     subgraph app["Next.js Application"]
         subgraph custom["Custom Spans"]
             tracer["src/lib/tracer.ts<br/>(Utilities)"]
@@ -36,9 +38,15 @@ includes:
 
     app -->|OTLP/HTTP| grafana["Grafana Cloud<br/>Tempo (Traces)"]
 
-    style app fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
-    style grafana fill:#ffedd5,stroke:#fdba74,stroke-width:2px,color:#9a3412
-    style custom fill:#f8fafc,stroke:#e2e8f0,stroke-width:1px,color:#334155
+    style app fill:#f8fafc,stroke:#2563eb,stroke-width:2px,color:#000000
+    style custom fill:#fafafa,stroke:#7c3aed,stroke-width:2px,color:#000000
+    style tracer fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style logger fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style entry fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style sdk fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style grafana fill:#fcd34d,stroke:#d97706,stroke-width:2px,color:#000000
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Features Instrumented

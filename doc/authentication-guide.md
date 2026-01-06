@@ -19,16 +19,28 @@ Auth.js handles authentication with a middleware-first approach:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'actorTextColor': '#000000',
+  'actorBkg': '#bfdbfe',
+  'actorBorder': '#2563eb',
+  'signalColor': '#000000',
+  'signalTextColor': '#000000',
+  'labelBoxBkgColor': '#fde68a',
+  'labelBoxBorderColor': '#d97706',
+  'labelTextColor': '#000000',
+  'noteBkgColor': '#e2e8f0',
+  'noteTextColor': '#000000',
+  'noteBorderColor': '#94a3b8',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%sequenceDiagram
+}}}%%
+sequenceDiagram
     participant User as User/Browser
     participant Middleware
     participant Auth as Auth.js
@@ -54,16 +66,18 @@ Auth.js handles authentication with a middleware-first approach:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
+}}}%%
+graph TD
     Start["User visits /login"] --> Form["Login Form"]
     Form --> Submit["Submit credentials"]
     Submit --> Validate["CredentialsProvider.authorize"]
@@ -80,9 +94,20 @@ Auth.js handles authentication with a middleware-first approach:
     Fail --> Error["Show error message"]
     Error --> Form
 
-    style Success fill:#dcfce7,stroke:#86efac,color:#166534
-    style Fail fill:#fee2e2,stroke:#fca5a5,color:#991b1b
-    style Redirect fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Start fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style Form fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Submit fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style Validate fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style FindUser fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Hash fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Match fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style Success fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+    style Fail fill:#fecaca,stroke:#dc2626,color:#000000,stroke-width:2px
+    style Session fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style Redirect fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+    style Error fill:#fecaca,stroke:#dc2626,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ---
@@ -170,16 +195,18 @@ export async function middleware(request: NextRequest) {
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TD
+}}}%%
+flowchart TD
     A["User enters form"] --> B["POST /api/auth/register"]
     B --> C["Validate input<br/>(Zod schema)"]
     C --> D{"Email<br/>exists?"}
@@ -189,9 +216,17 @@ export async function middleware(request: NextRequest) {
     G --> H["Auto sign-in<br/>with credentials"]
     H --> I["Redirect to /dashboard"]
 
-    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style I fill:#dcfce7,stroke:#86efac,color:#166534
-    style E fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style A fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+    style C fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style D fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style E fill:#fecaca,stroke:#dc2626,color:#000000,stroke-width:2px
+    style F fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style G fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style H fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style I fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 **Example:**
@@ -226,16 +261,18 @@ const user = await prisma.user.create({
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TD
+}}}%%
+flowchart TD
     A["User enters email/password"] --> B["POST /api/auth/signin"]
     B --> C["Auth.js calls<br/>CredentialsProvider.authorize()"]
     C --> D["Find user by email"]
@@ -248,9 +285,19 @@ const user = await prisma.user.create({
     I --> J["Set session cookie"]
     J --> K["Redirect to /dashboard"]
 
-    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style K fill:#dcfce7,stroke:#86efac,color:#166534
-    style F fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style A fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+    style C fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style D fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style E fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style F fill:#fecaca,stroke:#dc2626,color:#000000,stroke-width:2px
+    style G fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style H fill:#fde68a,stroke:#d97706,color:#000000,stroke-width:2px
+    style I fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style J fill:#a5f3fc,stroke:#0891b2,color:#000000,stroke-width:2px
+    style K fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 **Client Usage:**
@@ -275,23 +322,30 @@ if (result?.ok) {
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#bfdbfe',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#3b82f6',
+  'lineColor': '#000000',
+  'secondaryColor': '#ddd6fe',
+  'tertiaryColor': '#a5f3fc',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#e2e8f0',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TD
+}}}%%
+flowchart TD
     A["User clicks sign out"] --> B["signOut()"]
     B --> C["Clear session cookie"]
     C --> D["Clear JWT from localStorage"]
     D --> E["Redirect to /login"]
 
-    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style E fill:#dcfce7,stroke:#86efac,color:#166534
+    style A fill:#bfdbfe,stroke:#2563eb,color:#000000,stroke-width:2px
+    style B fill:#fed7aa,stroke:#ea580c,color:#000000,stroke-width:2px
+    style C fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style D fill:#ddd6fe,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style E fill:#bbf7d0,stroke:#16a34a,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 **Usage:**
@@ -475,24 +529,24 @@ openssl rand -base64 32
 ## File Structure
 
 ```
-src/
-├── 📁 auth.ts                     # Main Auth.js config
-├── 📁 middleware.ts               # Route protection
+📦 src/
+├── 📄 auth.ts                     # Main Auth.js config
+├── 📄 middleware.ts               # Route protection
 ├── 📁 app/
 │   ├── 📁 login/
-│   │   └── 📁 page.tsx            # Login page
+│   │   └── 📄 page.tsx            # Login page
 │   ├── 📁 register/
-│   │   └── 📁 page.tsx            # Registration page
+│   │   └── 📄 page.tsx            # Registration page
 │   ├── 📁 dashboard/
-│   │   └── 📁 page.tsx            # Protected dashboard
+│   │   └── 📄 page.tsx            # Protected dashboard
 │   └── 📁 api/
 │       └── 📁 auth/
 │           ├── 📁 [...nextauth]/
-│           │   └── 📁 route.ts    # Auth.js handlers
+│           │   └── 📄 route.ts    # Auth.js handlers
 │           ├── 📁 register/
-│           │   └── 📁 route.ts    # Registration API
+│           │   └── 📄 route.ts    # Registration API
 │           └── 📁 logout/
-│               └── 📁 route.ts    # Logout endpoint
+│               └── 📄 route.ts    # Logout endpoint
 ```
 
 ---

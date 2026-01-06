@@ -25,16 +25,18 @@ bun run test:ui
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
+  'primaryColor': '#f8fafc',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#fafafa',
+  'tertiaryColor': '#f5f5f5',
   'background': '#ffffff',
-  'textColor': '#334155',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
   'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%flowchart TD
+}}}%%
+flowchart TD
     A[Run: bun run test] --> B[Vitest loads config]
     B --> C[Setup: vitest.setup.ts]
     C --> D[Discover tests in src/**/*.test.ts]
@@ -45,63 +47,46 @@ bun run test:ui
     H --> I[Exit code 1]
     G --> J[Exit code 0]
 
-    style A fill:#dcfce7,stroke:#86efac,color:#166534
-    style G fill:#dcfce7,stroke:#86efac,color:#166534
-    style H fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style A fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style B fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style C fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style D fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style E fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style F fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style G fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style H fill:#fca5a5,stroke:#dc2626,color:#000000,stroke-width:2px
+    style I fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+    style J fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
 ```
 
 ## Test Structure
 
 Tests are organized in `__tests__` directories alongside the code they test:
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {
-  'primaryColor': '#e2e8f0',
-  'primaryTextColor': '#1e293b',
-  'primaryBorderColor': '#cbd5e1',
-  'lineColor': '#94a3b8',
-  'secondaryColor': '#f1f5f9',
-  'tertiaryColor': '#f8fafc',
-  'background': '#ffffff',
-  'textColor': '#334155',
-  'fontFamily': 'system-ui, -apple-system, sans-serif'
-}}}%%graph TD
-    Root["src/"] --> Auth["__tests__/"]
-    Root --> Lib["lib/"]
-    Root --> App["app/"]
-    Root --> Components["components/"]
-
-    Auth --> AuthTest["auth.test.ts"]
-    Auth --> ModelsTest["models.test.ts"]
-
-    Lib --> LibTests["__tests__/"]
-    LibTests --> ApiTest["api.test.ts"]
-    LibTests --> UtilsTest["utils.test.ts"]
-
-    App --> AppApi["api/"]
-    AppApi --> ApiTests["__tests__/"]
-    ApiTests --> CoursesTest["courses.test.ts"]
-    ApiTests --> EnrollmentsTest["enrollments.test.ts"]
-    ApiTests --> ProgressTest["progress.test.ts"]
-    ApiTests --> RegisterTest["register.test.ts"]
-    ApiTests --> LanguageTest["user-language.test.ts"]
-    ApiTests --> ProfileTest["user-profile.test.ts"]
-
-    Components --> UI["ui/"]
-    UI --> UiTests["__tests__/"]
-    UiTests --> ButtonTest["button.test.tsx"]
-
-    style AuthTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style ModelsTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style ApiTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style UtilsTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style CoursesTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style EnrollmentsTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style ProgressTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style RegisterTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style LanguageTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style ProfileTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
-    style ButtonTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+```
+📦 src/
+├── 📁 __tests__/
+│   ├── 🧪 auth.test.ts
+│   └── 🧪 models.test.ts
+├── 📁 lib/
+│   └── 📁 __tests__/
+│       ├── 🧪 api.test.ts
+│       └── 🧪 utils.test.ts
+├── 📁 app/
+│   └── 📁 api/
+│       └── 📁 __tests__/
+│           ├── 🧪 courses.test.ts
+│           ├── 🧪 enrollments.test.ts
+│           ├── 🧪 progress.test.ts
+│           ├── 🧪 register.test.ts
+│           ├── 🧪 user-language.test.ts
+│           └── 🧪 user-profile.test.ts
+└── 📁 components/
+    └── 📁 ui/
+        └── 📁 __tests__/
+            └── 🧪 button.test.tsx
 ```
 
 ## Test Coverage
