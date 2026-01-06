@@ -18,7 +18,17 @@ The Dev Academy platform uses **Auth.js v5** (NextAuth) with:
 Auth.js handles authentication with a middleware-first approach:
 
 ```mermaid
-sequenceDiagram
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%sequenceDiagram
     participant User as User/Browser
     participant Middleware
     participant Auth as Auth.js
@@ -43,7 +53,17 @@ sequenceDiagram
 ## Authentication Flow
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     Start["User visits /login"] --> Form["Login Form"]
     Form --> Submit["Submit credentials"]
     Submit --> Validate["CredentialsProvider.authorize"]
@@ -60,9 +80,9 @@ graph TD
     Fail --> Error["Show error message"]
     Error --> Form
 
-    style Success fill:#51cf66,stroke:#2f9e44,color:#fff
-    style Fail fill:#ff6b6b,stroke:#c92a2a,color:#fff
-    style Redirect fill:#339af0,stroke:#1971c2,color:#fff
+    style Success fill:#dcfce7,stroke:#86efac,color:#166534
+    style Fail fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style Redirect fill:#dbeafe,stroke:#93c5fd,color:#1e40af
 ```
 
 ---
@@ -149,7 +169,17 @@ export async function middleware(request: NextRequest) {
 ### Registration Flow
 
 ```mermaid
-flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TD
     A["User enters form"] --> B["POST /api/auth/register"]
     B --> C["Validate input<br/>(Zod schema)"]
     C --> D{"Email<br/>exists?"}
@@ -159,9 +189,9 @@ flowchart TD
     G --> H["Auto sign-in<br/>with credentials"]
     H --> I["Redirect to /dashboard"]
 
-    style A fill:#e3f2fd,stroke:#1976d2
-    style I fill:#51cf66,stroke:#2f9e44,color:#fff
-    style E fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style I fill:#dcfce7,stroke:#86efac,color:#166534
+    style E fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 **Example:**
@@ -195,7 +225,17 @@ const user = await prisma.user.create({
 ### Login Flow
 
 ```mermaid
-flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TD
     A["User enters email/password"] --> B["POST /api/auth/signin"]
     B --> C["Auth.js calls<br/>CredentialsProvider.authorize()"]
     C --> D["Find user by email"]
@@ -208,9 +248,9 @@ flowchart TD
     I --> J["Set session cookie"]
     J --> K["Redirect to /dashboard"]
 
-    style A fill:#e3f2fd,stroke:#1976d2
-    style K fill:#51cf66,stroke:#2f9e44,color:#fff
-    style F fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style K fill:#dcfce7,stroke:#86efac,color:#166534
+    style F fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 **Client Usage:**
@@ -234,14 +274,24 @@ if (result?.ok) {
 ### Logout Flow
 
 ```mermaid
-flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TD
     A["User clicks sign out"] --> B["signOut()"]
     B --> C["Clear session cookie"]
     C --> D["Clear JWT from localStorage"]
     D --> E["Redirect to /login"]
 
-    style A fill:#e3f2fd,stroke:#1976d2
-    style E fill:#51cf66,stroke:#2f9e44,color:#fff
+    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style E fill:#dcfce7,stroke:#86efac,color:#166534
 ```
 
 **Usage:**

@@ -10,7 +10,17 @@ error cases, response formatting
 ## Test Execution Pipeline
 
 ```mermaid
-flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TD
     A["Run: bun run test"] --> B["Vitest discovers tests<br/>in src/app/api/__tests__/**"]
     B --> C["Load vitest.setup.ts<br/>Mock Auth.js & Prisma"]
     C --> D["Execute API tests<br/>in parallel"]
@@ -33,8 +43,8 @@ flowchart TD
     F -->|Yes| G["✅ 117/117 tests passed"]
     F -->|No| H["❌ Show failures"]
 
-    style G fill:#51cf66,stroke:#2f9e44,color:#fff
-    style H fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style G fill:#dcfce7,stroke:#86efac,color:#166534
+    style H fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 ---

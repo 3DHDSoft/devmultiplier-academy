@@ -3,7 +3,17 @@
 ## Playwright Setup Checklist
 
 ```mermaid
-graph TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TB
     A["System Requirements"] -->|Node 22+<br/>Bun 1.3.5+| B["✅ Installed"]
     B --> C["Browser Binaries"]
     C -->|First run auto-download| D["✅ Ready"]
@@ -12,13 +22,13 @@ graph TB
     F --> G["Run Tests"]
     G -->|bun run e2e| H["✅ Executing"]
 
-    style A fill:#e7f5ff,stroke:#1971c2
-    style B fill:#51cf66,stroke:#2f9e44,color:#fff
-    style C fill:#e7f5ff,stroke:#1971c2
-    style D fill:#51cf66,stroke:#2f9e44,color:#fff
-    style E fill:#e7f5ff,stroke:#1971c2
-    style F fill:#51cf66,stroke:#2f9e44,color:#fff
-    style H fill:#339af0,stroke:#1971c2,color:#fff
+    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style B fill:#dcfce7,stroke:#86efac,color:#166534
+    style C fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style D fill:#dcfce7,stroke:#86efac,color:#166534
+    style E fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style F fill:#dcfce7,stroke:#86efac,color:#166534
+    style H fill:#dbeafe,stroke:#93c5fd,color:#1e40af
 ```
 
 ## ✅ Installation Status

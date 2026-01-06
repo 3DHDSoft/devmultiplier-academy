@@ -5,7 +5,17 @@ Comprehensive comparison of direct Prisma access vs REST API abstraction layer f
 ## Architecture Comparison
 
 ```mermaid
-graph TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TB
     subgraph REST["🌐 REST API Layer"]
         direction LR
         Client2["Client<br/>Browser/Mobile/External"]
@@ -28,8 +38,8 @@ graph TB
 
     REST ~~~ Prisma
 
-    style REST fill:#fff3e0,stroke:#e65100,color:#000
-    style Prisma fill:#e7f5ff,stroke:#1971c2,color:#000
+    style REST fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style Prisma fill:#dbeafe,stroke:#93c5fd,color:#1e40af
 ```
 
 ## Quick Comparison Table

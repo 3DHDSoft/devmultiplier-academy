@@ -18,8 +18,17 @@ All metrics are exported to **Grafana Cloud Prometheus** via OTLP/HTTP protocol.
 ### Components
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4f46e5', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3730a3', 'lineColor': '#6366f1', 'secondaryColor': '#f0abfc', 'tertiaryColor': '#e0e7ff'}}}%%
-flowchart TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TB
     subgraph App["Application Code"]
         MW["Middleware"]
         Auth["Auth/Login"]
@@ -36,12 +45,12 @@ flowchart TB
     MetricReader --> Exporter["OTLP Exporter"]
     Exporter --> Grafana[("Grafana Cloud<br/>Prometheus")]
 
-    style App fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px
-    style Metrics fill:#4f46e5,stroke:#3730a3,color:#fff
-    style MeterProvider fill:#8b5cf6,stroke:#6d28d9,color:#fff
-    style MetricReader fill:#a78bfa,stroke:#7c3aed,color:#fff
-    style Exporter fill:#c4b5fd,stroke:#8b5cf6,color:#1e1b4b
-    style Grafana fill:#f97316,stroke:#ea580c,color:#fff
+    style App fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
+    style Metrics fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style MeterProvider fill:#e0e7ff,stroke:#a5b4fc,color:#3730a3
+    style MetricReader fill:#ede9fe,stroke:#c4b5fd,color:#5b21b6
+    style Exporter fill:#f3e8ff,stroke:#d8b4fe,color:#7c3aed
+    style Grafana fill:#ffedd5,stroke:#fdba74,color:#9a3412
 ```
 
 ### Files

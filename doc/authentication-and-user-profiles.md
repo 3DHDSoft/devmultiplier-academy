@@ -24,6 +24,7 @@ Auth.js, and next-intl.
 ### Architecture Diagram
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e2e8f0', 'primaryTextColor': '#1e293b', 'primaryBorderColor': '#cbd5e1', 'lineColor': '#94a3b8', 'secondaryColor': '#f1f5f9', 'tertiaryColor': '#f8fafc', 'background': '#ffffff', 'textColor': '#334155', 'fontFamily': 'system-ui, -apple-system, sans-serif'}}}%%
 graph TD
     User["User"] -->|1. Login/Register| Auth["Auth.js"]
     Auth -->|2. Validate| DB1[("PostgreSQL<br/>Check credentials")]
@@ -39,9 +40,9 @@ graph TD
     API -->|10. Save| DB3[("PostgreSQL<br/>Update user locale")]
     DB3 -->|11. Reflect| Page
 
-    style Auth fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style Session fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style Page fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Auth fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Session fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Page fill:#dcfce7,stroke:#86efac,color:#166534
 ```
 
 ### Key Integration Points

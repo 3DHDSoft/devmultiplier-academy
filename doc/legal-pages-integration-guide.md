@@ -17,7 +17,17 @@ Then link to them from:
 ## Legal Pages Flow
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     User["User"] -->|Visit site| Home["Home Page"]
     Home -->|Click footer link| Legal["Legal Page<br/>Terms or Privacy"]
     Legal -->|Read content| Content["Content loaded<br/>from translation JSON"]
@@ -28,9 +38,9 @@ graph TD
     Admin["Admin/Developer"] -->|Update legal text| JSON["Edit translation<br/>JSON file"]
     JSON -->|Deploy| Prod["Live on website"]
 
-    style Legal fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style TOS fill:#51cf66,stroke:#2f9e44,color:#fff
-    style Content fill:#fff3e0,stroke:#f57c00,color:#000
+    style Legal fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style TOS fill:#dcfce7,stroke:#86efac,color:#166534
+    style Content fill:#fef3c7,stroke:#fcd34d,color:#92400e
 ```
 
 ---

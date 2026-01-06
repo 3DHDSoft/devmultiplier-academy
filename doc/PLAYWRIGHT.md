@@ -8,7 +8,17 @@ Playwright is configured for end-to-end testing across multiple browsers (Chromi
 ## E2E Test Architecture
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     subgraph Dev["Development"]
         App["Next.js App<br/>localhost:3000"]
     end
@@ -37,8 +47,8 @@ graph TD
     Firefox -->|Report| Results
     Safari -->|Report| Results
 
-    style App fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style Results fill:#51cf66,stroke:#2f9e44,color:#fff
+    style App fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Results fill:#dcfce7,stroke:#86efac,color:#166534
 ```
 
 ## Setup & Prerequisites

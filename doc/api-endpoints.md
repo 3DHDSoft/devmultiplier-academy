@@ -5,23 +5,34 @@ Complete reference for all REST API endpoints in the Dev Academy platform.
 ## API Architecture
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#3b82f6',
+  'primaryTextColor': '#0f172a',
+  'primaryBorderColor': '#1e40af',
+  'lineColor': '#475569',
+  'secondaryColor': '#dbeafe',
+  'tertiaryColor': '#eff6ff',
+  'background': '#ffffff',
+  'textColor': '#0f172a',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 graph TD
     Client["Client Request"] -->|HTTP| Router["Next.js Route Handler"]
     Router -->|1. Auth| Auth["Check Session"]
     Auth -->|Valid| Authorize["2. Authorize User"]
-    Auth -->|Invalid| Unauth["❌ 401 Unauthorized"]
+    Auth -->|Invalid| Unauth["401 Unauthorized"]
 
     Authorize -->|Permitted| Validate["3. Validate Input"]
-    Authorize -->|Forbidden| Forbidden["❌ 403 Forbidden"]
+    Authorize -->|Forbidden| Forbidden["403 Forbidden"]
 
     Validate -->|Valid| Query["4. Query Database"]
-    Validate -->|Invalid| BadReq["❌ 400 Bad Request"]
+    Validate -->|Invalid| BadReq["400 Bad Request"]
 
     Query -->|Success| Transform["5. Transform Response"]
-    Query -->|Not Found| NotFound["❌ 404 Not Found"]
-    Query -->|Error| ServerErr["❌ 500 Server Error"]
+    Query -->|Not Found| NotFound["404 Not Found"]
+    Query -->|Error| ServerErr["500 Server Error"]
 
-    Transform -->|JSON| Response["✅ 200/201 Response"]
+    Transform -->|JSON| Response["200/201 Response"]
     Response -->|HTTP| Client
 
     Unauth -->|HTTP| Client
@@ -30,9 +41,19 @@ graph TD
     NotFound -->|HTTP| Client
     ServerErr -->|HTTP| Client
 
-    style Response fill:#51cf66,stroke:#2f9e44,color:#fff
-    style Unauth fill:#ff6b6b,stroke:#c92a2a,color:#fff
-    style Forbidden fill:#ffa94d,stroke:#fd7e14,color:#000
+    style Client fill:#0f172a,stroke:#000000,color:#ffffff,stroke-width:2px
+    style Router fill:#3b82f6,stroke:#1e40af,color:#ffffff,stroke-width:2px
+    style Auth fill:#3b82f6,stroke:#1e40af,color:#ffffff,stroke-width:2px
+    style Authorize fill:#3b82f6,stroke:#1e40af,color:#ffffff,stroke-width:2px
+    style Validate fill:#3b82f6,stroke:#1e40af,color:#ffffff,stroke-width:2px
+    style Query fill:#3b82f6,stroke:#1e40af,color:#ffffff,stroke-width:2px
+    style Transform fill:#3b82f6,stroke:#1e40af,color:#ffffff,stroke-width:2px
+    style Response fill:#22c55e,stroke:#15803d,color:#ffffff,stroke-width:2px
+    style Unauth fill:#ef4444,stroke:#b91c1c,color:#ffffff,stroke-width:2px
+    style Forbidden fill:#f97316,stroke:#c2410c,color:#ffffff,stroke-width:2px
+    style BadReq fill:#eab308,stroke:#a16207,color:#0f172a,stroke-width:2px
+    style NotFound fill:#8b5cf6,stroke:#6d28d9,color:#ffffff,stroke-width:2px
+    style ServerErr fill:#ef4444,stroke:#b91c1c,color:#ffffff,stroke-width:2px
 ```
 
 ## Authentication

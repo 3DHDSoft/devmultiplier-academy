@@ -69,7 +69,17 @@ For Next.js 13+ (App Router), I recommend **next-intl** over the built-in i18n r
 ## i18n Flow Architecture
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     Browser["🌍 Browser Request<br/>GET /es/courses"] --> Middleware["Middleware"]
     Middleware -->|Detect locale| Routing["Routing"]
 
@@ -83,10 +93,10 @@ graph TD
     Trans -->|Look up key| Lookup["Find key in<br/>messages/es.json"]
     Lookup -->|Return value| Render["✅ Render translated text"]
 
-    style Middleware fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style Config fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style Messages fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style Render fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Middleware fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Config fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Messages fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Render fill:#dcfce7,stroke:#86efac,color:#166534
 ```
 
 ---

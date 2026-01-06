@@ -35,7 +35,17 @@ tests in the middle, and selective end-to-end tests at the top.
 ## Test Flow Overview
 
 ```mermaid
-flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TD
     subgraph Development ["Development Workflow"]
         CODE[Write Code] --> UNIT[Run Unit Tests]
         UNIT -->|Pass| INT[Run Integration Tests]
@@ -55,12 +65,12 @@ flowchart TD
         FIX --> CODE
     end
 
-    style UNIT fill:#51cf66,stroke:#2f9e44
-    style INT fill:#ffd43b,stroke:#f59f00
-    style UNIT_CI fill:#51cf66,stroke:#2f9e44
-    style INT_CI fill:#ffd43b,stroke:#f59f00
-    style E2E_CI fill:#ff6b6b,stroke:#c92a2a
-    style DEPLOY fill:#339af0,stroke:#1971c2
+    style UNIT fill:#dcfce7,stroke:#86efac,color:#166534
+    style INT fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style UNIT_CI fill:#dcfce7,stroke:#86efac,color:#166534
+    style INT_CI fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style E2E_CI fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style DEPLOY fill:#dbeafe,stroke:#93c5fd,color:#1e40af
 ```
 
 ## Testing Layers Explained
@@ -150,7 +160,17 @@ flowchart TD
 ## Recommended Tool Stack
 
 ```mermaid
-graph TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TB
     subgraph unit_int ["Unit & Integration Testing"]
         VITEST["Vitest<br/>Test Runner"]
         RTL["React Testing Library<br/>Component Testing"]
@@ -176,10 +196,10 @@ graph TB
     PLAY --> FAKER
     MSW --> FAKER
 
-    style VITEST fill:#51cf66,stroke:#2f9e44
-    style RTL fill:#51cf66,stroke:#2f9e44
-    style PLAY fill:#ff6b6b,stroke:#c92a2a
-    style MSW fill:#ffd43b,stroke:#f59f00
+    style VITEST fill:#dcfce7,stroke:#86efac,color:#166534
+    style RTL fill:#dcfce7,stroke:#86efac,color:#166534
+    style PLAY fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style MSW fill:#fef3c7,stroke:#fcd34d,color:#92400e
 ```
 
 ### Primary Testing Tools
@@ -202,7 +222,17 @@ graph TB
 ## Project Structure
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     subgraph root ["my-nextjs-app/"]
         SRC["📁 src/"]
         TESTS["📁 tests/"]
@@ -231,11 +261,11 @@ graph TD
     TESTS --> test_details
     CONFIG --> config_details
 
-    style COMP fill:#51cf66,stroke:#2f9e44
-    style HOOKS fill:#51cf66,stroke:#2f9e44
-    style LIB fill:#51cf66,stroke:#2f9e44
-    style INT_TEST fill:#ffd43b,stroke:#f59f00
-    style E2E_TEST fill:#ff6b6b,stroke:#c92a2a
+    style COMP fill:#dcfce7,stroke:#86efac,color:#166534
+    style HOOKS fill:#dcfce7,stroke:#86efac,color:#166534
+    style LIB fill:#dcfce7,stroke:#86efac,color:#166534
+    style INT_TEST fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style E2E_TEST fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 **Legend:**
@@ -404,7 +434,17 @@ vi.stubEnv('NEXT_PUBLIC_API_URL', 'http://localhost:3000/api');
 ### Test Interaction Flow
 
 ```mermaid
-sequenceDiagram
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%sequenceDiagram
     participant Dev as Developer
     participant Unit as Unit Test
     participant Int as Integration Test
@@ -753,7 +793,17 @@ test.describe('Data Operations', () => {
 ## CI/CD Integration
 
 ```mermaid
-flowchart LR
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart LR
     subgraph trigger ["Trigger"]
         PUSH["Push to main/develop"]
         PR["Pull Request"]
@@ -782,10 +832,10 @@ flowchart LR
     J1 --> result
     J2 --> result
 
-    style J1 fill:#51cf66,stroke:#2f9e44
-    style J2 fill:#ff6b6b,stroke:#c92a2a
-    style PASS fill:#51cf66,stroke:#2f9e44
-    style FAIL fill:#ff6b6b,stroke:#c92a2a
+    style J1 fill:#dcfce7,stroke:#86efac,color:#166534
+    style J2 fill:#fee2e2,stroke:#fca5a5,color:#991b1b
+    style PASS fill:#dcfce7,stroke:#86efac,color:#166534
+    style FAIL fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 ### GitHub Actions Workflow
@@ -837,7 +887,17 @@ jobs:
 ## Summary
 
 ```mermaid
-mindmap
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%mindmap
   root((Testing<br/>Strategy))
     Unit Tests
       Fast feedback

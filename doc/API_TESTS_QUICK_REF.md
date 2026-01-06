@@ -6,7 +6,17 @@
 ## Test Coverage Overview
 
 ```mermaid
-graph TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TB
     subgraph API["API Tests (44 tests)"]
         Courses["Courses<br/>10 tests"]
         Enrollments["Enrollments<br/>15 tests"]
@@ -29,7 +39,7 @@ graph TB
     API --> Total
     Util --> Total
 
-    style Total fill:#51cf66,stroke:#2f9e44,color:#fff
+    style Total fill:#dcfce7,stroke:#86efac,color:#166534
 ```
 
 ---

@@ -7,6 +7,17 @@ Complete guide for implementing REST API endpoints with Next.js App Router, Pris
 All API endpoints follow this consistent architecture:
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
 flowchart TD
     A["1. Authentication<br/>Check session"] --> B["2. Validation<br/>Zod schema"]
     B --> C["3. Authorization<br/>Check permissions"]
@@ -27,13 +38,13 @@ flowchart TD
     Err5 --> ErrorResp
     F --> Success["Success Response"]
 
-    style A fill:#a3e4d7,stroke:#1abc9c
-    style B fill:#a3e4d7,stroke:#1abc9c
-    style C fill:#a3e4d7,stroke:#1abc9c
-    style D fill:#a3e4d7,stroke:#1abc9c
-    style E fill:#a3e4d7,stroke:#1abc9c
-    style Success fill:#51cf66,stroke:#2f9e44,color:#fff
-    style ErrorResp fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style A fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style B fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style C fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style D fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style E fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style Success fill:#dcfce7,stroke:#86efac,color:#166534
+    style ErrorResp fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 ---

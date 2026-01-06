@@ -5,7 +5,17 @@ This project now has complete testing infrastructure for both unit and end-to-en
 ## Testing Stack Overview
 
 ```mermaid
-graph TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TB
     subgraph Unit["📋 Unit & Integration Tests"]
         Vitest["Vitest 4.x"]
         RTL["React Testing Library"]
@@ -30,9 +40,9 @@ graph TB
     Unit --> Config
     E2E --> Config
 
-    style Unit fill:#a3e4d7,stroke:#1abc9c,color:#000
-    style E2E fill:#ffe0b2,stroke:#f57c00,color:#000
-    style Config fill:#f1f3f5,stroke:#495057,color:#000
+    style Unit fill:#dcfce7,stroke:#86efac,color:#166534
+    style E2E fill:#fef3c7,stroke:#fcd34d,color:#92400e
+    style Config fill:#f1f5f9,stroke:#cbd5e1,color:#334155
 ```
 
 ## Quick Navigation

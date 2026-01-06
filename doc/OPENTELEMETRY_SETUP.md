@@ -12,7 +12,17 @@ includes:
 ## Architecture
 
 ```mermaid
-graph TB
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TB
     subgraph app["Next.js Application"]
         subgraph custom["Custom Spans"]
             tracer["src/lib/tracer.ts<br/>(Utilities)"]
@@ -26,9 +36,9 @@ graph TB
 
     app -->|OTLP/HTTP| grafana["Grafana Cloud<br/>Tempo (Traces)"]
 
-    style app fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style grafana fill:#f4a261,stroke:#333,stroke-width:2px
-    style custom fill:#e9ecef,stroke:#666,stroke-width:1px
+    style app fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
+    style grafana fill:#ffedd5,stroke:#fdba74,stroke-width:2px,color:#9a3412
+    style custom fill:#f8fafc,stroke:#e2e8f0,stroke-width:1px,color:#334155
 ```
 
 ## Features Instrumented

@@ -24,7 +24,17 @@ bun run test:ui
 ## Test Execution Flow
 
 ```mermaid
-flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%flowchart TD
     A[Run: bun run test] --> B[Vitest loads config]
     B --> C[Setup: vitest.setup.ts]
     C --> D[Discover tests in src/**/*.test.ts]
@@ -35,9 +45,9 @@ flowchart TD
     H --> I[Exit code 1]
     G --> J[Exit code 0]
 
-    style A fill:#51cf66,stroke:#2f9e44,color:#fff
-    style G fill:#51cf66,stroke:#2f9e44,color:#fff
-    style H fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style A fill:#dcfce7,stroke:#86efac,color:#166534
+    style G fill:#dcfce7,stroke:#86efac,color:#166534
+    style H fill:#fee2e2,stroke:#fca5a5,color:#991b1b
 ```
 
 ## Test Structure
@@ -45,7 +55,17 @@ flowchart TD
 Tests are organized in `__tests__` directories alongside the code they test:
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     Root["src/"] --> Auth["__tests__/"]
     Root --> Lib["lib/"]
     Root --> App["app/"]
@@ -71,17 +91,17 @@ graph TD
     UI --> UiTests["__tests__/"]
     UiTests --> ButtonTest["button.test.tsx"]
 
-    style AuthTest fill:#a3e4d7,stroke:#1abc9c
-    style ModelsTest fill:#a3e4d7,stroke:#1abc9c
-    style ApiTest fill:#a3e4d7,stroke:#1abc9c
-    style UtilsTest fill:#a3e4d7,stroke:#1abc9c
-    style CoursesTest fill:#a3e4d7,stroke:#1abc9c
-    style EnrollmentsTest fill:#a3e4d7,stroke:#1abc9c
-    style ProgressTest fill:#a3e4d7,stroke:#1abc9c
-    style RegisterTest fill:#a3e4d7,stroke:#1abc9c
-    style LanguageTest fill:#a3e4d7,stroke:#1abc9c
-    style ProfileTest fill:#a3e4d7,stroke:#1abc9c
-    style ButtonTest fill:#a3e4d7,stroke:#1abc9c
+    style AuthTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style ModelsTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style ApiTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style UtilsTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style CoursesTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style EnrollmentsTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style ProgressTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style RegisterTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style LanguageTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style ProfileTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style ButtonTest fill:#dbeafe,stroke:#93c5fd,color:#1e40af
 ```
 
 ## Test Coverage

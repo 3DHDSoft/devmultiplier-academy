@@ -6,7 +6,17 @@ type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
 ## Database Architecture
 
 ```mermaid
-graph TD
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%graph TD
     App["Next.js App<br/>Server & Client"] -->|Prisma Client| PrismaLib["Prisma ORM<br/>Type-Safe Layer"]
     PrismaLib -->|Generated Code| Schema["prisma/schema.prisma<br/>Data Models"]
     PrismaLib -->|SQL Queries| DB[("PostgreSQL 18<br/>with PostGIS 3.6")]
@@ -16,8 +26,8 @@ graph TD
 
     Config["prisma.config.ts<br/>Configuration"] -.->|Environment| PrismaLib
 
-    style PrismaLib fill:#194c98,stroke:#1971c2,color:#fff
-    style DB fill:#2d5a3d,stroke:#2f9e44,color:#fff
+    style PrismaLib fill:#dbeafe,stroke:#93c5fd,color:#1e40af
+    style DB fill:#dcfce7,stroke:#86efac,color:#166534
 ```
 
 ## Project Configuration
@@ -34,7 +44,17 @@ This project uses:
 ## Prisma Workflow
 
 ```mermaid
-sequenceDiagram
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e2e8f0',
+  'primaryTextColor': '#1e293b',
+  'primaryBorderColor': '#cbd5e1',
+  'lineColor': '#94a3b8',
+  'secondaryColor': '#f1f5f9',
+  'tertiaryColor': '#f8fafc',
+  'background': '#ffffff',
+  'textColor': '#334155',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%sequenceDiagram
     participant Dev as Developer
     participant Schema as schema.prisma
     participant Migrate as prisma migrate

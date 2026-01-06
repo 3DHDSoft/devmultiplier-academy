@@ -159,7 +159,7 @@ The exporter sends trace data to Grafana Cloud using the OTLP/HTTP protocol.
 
 ```mermaid
 sequenceDiagram
-    participant Client
+%%{init: {'theme': 'default'
     participant NextJS as Next.js Server
     participant OTel as OpenTelemetry SDK
     participant Exporter as OTLP Exporter
@@ -282,7 +282,7 @@ const resource = resourceFromAttributes({
 ```mermaid
 graph LR
     A[HTTP Request] --> B{Auto-Instrumentation}
-    B -->|HTTP Module| C[Root Span Created]
+%%{init: {'theme': 'default'Root Span Created]
     C --> D[Request Processing]
     D -->|DB Query| E[Postgres Span]
     D -->|External API| F[Undici Span]
@@ -347,7 +347,7 @@ export async function GET(request: Request) {
 stateDiagram-v2
   [*] --> RequestReceived
   RequestReceived --> SpanCreated
-  SpanCreated --> SpanActive
+%%{init: {'theme': 'default'ive
   SpanActive --> ChildSpanCreated
   ChildSpanCreated --> ChildSpanActive
   ChildSpanActive --> ChildSpanEnded
@@ -595,7 +595,7 @@ graph LR
     A[dev-academy-web] -->|Traces| B[Tempo]
     A -->|Logs| C[Loki]
     A -->|Metrics| D[Prometheus/Mimir]
-
+%%{init: {'theme': 'default'
     B --> E[Grafana UI]
     C --> E
     D --> E
