@@ -116,7 +116,7 @@ services:
       - '--web.enable-lifecycle'
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus_data:/prometheus
+      - prometheus_web_data:/prometheus
     networks:
       - dev-web-net
     restart: unless-stopped
@@ -135,7 +135,7 @@ services:
       - GF_SERVER_ROOT_URL=http://localhost:3001
       - GF_INSTALL_PLUGINS=
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafana_web_data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
@@ -158,9 +158,9 @@ volumes:
     #driver: local
   pgadmin_web_data:
     #driver: local
-  prometheus_data:
+  prometheus_web_data:
     #driver: local
-  grafana_data:
+  grafana_web_data:
     #driver: local
 
 networks:
