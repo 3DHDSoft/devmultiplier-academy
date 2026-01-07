@@ -74,6 +74,22 @@ model course_translations {
   @@index([locale])
 }
 
+model email_change_tokens {
+  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId       String   @db.Uuid
+  currentEmail String
+  newEmail     String
+  token        String   @unique
+  expires      DateTime
+  used         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expires])
+  @@index([token])
+  @@index([userId])
+}
+
 model enrollments {
   id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
   userId      String    @db.Uuid
@@ -175,6 +191,19 @@ model modules {
   @@index([courseId])
 }
 
+model password_reset_tokens {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  email     String
+  token     String   @unique
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([expires])
+  @@index([token])
+}
+
 model sessions {
   id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
   sessionToken String    @unique
@@ -194,37 +223,37 @@ model sessions {
   updatedAt    DateTime?
   users        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
   @@index([userId, createdAt])
+  @@index([userId])
 }
 
 model users {
-  id                            String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  email                         String?           @unique
-  emailVerified                 DateTime?
-  name                          String?
-  password                      String?
-  avatar                        String?
-  bio                           String?
-  locale                        String            @default("en")
-  timezone                      String            @default("UTC")
-  status                        String            @default("active")
-  createdAt                     DateTime          @default(now())
-  updatedAt                     DateTime
-  isAdmin                       Boolean           @default(false)
-  dashboardAppearance           String            @default("light")
-  notifyOnCourseUpdates         Boolean           @default(true)
-  notifyOnNewCourses            Boolean           @default(true)
-  notifyOnCompletionReminders   Boolean           @default(true)
-  notifyOnAchievements          Boolean           @default(true)
-  notifyOnMessages              Boolean           @default(true)
-  emailDigestFrequency          String            @default("weekly")
-  accounts                      accounts[]
-  course_progress               course_progress[]
-  enrollments                   enrollments[]
-  login_logs                    login_logs[]
-  sessions                      sessions[]
-  email_change_tokens           email_change_tokens[]
+  id                          String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  email                       String?               @unique
+  emailVerified               DateTime?
+  name                        String?
+  password                    String?
+  avatar                      String?
+  bio                         String?
+  locale                      String                @default("en")
+  timezone                    String                @default("UTC")
+  status                      String                @default("active")
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime
+  isAdmin                     Boolean               @default(false)
+  dashboardAppearance         String                @default("light")
+  emailDigestFrequency        String                @default("weekly")
+  notifyOnAchievements        Boolean               @default(true)
+  notifyOnCompletionReminders Boolean               @default(true)
+  notifyOnCourseUpdates       Boolean               @default(true)
+  notifyOnMessages            Boolean               @default(true)
+  notifyOnNewCourses          Boolean               @default(true)
+  accounts                    accounts[]
+  course_progress             course_progress[]
+  email_change_tokens         email_change_tokens[]
+  enrollments                 enrollments[]
+  login_logs                  login_logs[]
+  sessions                    sessions[]
 
   @@index([email])
   @@index([locale])
@@ -236,33 +265,4 @@ model verificationtokens {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model password_reset_tokens {
-  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  email     String
-  token     String   @unique
-  expires   DateTime
-  used      Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  @@index([email])
-  @@index([token])
-  @@index([expires])
-}
-
-model email_change_tokens {
-  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  userId       String   @db.Uuid
-  currentEmail String
-  newEmail     String
-  token        String   @unique
-  expires      DateTime
-  used         Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([token])
-  @@index([expires])
 }

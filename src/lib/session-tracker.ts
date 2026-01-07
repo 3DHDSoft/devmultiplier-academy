@@ -69,6 +69,32 @@ export async function updateSessionActivity(sessionId: string): Promise<void> {
 }
 
 /**
+ * Check if a session is still valid (exists and not expired)
+ */
+export async function isSessionValid(sessionId: string): Promise<boolean> {
+  try {
+    const session = await prisma.sessions.findUnique({
+      where: {
+        id: sessionId,
+      },
+      select: {
+        expires: true,
+      },
+    });
+
+    if (!session) {
+      return false;
+    }
+
+    // Check if session has expired
+    return session.expires > new Date();
+  } catch (error) {
+    console.error('Error validating session:', error);
+    return false;
+  }
+}
+
+/**
  * Get all active sessions for a user
  */
 export async function getUserSessions(userId: string) {
@@ -81,7 +107,7 @@ export async function getUserSessions(userId: string) {
         },
       },
       orderBy: {
-        updatedAt: 'desc',
+        createdAt: 'desc',
       },
       select: {
         id: true,

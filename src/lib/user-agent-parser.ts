@@ -126,7 +126,7 @@ export function parseUserAgent(userAgent: string | null): ParsedUserAgent {
 /**
  * Get a friendly display name for the device
  */
-export function getDeviceDisplayName(device: string, browser: string, os: string): string {
+export function getDeviceDisplayName(device: string, _browser: string, os: string): string {
   if (device === 'Mobile') {
     if (os.includes('iOS')) {
       return 'iPhone';

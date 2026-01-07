@@ -45,14 +45,23 @@ export async function DELETE(req: NextRequest) {
     const validatedData = deleteSessionSchema.parse(body);
 
     if (validatedData.terminateAll) {
-      // Terminate all other sessions
-      const count = await terminateAllOtherSessions(session.user.id);
+      // Terminate all other sessions (excluding current one)
+      const currentSessionId = session.user.sessionId;
+      const count = await terminateAllOtherSessions(session.user.id, currentSessionId);
       return NextResponse.json({
         success: true,
         message: `${count} session(s) terminated`,
         count,
       });
     } else if (validatedData.sessionId) {
+      // Prevent terminating current session
+      if (session.user.sessionId && validatedData.sessionId === session.user.sessionId) {
+        return NextResponse.json(
+          { error: 'Cannot terminate your current session. Please log out instead.' },
+          { status: 400 }
+        );
+      }
+
       // Terminate specific session
       const success = await terminateSession(session.user.id, validatedData.sessionId);
       if (!success) {

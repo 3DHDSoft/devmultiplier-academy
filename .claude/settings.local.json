@@ -26,7 +26,8 @@
       "Bash(docker-compose restart:*)",
       "Bash(docker compose restart:*)",
       "Bash(npx prisma db pull:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

@@ -194,6 +194,7 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState(false);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
+  const [terminatingSessionId, setTerminatingSessionId] = useState<string | null>(null);
 
   // Delete account state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -409,6 +410,9 @@ export default function ProfilePage() {
       return;
     }
 
+    setTerminatingSessionId(sessionId);
+    setError(null);
+
     try {
       const response = await fetch('/api/user/sessions', {
         method: 'DELETE',
@@ -418,19 +422,28 @@ export default function ProfilePage() {
         body: JSON.stringify({ sessionId }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to terminate session');
+        throw new Error(data.error || 'Failed to terminate session');
       }
+
+      // Show success message briefly
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
 
       // Refresh sessions list
       const sessionsResponse = await fetch('/api/user/sessions');
       if (sessionsResponse.ok) {
-        const data = await sessionsResponse.json();
-        setSessions(data.sessions || []);
+        const sessionsData = await sessionsResponse.json();
+        setSessions(sessionsData.sessions || []);
       }
     } catch (err) {
       console.error('Error terminating session:', err);
       setError(err instanceof Error ? err.message : 'Failed to terminate session');
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setTerminatingSessionId(null);
     }
   };
 
@@ -652,18 +665,20 @@ export default function ProfilePage() {
                           </td>
                         </tr>
                       ) : (
-                        sessions.map((sess, index) => {
+                        sessions.map((sess) => {
                           const browserDisplay = sess.browser || 'Unknown Browser';
                           const location = [sess.city, sess.region, sess.country]
                             .filter(Boolean)
                             .join(', ') || 'Unknown Location';
+                          const isCurrentSession = session?.user?.sessionId === sess.id;
+                          const isTerminating = terminatingSessionId === sess.id;
 
                           return (
                             <tr key={sess.id} className="border-b border-gray-100 last:border-0">
                               <td className="py-4">
                                 <div className="flex items-center gap-2">
                                   <span>{browserDisplay} ({sess.os || 'Unknown OS'})</span>
-                                  {index === 0 && (
+                                  {isCurrentSession && (
                                     <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
                                       Current
                                     </span>
@@ -678,14 +693,23 @@ export default function ProfilePage() {
                                 {sess.updatedAt ? formatDate(sess.updatedAt) : 'N/A'}
                               </td>
                               <td className="py-4 text-right">
-                                <button
-                                  type="button"
-                                  onClick={() => handleTerminateSession(sess.id)}
-                                  className="text-red-600 hover:text-red-800"
-                                  title="Terminate session"
-                                >
-                                  <MoreVertical className="h-5 w-5" />
-                                </button>
+                                {isCurrentSession ? (
+                                  <span className="text-xs text-gray-400">Current session</span>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleTerminateSession(sess.id)}
+                                    disabled={isTerminating}
+                                    className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                    title="Terminate session"
+                                  >
+                                    {isTerminating ? (
+                                      <Loader2 className="h-5 w-5 animate-spin" />
+                                    ) : (
+                                      <MoreVertical className="h-5 w-5" />
+                                    )}
+                                  </button>
+                                )}
                               </td>
                             </tr>
                           );

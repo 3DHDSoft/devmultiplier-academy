@@ -1,4 +1,4 @@
-import { auth, signOut } from '@/auth';
+import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
@@ -6,9 +6,7 @@ import { z } from 'zod';
 
 const deleteAccountSchema = z.object({
   password: z.string().min(1, 'Password is required for account deletion'),
-  confirmation: z.literal('DELETE', {
-    errorMap: () => ({ message: 'You must type DELETE to confirm' }),
-  }),
+  confirmation: z.literal('DELETE', 'You must type DELETE to confirm'),
 });
 
 export async function POST(req: NextRequest) {

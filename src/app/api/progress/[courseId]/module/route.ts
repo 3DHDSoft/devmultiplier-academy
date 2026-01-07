@@ -45,7 +45,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Verify module belongs to this course
-    const courseModule = await prisma.module.findUnique({
+    const courseModule = await prisma.modules.findUnique({
       where: { id: moduleId },
       select: { courseId: true },
     });
@@ -55,7 +55,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Get all lessons in module
-    const lessonsInModule = await prisma.lesson.findMany({
+    const lessonsInModule = await prisma.lessons.findMany({
       where: { moduleId },
       select: { id: true },
     });
@@ -78,6 +78,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
           courseId,
           modulesComplete: 1,
           lessonsComplete: lessonsInModule.length,
+          updatedAt: new Date(),
         },
       });
     } else {

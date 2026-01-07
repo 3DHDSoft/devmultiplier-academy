@@ -45,11 +45,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Verify lesson belongs to this course
-    const lesson = await prisma.lesson.findUnique({
+    const lesson = await prisma.lessons.findUnique({
       where: { id: lessonId },
       select: {
         id: true,
-        module: {
+        modules: {
           select: {
             id: true,
             courseId: true,
@@ -58,7 +58,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
       },
     });
 
-    if (!lesson || lesson.module.courseId !== courseId) {
+    if (!lesson || lesson.modules.courseId !== courseId) {
       return NextResponse.json({ error: 'Lesson not found' }, { status: 404 });
     }
 
@@ -80,6 +80,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
           lessonId,
           modulesComplete: 0,
           lessonsComplete: 1,
+          updatedAt: new Date(),
         },
       });
     } else {
@@ -100,12 +101,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Calculate if module is complete
-    const lessonModule = lesson.module;
-    const totalLessonsInModule = await prisma.lesson.count({
+    const lessonModule = lesson.modules;
+    const totalLessonsInModule = await prisma.lessons.count({
       where: { moduleId: lessonModule.id },
     });
 
-    const completedLessonsInModule = await prisma.lesson.count({
+    const completedLessonsInModule = await prisma.lessons.count({
       where: {
         moduleId: lessonModule.id,
       },

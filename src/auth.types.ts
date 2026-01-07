@@ -6,6 +6,7 @@ declare module 'next-auth' {
     email?: string;
     name?: string | null;
     image?: string | null;
+    sessionId?: string;
   }
 
   interface Session {
@@ -13,6 +14,7 @@ declare module 'next-auth' {
       id: string;
       locale: string;
       timezone: string;
+      sessionId?: string;
     };
   }
 }

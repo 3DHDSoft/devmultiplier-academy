@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
-export default function VerifyEmailChangePage() {
+function VerifyEmailChangeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -112,5 +112,17 @@ export default function VerifyEmailChangePage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailChangePage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+      </div>
+    }>
+      <VerifyEmailChangeContent />
+    </Suspense>
   );
 }

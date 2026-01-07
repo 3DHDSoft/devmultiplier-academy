@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
         userId: user!.id,
         courseId,
         status: 'active',
+        updatedAt: new Date(),
       },
       select: {
         id: true,

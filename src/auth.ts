@@ -5,7 +5,7 @@ import { prisma } from './lib/prisma';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { logLogin } from './lib/login-logger';
-import { trackSession } from './lib/session-tracker';
+import { trackSession, isSessionValid } from './lib/session-tracker';
 
 // Validate required environment variables
 if (!process.env.NEXTAUTH_SECRET) {
@@ -113,15 +113,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             userName: user.name,
           }).catch((err) => console.error('Failed to log login:', err));
 
-          // Track session
-          await trackSession(user.id).catch((err) => console.error('Failed to track session:', err));
+          // Track session and get session ID
+          let sessionId: string | undefined;
+          try {
+            sessionId = await trackSession(user.id);
+          } catch (err) {
+            console.error('Failed to track session:', err);
+          }
 
-          // Return user object matching User type
+          // Return user object matching User type with session ID
           const returnUser: User = {
             id: user.id,
             email: user.email || undefined,
             name: user.name || undefined,
             image: user.avatar || undefined,
+            sessionId, // Add session ID to user object
           };
 
           return returnUser;
@@ -146,9 +152,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: '/login',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
+        token.sessionId = user.sessionId; // Store session ID in JWT
         // Get locale and timezone from database
         const dbUser = await prisma.users.findUnique({
           where: { id: user.id },
@@ -159,6 +166,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.timezone = dbUser.timezone;
         }
       }
+
+      // Validate session on every request (except during sign in)
+      if (trigger !== 'signIn' && token.sessionId) {
+        const sessionValid = await isSessionValid(token.sessionId as string);
+        if (!sessionValid) {
+          // Session has been terminated or expired - return null to force logout
+          console.log(`Session ${token.sessionId} is no longer valid, forcing logout`);
+          return null as any;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
@@ -166,6 +184,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
         session.user.locale = token.locale as string;
         session.user.timezone = token.timezone as string;
+        session.user.sessionId = token.sessionId as string | undefined;
       }
       return session;
     },
