@@ -1,6 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Enable OpenTelemetry instrumentation
+  experimental: {
+    instrumentationHook: true,
+  },
   async redirects() {
     return [
       {

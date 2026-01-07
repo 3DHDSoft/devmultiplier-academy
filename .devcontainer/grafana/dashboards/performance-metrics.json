@@ -108,7 +108,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, rate(http_server_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.50, rate(devacademy_http_server_duration_bucket[5m]))",
           "legendFormat": "p50",
           "range": true,
           "refId": "A"
@@ -119,7 +119,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(http_server_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.95, rate(devacademy_http_server_duration_bucket[5m]))",
           "legendFormat": "p95",
           "range": true,
           "refId": "B"
@@ -130,7 +130,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, rate(http_server_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.99, rate(devacademy_http_server_duration_bucket[5m]))",
           "legendFormat": "p99",
           "range": true,
           "refId": "C"
@@ -222,7 +222,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, rate(db_query_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.50, rate(devacademy_db_query_duration_bucket[5m]))",
           "legendFormat": "p50",
           "range": true,
           "refId": "A"
@@ -233,7 +233,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(db_query_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.95, rate(devacademy_db_query_duration_bucket[5m]))",
           "legendFormat": "p95",
           "range": true,
           "refId": "B"
@@ -244,7 +244,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, rate(db_query_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.99, rate(devacademy_db_query_duration_bucket[5m]))",
           "legendFormat": "p99",
           "range": true,
           "refId": "C"
@@ -336,7 +336,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(db_query_duration_sum[5m]) / rate(db_query_duration_count[5m])",
+          "expr": "rate(devacademy_db_query_duration_sum[5m]) / rate(devacademy_db_query_duration_count[5m])",
           "legendFormat": "{{db_operation}} - {{db_table}}",
           "range": true,
           "refId": "A"
@@ -428,7 +428,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(api_call_duration_bucket[5m]))",
+          "expr": "histogram_quantile(0.95, rate(devacademy_api_call_duration_bucket[5m]))",
           "legendFormat": "{{api_service}} - p95",
           "range": true,
           "refId": "A"
@@ -520,7 +520,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(http_server_request_size_bucket[5m]))",
+          "expr": "histogram_quantile(0.95, rate(devacademy_http_server_request_size_bucket[5m]))",
           "legendFormat": "Request Size (p95)",
           "range": true,
           "refId": "A"
@@ -531,7 +531,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(http_server_response_size_bucket[5m]))",
+          "expr": "histogram_quantile(0.95, rate(devacademy_http_server_response_size_bucket[5m]))",
           "legendFormat": "Response Size (p95)",
           "range": true,
           "refId": "B"
@@ -623,7 +623,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (http_route) (rate(http_server_requests_total[5m]))",
+          "expr": "sum by (http_route) (rate(devacademy_http_server_requests_total[5m]))",
           "legendFormat": "{{http_route}}",
           "range": true,
           "refId": "A"
