@@ -168,12 +168,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
       // Validate session on every request (except during sign in)
-      if (trigger !== 'signIn' && token.sessionId) {
-        const sessionValid = await isSessionValid(token.sessionId as string);
-        if (!sessionValid) {
-          // Session has been terminated or expired - return null to force logout
-          console.log(`Session ${token.sessionId} is no longer valid, forcing logout`);
-          return null as any;
+      // Only validate once per minute to avoid excessive DB calls
+      if (trigger !== 'signIn' && token.sessionId && typeof token.sessionId === 'string') {
+        const now = Date.now();
+        const lastCheck = (token.lastSessionCheck as number) || 0;
+        const shouldCheck = now - lastCheck > 60000; // Check every 60 seconds
+
+        if (shouldCheck) {
+          const sessionValid = await isSessionValid(token.sessionId);
+          token.lastSessionCheck = now;
+
+          if (!sessionValid) {
+            // Mark session as invalid instead of returning null
+            console.log(`Session ${token.sessionId} is no longer valid`);
+            token.sessionInvalid = true;
+          } else {
+            token.sessionInvalid = false;
+          }
         }
       }
 

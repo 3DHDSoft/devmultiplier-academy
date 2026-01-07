@@ -284,12 +284,12 @@ export default function ProfilePage() {
     };
 
     fetchProfile();
-  }, [session]);
+  }, [session?.user?.id]); // Only re-fetch if user ID changes
 
   // Fetch active sessions when tab changes to settings
   useEffect(() => {
     const fetchSessions = async () => {
-      if (activeTab === 'settings' && formData.id) {
+      if (activeTab === 'settings' && session?.user?.id) {
         setLoadingSessions(true);
         try {
           const response = await fetch('/api/user/sessions');
@@ -308,7 +308,7 @@ export default function ProfilePage() {
     };
 
     fetchSessions();
-  }, [activeTab, formData.id, formData.email]);
+  }, [activeTab, session?.user?.id]); // Only depend on activeTab and user ID
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
