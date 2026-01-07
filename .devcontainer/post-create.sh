@@ -11,27 +11,27 @@ if [ -f "package.json" ]; then
 fi
 
 # Install Playwright browsers
-echo ""
-echo "🎭 Installing Playwright browsers..."
-bunx playwright install 2>&1 | while IFS= read -r line; do
-    if [[ "$line" =~ ^Downloading ]]; then
-        # Extract browser name and version
-        browser_info=$(echo "$line" | sed 's/ from.*//')
-        # Show what's being downloaded
-        printf "   ⬇️  %s\n" "$browser_info"
-        first_progress=1
-    elif [[ "$line" =~ ^\| ]]; then
-        # Progress bar line - update in-place
-        printf "   %s\r" "$line"
-        first_progress=0
-    elif [[ "$line" =~ "downloaded to" ]]; then
-        # Extract version, clear progress bar and replace downloading line
-        version=$(echo "$line" | sed 's/ downloaded to.*//')
-        printf "\033[K\033[A\033[K   ✅ %s\n" "$version"
-    fi
-done
-echo "   📁 All browsers cached in ~/.cache/ms-playwright/"
-echo ""
+# echo ""
+# echo "🎭 Installing Playwright browsers..."
+# bunx playwright install 2>&1 | while IFS= read -r line; do
+#     if [[ "$line" =~ ^Downloading ]]; then
+#         # Extract browser name and version
+#         browser_info=$(echo "$line" | sed 's/ from.*//')
+#         # Show what's being downloaded
+#         printf "   ⬇️  %s\n" "$browser_info"
+#         first_progress=1
+#     elif [[ "$line" =~ ^\| ]]; then
+#         # Progress bar line - update in-place
+#         printf "   %s\r" "$line"
+#         first_progress=0
+#     elif [[ "$line" =~ "downloaded to" ]]; then
+#         # Extract version, clear progress bar and replace downloading line
+#         version=$(echo "$line" | sed 's/ downloaded to.*//')
+#         printf "\033[K\033[A\033[K   ✅ %s\n" "$version"
+#     fi
+# done
+# echo "   📁 All browsers cached in ~/.cache/ms-playwright/"
+# echo ""
 
 # Wait for databases to be fully ready
 echo "⏳ Waiting for databases to be ready..."
@@ -47,8 +47,11 @@ echo "✅ PostgreSQL 18 is ready"
 echo "🔧 Setting observability configuration permissions..."
 chmod 644 .devcontainer/prometheus/prometheus.yml
 chmod 644 .devcontainer/grafana/provisioning/datasources/prometheus.yml
+chmod 644 .devcontainer/grafana/provisioning/datasources/tempo.yml
 chmod 644 .devcontainer/grafana/provisioning/dashboards/dashboards.yml
 chmod 644 .devcontainer/grafana/dashboards/*.json
+chmod 644 .devcontainer/otel-collector/otel-collector-config.yml
+chmod 644 .devcontainer/tempo/tempo.yml
 echo "✅ Observability configurations are readable"
 
 # # Run initialization scripts if they exist

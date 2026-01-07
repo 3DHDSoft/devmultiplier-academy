@@ -13,7 +13,7 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
     const courseId = params.courseId;
 
     // Get user
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true },
     });

@@ -14,7 +14,7 @@ export async function requireAdmin() {
   }
 
   // Get user from database to check admin status
-  const user = await prisma.user.findUnique({
+  const user = await prisma.users.findUnique({
     where: { email: session.user.email },
     select: { isAdmin: true },
   });
@@ -30,7 +30,7 @@ export async function requireAdmin() {
  * Check if a user is an admin by email
  */
 export async function isUserAdmin(email: string): Promise<boolean> {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.users.findUnique({
     where: { email },
     select: { isAdmin: true },
   });

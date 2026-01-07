@@ -9,6 +9,13 @@ const updateProfileSchema = z.object({
   avatar: z.string().url().optional(),
   locale: z.string().optional(),
   timezone: z.string().optional(),
+  dashboardAppearance: z.enum(['light', 'dark', 'system']).optional(),
+  notifyOnCourseUpdates: z.boolean().optional(),
+  notifyOnNewCourses: z.boolean().optional(),
+  notifyOnCompletionReminders: z.boolean().optional(),
+  notifyOnAchievements: z.boolean().optional(),
+  notifyOnMessages: z.boolean().optional(),
+  emailDigestFrequency: z.enum(['none', 'daily', 'weekly', 'monthly']).optional(),
 });
 
 export async function GET() {
@@ -19,7 +26,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: {
         id: true,
@@ -29,6 +36,13 @@ export async function GET() {
         avatar: true,
         locale: true,
         timezone: true,
+        dashboardAppearance: true,
+        notifyOnCourseUpdates: true,
+        notifyOnNewCourses: true,
+        notifyOnCompletionReminders: true,
+        notifyOnAchievements: true,
+        notifyOnMessages: true,
+        emailDigestFrequency: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -56,7 +70,7 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     const validatedData = updateProfileSchema.parse(body);
 
-    const user = await prisma.user.update({
+    const user = await prisma.users.update({
       where: { email: session.user.email },
       data: {
         ...(validatedData.name !== undefined && { name: validatedData.name }),
@@ -64,6 +78,13 @@ export async function PATCH(req: NextRequest) {
         ...(validatedData.avatar !== undefined && { avatar: validatedData.avatar }),
         ...(validatedData.locale !== undefined && { locale: validatedData.locale }),
         ...(validatedData.timezone !== undefined && { timezone: validatedData.timezone }),
+        ...(validatedData.dashboardAppearance !== undefined && { dashboardAppearance: validatedData.dashboardAppearance }),
+        ...(validatedData.notifyOnCourseUpdates !== undefined && { notifyOnCourseUpdates: validatedData.notifyOnCourseUpdates }),
+        ...(validatedData.notifyOnNewCourses !== undefined && { notifyOnNewCourses: validatedData.notifyOnNewCourses }),
+        ...(validatedData.notifyOnCompletionReminders !== undefined && { notifyOnCompletionReminders: validatedData.notifyOnCompletionReminders }),
+        ...(validatedData.notifyOnAchievements !== undefined && { notifyOnAchievements: validatedData.notifyOnAchievements }),
+        ...(validatedData.notifyOnMessages !== undefined && { notifyOnMessages: validatedData.notifyOnMessages }),
+        ...(validatedData.emailDigestFrequency !== undefined && { emailDigestFrequency: validatedData.emailDigestFrequency }),
       },
       select: {
         id: true,
@@ -73,6 +94,13 @@ export async function PATCH(req: NextRequest) {
         avatar: true,
         locale: true,
         timezone: true,
+        dashboardAppearance: true,
+        notifyOnCourseUpdates: true,
+        notifyOnNewCourses: true,
+        notifyOnCompletionReminders: true,
+        notifyOnAchievements: true,
+        notifyOnMessages: true,
+        emailDigestFrequency: true,
         updatedAt: true,
       },
     });

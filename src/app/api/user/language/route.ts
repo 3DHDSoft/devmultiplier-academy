@@ -20,7 +20,7 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     const validatedData = updateLanguageSchema.parse(body);
 
-    const user = await prisma.user.update({
+    const user = await prisma.users.update({
       where: { email: session.user.email },
       data: { locale: validatedData.locale },
       select: {

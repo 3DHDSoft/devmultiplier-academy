@@ -58,7 +58,7 @@ export async function logLogin(data: LoginLogData): Promise<void> {
 
         // Create login log entry
         const dbStartTime = Date.now();
-        const loginLog = await prisma.loginLog.create({
+        const loginLog = await prisma.login_logs.create({
           data: {
             userId: data.userId,
             email: data.email,
@@ -152,7 +152,7 @@ async function checkAndNotifyNewLocation(
         });
 
         // Get previous successful logins from this location (city + country)
-        const previousLogins = await prisma.loginLog.count({
+        const previousLogins = await prisma.login_logs.count({
           where: {
             userId,
             success: true,
@@ -230,7 +230,7 @@ async function checkAndNotifyFailedAttempts(
         // Check failed attempts in the last 15 minutes
         const fifteenMinutesAgo = new Date(timestamp.getTime() - 15 * 60 * 1000);
 
-        const recentFailedAttempts = await prisma.loginLog.count({
+        const recentFailedAttempts = await prisma.login_logs.count({
           where: {
             email,
             success: false,
@@ -303,7 +303,7 @@ async function checkAndNotifyFailedAttempts(
  * Get recent login history for a user
  */
 export async function getLoginHistory(userId: string, limit = 10) {
-  return prisma.loginLog.findMany({
+  return prisma.login_logs.findMany({
     where: { userId },
     orderBy: { createdAt: 'desc' },
     take: limit,
@@ -325,7 +325,7 @@ export async function getLoginHistory(userId: string, limit = 10) {
  * Get failed login attempts for a user
  */
 export async function getFailedLoginAttempts(email: string, sinceDate: Date) {
-  return prisma.loginLog.count({
+  return prisma.login_logs.count({
     where: {
       email,
       success: false,

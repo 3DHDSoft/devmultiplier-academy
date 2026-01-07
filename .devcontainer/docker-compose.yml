@@ -103,6 +103,43 @@ services:
       - dev-web-net
     restart: unless-stopped
 
+  # OpenTelemetry Collector - Receives telemetry from Next.js app
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    hostname: otel-collector
+    ports:
+      - '${OTEL_COLLECTOR_GRPC_PORT:-4317}:4317' # OTLP gRPC receiver
+      - '${OTEL_COLLECTOR_HTTP_PORT:-4318}:4318' # OTLP HTTP receiver
+      - '${OTEL_COLLECTOR_METRICS_PORT:-8888}:8888' # Prometheus metrics (collector itself)
+      - '${OTEL_COLLECTOR_HEALTH_PORT:-13133}:13133' # Health check
+    volumes:
+      - ./otel-collector/otel-collector-config.yml:/etc/otelcol-contrib/config.yaml:ro
+    networks:
+      - dev-web-net
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  # Tempo - Distributed tracing backend
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    hostname: tempo
+    user: root
+    ports:
+      - '${TEMPO_PORT:-3200}:3200' # Tempo query frontend
+      - '${TEMPO_OTLP_GRPC_PORT:-4319}:4317' # OTLP gRPC (mapped to avoid conflict)
+    command: ['-config.file=/etc/tempo.yml']
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo.yml:ro
+      - tempo_web_data:/tmp/tempo
+    networks:
+      - dev-web-net
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -117,6 +154,8 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_web_data:/prometheus
+    depends_on:
+      - otel-collector
     networks:
       - dev-web-net
     restart: unless-stopped
@@ -141,6 +180,7 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
     depends_on:
       - prometheus
+      - tempo
     networks:
       - dev-web-net
     restart: unless-stopped
@@ -149,19 +189,21 @@ services:
 
 volumes:
   node_modules:
-    #driver: local
+    driver: local
   bun_cache:
-    #driver: local
+    driver: local
   postgres_web_data:
-    #driver: local
+    driver: local
   postgres_web_backups:
-    #driver: local
+    driver: local
   pgadmin_web_data:
-    #driver: local
+    driver: local
   prometheus_web_data:
-    #driver: local
+    driver: local
   grafana_web_data:
-    #driver: local
+    driver: local
+  tempo_web_data:
+    driver: local
 
 networks:
   dev-web-net:

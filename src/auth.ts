@@ -35,7 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           userEmail = validatedCredentials.email;
 
           // Find user in database
-          const user = await prisma.user.findUnique({
+          const user = await prisma.users.findUnique({
             where: { email: validatedCredentials.email },
             select: {
               id: true,
@@ -146,7 +146,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         // Get locale and timezone from database
-        const dbUser = await prisma.user.findUnique({
+        const dbUser = await prisma.users.findUnique({
           where: { id: user.id },
           select: { locale: true, timezone: true },
         });

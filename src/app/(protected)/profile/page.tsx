@@ -1,25 +1,44 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, LogOut, MoreVertical } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 interface UserProfile {
+  id: string;
   name: string;
   email: string;
   bio: string;
   avatar: string;
   locale: string;
   timezone: string;
+  dashboardAppearance: string;
+  notifyOnCourseUpdates: boolean;
+  notifyOnNewCourses: boolean;
+  notifyOnCompletionReminders: boolean;
+  notifyOnAchievements: boolean;
+  notifyOnMessages: boolean;
+  emailDigestFrequency: string;
+  createdAt: string;
 }
 
-// Simple MD5 implementation for Gravatar
+interface Session {
+  id: string;
+  sessionToken: string;
+  userId: string;
+  expires: string;
+  users: {
+    email: string;
+  };
+}
+
+type TabType = 'settings' | 'notifications';
+
+// Simple MD5 implementation for Gravatar (same as before)
 function md5(str: string): string {
-  // Simple MD5-like hash for Gravatar URLs
-  // Using a basic implementation since we can't install packages
   function rotateLeft(n: number, s: number): number {
     return (n << s) | (n >>> (32 - s));
   }
@@ -77,10 +96,7 @@ function md5(str: string): string {
   x[(((str.length + 8) >> 6) << 4) + 14] = str.length * 8;
 
   for (let i = 0; i < x.length; i += 16) {
-    const oldA = a,
-      oldB = b,
-      oldC = c,
-      oldD = d;
+    const oldA = a, oldB = b, oldC = c, oldD = d;
 
     a = md5ff(a, b, c, d, x[i + 0], 7, 0xd76aa478);
     d = md5ff(d, a, b, c, x[i + 1], 12, 0xe8c7b756);
@@ -159,7 +175,6 @@ function md5(str: string): string {
   return wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d);
 }
 
-// Generate Gravatar URL from email
 function getGravatarUrl(email: string): string {
   const trimmedEmail = email.trim().toLowerCase();
   const hash = md5(trimmedEmail);
@@ -169,17 +184,36 @@ function getGravatarUrl(email: string): string {
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<TabType>('settings');
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [loadingSessions, setLoadingSessions] = useState(false);
+
+  // Delete account state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [formData, setFormData] = useState<UserProfile>({
+    id: '',
     name: '',
     email: '',
     bio: '',
     avatar: '',
     locale: 'en',
     timezone: 'UTC',
+    dashboardAppearance: 'light',
+    notifyOnCourseUpdates: true,
+    notifyOnNewCourses: true,
+    notifyOnCompletionReminders: true,
+    notifyOnAchievements: true,
+    notifyOnMessages: true,
+    emailDigestFrequency: 'weekly',
+    createdAt: '',
   });
 
   useEffect(() => {
@@ -197,28 +231,34 @@ export default function ProfilePage() {
           if (response.ok) {
             const data = await response.json();
 
-            // Detect browser timezone if not set
             let detectedTimezone = data.timezone;
             if (!detectedTimezone || detectedTimezone === 'UTC') {
               try {
                 detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                console.log('Detected timezone:', detectedTimezone);
               } catch (error) {
                 console.error('Error detecting timezone:', error);
                 detectedTimezone = 'UTC';
               }
             }
 
-            // Generate Gravatar URL if no avatar is set
             const defaultAvatar = data.email ? getGravatarUrl(data.email) : '';
 
             setFormData({
+              id: data.id || '',
               name: data.name || '',
               email: data.email || '',
               bio: data.bio || '',
               avatar: data.avatar || defaultAvatar,
               locale: data.locale || 'en',
               timezone: detectedTimezone,
+              dashboardAppearance: data.dashboardAppearance || 'light',
+              notifyOnCourseUpdates: data.notifyOnCourseUpdates ?? true,
+              notifyOnNewCourses: data.notifyOnNewCourses ?? true,
+              notifyOnCompletionReminders: data.notifyOnCompletionReminders ?? true,
+              notifyOnAchievements: data.notifyOnAchievements ?? true,
+              notifyOnMessages: data.notifyOnMessages ?? true,
+              emailDigestFrequency: data.emailDigestFrequency || 'weekly',
+              createdAt: data.createdAt || '',
             });
           } else {
             setError('Failed to load profile data');
@@ -234,6 +274,38 @@ export default function ProfilePage() {
 
     fetchProfile();
   }, [session]);
+
+  // Fetch active sessions when tab changes to settings
+  useEffect(() => {
+    const fetchSessions = async () => {
+      if (activeTab === 'settings' && formData.id) {
+        setLoadingSessions(true);
+        try {
+          // Mock data for now - replace with actual API call
+          // const response = await fetch('/api/user/sessions');
+          // const data = await response.json();
+          // setSessions(data);
+
+          // Mock sessions for demonstration
+          setSessions([
+            {
+              id: '1',
+              sessionToken: 'token1',
+              userId: formData.id,
+              expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+              users: { email: formData.email },
+            },
+          ]);
+        } catch (err) {
+          console.error('Error fetching sessions:', err);
+        } finally {
+          setLoadingSessions(false);
+        }
+      }
+    };
+
+    fetchSessions();
+  }, [activeTab, formData.id, formData.email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -253,6 +325,13 @@ export default function ProfilePage() {
           avatar: formData.avatar || undefined,
           locale: formData.locale,
           timezone: formData.timezone,
+          dashboardAppearance: formData.dashboardAppearance,
+          notifyOnCourseUpdates: formData.notifyOnCourseUpdates,
+          notifyOnNewCourses: formData.notifyOnNewCourses,
+          notifyOnCompletionReminders: formData.notifyOnCompletionReminders,
+          notifyOnAchievements: formData.notifyOnAchievements,
+          notifyOnMessages: formData.notifyOnMessages,
+          emailDigestFrequency: formData.emailDigestFrequency,
         }),
       });
 
@@ -270,15 +349,63 @@ export default function ProfilePage() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/user/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: deletePassword,
+          confirmation: deleteConfirmation,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete account');
+      }
+
+      // Sign out and redirect
+      await signOut({ redirect: false });
+      router.push('/login?deleted=true');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setIsDeleting(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
   };
 
   if (status === 'loading' || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="text-navy h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -290,11 +417,39 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Edit Profile</h1>
-          <p className="mt-1 text-sm text-gray-600">Update your personal information and preferences</p>
+          <h1 className="mb-1 text-2xl font-bold text-gray-900">{formData.email}</h1>
+          <h2 className="text-3xl font-bold text-gray-900">Profile</h2>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="mb-6 border-b border-gray-200">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('settings')}
+              className={`border-b-2 pb-3 text-sm font-medium transition ${
+                activeTab === 'settings'
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              }`}
+            >
+              Settings
+            </button>
+            <button
+              onClick={() => setActiveTab('notifications')}
+              className={`border-b-2 pb-3 text-sm font-medium transition ${
+                activeTab === 'notifications'
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              }`}
+            >
+              Notifications
+            </button>
+          </nav>
+        </div>
+
+        {/* Messages */}
         {error && (
           <div className="mb-4 rounded-lg bg-red-50 p-3 text-red-800">
             <p className="text-sm font-medium">Error</p>
@@ -308,295 +463,393 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-lg bg-white p-6 shadow"
-        >
-          <div className="space-y-4">
-            {/* Name and Email Row */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-                />
-              </div>
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Settings Section */}
+            <div className="rounded-lg bg-white p-6 shadow">
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Settings</h3>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  disabled
-                  className="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500"
-                />
+              <div className="space-y-4">
+                {/* Email (Verified) */}
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <div className="mt-1 flex items-center gap-2">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      disabled
+                      className="block flex-1 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500"
+                    />
+                    <span className="rounded-md bg-green-100 px-2 py-1 text-xs text-green-800">
+                      Verified
+                    </span>
+                    <button
+                      type="button"
+                      className="rounded-lg border border-blue-600 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                    >
+                      Update email
+                    </button>
+                  </div>
+                </div>
+
+                {/* Language */}
+                <div>
+                  <label htmlFor="locale" className="block text-sm font-medium text-gray-700">
+                    Language
+                  </label>
+                  <select
+                    id="locale"
+                    name="locale"
+                    value={formData.locale}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="hi">Hindi</option>
+                    <option value="zh">Chinese</option>
+                    <option value="de">German</option>
+                    <option value="hu">Hungarian</option>
+                  </select>
+                </div>
+
+                {/* Dashboard Appearance */}
+                <div>
+                  <label htmlFor="dashboardAppearance" className="block text-sm font-medium text-gray-700">
+                    Dashboard appearance
+                  </label>
+                  <select
+                    id="dashboardAppearance"
+                    name="dashboardAppearance"
+                    value={formData.dashboardAppearance}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="system">System</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            {/* Bio */}
-            <div>
-              <label
-                htmlFor="bio"
-                className="block text-sm font-medium text-gray-700"
+            {/* Delete Profile Section */}
+            <div className="rounded-lg border-2 border-red-200 bg-white p-6 shadow">
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">Delete your profile</h3>
+              <p className="mb-4 text-sm text-gray-600">
+                Permanently delete the user {formData.email}
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(true)}
+                className="rounded-lg border border-red-600 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
               >
-                Bio
-              </label>
-              <textarea
-                id="bio"
-                name="bio"
-                rows={3}
-                value={formData.bio}
-                onChange={handleChange}
-                maxLength={500}
-                className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-                placeholder="Tell us about yourself..."
-              />
-              <p className="mt-1 text-xs text-gray-500">{formData.bio.length}/500 characters</p>
+                Delete User
+              </button>
             </div>
 
-            {/* Avatar URL with Preview */}
-            <div>
-              <label
-                htmlFor="avatar"
-                className="block text-sm font-medium text-gray-700"
+            {/* Active Sessions */}
+            <div className="rounded-lg bg-white p-6 shadow">
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Active sessions</h3>
+
+              {loadingSessions ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="border-b border-gray-200 text-xs text-gray-500">
+                      <tr>
+                        <th className="pb-3 font-medium">Device</th>
+                        <th className="pb-3 font-medium">Location</th>
+                        <th className="pb-3 font-medium">Created</th>
+                        <th className="pb-3 font-medium">Updated</th>
+                        <th className="pb-3"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sessions.map((sess, index) => (
+                        <tr key={sess.id} className="border-b border-gray-100 last:border-0">
+                          <td className="py-4">
+                            <div className="flex items-center gap-2">
+                              <span>Chrome (Windows)</span>
+                              {index === 0 && (
+                                <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
+                                  Current
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-4 text-gray-600">Hialeah, Florida, US</td>
+                          <td className="py-4 text-gray-600">
+                            {formatDate(sess.expires)}
+                          </td>
+                          <td className="py-4 text-gray-600">
+                            {formatDate(new Date().toISOString())}
+                          </td>
+                          <td className="py-4 text-right">
+                            <button
+                              type="button"
+                              className="text-gray-400 hover:text-gray-600"
+                            >
+                              <MoreVertical className="h-5 w-5" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
               >
-                Avatar URL
-              </label>
-              <div className="mt-1 flex items-center gap-3">
-                <input
-                  type="url"
-                  id="avatar"
-                  name="avatar"
-                  value={formData.avatar}
-                  onChange={handleChange}
-                  className="focus:border-navy focus:ring-navy block flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-                  placeholder="https://example.com/avatar.jpg"
-                />
-                {formData.avatar && (
-                  // eslint-disable-next-line @next/next/no-img-element -- User-provided avatar URL preview, not part of app bundle
-                  <img
-                    src={formData.avatar}
-                    alt="Avatar preview"
-                    className="h-10 w-10 rounded-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
+                {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push('/dashboard')}
+                className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Notifications Tab */}
+        {activeTab === 'notifications' && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="rounded-lg bg-white p-6 shadow">
+              <h3 className="mb-4 text-lg font-semibold text-gray-900">Email Notifications</h3>
+
+              <div className="space-y-4">
+                {/* Course Updates */}
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="notifyOnCourseUpdates"
+                    name="notifyOnCourseUpdates"
+                    checked={formData.notifyOnCourseUpdates}
+                    onChange={handleChange}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                )}
+                  <label htmlFor="notifyOnCourseUpdates" className="ml-3">
+                    <span className="block text-sm font-medium text-gray-900">
+                      Course updates
+                    </span>
+                    <span className="block text-sm text-gray-500">
+                      Get notified when courses you're enrolled in are updated
+                    </span>
+                  </label>
+                </div>
+
+                {/* New Courses */}
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="notifyOnNewCourses"
+                    name="notifyOnNewCourses"
+                    checked={formData.notifyOnNewCourses}
+                    onChange={handleChange}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="notifyOnNewCourses" className="ml-3">
+                    <span className="block text-sm font-medium text-gray-900">
+                      New courses
+                    </span>
+                    <span className="block text-sm text-gray-500">
+                      Be the first to know when new courses are available
+                    </span>
+                  </label>
+                </div>
+
+                {/* Completion Reminders */}
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="notifyOnCompletionReminders"
+                    name="notifyOnCompletionReminders"
+                    checked={formData.notifyOnCompletionReminders}
+                    onChange={handleChange}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="notifyOnCompletionReminders" className="ml-3">
+                    <span className="block text-sm font-medium text-gray-900">
+                      Completion reminders
+                    </span>
+                    <span className="block text-sm text-gray-500">
+                      Gentle reminders to help you complete your courses
+                    </span>
+                  </label>
+                </div>
+
+                {/* Achievements */}
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="notifyOnAchievements"
+                    name="notifyOnAchievements"
+                    checked={formData.notifyOnAchievements}
+                    onChange={handleChange}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="notifyOnAchievements" className="ml-3">
+                    <span className="block text-sm font-medium text-gray-900">
+                      Achievements and milestones
+                    </span>
+                    <span className="block text-sm text-gray-500">
+                      Celebrate your learning progress with achievement notifications
+                    </span>
+                  </label>
+                </div>
+
+                {/* Messages */}
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="notifyOnMessages"
+                    name="notifyOnMessages"
+                    checked={formData.notifyOnMessages}
+                    onChange={handleChange}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="notifyOnMessages" className="ml-3">
+                    <span className="block text-sm font-medium text-gray-900">
+                      Messages and replies
+                    </span>
+                    <span className="block text-sm text-gray-500">
+                      Get notified when instructors or students message you
+                    </span>
+                  </label>
+                </div>
+
+                {/* Email Digest Frequency */}
+                <div className="pt-4">
+                  <label htmlFor="emailDigestFrequency" className="block text-sm font-medium text-gray-900">
+                    Email digest frequency
+                  </label>
+                  <select
+                    id="emailDigestFrequency"
+                    name="emailDigestFrequency"
+                    value={formData.emailDigestFrequency}
+                    onChange={handleChange}
+                    className="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="none">Never</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Receive a summary of your activity and updates
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Language and Timezone Row */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="locale"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Language
-                </label>
-                <select
-                  id="locale"
-                  name="locale"
-                  value={formData.locale}
-                  onChange={handleChange}
-                  className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-                >
-                  <option value="en">English</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
-                  <option value="pt">Portuguese</option>
-                  <option value="zh">Chinese</option>
-                  <option value="ja">Japanese</option>
-                </select>
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push('/dashboard')}
+                className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Delete Account Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+              <h3 className="mb-4 text-xl font-bold text-gray-900">Delete Account</h3>
+
+              <div className="mb-4 rounded-lg bg-red-50 p-3">
+                <p className="text-sm text-red-800">
+                  <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and enrollments, will be permanently deleted.
+                </p>
               </div>
 
-              <div>
-                <label
-                  htmlFor="timezone"
-                  className="block text-sm font-medium text-gray-700"
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="deletePassword" className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="deletePassword"
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                    placeholder="Enter your password"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="deleteConfirmation" className="block text-sm font-medium text-gray-700">
+                    Type DELETE to confirm
+                  </label>
+                  <input
+                    type="text"
+                    id="deleteConfirmation"
+                    value={deleteConfirmation}
+                    onChange={(e) => setDeleteConfirmation(e.target.value)}
+                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                    placeholder="DELETE"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting || deleteConfirmation !== 'DELETE'}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Timezone
-                </label>
-                <select
-                  id="timezone"
-                  name="timezone"
-                  value={formData.timezone}
-                  onChange={handleChange}
-                  className="focus:border-navy focus:ring-navy mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-1 focus:outline-none"
+                  {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {isDeleting ? 'Deleting...' : 'Delete Account'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setDeletePassword('');
+                    setDeleteConfirmation('');
+                    setError(null);
+                  }}
+                  disabled={isDeleting}
+                  className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <option value="UTC">UTC - Coordinated Universal Time</option>
-
-                  <optgroup label="US & Canada">
-                    <option value="America/New_York">EST/EDT - Eastern Time</option>
-                    <option value="America/Detroit">EST/EDT - Detroit</option>
-                    <option value="America/Kentucky/Louisville">EST/EDT - Louisville</option>
-                    <option value="America/Indiana/Indianapolis">EST/EDT - Indianapolis</option>
-                    <option value="America/Chicago">CST/CDT - Central Time</option>
-                    <option value="America/Menominee">CST/CDT - Menominee</option>
-                    <option value="America/North_Dakota/Center">CST/CDT - North Dakota</option>
-                    <option value="America/Denver">MST/MDT - Mountain Time</option>
-                    <option value="America/Boise">MST/MDT - Boise</option>
-                    <option value="America/Phoenix">MST - Phoenix (no DST)</option>
-                    <option value="America/Los_Angeles">PST/PDT - Pacific Time</option>
-                    <option value="America/Anchorage">AKST/AKDT - Alaska</option>
-                    <option value="Pacific/Honolulu">HST - Hawaii (no DST)</option>
-                    <option value="America/Toronto">EST/EDT - Toronto</option>
-                    <option value="America/Vancouver">PST/PDT - Vancouver</option>
-                    <option value="America/Edmonton">MST/MDT - Edmonton</option>
-                    <option value="America/Winnipeg">CST/CDT - Winnipeg</option>
-                    <option value="America/Halifax">AST/ADT - Halifax</option>
-                    <option value="America/St_Johns">NST/NDT - Newfoundland</option>
-                  </optgroup>
-
-                  <optgroup label="Mexico, Central & South America">
-                    <option value="America/Mexico_City">CST/CDT - Mexico City</option>
-                    <option value="America/Cancun">EST - Cancún</option>
-                    <option value="America/Tijuana">PST/PDT - Tijuana</option>
-                    <option value="America/Guatemala">CST - Guatemala</option>
-                    <option value="America/Costa_Rica">CST - Costa Rica</option>
-                    <option value="America/Panama">EST - Panama</option>
-                    <option value="America/Bogota">COT - Bogotá</option>
-                    <option value="America/Lima">PET - Lima</option>
-                    <option value="America/Santiago">CLT/CLST - Santiago</option>
-                    <option value="America/Caracas">VET - Caracas</option>
-                    <option value="America/La_Paz">BOT - La Paz</option>
-                    <option value="America/Sao_Paulo">BRT/BRST - São Paulo</option>
-                    <option value="America/Manaus">AMT - Manaus</option>
-                    <option value="America/Argentina/Buenos_Aires">ART - Buenos Aires</option>
-                    <option value="America/Montevideo">UYT - Montevideo</option>
-                  </optgroup>
-
-                  <optgroup label="Europe & UK">
-                    <option value="Europe/London">GMT/BST - London</option>
-                    <option value="Europe/Dublin">GMT/IST - Dublin</option>
-                    <option value="Europe/Lisbon">WET/WEST - Lisbon</option>
-                    <option value="Europe/Paris">CET/CEST - Paris</option>
-                    <option value="Europe/Berlin">CET/CEST - Berlin</option>
-                    <option value="Europe/Rome">CET/CEST - Rome</option>
-                    <option value="Europe/Madrid">CET/CEST - Madrid</option>
-                    <option value="Europe/Amsterdam">CET/CEST - Amsterdam</option>
-                    <option value="Europe/Brussels">CET/CEST - Brussels</option>
-                    <option value="Europe/Vienna">CET/CEST - Vienna</option>
-                    <option value="Europe/Zurich">CET/CEST - Zurich</option>
-                    <option value="Europe/Prague">CET/CEST - Prague</option>
-                    <option value="Europe/Warsaw">CET/CEST - Warsaw</option>
-                    <option value="Europe/Budapest">CET/CEST - Budapest</option>
-                    <option value="Europe/Stockholm">CET/CEST - Stockholm</option>
-                    <option value="Europe/Copenhagen">CET/CEST - Copenhagen</option>
-                    <option value="Europe/Oslo">CET/CEST - Oslo</option>
-                    <option value="Europe/Athens">EET/EEST - Athens</option>
-                    <option value="Europe/Helsinki">EET/EEST - Helsinki</option>
-                    <option value="Europe/Istanbul">TRT - Istanbul</option>
-                    <option value="Europe/Moscow">MSK - Moscow</option>
-                    <option value="Europe/Kiev">EET/EEST - Kyiv</option>
-                    <option value="Europe/Bucharest">EET/EEST - Bucharest</option>
-                  </optgroup>
-
-                  <optgroup label="Asia">
-                    <option value="Asia/Dubai">GST - Dubai</option>
-                    <option value="Asia/Qatar">AST - Qatar</option>
-                    <option value="Asia/Riyadh">AST - Riyadh</option>
-                    <option value="Asia/Tehran">IRST - Tehran</option>
-                    <option value="Asia/Kabul">AFT - Kabul</option>
-                    <option value="Asia/Karachi">PKT - Karachi</option>
-                    <option value="Asia/Kolkata">IST - India</option>
-                    <option value="Asia/Kathmandu">NPT - Kathmandu</option>
-                    <option value="Asia/Dhaka">BST - Dhaka</option>
-                    <option value="Asia/Yangon">MMT - Yangon</option>
-                    <option value="Asia/Bangkok">ICT - Bangkok</option>
-                    <option value="Asia/Jakarta">WIB - Jakarta</option>
-                    <option value="Asia/Singapore">SGT - Singapore</option>
-                    <option value="Asia/Kuala_Lumpur">MYT - Kuala Lumpur</option>
-                    <option value="Asia/Manila">PHT - Manila</option>
-                    <option value="Asia/Hong_Kong">HKT - Hong Kong</option>
-                    <option value="Asia/Shanghai">CST - Shanghai/Beijing</option>
-                    <option value="Asia/Taipei">CST - Taipei</option>
-                    <option value="Asia/Tokyo">JST - Tokyo</option>
-                    <option value="Asia/Seoul">KST - Seoul</option>
-                    <option value="Asia/Pyongyang">KST - Pyongyang</option>
-                    <option value="Asia/Ulaanbaatar">ULAT - Ulaanbaatar</option>
-                    <option value="Asia/Vladivostok">VLAT - Vladivostok</option>
-                  </optgroup>
-
-                  <optgroup label="Australia & Pacific">
-                    <option value="Australia/Perth">AWST - Perth</option>
-                    <option value="Australia/Darwin">ACST - Darwin (no DST)</option>
-                    <option value="Australia/Adelaide">ACST/ACDT - Adelaide</option>
-                    <option value="Australia/Brisbane">AEST - Brisbane (no DST)</option>
-                    <option value="Australia/Sydney">AEST/AEDT - Sydney</option>
-                    <option value="Australia/Melbourne">AEST/AEDT - Melbourne</option>
-                    <option value="Australia/Hobart">AEST/AEDT - Hobart</option>
-                    <option value="Pacific/Auckland">NZST/NZDT - Auckland</option>
-                    <option value="Pacific/Fiji">FJT - Fiji</option>
-                    <option value="Pacific/Guam">ChST - Guam</option>
-                    <option value="Pacific/Port_Moresby">PGT - Port Moresby</option>
-                  </optgroup>
-
-                  <optgroup label="Africa & Middle East">
-                    <option value="Africa/Cairo">EET - Cairo</option>
-                    <option value="Africa/Johannesburg">SAST - Johannesburg</option>
-                    <option value="Africa/Lagos">WAT - Lagos</option>
-                    <option value="Africa/Nairobi">EAT - Nairobi</option>
-                    <option value="Africa/Casablanca">WET - Casablanca</option>
-                    <option value="Africa/Algiers">CET - Algiers</option>
-                    <option value="Africa/Tripoli">EET - Tripoli</option>
-                    <option value="Africa/Addis_Ababa">EAT - Addis Ababa</option>
-                    <option value="Asia/Jerusalem">IST - Jerusalem</option>
-                    <option value="Asia/Beirut">EET/EEST - Beirut</option>
-                    <option value="Asia/Baghdad">AST - Baghdad</option>
-                  </optgroup>
-
-                  <optgroup label="Atlantic & Other">
-                    <option value="Atlantic/Azores">AZOT/AZOST - Azores</option>
-                    <option value="Atlantic/Cape_Verde">CVT - Cape Verde</option>
-                    <option value="Atlantic/Reykjavik">GMT - Reykjavik</option>
-                    <option value="Atlantic/Bermuda">AST/ADT - Bermuda</option>
-                    <option value="Pacific/Samoa">SST - Samoa</option>
-                    <option value="Pacific/Tahiti">TAHT - Tahiti</option>
-                  </optgroup>
-                </select>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
-
-          {/* Action Buttons */}
-          <div className="mt-6 flex gap-3">
-            <button
-              type="submit"
-              disabled={isSaving}
-              className="bg-navy hover:bg-blue flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-medium text-white transition disabled:opacity-50"
-            >
-              {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-              {isSaving ? 'Saving...' : 'Save Changes'}
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push('/dashboard')}
-              className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+        )}
       </main>
     </div>
   );
