@@ -1,0 +1,232 @@
+"filename", "language", "(Read Error)", "JSON with Comments", "Shell Script", "JavaScript", "TypeScript", "source.markdown.math", "JSON", "Prisma", "pgsql", "XML", "Properties", "TypeScript JSX", "YAML", "Docker", "PostCSS", "comment", "blank", "total"
+"/workspaces/dev-x-academy-web/.claude/settings.local.json", "(Read Error)", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+"/workspaces/dev-x-academy-web/.devcontainer/.env", "Properties", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 7, 5, 38
+"/workspaces/dev-x-academy-web/.devcontainer/Dockerfile", "Docker", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 0, 9, 6, 91
+"/workspaces/dev-x-academy-web/.devcontainer/OBSERVABILITY-SETUP.md", "source.markdown.math", 0, 0, 0, 0, 0, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 146
+"/workspaces/dev-x-academy-web/.devcontainer/config/postgres/init-user-db.sh", "Shell Script", 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 8, 62
+"/workspaces/dev-x-academy-web/.devcontainer/config/postgres/postgresql.conf", "Properties", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35, 0, 0, 0, 0, 13, 10, 58
+"/workspaces/dev-x-academy-web/.devcontainer/devcontainer.json", "JSON with Comments", 0, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 10, 127
+"/workspaces/dev-x-academy-web/.devcontainer/docker-compose.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 172, 0, 0, 24, 15, 211
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/README.md", "source.markdown.math", 0, 0, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 54, 182
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/dashboards/application-overview.json", "JSON", 0, 0, 0, 0, 0, 0, 562, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 563
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/dashboards/performance-metrics.json", "JSON", 0, 0, 0, 0, 0, 0, 652, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 653
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/dashboards/security-monitoring.json", "JSON", 0, 0, 0, 0, 0, 0, 680, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 681
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/provisioning/dashboards/dashboards.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 2, 14
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/provisioning/datasources/prometheus.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 2, 14
+"/workspaces/dev-x-academy-web/.devcontainer/grafana/provisioning/datasources/tempo.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 2, 21
+"/workspaces/dev-x-academy-web/.devcontainer/otel-collector/otel-collector-config.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 7, 12, 65
+"/workspaces/dev-x-academy-web/.devcontainer/post-create.sh", "Shell Script", 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 10, 86
+"/workspaces/dev-x-academy-web/.devcontainer/post-start.sh", "Shell Script", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 16
+"/workspaces/dev-x-academy-web/.devcontainer/prometheus/prometheus.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 6, 7, 42
+"/workspaces/dev-x-academy-web/.devcontainer/restart-observability.sh", "Shell Script", 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 38
+"/workspaces/dev-x-academy-web/.devcontainer/tempo/tempo.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 0, 0, 2, 8, 51
+"/workspaces/dev-x-academy-web/.env", "Properties", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 17, 10, 39
+"/workspaces/dev-x-academy-web/.github/.schemas/collection.schema.json", "JSON", 0, 0, 0, 0, 0, 0, 93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 94
+"/workspaces/dev-x-academy-web/.github/CLAUDE.md", "source.markdown.math", 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8
+"/workspaces/dev-x-academy-web/.github/FUNDING.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 2
+"/workspaces/dev-x-academy-web/.github/agents/CSharpExpert.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 147, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 207
+"/workspaces/dev-x-academy-web/.github/agents/api-architect.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 52
+"/workspaces/dev-x-academy-web/.github/agents/clojure-interactive-programming.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 196
+"/workspaces/dev-x-academy-web/.github/agents/csharp-dotnet-janitor.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 90
+"/workspaces/dev-x-academy-web/.github/agents/csharp-mcp-expert.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 125
+"/workspaces/dev-x-academy-web/.github/agents/expert-dotnet-software-engineer.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 30
+"/workspaces/dev-x-academy-web/.github/agents/expert-nextjs-developer.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 394, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 89, 483
+"/workspaces/dev-x-academy-web/.github/agents/microsoft-agent-framework-dotnet.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 68
+"/workspaces/dev-x-academy-web/.github/agents/ms-sql-dba.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 36
+"/workspaces/dev-x-academy-web/.github/agents/postgresql-dba.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 27
+"/workspaces/dev-x-academy-web/.github/agents/typescript-mcp-expert.agent.md", "source.markdown.math", 0, 0, 0, 0, 0, 83, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 101
+"/workspaces/dev-x-academy-web/.github/chatmodes/csharp-dotnet-janitor.chatmode.md", "source.markdown.math", 0, 0, 0, 0, 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 95
+"/workspaces/dev-x-academy-web/.github/chatmodes/ms-sql-dba.chatmode.md", "source.markdown.math", 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 32
+"/workspaces/dev-x-academy-web/.github/chatmodes/principal-software-engineer.chatmode.md", "source.markdown.math", 0, 0, 0, 0, 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 48
+"/workspaces/dev-x-academy-web/.github/collections/csharp-dotnet-development.collection.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 22
+"/workspaces/dev-x-academy-web/.github/collections/csharp-dotnet-development.md", "source.markdown.math", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 22
+"/workspaces/dev-x-academy-web/.github/collections/database-data-management.md", "source.markdown.math", 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 25
+"/workspaces/dev-x-academy-web/.github/collections/frontend-web-dev.collection.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 3, 4, 37
+"/workspaces/dev-x-academy-web/.github/collections/frontend-web-dev.md", "source.markdown.math", 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 28
+"/workspaces/dev-x-academy-web/.github/collections/testing-automation.collection.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 3, 4, 37
+"/workspaces/dev-x-academy-web/.github/collections/testing-automation.md", "source.markdown.math", 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 28
+"/workspaces/dev-x-academy-web/.github/copilot-instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 163, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 220
+"/workspaces/dev-x-academy-web/.github/instructions/aspnet-rest-apis.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 86, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 115
+"/workspaces/dev-x-academy-web/.github/instructions/clojure.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 266, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 353
+"/workspaces/dev-x-academy-web/.github/instructions/csharp-mcp-server.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 100
+"/workspaces/dev-x-academy-web/.github/instructions/csharp.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 89, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 119
+"/workspaces/dev-x-academy-web/.github/instructions/devops-core-principles.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 172
+"/workspaces/dev-x-academy-web/.github/instructions/dotnet-architecture-good-practices.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 203, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 81, 284
+"/workspaces/dev-x-academy-web/.github/instructions/markdown.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 154
+"/workspaces/dev-x-academy-web/.github/instructions/ms-sql-dba.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 30
+"/workspaces/dev-x-academy-web/.github/instructions/nextjs.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 146
+"/workspaces/dev-x-academy-web/.github/instructions/sql_to_pg.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 48, 267
+"/workspaces/dev-x-academy-web/.github/instructions/typescript-5-es2022.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 84, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35, 119
+"/workspaces/dev-x-academy-web/.github/instructions/typescript-mcp-server.instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 205, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 234
+"/workspaces/dev-x-academy-web/.github/prompts/csharp-async.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 57
+"/workspaces/dev-x-academy-web/.github/prompts/csharp-docs.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 33
+"/workspaces/dev-x-academy-web/.github/prompts/csharp-mcp-server-generator.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 66
+"/workspaces/dev-x-academy-web/.github/prompts/csharp-xunit.prompt (2).md", "source.markdown.math", 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 76
+"/workspaces/dev-x-academy-web/.github/prompts/csharp-xunit.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 76
+"/workspaces/dev-x-academy-web/.github/prompts/dotnet-best-practices.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 91
+"/workspaces/dev-x-academy-web/.github/prompts/dotnet-design-pattern-review.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 48
+"/workspaces/dev-x-academy-web/.github/prompts/editorconfig.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 70
+"/workspaces/dev-x-academy-web/.github/prompts/ef-core.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 83
+"/workspaces/dev-x-academy-web/.github/prompts/multi-stage-dockerfile.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 54
+"/workspaces/dev-x-academy-web/.github/prompts/next-intl-add-language.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 27
+"/workspaces/dev-x-academy-web/.github/prompts/postgresql-code-review.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 177, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 44, 221
+"/workspaces/dev-x-academy-web/.github/prompts/postgresql-optimization.prompt (2).md", "source.markdown.math", 0, 0, 0, 0, 0, 336, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 77, 413
+"/workspaces/dev-x-academy-web/.github/prompts/postgresql-optimization.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 336, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 77, 413
+"/workspaces/dev-x-academy-web/.github/prompts/sql-code-review.prompt (2).md", "source.markdown.math", 0, 0, 0, 0, 0, 252, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 58, 310
+"/workspaces/dev-x-academy-web/.github/prompts/sql-code-review.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 252, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 58, 310
+"/workspaces/dev-x-academy-web/.github/prompts/sql-optimization.prompt (2).md", "source.markdown.math", 0, 0, 0, 0, 0, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 305
+"/workspaces/dev-x-academy-web/.github/prompts/sql-optimization.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 305
+"/workspaces/dev-x-academy-web/.github/prompts/typescript-mcp-server-generator.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 97
+"/workspaces/dev-x-academy-web/.github/prompts/write-coding-standards-from-file.prompt.md", "source.markdown.math", 0, 0, 0, 0, 0, 227, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 95, 322
+"/workspaces/dev-x-academy-web/.github/scripts/fix-line-endings.sh", "Shell Script", 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 10
+"/workspaces/dev-x-academy-web/.markdownlint.json", "JSON", 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 14
+"/workspaces/dev-x-academy-web/.ncurc.json", "JSON", 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/workspaces/dev-x-academy-web/.prettierrc", "JSON", 0, 0, 0, 0, 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 45
+"/workspaces/dev-x-academy-web/README.md", "source.markdown.math", 0, 0, 0, 0, 0, 237, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 90, 327
+"/workspaces/dev-x-academy-web/bun.lock", "JSON with Comments", 0, 935, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 875, 1810
+"/workspaces/dev-x-academy-web/cache/config.json", "JSON", 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6
+"/workspaces/dev-x-academy-web/components.json", "JSON", 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 23
+"/workspaces/dev-x-academy-web/doc/api-endpoints.md", "source.markdown.math", 0, 0, 0, 0, 0, 532, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 161, 693
+"/workspaces/dev-x-academy-web/doc/api-implementation-guide.md", "source.markdown.math", 0, 0, 0, 0, 0, 588, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138, 726
+"/workspaces/dev-x-academy-web/doc/api_tests.md", "source.markdown.math", 0, 0, 0, 0, 0, 382, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 134, 516
+"/workspaces/dev-x-academy-web/doc/api_tests_quick_ref.md", "source.markdown.math", 0, 0, 0, 0, 0, 275, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 84, 359
+"/workspaces/dev-x-academy-web/doc/authentication-and-user-profiles.md", "source.markdown.math", 0, 0, 0, 0, 0, 1097, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 270, 1367
+"/workspaces/dev-x-academy-web/doc/authentication-guide.md", "source.markdown.math", 0, 0, 0, 0, 0, 594, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 760
+"/workspaces/dev-x-academy-web/doc/awesome-claude-code-resources.md", "source.markdown.math", 0, 0, 0, 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 267
+"/workspaces/dev-x-academy-web/doc/claude-code-vs-copilot-instructions.md", "source.markdown.math", 0, 0, 0, 0, 0, 381, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 133, 514
+"/workspaces/dev-x-academy-web/doc/grafana_quick_start.md", "source.markdown.math", 0, 0, 0, 0, 0, 129, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 186
+"/workspaces/dev-x-academy-web/doc/grafana_setup.md", "source.markdown.math", 0, 0, 0, 0, 0, 295, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 422
+"/workspaces/dev-x-academy-web/doc/legal-pages-integration-guide.md", "source.markdown.math", 0, 0, 0, 0, 0, 708, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 134, 842
+"/workspaces/dev-x-academy-web/doc/mermaid-theme-guide.md", "source.markdown.math", 0, 0, 0, 0, 0, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 190
+"/workspaces/dev-x-academy-web/doc/metrics_implementation.md", "source.markdown.math", 0, 0, 0, 0, 0, 375, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 136, 511
+"/workspaces/dev-x-academy-web/doc/metrics_quick_reference.md", "source.markdown.math", 0, 0, 0, 0, 0, 329, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 133, 462
+"/workspaces/dev-x-academy-web/doc/metrics_testing_guide.md", "source.markdown.math", 0, 0, 0, 0, 0, 318, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 145, 463
+"/workspaces/dev-x-academy-web/doc/multilingual-implementation-guide.md", "source.markdown.math", 0, 0, 0, 0, 0, 1183, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 248, 1431
+"/workspaces/dev-x-academy-web/doc/opentelemetry_architecture.md", "source.markdown.math", 0, 0, 0, 0, 0, 572, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 195, 767
+"/workspaces/dev-x-academy-web/doc/opentelemetry_setup.md", "source.markdown.math", 0, 0, 0, 0, 0, 323, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 135, 458
+"/workspaces/dev-x-academy-web/doc/playwright.md", "source.markdown.math", 0, 0, 0, 0, 0, 309, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 117, 426
+"/workspaces/dev-x-academy-web/doc/playwright_setup.md", "source.markdown.math", 0, 0, 0, 0, 0, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82, 266
+"/workspaces/dev-x-academy-web/doc/prisma-introduction.md", "source.markdown.math", 0, 0, 0, 0, 0, 270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 95, 365
+"/workspaces/dev-x-academy-web/doc/rest-api-vs-prisma-comparison.md", "source.markdown.math", 0, 0, 0, 0, 0, 608, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 175, 783
+"/workspaces/dev-x-academy-web/doc/security_features.md", "source.markdown.math", 0, 0, 0, 0, 0, 280, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 112, 392
+"/workspaces/dev-x-academy-web/doc/tempo_queries.md", "source.markdown.math", 0, 0, 0, 0, 0, 305, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 157, 462
+"/workspaces/dev-x-academy-web/doc/testing-strategy-nextjs.md", "source.markdown.math", 0, 0, 0, 0, 0, 825, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 172, 997
+"/workspaces/dev-x-academy-web/doc/testing.md", "source.markdown.math", 0, 0, 0, 0, 0, 165, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 222
+"/workspaces/dev-x-academy-web/doc/testing_overview.md", "source.markdown.math", 0, 0, 0, 0, 0, 226, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 88, 314
+"/workspaces/dev-x-academy-web/docs/PASSWORD_RESET_FEATURE.md", "source.markdown.math", 0, 0, 0, 0, 0, 229, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 83, 312
+"/workspaces/dev-x-academy-web/e2e/accessibility.spec.ts", "TypeScript", 0, 0, 0, 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 5, 45
+"/workspaces/dev-x-academy-web/e2e/auth.spec.ts", "TypeScript", 0, 0, 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 11, 54
+"/workspaces/dev-x-academy-web/e2e/failing-video.spec.ts", "TypeScript", 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 10
+"/workspaces/dev-x-academy-web/e2e/homepage.spec.ts", "TypeScript", 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 28
+"/workspaces/dev-x-academy-web/e2e/legal.spec.ts", "TypeScript", 0, 0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 39
+"/workspaces/dev-x-academy-web/e2e/navigation.spec.ts", "TypeScript", 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 30
+"/workspaces/dev-x-academy-web/eslint.config.mjs", "JavaScript", 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 32
+"/workspaces/dev-x-academy-web/grafana_implementation.md", "source.markdown.math", 0, 0, 0, 0, 0, 287, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 92, 379
+"/workspaces/dev-x-academy-web/instrumentation.node.ts", "TypeScript", 0, 0, 0, 0, 82, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35, 15, 132
+"/workspaces/dev-x-academy-web/instrumentation.ts", "TypeScript", 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 2, 14
+"/workspaces/dev-x-academy-web/middleware.ts", "TypeScript", 0, 0, 0, 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 12, 69
+"/workspaces/dev-x-academy-web/next.config.ts", "TypeScript", 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 21
+"/workspaces/dev-x-academy-web/package-lock.json", "JSON", 0, 0, 0, 0, 0, 0, 5538, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5539
+"/workspaces/dev-x-academy-web/package.json", "JSON", 0, 0, 0, 0, 0, 0, 94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 95
+"/workspaces/dev-x-academy-web/playwright.config.ts", "TypeScript", 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 7, 61
+"/workspaces/dev-x-academy-web/postcss.config.mjs", "JavaScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"/workspaces/dev-x-academy-web/prisma.config.ts", "TypeScript", 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 15
+"/workspaces/dev-x-academy-web/prisma/migrations/20260103230420_init/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 175, 0, 0, 0, 0, 0, 0, 52, 65, 292
+"/workspaces/dev-x-academy-web/prisma/migrations/20260105155934_add_login_logs/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 5, 6, 31
+"/workspaces/dev-x-academy-web/prisma/migrations/20260105161426_add_isadmin_field/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 3
+"/workspaces/dev-x-academy-web/prisma/migrations/20260107125107_add_password_reset_tokens/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 5, 6, 24
+"/workspaces/dev-x-academy-web/prisma/migrations/20260107130350_add_user_preferences/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 1, 9
+"/workspaces/dev-x-academy-web/prisma/migrations/20260107133659_add_session_tracking/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1, 3, 9
+"/workspaces/dev-x-academy-web/prisma/migrations/20260107142548_add_email_change_tokens/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 2, 6
+"/workspaces/dev-x-academy-web/prisma/migrations/20260107_add_email_change_tokens/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 2, 2, 18
+"/workspaces/dev-x-academy-web/prisma/migrations/20260107_add_session_tracking/migration.sql", "pgsql", 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 2, 2, 17
+"/workspaces/dev-x-academy-web/prisma/schema.prisma", "Prisma", 0, 0, 0, 0, 0, 0, 0, 237, 0, 0, 0, 0, 0, 0, 0, 0, 32, 269
+"/workspaces/dev-x-academy-web/public/icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 3, 3, 12
+"/workspaces/dev-x-academy-web/public/logo.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 3, 3, 14
+"/workspaces/dev-x-academy-web/reset.sh", "Shell Script", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 6
+"/workspaces/dev-x-academy-web/scripts/make-admin.ts", "TypeScript", 0, 0, 0, 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 11, 58
+"/workspaces/dev-x-academy-web/scripts/reset-password.ts", "TypeScript", 0, 0, 0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 12, 64
+"/workspaces/dev-x-academy-web/scripts/test-email.ts", "TypeScript", 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 11, 68
+"/workspaces/dev-x-academy-web/scripts/verify-testing-setup.sh", "Shell Script", 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 57
+"/workspaces/dev-x-academy-web/src/__tests__/auth.test.ts", "TypeScript", 0, 0, 0, 0, 54, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 8, 65
+"/workspaces/dev-x-academy-web/src/__tests__/models.test.ts", "TypeScript", 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 9, 72
+"/workspaces/dev-x-academy-web/src/app/(auth)/forgot-password/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 113, 0, 0, 0, 8, 15, 136
+"/workspaces/dev-x-academy-web/src/app/(auth)/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 3, 8
+"/workspaces/dev-x-academy-web/src/app/(auth)/login/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 10, 16, 153
+"/workspaces/dev-x-academy-web/src/app/(auth)/register/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 0, 0, 0, 14, 27, 265
+"/workspaces/dev-x-academy-web/src/app/(auth)/reset-password/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 180, 0, 0, 0, 14, 25, 219
+"/workspaces/dev-x-academy-web/src/app/(protected)/admin/logins/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 283, 0, 0, 0, 4, 20, 307
+"/workspaces/dev-x-academy-web/src/app/(protected)/dashboard/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82, 0, 0, 0, 4, 12, 98
+"/workspaces/dev-x-academy-web/src/app/(protected)/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 3, 8
+"/workspaces/dev-x-academy-web/src/app/(protected)/profile/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 915, 0, 0, 0, 27, 93, 1035
+"/workspaces/dev-x-academy-web/src/app/(protected)/security/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 191, 0, 0, 0, 3, 19, 213
+"/workspaces/dev-x-academy-web/src/app/about/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 79, 0, 0, 0, 5, 8, 92
+"/workspaces/dev-x-academy-web/src/app/api/__tests__/courses.test.ts", "TypeScript", 0, 0, 0, 0, 92, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 17, 115
+"/workspaces/dev-x-academy-web/src/app/api/__tests__/enrollments.test.ts", "TypeScript", 0, 0, 0, 0, 152, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 28, 184
+"/workspaces/dev-x-academy-web/src/app/api/__tests__/progress.test.ts", "TypeScript", 0, 0, 0, 0, 154, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 40, 200
+"/workspaces/dev-x-academy-web/src/app/api/__tests__/register.test.ts", "TypeScript", 0, 0, 0, 0, 174, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 39, 219
+"/workspaces/dev-x-academy-web/src/app/api/__tests__/user-language.test.ts", "TypeScript", 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 21, 123
+"/workspaces/dev-x-academy-web/src/app/api/__tests__/user-profile.test.ts", "TypeScript", 0, 0, 0, 0, 123, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 23, 152
+"/workspaces/dev-x-academy-web/src/app/api/admin/login-logs/route.ts", "TypeScript", 0, 0, 0, 0, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 43
+"/workspaces/dev-x-academy-web/src/app/api/auth/[...nextauth]/route.ts", "TypeScript", 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4
+"/workspaces/dev-x-academy-web/src/app/api/auth/forgot-password/route.ts", "TypeScript", 0, 0, 0, 0, 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 13, 142
+"/workspaces/dev-x-academy-web/src/app/api/auth/logout/route.ts", "TypeScript", 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 15
+"/workspaces/dev-x-academy-web/src/app/api/auth/register/route.ts", "TypeScript", 0, 0, 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 9, 65
+"/workspaces/dev-x-academy-web/src/app/api/auth/reset-password/route.ts", "TypeScript", 0, 0, 0, 0, 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 21, 146
+"/workspaces/dev-x-academy-web/src/app/api/courses/[id]/route.ts", "TypeScript", 0, 0, 0, 0, 125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 134
+"/workspaces/dev-x-academy-web/src/app/api/courses/route.ts", "TypeScript", 0, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 66
+"/workspaces/dev-x-academy-web/src/app/api/enrollments/[id]/route.ts", "TypeScript", 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10, 76
+"/workspaces/dev-x-academy-web/src/app/api/enrollments/route.ts", "TypeScript", 0, 0, 0, 0, 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 19, 142
+"/workspaces/dev-x-academy-web/src/app/api/progress/[courseId]/lesson/route.ts", "TypeScript", 0, 0, 0, 0, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 21, 179
+"/workspaces/dev-x-academy-web/src/app/api/progress/[courseId]/module/route.ts", "TypeScript", 0, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 19, 157
+"/workspaces/dev-x-academy-web/src/app/api/progress/[courseId]/route.ts", "TypeScript", 0, 0, 0, 0, 95, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 14, 114
+"/workspaces/dev-x-academy-web/src/app/api/user/delete/route.ts", "TypeScript", 0, 0, 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 14, 79
+"/workspaces/dev-x-academy-web/src/app/api/user/email/request-change/route.ts", "TypeScript", 0, 0, 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 15, 103
+"/workspaces/dev-x-academy-web/src/app/api/user/email/verify-change/route.ts", "TypeScript", 0, 0, 0, 0, 94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 17, 116
+"/workspaces/dev-x-academy-web/src/app/api/user/language/route.ts", "TypeScript", 0, 0, 0, 0, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 55
+"/workspaces/dev-x-academy-web/src/app/api/user/login-history/route.ts", "TypeScript", 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 32
+"/workspaces/dev-x-academy-web/src/app/api/user/profile/route.ts", "TypeScript", 0, 0, 0, 0, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 117
+"/workspaces/dev-x-academy-web/src/app/api/user/sessions/route.ts", "TypeScript", 0, 0, 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 82
+"/workspaces/dev-x-academy-web/src/app/contact/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 144, 0, 0, 0, 4, 12, 160
+"/workspaces/dev-x-academy-web/src/app/courses/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 0, 0, 0, 6, 10, 127
+"/workspaces/dev-x-academy-web/src/app/error.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 2, 19
+"/workspaces/dev-x-academy-web/src/app/global-error.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 2, 23
+"/workspaces/dev-x-academy-web/src/app/globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 61, 6, 9, 76
+"/workspaces/dev-x-academy-web/src/app/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 0, 0, 0, 3, 54
+"/workspaces/dev-x-academy-web/src/app/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 2, 16
+"/workspaces/dev-x-academy-web/src/app/pricing/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 0, 0, 0, 1, 6, 69
+"/workspaces/dev-x-academy-web/src/app/privacy-policy/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 419, 0, 0, 0, 20, 44, 483
+"/workspaces/dev-x-academy-web/src/app/providers.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 3, 9
+"/workspaces/dev-x-academy-web/src/app/terms-of-service/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 408, 0, 0, 0, 20, 52, 480
+"/workspaces/dev-x-academy-web/src/app/verify-email-change/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 103, 0, 0, 0, 1, 13, 117
+"/workspaces/dev-x-academy-web/src/auth.ts", "TypeScript", 0, 0, 0, 0, 157, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 16, 189
+"/workspaces/dev-x-academy-web/src/auth.types.ts", "TypeScript", 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 19
+"/workspaces/dev-x-academy-web/src/components/layout/footer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 92, 0, 0, 0, 4, 7, 103
+"/workspaces/dev-x-academy-web/src/components/layout/header.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138, 0, 0, 0, 4, 8, 150
+"/workspaces/dev-x-academy-web/src/components/layout/layout-wrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 3, 19
+"/workspaces/dev-x-academy-web/src/components/sections/courses.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 96, 0, 0, 0, 8, 9, 113
+"/workspaces/dev-x-academy-web/src/components/sections/cta.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 2, 7, 72
+"/workspaces/dev-x-academy-web/src/components/sections/hero.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42, 0, 0, 0, 6, 7, 55
+"/workspaces/dev-x-academy-web/src/components/sections/pricing.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 108, 0, 0, 0, 2, 9, 119
+"/workspaces/dev-x-academy-web/src/components/ui/__tests__/button.test.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 5, 25
+"/workspaces/dev-x-academy-web/src/components/ui/button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 5, 35
+"/workspaces/dev-x-academy-web/src/components/ui/language-selector.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 90, 0, 0, 0, 3, 13, 106
+"/workspaces/dev-x-academy-web/src/components/ui/profile-dropdown.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 222, 0, 0, 0, 8, 31, 261
+"/workspaces/dev-x-academy-web/src/contexts/ThemeContext.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 85, 0, 0, 0, 9, 20, 114
+"/workspaces/dev-x-academy-web/src/globals.d.ts", "TypeScript", 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 16
+"/workspaces/dev-x-academy-web/src/lib/__tests__/api.test.ts", "TypeScript", 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 13, 79
+"/workspaces/dev-x-academy-web/src/lib/__tests__/utils.test.ts", "TypeScript", 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"/workspaces/dev-x-academy-web/src/lib/admin-middleware.ts", "TypeScript", 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 40
+"/workspaces/dev-x-academy-web/src/lib/email-service.ts", "TypeScript", 0, 0, 0, 0, 372, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 21, 420
+"/workspaces/dev-x-academy-web/src/lib/ip-utils.ts", "TypeScript", 0, 0, 0, 0, 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 19, 127
+"/workspaces/dev-x-academy-web/src/lib/login-logger.ts", "TypeScript", 0, 0, 0, 0, 270, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 34, 34, 338
+"/workspaces/dev-x-academy-web/src/lib/metrics.ts", "TypeScript", 0, 0, 0, 0, 303, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 78, 448
+"/workspaces/dev-x-academy-web/src/lib/prisma.ts", "TypeScript", 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 13
+"/workspaces/dev-x-academy-web/src/lib/session-tracker.ts", "TypeScript", 0, 0, 0, 0, 135, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 18, 177
+"/workspaces/dev-x-academy-web/src/lib/tracer.ts", "TypeScript", 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 11, 91
+"/workspaces/dev-x-academy-web/src/lib/user-agent-parser.ts", "TypeScript", 0, 0, 0, 0, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 12, 156
+"/workspaces/dev-x-academy-web/src/lib/utils.ts", "TypeScript", 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"/workspaces/dev-x-academy-web/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/workspaces/dev-x-academy-web/vitest.config.mjs", "JavaScript", 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 39
+"/workspaces/dev-x-academy-web/vitest.setup.ts", "TypeScript", 0, 0, 0, 0, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 61
+"Total", "-", 0, 1073, 153, 68, 4629, 18359, 7706, 237, 250, 14, 73, 4562, 414, 76, 61, 942, 8002, 46619

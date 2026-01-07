@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Verify enrollment
-    const enrollment = await prisma.enrollment.findUnique({
+    const enrollment = await prisma.enrollments.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -61,7 +61,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     });
 
     // Mark all lessons as complete in progress
-    const courseProgress = await prisma.courseProgress.findUnique({
+    const courseProgress = await prisma.course_progress.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -72,7 +72,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
 
     if (!courseProgress) {
       // Create new progress tracking
-      await prisma.courseProgress.create({
+      await prisma.course_progress.create({
         data: {
           userId: user.id,
           courseId,
@@ -82,7 +82,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
       });
     } else {
       // Update existing progress
-      await prisma.courseProgress.update({
+      await prisma.course_progress.update({
         where: {
           userId_courseId: {
             userId: user.id,
@@ -98,7 +98,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Get updated progress
-    const updatedProgress = await prisma.courseProgress.findUnique({
+    const updatedProgress = await prisma.course_progress.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -124,7 +124,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     const overallProgress = Math.round(((updatedProgress?.modulesComplete || 0) / (course?._count.modules || 1)) * 100);
 
     // Update enrollment progress
-    await prisma.enrollment.update({
+    await prisma.enrollments.update({
       where: {
         userId_courseId: {
           userId: user.id,

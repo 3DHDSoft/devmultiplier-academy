@@ -23,7 +23,7 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
     }
 
     // Verify enrollment
-    const enrollment = await prisma.enrollment.findUnique({
+    const enrollment = await prisma.enrollments.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -38,7 +38,7 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
     }
 
     // Get course progress
-    const courseProgress = await prisma.courseProgress.findUnique({
+    const courseProgress = await prisma.course_progress.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,

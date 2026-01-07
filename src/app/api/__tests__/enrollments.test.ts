@@ -19,8 +19,8 @@ describe('POST /api/enrollments', () => {
     });
 
     it('should accept authenticated requests with valid session', () => {
-      const session: { user: { email: string; id: string; locale: string } } = {
-        user: {
+      const session: { users: { email: string; id: string; locale: string } } = {
+        users: {
           email: 'user@example.com',
           id: '123',
           locale: 'en',
@@ -147,7 +147,7 @@ describe('GET /api/enrollments', () => {
     it('should include course translations with fallbacks', () => {
       const enrollment = {
         id: 'e1',
-        course: {
+        Course: {
           translations: [{ title: 'DDD Course' }],
         },
       };
@@ -159,7 +159,7 @@ describe('GET /api/enrollments', () => {
     it('should handle missing translations', () => {
       const enrollment = {
         id: 'e1',
-        course: {
+        Course: {
           translations: [] as Array<{ title?: string }>,
         },
       };

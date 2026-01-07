@@ -176,13 +176,26 @@ model modules {
 }
 
 model sessions {
-  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  sessionToken String   @unique
-  userId       String   @db.Uuid
+  id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  sessionToken String    @unique
+  userId       String    @db.Uuid
   expires      DateTime
-  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress    String?
+  userAgent    String?
+  device       String?
+  browser      String?
+  os           String?
+  country      String?
+  city         String?
+  region       String?
+  latitude     Float?
+  longitude    Float?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  users        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([userId, createdAt])
 }
 
 model users {
@@ -211,6 +224,7 @@ model users {
   enrollments                   enrollments[]
   login_logs                    login_logs[]
   sessions                      sessions[]
+  email_change_tokens           email_change_tokens[]
 
   @@index([email])
   @@index([locale])
@@ -233,6 +247,22 @@ model password_reset_tokens {
   createdAt DateTime @default(now())
 
   @@index([email])
+  @@index([token])
+  @@index([expires])
+}
+
+model email_change_tokens {
+  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId       String   @db.Uuid
+  currentEmail String
+  newEmail     String
+  token        String   @unique
+  expires      DateTime
+  used         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
   @@index([token])
   @@index([expires])
 }

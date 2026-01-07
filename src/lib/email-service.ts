@@ -276,3 +276,144 @@ What should you do?
 
   await sendEmail({ to: email, subject, html, text, type: 'failed_login_alert' });
 }
+/**
+ * Send email change verification link
+ */
+export async function sendEmailChangeVerification(
+  newEmail: string,
+  currentEmail: string,
+  token: string
+): Promise<void> {
+  const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email-change?token=${token}`;
+  
+  const subject = 'Verify Your New Email Address - Dev Academy';
+  
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+          }
+          .container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          }
+          .header {
+            text-align: center;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #f0f0f0;
+          }
+          .content {
+            padding: 24px 0;
+          }
+          .button {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #2563eb;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+          }
+          .button:hover {
+            background-color: #1d4ed8;
+          }
+          .info-box {
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+          }
+          .footer {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 2px solid #f0f0f0;
+            color: #666;
+            font-size: 14px;
+          }
+          .warning {
+            color: #dc2626;
+            font-weight: 600;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1 style="color: #2563eb; margin: 0;">Dev Academy</h1>
+            <p style="color: #666; margin: 8px 0 0 0;">Email Change Verification</p>
+          </div>
+          
+          <div class="content">
+            <h2>Verify Your New Email Address</h2>
+            <p>You requested to change your email address on your Dev Academy account.</p>
+            
+            <div class="info-box">
+              <p style="margin: 0;"><strong>Current Email:</strong> ${currentEmail}</p>
+              <p style="margin: 8px 0 0 0;"><strong>New Email:</strong> ${newEmail}</p>
+            </div>
+            
+            <p>To complete this change, please click the button below to verify your new email address:</p>
+            
+            <div style="text-align: center;">
+              <a href="${verificationUrl}" class="button">Verify New Email Address</a>
+            </div>
+            
+            <p style="color: #666; font-size: 14px;">
+              Or copy and paste this link into your browser:<br>
+              <a href="${verificationUrl}" style="color: #2563eb; word-break: break-all;">${verificationUrl}</a>
+            </p>
+            
+            <p class="warning">⚠️ Important:</p>
+            <ul>
+              <li>This link will expire in 24 hours</li>
+              <li>If you didn't request this change, please ignore this email and secure your account</li>
+              <li>After verification, you'll need to log in with your new email address</li>
+            </ul>
+          </div>
+          
+          <div class="footer">
+            <p>This email was sent to ${newEmail} because a request was made to change the email address on your Dev Academy account.</p>
+            <p>If you have any questions, please contact our support team.</p>
+            <p>&copy; ${new Date().getFullYear()} Dev Academy. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const text = `
+Verify Your New Email Address - Dev Academy
+
+You requested to change your email address on your Dev Academy account.
+
+Current Email: ${currentEmail}
+New Email: ${newEmail}
+
+To complete this change, please visit the following link to verify your new email address:
+${verificationUrl}
+
+⚠️ Important:
+- This link will expire in 24 hours
+- If you didn't request this change, please ignore this email and secure your account
+- After verification, you'll need to log in with your new email address
+
+If you have any questions, please contact our support team.
+
+© ${new Date().getFullYear()} Dev Academy. All rights reserved.
+  `;
+
+  await sendEmail({ to: newEmail, subject, html, text, type: 'email_change_verification' });
+}

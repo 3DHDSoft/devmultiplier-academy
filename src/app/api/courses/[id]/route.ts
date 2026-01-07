@@ -16,7 +16,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
         status: true,
         createdAt: true,
         updatedAt: true,
-        translations: {
+        course_translations: {
           where: { locale: userLocale },
           select: {
             title: true,
@@ -40,7 +40,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
           select: {
             id: true,
             order: true,
-            translations: {
+            module_translations: {
               where: { locale: userLocale },
               select: {
                 title: true,
@@ -54,7 +54,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
                 order: true,
                 videoUrl: true,
                 duration: true,
-                translations: {
+                lesson_translations: {
                   where: { locale: userLocale },
                   select: {
                     title: true,
@@ -68,7 +68,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
         enrollments: session?.user?.email
           ? {
               where: {
-                user: { email: session.user.email },
+                users: { email: session.user.email },
               },
               select: {
                 id: true,
@@ -98,23 +98,23 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     const formattedCourse = {
       id: course.id,
       slug: course.slug,
-      title: course.translations[0]?.title || 'Untitled Course',
-      description: course.translations[0]?.description || '',
-      content: course.translations[0]?.content || '',
-      thumbnail: course.translations[0]?.thumbnail,
-      seoTitle: course.translations[0]?.seoTitle,
-      seoDescription: course.translations[0]?.seoDescription,
+      title: course.course_translations[0]?.title || 'Untitled Course',
+      description: course.course_translations[0]?.description || '',
+      content: course.course_translations[0]?.content || '',
+      thumbnail: course.course_translations[0]?.thumbnail,
+      seoTitle: course.course_translations[0]?.seoTitle,
+      seoDescription: course.course_translations[0]?.seoDescription,
       instructors: course.instructors,
       modules: course.modules.map((module: (typeof course.modules)[number]) => ({
         id: module.id,
         order: module.order,
-        title: module.translations[0]?.title || 'Untitled Module',
-        description: module.translations[0]?.description,
+        title: module.module_translations[0]?.title || 'Untitled Module',
+        description: module.module_translations[0]?.description,
         lessons: module.lessons.map((lesson: (typeof module.lessons)[number]) => ({
           id: lesson.id,
           order: lesson.order,
-          title: lesson.translations[0]?.title || 'Untitled Lesson',
-          content: lesson.translations[0]?.content || '',
+          title: lesson.lesson_translations[0]?.title || 'Untitled Lesson',
+          content: lesson.lesson_translations[0]?.content || '',
           videoUrl: lesson.videoUrl,
           duration: lesson.duration,
         })),

@@ -9,12 +9,35 @@
   --light-gray: #e2e8f0;
   --off-white: #f8fafc;
 
-  /* Semantic Colors */
+  /* Semantic Colors - Light Mode */
   --background: #ffffff;
   --foreground: #0a1628;
   --muted: #64748b;
   --accent: #3b82f6;
   --accent-hover: #2563eb;
+  --border: #e2e8f0;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+}
+
+/* Dark Mode */
+.dark {
+  --navy: #1e293b;
+  --blue: #60a5fa;
+  --cyan: #22d3ee;
+  --slate: #94a3b8;
+  --light-gray: #334155;
+  --off-white: #0f172a;
+
+  /* Semantic Colors - Dark Mode */
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #60a5fa;
+  --accent-hover: #3b82f6;
+  --border: #334155;
+  --card-bg: #1e293b;
+  --input-bg: #1e293b;
 }
 
 @theme inline {

@@ -5,6 +5,7 @@ import { prisma } from './lib/prisma';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { logLogin } from './lib/login-logger';
+import { trackSession } from './lib/session-tracker';
 
 // Validate required environment variables
 if (!process.env.NEXTAUTH_SECRET) {
@@ -111,6 +112,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             success: true,
             userName: user.name,
           }).catch((err) => console.error('Failed to log login:', err));
+
+          // Track session
+          await trackSession(user.id).catch((err) => console.error('Failed to track session:', err));
 
           // Return user object matching User type
           const returnUser: User = {

@@ -3,7 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Loader2, LogOut, MoreVertical } from 'lucide-react';
+import { Loader2, MoreVertical } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,12 +27,15 @@ interface UserProfile {
 
 interface Session {
   id: string;
-  sessionToken: string;
-  userId: string;
-  expires: string;
-  users: {
-    email: string;
-  };
+  device: string | null;
+  browser: string | null;
+  os: string | null;
+  ipAddress: string | null;
+  country: string | null;
+  city: string | null;
+  region: string | null;
+  createdAt: string;
+  updatedAt: string | null;
 }
 
 type TabType = 'settings' | 'notifications';
@@ -198,6 +201,13 @@ export default function ProfilePage() {
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Email change state
+  const [showEmailChangeModal, setShowEmailChangeModal] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailChangePassword, setEmailChangePassword] = useState('');
+  const [isChangingEmail, setIsChangingEmail] = useState(false);
+  const [emailChangeSuccess, setEmailChangeSuccess] = useState(false);
+
   const [formData, setFormData] = useState<UserProfile>({
     id: '',
     name: '',
@@ -281,23 +291,15 @@ export default function ProfilePage() {
       if (activeTab === 'settings' && formData.id) {
         setLoadingSessions(true);
         try {
-          // Mock data for now - replace with actual API call
-          // const response = await fetch('/api/user/sessions');
-          // const data = await response.json();
-          // setSessions(data);
-
-          // Mock sessions for demonstration
-          setSessions([
-            {
-              id: '1',
-              sessionToken: 'token1',
-              userId: formData.id,
-              expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-              users: { email: formData.email },
-            },
-          ]);
+          const response = await fetch('/api/user/sessions');
+          if (!response.ok) {
+            throw new Error('Failed to fetch sessions');
+          }
+          const data = await response.json();
+          setSessions(data.sessions || []);
         } catch (err) {
           console.error('Error fetching sessions:', err);
+          setSessions([]);
         } finally {
           setLoadingSessions(false);
         }
@@ -402,6 +404,73 @@ export default function ProfilePage() {
     });
   };
 
+  const handleTerminateSession = async (sessionId: string) => {
+    if (!confirm('Are you sure you want to terminate this session?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/user/sessions', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to terminate session');
+      }
+
+      // Refresh sessions list
+      const sessionsResponse = await fetch('/api/user/sessions');
+      if (sessionsResponse.ok) {
+        const data = await sessionsResponse.json();
+        setSessions(data.sessions || []);
+      }
+    } catch (err) {
+      console.error('Error terminating session:', err);
+      setError(err instanceof Error ? err.message : 'Failed to terminate session');
+    }
+  };
+
+  const handleEmailChange = async () => {
+    setError(null);
+    setEmailChangeSuccess(false);
+    setIsChangingEmail(true);
+
+    try {
+      const response = await fetch('/api/user/email/request-change', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          newEmail,
+          password: emailChangePassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to request email change');
+      }
+
+      setEmailChangeSuccess(true);
+      setTimeout(() => {
+        setShowEmailChangeModal(false);
+        setNewEmail('');
+        setEmailChangePassword('');
+        setEmailChangeSuccess(false);
+      }, 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to request email change');
+    } finally {
+      setIsChangingEmail(false);
+    }
+  };
+
   if (status === 'loading' || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -490,6 +559,7 @@ export default function ProfilePage() {
                     </span>
                     <button
                       type="button"
+                      onClick={() => setShowEmailChangeModal(true)}
                       className="rounded-lg border border-blue-600 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
                     >
                       Update email
@@ -575,35 +645,52 @@ export default function ProfilePage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {sessions.map((sess, index) => (
-                        <tr key={sess.id} className="border-b border-gray-100 last:border-0">
-                          <td className="py-4">
-                            <div className="flex items-center gap-2">
-                              <span>Chrome (Windows)</span>
-                              {index === 0 && (
-                                <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
-                                  Current
-                                </span>
-                              )}
-                            </div>
-                          </td>
-                          <td className="py-4 text-gray-600">Hialeah, Florida, US</td>
-                          <td className="py-4 text-gray-600">
-                            {formatDate(sess.expires)}
-                          </td>
-                          <td className="py-4 text-gray-600">
-                            {formatDate(new Date().toISOString())}
-                          </td>
-                          <td className="py-4 text-right">
-                            <button
-                              type="button"
-                              className="text-gray-400 hover:text-gray-600"
-                            >
-                              <MoreVertical className="h-5 w-5" />
-                            </button>
+                      {sessions.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="py-8 text-center text-gray-500">
+                            No active sessions found
                           </td>
                         </tr>
-                      ))}
+                      ) : (
+                        sessions.map((sess, index) => {
+                          const browserDisplay = sess.browser || 'Unknown Browser';
+                          const location = [sess.city, sess.region, sess.country]
+                            .filter(Boolean)
+                            .join(', ') || 'Unknown Location';
+
+                          return (
+                            <tr key={sess.id} className="border-b border-gray-100 last:border-0">
+                              <td className="py-4">
+                                <div className="flex items-center gap-2">
+                                  <span>{browserDisplay} ({sess.os || 'Unknown OS'})</span>
+                                  {index === 0 && (
+                                    <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
+                                      Current
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="py-4 text-gray-600">{location}</td>
+                              <td className="py-4 text-gray-600">
+                                {formatDate(sess.createdAt)}
+                              </td>
+                              <td className="py-4 text-gray-600">
+                                {sess.updatedAt ? formatDate(sess.updatedAt) : 'N/A'}
+                              </td>
+                              <td className="py-4 text-right">
+                                <button
+                                  type="button"
+                                  onClick={() => handleTerminateSession(sess.id)}
+                                  className="text-red-600 hover:text-red-800"
+                                  title="Terminate session"
+                                >
+                                  <MoreVertical className="h-5 w-5" />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -781,6 +868,97 @@ export default function ProfilePage() {
               </button>
             </div>
           </form>
+        )}
+
+        {/* Email Change Modal */}
+        {showEmailChangeModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+              <h3 className="mb-4 text-xl font-bold text-gray-900">Update Email Address</h3>
+
+              {emailChangeSuccess ? (
+                <div className="rounded-lg bg-green-50 p-4">
+                  <p className="text-green-800">
+                    Verification email sent! Please check your new email inbox and click the verification link to complete the change.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-4 rounded-lg bg-blue-50 p-3">
+                    <p className="text-sm text-blue-800">
+                      A verification link will be sent to your new email address. You'll need to click it to complete the change.
+                    </p>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      Current Email
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      disabled
+                      className="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 text-gray-600"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      New Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      placeholder="Enter new email address"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      value={emailChangePassword}
+                      onChange={(e) => setEmailChangePassword(e.target.value)}
+                      placeholder="Enter your password to confirm"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    />
+                  </div>
+
+                  {error && (
+                    <div className="mb-4 rounded-lg bg-red-50 p-3">
+                      <p className="text-sm text-red-800">{error}</p>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleEmailChange}
+                      disabled={isChangingEmail || !newEmail || !emailChangePassword}
+                      className="flex-1 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+                    >
+                      {isChangingEmail ? 'Sending...' : 'Send Verification Email'}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowEmailChangeModal(false);
+                        setNewEmail('');
+                        setEmailChangePassword('');
+                        setError(null);
+                      }}
+                      disabled={isChangingEmail}
+                      className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         )}
 
         {/* Delete Account Modal */}

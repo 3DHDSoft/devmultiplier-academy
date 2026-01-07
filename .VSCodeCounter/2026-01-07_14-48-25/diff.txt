@@ -1,0 +1,235 @@
+Date : 2026-01-07 14:48:25
+Directory : /workspaces/dev-x-academy-web
+Total : 140 files,  13989 codes, 271 comments, 3178 blanks, all 17438 lines
+
+Languages
++----------------------+------------+------------+------------+------------+------------+
+| language             | files      | code       | comment    | blank      | total      |
++----------------------+------------+------------+------------+------------+------------+
+| source.markdown.math |         85 |      9,297 |          0 |      2,774 |     12,071 |
+| JSON                 |          5 |      1,989 |          0 |          4 |      1,993 |
+| TypeScript           |         18 |      1,398 |        178 |        227 |      1,803 |
+| TypeScript JSX       |          6 |        861 |         47 |        112 |      1,020 |
+| YAML                 |         11 |        331 |         18 |         46 |        395 |
+| pgsql                |          6 |         54 |         13 |         16 |         83 |
+| Prisma               |          1 |         33 |        -17 |        -17 |         -1 |
+| PostCSS              |          1 |         19 |          2 |          2 |         23 |
+| Shell Script         |          3 |         18 |         28 |         13 |         59 |
+| Properties           |          2 |          4 |          2 |          2 |          8 |
+| JSON with Comments   |          1 |          2 |          0 |          0 |          2 |
+| (Read Error)         |          1 |        -17 |          0 |         -1 |        -18 |
++----------------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                   | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                      |        140 |     13,989 |        271 |      3,178 |     17,438 |
+| . (Files)                                                                                              |          7 |        315 |         16 |        100 |        431 |
+| .claude                                                                                                |          1 |        -17 |          0 |         -1 |        -18 |
+| .devcontainer                                                                                          |         15 |      2,397 |         38 |        142 |      2,577 |
+| .devcontainer (Files)                                                                                  |          5 |        216 |         23 |         52 |        291 |
+| .devcontainer/grafana                                                                                  |          7 |      2,065 |          0 |         63 |      2,128 |
+| .devcontainer/grafana (Files)                                                                          |          1 |        128 |          0 |         54 |        182 |
+| .devcontainer/grafana/dashboards                                                                       |          3 |      1,894 |          0 |          3 |      1,897 |
+| .devcontainer/grafana/provisioning                                                                     |          3 |         43 |          0 |          6 |         49 |
+| .devcontainer/grafana/provisioning/dashboards                                                          |          1 |         12 |          0 |          2 |         14 |
+| .devcontainer/grafana/provisioning/datasources                                                         |          2 |         31 |          0 |          4 |         35 |
+| .devcontainer/otel-collector                                                                           |          1 |         46 |          7 |         12 |         65 |
+| .devcontainer/prometheus                                                                               |          1 |         29 |          6 |          7 |         42 |
+| .devcontainer/tempo                                                                                    |          1 |         41 |          2 |          8 |         51 |
+| .github                                                                                                |         58 |      5,961 |          9 |      1,623 |      7,593 |
+| .github (Files)                                                                                        |          3 |        168 |          0 |         62 |        230 |
+| .github/.schemas                                                                                       |          1 |         93 |          0 |          1 |         94 |
+| .github/agents                                                                                         |         11 |      1,094 |          0 |        321 |      1,415 |
+| .github/chatmodes                                                                                      |          3 |        126 |          0 |         49 |        175 |
+| .github/collections                                                                                    |          7 |        157 |          6 |         36 |        199 |
+| .github/instructions                                                                                   |         12 |      1,650 |          0 |        443 |      2,093 |
+| .github/prompts                                                                                        |         20 |      2,670 |          0 |        707 |      3,377 |
+| .github/scripts                                                                                        |          1 |          3 |          3 |          4 |         10 |
+| doc                                                                                                    |         28 |      2,761 |          0 |        896 |      3,657 |
+| docs                                                                                                   |          1 |        229 |          0 |         83 |        312 |
+| prisma                                                                                                 |          7 |         87 |         -4 |         -1 |         82 |
+| prisma (Files)                                                                                         |          1 |         33 |        -17 |        -17 |         -1 |
+| prisma/migrations                                                                                      |          6 |         54 |         13 |         16 |         83 |
+| prisma/migrations/20260107125107_add_password_reset_tokens                                             |          1 |         13 |          5 |          6 |         24 |
+| prisma/migrations/20260107130350_add_user_preferences                                                  |          1 |          7 |          1 |          1 |          9 |
+| prisma/migrations/20260107133659_add_session_tracking                                                  |          1 |          5 |          1 |          3 |          9 |
+| prisma/migrations/20260107142548_add_email_change_tokens                                               |          1 |          2 |          2 |          2 |          6 |
+| prisma/migrations/20260107_add_email_change_tokens                                                     |          1 |         14 |          2 |          2 |         18 |
+| prisma/migrations/20260107_add_session_tracking                                                        |          1 |         13 |          2 |          2 |         17 |
+| scripts                                                                                                |          1 |         45 |          7 |         12 |         64 |
+| src                                                                                                    |         22 |      2,211 |        205 |        324 |      2,740 |
+| src (Files)                                                                                            |          1 |          2 |          1 |          1 |          4 |
+| src/app                                                                                                |         13 |      1,358 |         81 |        184 |      1,623 |
+| src/app (Files)                                                                                        |          1 |         19 |          2 |          2 |         23 |
+| src/app/(auth)                                                                                         |          2 |        293 |         22 |         40 |        355 |
+| src/app/(auth)/forgot-password                                                                         |          1 |        113 |          8 |         15 |        136 |
+| src/app/(auth)/reset-password                                                                          |          1 |        180 |         14 |         25 |        219 |
+| src/app/(protected)                                                                                    |          1 |        377 |         15 |         39 |        431 |
+| src/app/(protected)/profile                                                                            |          1 |        377 |         15 |         39 |        431 |
+| src/app/api                                                                                            |          8 |        566 |         41 |         90 |        697 |
+| src/app/api/auth                                                                                       |          3 |        239 |         16 |         34 |        289 |
+| src/app/api/auth/forgot-password                                                                       |          1 |        119 |         10 |         13 |        142 |
+| src/app/api/auth/register                                                                              |          1 |          1 |          0 |          0 |          1 |
+| src/app/api/auth/reset-password                                                                        |          1 |        119 |          6 |         21 |        146 |
+| src/app/api/user                                                                                       |          5 |        327 |         25 |         56 |        408 |
+| src/app/api/user/delete                                                                                |          1 |         62 |          3 |         14 |         79 |
+| src/app/api/user/email                                                                                 |          2 |        175 |         12 |         32 |        219 |
+| src/app/api/user/email/request-change                                                                  |          1 |         81 |          7 |         15 |        103 |
+| src/app/api/user/email/verify-change                                                                   |          1 |         94 |          5 |         17 |        116 |
+| src/app/api/user/profile                                                                               |          1 |         28 |          0 |          0 |         28 |
+| src/app/api/user/sessions                                                                              |          1 |         62 |         10 |         10 |         82 |
+| src/app/verify-email-change                                                                            |          1 |        103 |          1 |         13 |        117 |
+| src/components                                                                                         |          1 |          3 |          0 |          0 |          3 |
+| src/components/layout                                                                                  |          1 |          3 |          0 |          0 |          3 |
+| src/contexts                                                                                           |          1 |         85 |          9 |         20 |        114 |
+| src/lib                                                                                                |          6 |        763 |        114 |        119 |        996 |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| filename                                                                                               | language             | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| /workspaces/dev-x-academy-web/.claude/settings.local.json                                              | (Read Error)         |        -17 |          0 |         -1 |        -18 |
+| /workspaces/dev-x-academy-web/.devcontainer/.env                                                       | Properties           |          4 |          1 |          1 |          6 |
+| /workspaces/dev-x-academy-web/.devcontainer/OBSERVABILITY-SETUP.md                                     | source.markdown.math |        108 |          0 |         38 |        146 |
+| /workspaces/dev-x-academy-web/.devcontainer/docker-compose.yml                                         | YAML                 |         89 |         -3 |          4 |         90 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/README.md                                          | source.markdown.math |        128 |          0 |         54 |        182 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/dashboards/application-overview.json               | JSON                 |        562 |          0 |          1 |        563 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/dashboards/performance-metrics.json                | JSON                 |        652 |          0 |          1 |        653 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/dashboards/security-monitoring.json                | JSON                 |        680 |          0 |          1 |        681 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/provisioning/dashboards/dashboards.yml             | YAML                 |         12 |          0 |          2 |         14 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/provisioning/datasources/prometheus.yml            | YAML                 |         12 |          0 |          2 |         14 |
+| /workspaces/dev-x-academy-web/.devcontainer/grafana/provisioning/datasources/tempo.yml                 | YAML                 |         19 |          0 |          2 |         21 |
+| /workspaces/dev-x-academy-web/.devcontainer/otel-collector/otel-collector-config.yml                   | YAML                 |         46 |          7 |         12 |         65 |
+| /workspaces/dev-x-academy-web/.devcontainer/post-create.sh                                             | Shell Script         |         -8 |         18 |          1 |         11 |
+| /workspaces/dev-x-academy-web/.devcontainer/prometheus/prometheus.yml                                  | YAML                 |         29 |          6 |          7 |         42 |
+| /workspaces/dev-x-academy-web/.devcontainer/restart-observability.sh                                   | Shell Script         |         23 |          7 |          8 |         38 |
+| /workspaces/dev-x-academy-web/.devcontainer/tempo/tempo.yml                                            | YAML                 |         41 |          2 |          8 |         51 |
+| /workspaces/dev-x-academy-web/.env                                                                     | Properties           |          0 |          1 |          1 |          2 |
+| /workspaces/dev-x-academy-web/.github/.schemas/collection.schema.json                                  | JSON                 |         93 |          0 |          1 |         94 |
+| /workspaces/dev-x-academy-web/.github/CLAUDE.md                                                        | source.markdown.math |          4 |          0 |          4 |          8 |
+| /workspaces/dev-x-academy-web/.github/FUNDING.yml                                                      | YAML                 |          1 |          0 |          1 |          2 |
+| /workspaces/dev-x-academy-web/.github/agents/CSharpExpert.agent.md                                     | source.markdown.math |        147 |          0 |         60 |        207 |
+| /workspaces/dev-x-academy-web/.github/agents/api-architect.agent.md                                    | source.markdown.math |         42 |          0 |         10 |         52 |
+| /workspaces/dev-x-academy-web/.github/agents/clojure-interactive-programming.agent.md                  | source.markdown.math |        150 |          0 |         46 |        196 |
+| /workspaces/dev-x-academy-web/.github/agents/csharp-dotnet-janitor.agent.md                            | source.markdown.math |         65 |          0 |         25 |         90 |
+| /workspaces/dev-x-academy-web/.github/agents/csharp-mcp-expert.agent.md                                | source.markdown.math |        102 |          0 |         23 |        125 |
+| /workspaces/dev-x-academy-web/.github/agents/expert-dotnet-software-engineer.agent.md                  | source.markdown.math |         21 |          0 |          9 |         30 |
+| /workspaces/dev-x-academy-web/.github/agents/expert-nextjs-developer.agent.md                          | source.markdown.math |        394 |          0 |         89 |        483 |
+| /workspaces/dev-x-academy-web/.github/agents/microsoft-agent-framework-dotnet.agent.md                 | source.markdown.math |         45 |          0 |         23 |         68 |
+| /workspaces/dev-x-academy-web/.github/agents/ms-sql-dba.agent.md                                       | source.markdown.math |         26 |          0 |         10 |         36 |
+| /workspaces/dev-x-academy-web/.github/agents/postgresql-dba.agent.md                                   | source.markdown.math |         19 |          0 |          8 |         27 |
+| /workspaces/dev-x-academy-web/.github/agents/typescript-mcp-expert.agent.md                            | source.markdown.math |         83 |          0 |         18 |        101 |
+| /workspaces/dev-x-academy-web/.github/chatmodes/csharp-dotnet-janitor.chatmode.md                      | source.markdown.math |         68 |          0 |         27 |         95 |
+| /workspaces/dev-x-academy-web/.github/chatmodes/ms-sql-dba.chatmode.md                                 | source.markdown.math |         24 |          0 |          8 |         32 |
+| /workspaces/dev-x-academy-web/.github/chatmodes/principal-software-engineer.chatmode.md                | source.markdown.math |         34 |          0 |         14 |         48 |
+| /workspaces/dev-x-academy-web/.github/collections/csharp-dotnet-development.collection.yml             | YAML                 |         22 |          0 |          0 |         22 |
+| /workspaces/dev-x-academy-web/.github/collections/csharp-dotnet-development.md                         | source.markdown.math |         15 |          0 |          7 |         22 |
+| /workspaces/dev-x-academy-web/.github/collections/database-data-management.md                          | source.markdown.math |         18 |          0 |          7 |         25 |
+| /workspaces/dev-x-academy-web/.github/collections/frontend-web-dev.collection.yml                      | YAML                 |         30 |          3 |          4 |         37 |
+| /workspaces/dev-x-academy-web/.github/collections/frontend-web-dev.md                                  | source.markdown.math |         21 |          0 |          7 |         28 |
+| /workspaces/dev-x-academy-web/.github/collections/testing-automation.collection.yml                    | YAML                 |         30 |          3 |          4 |         37 |
+| /workspaces/dev-x-academy-web/.github/collections/testing-automation.md                                | source.markdown.math |         21 |          0 |          7 |         28 |
+| /workspaces/dev-x-academy-web/.github/copilot-instructions.md                                          | source.markdown.math |        163 |          0 |         57 |        220 |
+| /workspaces/dev-x-academy-web/.github/instructions/aspnet-rest-apis.instructions.md                    | source.markdown.math |         86 |          0 |         29 |        115 |
+| /workspaces/dev-x-academy-web/.github/instructions/clojure.instructions.md                             | source.markdown.math |        266 |          0 |         87 |        353 |
+| /workspaces/dev-x-academy-web/.github/instructions/csharp-mcp-server.instructions.md                   | source.markdown.math |         87 |          0 |         13 |        100 |
+| /workspaces/dev-x-academy-web/.github/instructions/csharp.instructions.md                              | source.markdown.math |         89 |          0 |         30 |        119 |
+| /workspaces/dev-x-academy-web/.github/instructions/devops-core-principles.instructions.md              | source.markdown.math |        146 |          0 |         26 |        172 |
+| /workspaces/dev-x-academy-web/.github/instructions/dotnet-architecture-good-practices.instructions.md  | source.markdown.math |        203 |          0 |         81 |        284 |
+| /workspaces/dev-x-academy-web/.github/instructions/markdown.instructions.md                            | source.markdown.math |        127 |          0 |         27 |        154 |
+| /workspaces/dev-x-academy-web/.github/instructions/ms-sql-dba.instructions.md                          | source.markdown.math |         22 |          0 |          8 |         30 |
+| /workspaces/dev-x-academy-web/.github/instructions/nextjs.instructions.md                              | source.markdown.math |        116 |          0 |         30 |        146 |
+| /workspaces/dev-x-academy-web/.github/instructions/sql_to_pg.instructions.md                           | source.markdown.math |        219 |          0 |         48 |        267 |
+| /workspaces/dev-x-academy-web/.github/instructions/typescript-5-es2022.instructions.md                 | source.markdown.math |         84 |          0 |         35 |        119 |
+| /workspaces/dev-x-academy-web/.github/instructions/typescript-mcp-server.instructions.md               | source.markdown.math |        205 |          0 |         29 |        234 |
+| /workspaces/dev-x-academy-web/.github/prompts/csharp-async.prompt.md                                   | source.markdown.math |         39 |          0 |         18 |         57 |
+| /workspaces/dev-x-academy-web/.github/prompts/csharp-docs.prompt.md                                    | source.markdown.math |         28 |          0 |          5 |         33 |
+| /workspaces/dev-x-academy-web/.github/prompts/csharp-mcp-server-generator.prompt.md                    | source.markdown.math |         51 |          0 |         15 |         66 |
+| /workspaces/dev-x-academy-web/.github/prompts/csharp-xunit.prompt (2).md                               | source.markdown.math |         57 |          0 |         19 |         76 |
+| /workspaces/dev-x-academy-web/.github/prompts/csharp-xunit.prompt.md                                   | source.markdown.math |         57 |          0 |         19 |         76 |
+| /workspaces/dev-x-academy-web/.github/prompts/dotnet-best-practices.prompt.md                          | source.markdown.math |         65 |          0 |         26 |         91 |
+| /workspaces/dev-x-academy-web/.github/prompts/dotnet-design-pattern-review.prompt.md                   | source.markdown.math |         37 |          0 |         11 |         48 |
+| /workspaces/dev-x-academy-web/.github/prompts/editorconfig.prompt.md                                   | source.markdown.math |         51 |          0 |         19 |         70 |
+| /workspaces/dev-x-academy-web/.github/prompts/ef-core.prompt.md                                        | source.markdown.math |         61 |          0 |         22 |         83 |
+| /workspaces/dev-x-academy-web/.github/prompts/multi-stage-dockerfile.prompt.md                         | source.markdown.math |         40 |          0 |         14 |         54 |
+| /workspaces/dev-x-academy-web/.github/prompts/next-intl-add-language.prompt.md                         | source.markdown.math |         20 |          0 |          7 |         27 |
+| /workspaces/dev-x-academy-web/.github/prompts/postgresql-code-review.prompt.md                         | source.markdown.math |        177 |          0 |         44 |        221 |
+| /workspaces/dev-x-academy-web/.github/prompts/postgresql-optimization.prompt (2).md                    | source.markdown.math |        336 |          0 |         77 |        413 |
+| /workspaces/dev-x-academy-web/.github/prompts/postgresql-optimization.prompt.md                        | source.markdown.math |        336 |          0 |         77 |        413 |
+| /workspaces/dev-x-academy-web/.github/prompts/sql-code-review.prompt (2).md                            | source.markdown.math |        252 |          0 |         58 |        310 |
+| /workspaces/dev-x-academy-web/.github/prompts/sql-code-review.prompt.md                                | source.markdown.math |        252 |          0 |         58 |        310 |
+| /workspaces/dev-x-academy-web/.github/prompts/sql-optimization.prompt (2).md                           | source.markdown.math |        253 |          0 |         52 |        305 |
+| /workspaces/dev-x-academy-web/.github/prompts/sql-optimization.prompt.md                               | source.markdown.math |        253 |          0 |         52 |        305 |
+| /workspaces/dev-x-academy-web/.github/prompts/typescript-mcp-server-generator.prompt.md                | source.markdown.math |         78 |          0 |         19 |         97 |
+| /workspaces/dev-x-academy-web/.github/prompts/write-coding-standards-from-file.prompt.md               | source.markdown.math |        227 |          0 |         95 |        322 |
+| /workspaces/dev-x-academy-web/.github/scripts/fix-line-endings.sh                                      | Shell Script         |          3 |          3 |          4 |         10 |
+| /workspaces/dev-x-academy-web/README.md                                                                | source.markdown.math |          2 |          0 |          2 |          4 |
+| /workspaces/dev-x-academy-web/bun.lock                                                                 | JSON with Comments   |          2 |          0 |          0 |          2 |
+| /workspaces/dev-x-academy-web/doc/SECURITY_FEATURES.md                                                 | source.markdown.math |       -278 |          0 |       -110 |       -388 |
+| /workspaces/dev-x-academy-web/doc/api-endpoints.md                                                     | source.markdown.math |         21 |          0 |          0 |         21 |
+| /workspaces/dev-x-academy-web/doc/api-implementation-guide.md                                          | source.markdown.math |         25 |          0 |          2 |         27 |
+| /workspaces/dev-x-academy-web/doc/api_tests.md                                                         | source.markdown.math |         23 |          0 |          0 |         23 |
+| /workspaces/dev-x-academy-web/doc/api_tests_quick_ref.md                                               | source.markdown.math |         24 |          0 |          0 |         24 |
+| /workspaces/dev-x-academy-web/doc/authentication-and-user-profiles.md                                  | source.markdown.math |         12 |          0 |          1 |         13 |
+| /workspaces/dev-x-academy-web/doc/authentication-guide.md                                              | source.markdown.math |        100 |          0 |          4 |        104 |
+| /workspaces/dev-x-academy-web/doc/awesome-claude-code-resources.md                                     | source.markdown.math |        191 |          0 |         76 |        267 |
+| /workspaces/dev-x-academy-web/doc/claude-code-vs-copilot-instructions.md                               | source.markdown.math |        381 |          0 |        133 |        514 |
+| /workspaces/dev-x-academy-web/doc/grafana_quick_start.md                                               | source.markdown.math |        129 |          0 |         57 |        186 |
+| /workspaces/dev-x-academy-web/doc/grafana_setup.md                                                     | source.markdown.math |        295 |          0 |        127 |        422 |
+| /workspaces/dev-x-academy-web/doc/legal-pages-integration-guide.md                                     | source.markdown.math |         22 |          0 |          1 |         23 |
+| /workspaces/dev-x-academy-web/doc/mermaid-theme-guide.md                                               | source.markdown.math |        144 |          0 |         46 |        190 |
+| /workspaces/dev-x-academy-web/doc/metrics_implementation.md                                            | source.markdown.math |        375 |          0 |        136 |        511 |
+| /workspaces/dev-x-academy-web/doc/metrics_quick_reference.md                                           | source.markdown.math |        329 |          0 |        133 |        462 |
+| /workspaces/dev-x-academy-web/doc/metrics_testing_guide.md                                             | source.markdown.math |        318 |          0 |        145 |        463 |
+| /workspaces/dev-x-academy-web/doc/multilingual-implementation-guide.md                                 | source.markdown.math |         19 |          0 |          1 |         20 |
+| /workspaces/dev-x-academy-web/doc/opentelemetry_architecture.md                                        | source.markdown.math |         92 |          0 |         19 |        111 |
+| /workspaces/dev-x-academy-web/doc/opentelemetry_setup.md                                               | source.markdown.math |         16 |          0 |          6 |         22 |
+| /workspaces/dev-x-academy-web/doc/playwright.md                                                        | source.markdown.math |         22 |          0 |          1 |         23 |
+| /workspaces/dev-x-academy-web/doc/playwright_setup.md                                                  | source.markdown.math |         14 |          0 |          1 |         15 |
+| /workspaces/dev-x-academy-web/doc/prisma-introduction.md                                               | source.markdown.math |         36 |          0 |          1 |         37 |
+| /workspaces/dev-x-academy-web/doc/rest-api-vs-prisma-comparison.md                                     | source.markdown.math |         20 |          0 |          1 |         21 |
+| /workspaces/dev-x-academy-web/doc/security_features.md                                                 | source.markdown.math |        280 |          0 |        112 |        392 |
+| /workspaces/dev-x-academy-web/doc/tempo_queries.md                                                     | source.markdown.math |          4 |          0 |          2 |          6 |
+| /workspaces/dev-x-academy-web/doc/testing-strategy-nextjs.md                                           | source.markdown.math |        117 |          0 |          4 |        121 |
+| /workspaces/dev-x-academy-web/doc/testing.md                                                           | source.markdown.math |          9 |          0 |         -4 |          5 |
+| /workspaces/dev-x-academy-web/doc/testing_overview.md                                                  | source.markdown.math |         21 |          0 |          1 |         22 |
+| /workspaces/dev-x-academy-web/docs/PASSWORD_RESET_FEATURE.md                                           | source.markdown.math |        229 |          0 |         83 |        312 |
+| /workspaces/dev-x-academy-web/grafana_implementation.md                                                | source.markdown.math |        287 |          0 |         92 |        379 |
+| /workspaces/dev-x-academy-web/instrumentation.node.ts                                                  | TypeScript           |          0 |         11 |          0 |         11 |
+| /workspaces/dev-x-academy-web/middleware.ts                                                            | TypeScript           |         22 |          4 |          5 |         31 |
+| /workspaces/dev-x-academy-web/package.json                                                             | JSON                 |          2 |          0 |          0 |          2 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260107125107_add_password_reset_tokens/migration.sql | pgsql                |         13 |          5 |          6 |         24 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260107130350_add_user_preferences/migration.sql      | pgsql                |          7 |          1 |          1 |          9 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260107133659_add_session_tracking/migration.sql      | pgsql                |          5 |          1 |          3 |          9 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260107142548_add_email_change_tokens/migration.sql   | pgsql                |          2 |          2 |          2 |          6 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260107_add_email_change_tokens/migration.sql         | pgsql                |         14 |          2 |          2 |         18 |
+| /workspaces/dev-x-academy-web/prisma/migrations/20260107_add_session_tracking/migration.sql            | pgsql                |         13 |          2 |          2 |         17 |
+| /workspaces/dev-x-academy-web/prisma/schema.prisma                                                     | Prisma               |         33 |        -17 |        -17 |         -1 |
+| /workspaces/dev-x-academy-web/scripts/reset-password.ts                                                | TypeScript           |         45 |          7 |         12 |         64 |
+| /workspaces/dev-x-academy-web/src/app/(auth)/forgot-password/page.tsx                                  | TypeScript JSX       |        113 |          8 |         15 |        136 |
+| /workspaces/dev-x-academy-web/src/app/(auth)/reset-password/page.tsx                                   | TypeScript JSX       |        180 |         14 |         25 |        219 |
+| /workspaces/dev-x-academy-web/src/app/(protected)/profile/page.tsx                                     | TypeScript JSX       |        377 |         15 |         39 |        431 |
+| /workspaces/dev-x-academy-web/src/app/api/auth/forgot-password/route.ts                                | TypeScript           |        119 |         10 |         13 |        142 |
+| /workspaces/dev-x-academy-web/src/app/api/auth/register/route.ts                                       | TypeScript           |          1 |          0 |          0 |          1 |
+| /workspaces/dev-x-academy-web/src/app/api/auth/reset-password/route.ts                                 | TypeScript           |        119 |          6 |         21 |        146 |
+| /workspaces/dev-x-academy-web/src/app/api/user/delete/route.ts                                         | TypeScript           |         62 |          3 |         14 |         79 |
+| /workspaces/dev-x-academy-web/src/app/api/user/email/request-change/route.ts                           | TypeScript           |         81 |          7 |         15 |        103 |
+| /workspaces/dev-x-academy-web/src/app/api/user/email/verify-change/route.ts                            | TypeScript           |         94 |          5 |         17 |        116 |
+| /workspaces/dev-x-academy-web/src/app/api/user/profile/route.ts                                        | TypeScript           |         28 |          0 |          0 |         28 |
+| /workspaces/dev-x-academy-web/src/app/api/user/sessions/route.ts                                       | TypeScript           |         62 |         10 |         10 |         82 |
+| /workspaces/dev-x-academy-web/src/app/globals.css                                                      | PostCSS              |         19 |          2 |          2 |         23 |
+| /workspaces/dev-x-academy-web/src/app/verify-email-change/page.tsx                                     | TypeScript JSX       |        103 |          1 |         13 |        117 |
+| /workspaces/dev-x-academy-web/src/auth.ts                                                              | TypeScript           |          2 |          1 |          1 |          4 |
+| /workspaces/dev-x-academy-web/src/components/layout/layout-wrapper.tsx                                 | TypeScript JSX       |          3 |          0 |          0 |          3 |
+| /workspaces/dev-x-academy-web/src/contexts/ThemeContext.tsx                                            | TypeScript JSX       |         85 |          9 |         20 |        114 |
+| /workspaces/dev-x-academy-web/src/lib/email-service.ts                                                 | TypeScript           |        149 |          4 |          5 |        158 |
+| /workspaces/dev-x-academy-web/src/lib/ip-utils.ts                                                      | TypeScript           |         19 |          1 |          2 |         22 |
+| /workspaces/dev-x-academy-web/src/lib/login-logger.ts                                                  | TypeScript           |         27 |          4 |          4 |         35 |
+| /workspaces/dev-x-academy-web/src/lib/metrics.ts                                                       | TypeScript           |        303 |         67 |         78 |        448 |
+| /workspaces/dev-x-academy-web/src/lib/session-tracker.ts                                               | TypeScript           |        135 |         24 |         18 |        177 |
+| /workspaces/dev-x-academy-web/src/lib/user-agent-parser.ts                                             | TypeScript           |        130 |         14 |         12 |        156 |
+| Total                                                                                                  |                      |     13,989 |        271 |      3,178 |     17,438 |
++--------------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+

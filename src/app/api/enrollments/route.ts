@@ -17,9 +17,9 @@ export async function GET() {
 
     const userLocale = session.user.locale || 'en';
 
-    const enrollments = await prisma.enrollment.findMany({
+    const enrollments = await prisma.enrollments.findMany({
       where: {
-        user: { email: session.user.email },
+        users: { email: session.user.email },
       },
       select: {
         id: true,
@@ -28,11 +28,11 @@ export async function GET() {
         completedAt: true,
         enrolledAt: true,
         updatedAt: true,
-        course: {
+        Course: {
           select: {
             id: true,
             slug: true,
-            translations: {
+            course_translations: {
               where: { locale: userLocale },
               select: {
                 title: true,
@@ -49,10 +49,10 @@ export async function GET() {
     // Format response with translation fallbacks
     const formattedEnrollments = enrollments.map((enrollment: (typeof enrollments)[number]) => ({
       id: enrollment.id,
-      courseId: enrollment.course.id,
-      courseSlug: enrollment.course.slug,
-      courseTitle: enrollment.course.translations[0]?.title || 'Untitled Course',
-      courseThumbnail: enrollment.course.translations[0]?.thumbnail,
+      courseId: enrollment.Course.id,
+      courseSlug: enrollment.Course.slug,
+      courseTitle: enrollment.Course.course_translations[0]?.title || 'Untitled Course',
+      courseThumbnail: enrollment.Course.course_translations[0]?.thumbnail,
       status: enrollment.status,
       progress: enrollment.progress,
       completedAt: enrollment.completedAt,
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if already enrolled
-    const existingEnrollment = await prisma.enrollment.findUnique({
+    const existingEnrollment = await prisma.enrollments.findUnique({
       where: {
         userId_courseId: {
           userId: (await prisma.users.findUnique({
@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
       select: { id: true },
     });
 
-    const enrollment = await prisma.enrollment.create({
+    const enrollment = await prisma.enrollments.create({
       data: {
         userId: user!.id,
         courseId,

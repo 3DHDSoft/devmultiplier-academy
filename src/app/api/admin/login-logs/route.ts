@@ -9,11 +9,11 @@ export async function GET() {
 
   try {
     // Get last 100 login attempts
-    const logs = await prisma.loginLog.findMany({
+    const logs = await prisma.login_logs.findMany({
       orderBy: { createdAt: 'desc' },
       take: 100,
       include: {
-        user: {
+        users: {
           select: {
             name: true,
             status: true,

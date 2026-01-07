@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Verify enrollment
-    const enrollment = await prisma.enrollment.findUnique({
+    const enrollment = await prisma.enrollments.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -63,7 +63,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     // Get or create course progress
-    let courseProgress = await prisma.courseProgress.findUnique({
+    let courseProgress = await prisma.course_progress.findUnique({
       where: {
         userId_courseId: {
           userId: user.id,
@@ -73,7 +73,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     });
 
     if (!courseProgress) {
-      courseProgress = await prisma.courseProgress.create({
+      courseProgress = await prisma.course_progress.create({
         data: {
           userId: user.id,
           courseId,
@@ -84,7 +84,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
       });
     } else {
       // Increment lessons complete
-      courseProgress = await prisma.courseProgress.update({
+      courseProgress = await prisma.course_progress.update({
         where: {
           userId_courseId: {
             userId: user.id,
@@ -121,7 +121,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     // If all lessons in module are complete, increment module count
     let updatedProgress = courseProgress;
     if (allLessonsInModule === totalLessonsInModule) {
-      updatedProgress = await prisma.courseProgress.update({
+      updatedProgress = await prisma.course_progress.update({
         where: {
           userId_courseId: {
             userId: user.id,
@@ -147,7 +147,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     const overallProgress = Math.round(((updatedProgress.modulesComplete || 0) / (course?._count.modules || 1)) * 100);
 
     // Update enrollment progress
-    await prisma.enrollment.update({
+    await prisma.enrollments.update({
       where: {
         userId_courseId: {
           userId: user.id,

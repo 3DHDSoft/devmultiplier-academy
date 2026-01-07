@@ -12,7 +12,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
 
     const enrollmentId = params.id;
 
-    const enrollment = await prisma.enrollment.findUnique({
+    const enrollment = await prisma.enrollments.findUnique({
       where: { id: enrollmentId },
       select: {
         id: true,
@@ -23,7 +23,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
         completedAt: true,
         enrolledAt: true,
         updatedAt: true,
-        user: {
+        users: {
           select: {
             email: true,
             id: true,
@@ -46,7 +46,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const courseProgress = await prisma.courseProgress.findUnique({
+    const courseProgress = await prisma.course_progress.findUnique({
       where: {
         userId_courseId: {
           userId: enrollment.userId,

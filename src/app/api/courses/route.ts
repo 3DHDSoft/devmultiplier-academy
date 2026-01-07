@@ -16,7 +16,7 @@ export async function GET() {
         status: true,
         createdAt: true,
         updatedAt: true,
-        translations: {
+        course_translations: {
           where: { locale: userLocale },
           select: {
             title: true,
@@ -27,7 +27,7 @@ export async function GET() {
         enrollments: session?.user?.email
           ? {
               where: {
-                user: { email: session.user.email },
+                users: { email: session.user.email },
               },
               select: {
                 id: true,
@@ -48,9 +48,9 @@ export async function GET() {
     const formattedCourses = courses.map((course: (typeof courses)[number]) => ({
       id: course.id,
       slug: course.slug,
-      title: course.translations[0]?.title || 'Untitled Course',
-      description: course.translations[0]?.description || '',
-      thumbnail: course.translations[0]?.thumbnail,
+      title: course.course_translations[0]?.title || 'Untitled Course',
+      description: course.course_translations[0]?.description || '',
+      thumbnail: course.course_translations[0]?.thumbnail,
       enrollmentCount: course._count.enrollments,
       userEnrollment: session?.user?.email ? course.enrollments?.[0] : null,
       createdAt: course.createdAt,

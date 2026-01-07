@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
         locale: validatedData.locale,
         timezone: 'UTC',
         status: 'active',
+        updatedAt: new Date(),
       },
       select: {
         id: true,
