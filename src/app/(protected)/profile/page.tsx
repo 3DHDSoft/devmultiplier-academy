@@ -497,7 +497,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gray-50">
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-6">
@@ -590,7 +590,7 @@ export default function ProfilePage() {
                     name="locale"
                     value={formData.locale}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -612,7 +612,7 @@ export default function ProfilePage() {
                     name="dashboardAppearance"
                     value={formData.dashboardAppearance}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
@@ -648,12 +648,12 @@ export default function ProfilePage() {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="border-b border-gray-200 text-xs text-gray-500">
+                    <thead className="border-b border-gray-200 text-xs text-gray-700">
                       <tr>
-                        <th className="pb-3 font-medium">Device</th>
-                        <th className="pb-3 font-medium">Location</th>
-                        <th className="pb-3 font-medium">Created</th>
-                        <th className="pb-3 font-medium">Updated</th>
+                        <th className="pb-3 font-semibold">Device</th>
+                        <th className="pb-3 font-semibold">Location</th>
+                        <th className="pb-3 font-semibold">Created</th>
+                        <th className="pb-3 font-semibold">Updated</th>
                         <th className="pb-3"></th>
                       </tr>
                     </thead>
@@ -677,7 +677,7 @@ export default function ProfilePage() {
                             <tr key={sess.id} className="border-b border-gray-100 last:border-0">
                               <td className="py-4">
                                 <div className="flex items-center gap-2">
-                                  <span>{browserDisplay} ({sess.os || 'Unknown OS'})</span>
+                                  <span className="text-gray-900">{browserDisplay} ({sess.os || 'Unknown OS'})</span>
                                   {isCurrentSession && (
                                     <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
                                       Current
@@ -859,7 +859,7 @@ export default function ProfilePage() {
                     name="emailDigestFrequency"
                     value={formData.emailDigestFrequency}
                     onChange={handleChange}
-                    className="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="mt-2 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="none">Never</option>
                     <option value="daily">Daily</option>
