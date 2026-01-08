@@ -85,6 +85,9 @@ RUN useradd -m -s /bin/bash node \
 # Switch to node user
 USER node
 
+# Create Claude Code auth directory (will be volume-mounted, but sets ownership template)
+RUN mkdir -p /home/node/.claude && chmod 700 /home/node/.claude
+
 # Install Bun (optional)
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="/home/node/.bun/bin:${PATH}"

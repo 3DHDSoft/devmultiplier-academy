@@ -4,6 +4,13 @@ set -e
 
 echo "🚀 Setting up Dev Web Development Environment..."
 
+# Ensure Claude Code auth directory exists with correct permissions
+echo "🔐 Setting up Claude Code authentication directory..."
+sudo mkdir -p /home/node/.claude
+sudo chown -R node:node /home/node/.claude
+chmod 700 /home/node/.claude
+echo "✅ Claude Code auth directory ready"
+
 # Install global npm packages
 echo "🌍 Installing global npm packages..."
 bun add -g npm-check-updates
