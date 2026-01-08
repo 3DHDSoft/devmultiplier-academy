@@ -272,34 +272,37 @@ scrape_configs:
 
 ## Available Metrics
 
-Based on [src/lib/metrics.ts](src/lib/metrics.ts):
+Based on actual OpenTelemetry instrumentation and custom metrics in [src/lib/metrics.ts](src/lib/metrics.ts):
 
-### HTTP Metrics
-- `http_server_requests_total` - Total requests
-- `http_server_duration` - Request duration (histogram)
-- `http_server_errors_total` - Total errors
-- `http_server_request_size` - Request body size
-- `http_server_response_size` - Response body size
+### HTTP Client Metrics (Outbound Requests)
+- `devacademy_http_client_request_duration_seconds` - HTTP client request duration (histogram)
+- `devacademy_api_calls_total` - Total external API calls
+- `devacademy_api_call_duration_milliseconds` - API call duration (histogram)
+- `devacademy_api_errors_total` - External API errors
 
 ### Authentication
-- `user_login_attempts_total` - Login attempts
-- `user_login_success_total` - Successful logins
-- `user_login_failures_total` - Failed logins
-- `user_login_suspicious_total` - Suspicious attempts
-- `user_login_new_location_total` - New location logins
+- `devacademy_user_login_attempts_total` - Login attempts
+- `devacademy_user_login_success_total` - Successful logins
+- `devacademy_user_login_failures_total` - Failed logins
+- `devacademy_user_login_suspicious_total` - Suspicious login attempts
 
-### Database
-- `db_queries_total` - Query count
-- `db_query_duration` - Query duration (histogram)
-- `db_errors_total` - Database errors
-- `db_connection_pool_size` - Connection pool
+### Database (Auto-instrumented)
+- `devacademy_db_client_operation_duration_seconds` - Database operation duration (histogram)
+- `devacademy_db_client_connection_count` - Database connection pool count
+- `devacademy_db_client_connection_pending_requests` - Pending connection requests
+- `devacademy_db_queries_total` - Custom query counter
+- `devacademy_db_query_duration_milliseconds` - Custom query duration (histogram)
 
-### Business
-- `page_views_total` - Page views
-- `email_sent_total` - Emails sent
-- `email_failures_total` - Email failures
-- `course_views_total` - Course views
-- `lesson_views_total` - Lesson views
+### Email
+- `devacademy_email_sent_total` - Emails sent
+- `devacademy_email_send_duration_milliseconds` - Email send duration (histogram)
+
+### Node.js Runtime Metrics
+- `devacademy_nodejs_eventloop_delay_*` - Event loop delay (max, mean, min, p50, p90, p99, stddev)
+- `devacademy_nodejs_eventloop_time_seconds_total` - Event loop time
+- `devacademy_nodejs_eventloop_utilization_ratio` - Event loop utilization
+- `devacademy_v8js_gc_duration_seconds` - Garbage collection duration
+- `devacademy_v8js_memory_heap_*` - V8 heap memory metrics
 
 ## Troubleshooting
 

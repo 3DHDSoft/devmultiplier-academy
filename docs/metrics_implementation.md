@@ -303,31 +303,31 @@ const metricReader = new PeriodicExportingMetricReader({
 **HTTP request rate by route:**
 
 ```promql
-rate(http_server_requests_total[5m])
+rate(devacademy_http_client_request_duration_seconds_count[5m])
 ```
 
 **Average HTTP request duration:**
 
 ```promql
-rate(http_server_duration_sum[5m]) / rate(http_server_duration_count[5m])
+rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 ```
 
 **Login success rate:**
 
 ```promql
-rate(user_login_success_total[5m]) / rate(user_login_attempts_total[5m])
+rate(devacademy_user_login_success_total[5m]) / rate(devacademy_user_login_attempts_total[5m])
 ```
 
 **Failed login attempts by country:**
 
 ```promql
-sum by (geo_country) (rate(user_login_failures_total[5m]))
+sum by (geo_country) (rate(devacademy_user_login_failures_total[5m]))
 ```
 
 **API error rate:**
 
 ```promql
-rate(api_errors_total[5m]) / rate(api_calls_total[5m])
+rate(api_errors_total[5m]) / rate(devacademy_api_calls_total[5m])
 ```
 
 **Database query latency (95th percentile):**

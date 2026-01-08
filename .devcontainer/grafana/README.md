@@ -141,7 +141,7 @@ You can add variables to make dashboards more flexible:
       "name": "route",
       "type": "query",
       "datasource": "Prometheus",
-      "query": "label_values(http_server_requests_total, http_route)"
+      "query": "label_values(devacademy_http_client_request_duration_seconds_count, http_route)"
     }
   ]
 }

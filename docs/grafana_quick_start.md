@@ -65,7 +65,7 @@ Status should be **UP** for all targets.
 ### 3. Test a Query
 
 1. Open Prometheus: http://localhost:9090
-2. Enter query: `http_server_requests_total`
+2. Enter query: `devacademy_http_client_request_duration_seconds_count`
 3. Click **Execute**
 4. You should see metrics (after generating some traffic)
 
@@ -158,19 +158,19 @@ Try these in Grafana or Prometheus:
 
 ```promql
 # Request rate
-rate(http_server_requests_total[5m])
+rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Average response time
-rate(http_server_duration_sum[5m]) / rate(http_server_duration_count[5m])
+rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Error rate
-rate(http_server_errors_total[5m]) / rate(http_server_requests_total[5m])
+rate(devacademy_api_errors_total[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Failed logins
-increase(user_login_failures_total[5m])
+increase(devacademy_user_login_failures_total[5m])
 
 # Top pages
-topk(5, sum by (page_path) (page_views_total))
+topk(5, sum by (page_path) (devacademy_page_views_total))
 ```
 
 ## Resources

@@ -106,11 +106,11 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `http_server_requests_total` | Counter | Total HTTP requests |
-| `http_server_duration` | Histogram | Request duration in ms |
-| `http_server_errors_total` | Counter | Total HTTP errors |
-| `http_server_request_size` | Histogram | Request body size in bytes |
-| `http_server_response_size` | Histogram | Response body size in bytes |
+| `devacademy_http_client_request_duration_seconds_count` | Counter | Total HTTP requests |
+| `devacademy_http_client_request_duration_seconds` | Histogram | Request duration in ms |
+| `devacademy_api_errors_total` | Counter | Total HTTP errors |
+| `devacademy_http_client_request_size` | Histogram | Request body size in bytes |
+| `devacademy_http_client_response_size` | Histogram | Response body size in bytes |
 
 **Labels:** `http_method`, `http_route`, `http_status_code`, `error_type`
 
@@ -118,11 +118,11 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `user_login_attempts_total` | Counter | Total login attempts |
-| `user_login_success_total` | Counter | Successful logins |
-| `user_login_failures_total` | Counter | Failed logins |
-| `user_login_suspicious_total` | Counter | Suspicious login attempts |
-| `user_login_new_location_total` | Counter | Logins from new locations |
+| `devacademy_user_login_attempts_total` | Counter | Total login attempts |
+| `devacademy_user_login_success_total` | Counter | Successful logins |
+| `devacademy_user_login_failures_total` | Counter | Failed logins |
+| `devacademy_user_login_suspicious_total` | Counter | Suspicious login attempts |
+| `devacademy_user_login_new_location_total` | Counter | Logins from new locations |
 
 **Labels:** `user_id`, `failure_reason`, `geo_country`, `geo_city`
 
@@ -130,9 +130,9 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `db_queries_total` | Counter | Total database queries |
-| `db_query_duration` | Histogram | Query duration in ms |
-| `db_errors_total` | Counter | Database errors |
+| `devacademy_db_client_operation_duration_seconds_count` | Counter | Total database queries |
+| `devacademy_db_client_operation_duration_seconds` | Histogram | Query duration in ms |
+| `devacademy_db_errors_total` | Counter | Database errors |
 | `db_connection_pool_size` | UpDownCounter | Connection pool size |
 
 **Labels:** `db_operation`, `db_table`, `error_type`
@@ -141,8 +141,8 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `api_calls_total` | Counter | External API calls |
-| `api_call_duration` | Histogram | API call duration in ms |
+| `devacademy_api_calls_total` | Counter | External API calls |
+| `devacademy_api_call_duration_milliseconds` | Histogram | API call duration in ms |
 | `api_errors_total` | Counter | API call errors |
 
 **Labels:** `api_service`, `api_endpoint`, `api_status_code`, `error_type`
@@ -151,11 +151,11 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `page_views_total` | Counter | Page views |
+| `devacademy_page_views_total` | Counter | Page views |
 | `course_views_total` | Counter | Course views |
 | `lesson_views_total` | Counter | Lesson views |
-| `email_sent_total` | Counter | Emails sent |
-| `email_failures_total` | Counter | Email send failures |
+| `devacademy_email_sent_total` | Counter | Emails sent |
+| `devacademy_email_failures_total` | Counter | Email send failures |
 
 **Labels:** `page_path`, `email_type`, `course_id`, `lesson_id`
 
@@ -165,39 +165,39 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 ```promql
 # Request rate
-rate(http_server_requests_total[5m])
+rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Average latency
-rate(http_server_duration_sum[5m]) / rate(http_server_duration_count[5m])
+rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Error rate
-rate(http_server_errors_total[5m]) / rate(http_server_requests_total[5m])
+rate(devacademy_api_errors_total[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # 95th percentile latency
-histogram_quantile(0.95, rate(http_server_duration_bucket[5m]))
+histogram_quantile(0.95, rate(devacademy_http_client_request_duration_seconds_bucket[5m]))
 ```
 
 ### Security Monitoring
 
 ```promql
 # Failed login rate
-rate(user_login_failures_total[5m])
+rate(devacademy_user_login_failures_total[5m])
 
 # Login success rate
-sum(rate(user_login_success_total[5m])) / sum(rate(user_login_attempts_total[5m]))
+sum(rate(devacademy_user_login_success_total[5m])) / sum(rate(devacademy_user_login_attempts_total[5m]))
 
 # Suspicious logins by country
-sum by (geo_country) (rate(user_login_suspicious_total[5m]))
+sum by (geo_country) (rate(devacademy_user_login_suspicious_total[5m]))
 
 # Failed logins by reason
-sum by (failure_reason) (rate(user_login_failures_total[5m]))
+sum by (failure_reason) (rate(devacademy_user_login_failures_total[5m]))
 ```
 
 ### Database Performance
 
 ```promql
 # Query rate by operation
-sum by (db_operation) (rate(db_queries_total[5m]))
+sum by (db_operation) (rate(devacademy_db_client_operation_duration_seconds_count[5m]))
 
 # Average query duration
 rate(db_query_duration_sum[5m]) / rate(db_query_duration_count[5m])
@@ -206,20 +206,20 @@ rate(db_query_duration_sum[5m]) / rate(db_query_duration_count[5m])
 histogram_quantile(0.99, rate(db_query_duration_bucket[5m]))
 
 # Database error rate
-rate(db_errors_total[5m])
+rate(devacademy_db_errors_total[5m])
 ```
 
 ### Business Insights
 
 ```promql
 # Most popular pages
-topk(10, sum by (page_path) (page_views_total))
+topk(10, sum by (page_path) (devacademy_page_views_total))
 
 # Page view rate
-rate(page_views_total[5m])
+rate(devacademy_page_views_total[5m])
 
 # Course enrollment trend
-rate(course_enrollments_total[1h])
+rate(devacademy_course_enrollments_total[1h])
 ```
 
 ## Creating Custom Dashboards
@@ -270,7 +270,7 @@ To make your dashboard permanent:
 ### Example Alert: High Error Rate
 
 ```yaml
-Query: rate(http_server_errors_total[5m]) / rate(http_server_requests_total[5m])
+Query: rate(devacademy_api_errors_total[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 Condition: IS ABOVE 0.05
 For: 5m
 Summary: HTTP error rate is above 5%
@@ -279,7 +279,7 @@ Summary: HTTP error rate is above 5%
 ### Example Alert: Suspicious Logins
 
 ```yaml
-Query: increase(user_login_suspicious_total[5m])
+Query: increase(devacademy_user_login_suspicious_total[5m])
 Condition: IS ABOVE 5
 For: 1m
 Summary: Multiple suspicious login attempts detected
@@ -327,7 +327,7 @@ docker logs prometheus
 
 Visit: http://localhost:9090/graph
 
-Try: `http_server_requests_total`
+Try: `devacademy_http_client_request_duration_seconds_count`
 
 ### Connection Issues
 

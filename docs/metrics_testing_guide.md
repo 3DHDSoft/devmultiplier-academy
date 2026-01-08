@@ -73,13 +73,13 @@ With debug logging enabled, you'll see export logs like:
 **Check HTTP metrics:**
 
 ```promql
-http_server_requests_total
+devacademy_http_client_request_duration_seconds_count
 ```
 
 **Check login metrics:**
 
 ```promql
-user_login_attempts_total
+devacademy_user_login_attempts_total
 ```
 
 **Check all available metrics:**
@@ -120,13 +120,13 @@ curl http://localhost:3000/api/courses
 
 ```promql
 # Total requests in last 5 minutes
-rate(http_server_requests_total[5m])
+rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Error rate
-rate(http_server_errors_total[5m]) / rate(http_server_requests_total[5m])
+rate(devacademy_api_errors_total[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Average latency
-rate(http_server_duration_sum[5m]) / rate(http_server_duration_count[5m])
+rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 ```
 
 ### Scenario 2: Authentication Metrics
@@ -149,13 +149,13 @@ rate(http_server_duration_sum[5m]) / rate(http_server_duration_count[5m])
 
 ```promql
 # Login success rate
-rate(user_login_success_total[5m]) / rate(user_login_attempts_total[5m])
+rate(devacademy_user_login_success_total[5m]) / rate(devacademy_user_login_attempts_total[5m])
 
 # Failed attempts by reason
-sum by (failure_reason) (user_login_failures_total)
+sum by (failure_reason) (devacademy_user_login_failures_total)
 
 # Suspicious logins
-rate(user_login_suspicious_total[5m])
+rate(devacademy_user_login_suspicious_total[5m])
 ```
 
 ### Scenario 3: Database Metrics
@@ -174,13 +174,13 @@ rate(user_login_suspicious_total[5m])
 
 ```promql
 # Query rate by operation
-rate(db_queries_total[5m])
+rate(devacademy_db_client_operation_duration_seconds_count[5m])
 
 # Query latency by table
 rate(db_query_duration_sum[5m]) / rate(db_query_duration_count[5m])
 
 # Database errors
-rate(db_errors_total[5m])
+rate(devacademy_db_errors_total[5m])
 ```
 
 ### Scenario 4: External API Metrics
@@ -199,13 +199,13 @@ rate(db_errors_total[5m])
 
 ```promql
 # API call rate by service
-sum by (api_service) (rate(api_calls_total[5m]))
+sum by (api_service) (rate(devacademy_api_calls_total[5m]))
 
 # API latency
-histogram_quantile(0.95, rate(api_call_duration_bucket[5m]))
+histogram_quantile(0.95, rate(devacademy_api_call_duration_milliseconds_bucket[5m]))
 
 # API error rate
-rate(api_errors_total[5m]) / rate(api_calls_total[5m])
+rate(api_errors_total[5m]) / rate(devacademy_api_calls_total[5m])
 ```
 
 ### Scenario 5: Email Metrics
@@ -227,10 +227,10 @@ rate(api_errors_total[5m]) / rate(api_calls_total[5m])
 
 ```promql
 # Email send rate by type
-sum by (email_type) (rate(email_sent_total[5m]))
+sum by (email_type) (rate(devacademy_email_sent_total[5m]))
 
 # Email failure rate
-rate(email_failures_total[5m]) / (rate(email_sent_total[5m]) + rate(email_failures_total[5m]))
+rate(devacademy_email_failures_total[5m]) / (rate(devacademy_email_sent_total[5m]) + rate(devacademy_email_failures_total[5m]))
 
 # Email send latency
 rate(email_send_duration_sum[5m]) / rate(email_send_duration_count[5m])
@@ -251,10 +251,10 @@ rate(email_send_duration_sum[5m]) / rate(email_send_duration_count[5m])
 
 ```promql
 # Page views by path
-sum by (page_path) (rate(page_views_total[5m]))
+sum by (page_path) (rate(devacademy_page_views_total[5m]))
 
 # Most viewed pages
-topk(10, sum by (page_path) (page_views_total))
+topk(10, sum by (page_path) (devacademy_page_views_total))
 ```
 
 ## Automated Testing

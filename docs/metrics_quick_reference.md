@@ -130,56 +130,42 @@ courseEnrollmentCounter.add(1, {
 
 ## 📊 Available Metrics
 
-### Performance Metrics
+### HTTP Client Metrics (Outbound Requests - Auto-instrumented)
 
-- `http.server.requests` - Counter
-- `http.server.duration` - Histogram (ms)
-- `http.server.errors` - Counter
-- `db.queries` - Counter
-- `db.query.duration` - Histogram (ms)
-- `db.errors` - Counter
-- `api.calls` - Counter
-- `api.call.duration` - Histogram (ms)
-- `api.errors` - Counter
+- `devacademy_http_client_request_duration_seconds` - HTTP client request duration (Histogram)
+- `devacademy_api_calls_total` - Total external API calls (Counter)
+- `devacademy_api_call_duration_milliseconds` - API call duration (Histogram)
+- `devacademy_api_errors_total` - External API errors (Counter)
 
-### Authentication Metrics
+### Authentication Metrics (Custom)
 
-- `user.login.attempts` - Counter
-- `user.login.success` - Counter
-- `user.login.failures` - Counter
-- `user.login.new_location` - Counter
-- `user.login.suspicious` - Counter
-- `user.logout` - Counter
-- `user.registration` - Counter
-- `user.activation` - Counter
+- `devacademy_user_login_attempts_total` - Login attempts (Counter)
+- `devacademy_user_login_success_total` - Successful logins (Counter)
+- `devacademy_user_login_failures_total` - Failed logins (Counter)
+- `devacademy_user_login_suspicious_total` - Suspicious login attempts (Counter)
 
-### User Activity Metrics
+### Database Metrics (Auto-instrumented + Custom)
 
-- `user.active` - UpDownCounter
-- `user.sessions.active` - UpDownCounter
-- `page.views` - Counter
-- `page.views.unique` - Counter
+- `devacademy_db_client_operation_duration_seconds` - Database operation duration (Histogram)
+- `devacademy_db_client_connection_count` - Database connection pool count (Gauge)
+- `devacademy_db_client_connection_pending_requests` - Pending connection requests (Gauge)
+- `devacademy_db_client_operation_duration_seconds_count` - Custom query counter (Counter)
+- `devacademy_db_client_operation_duration_milliseconds` - Custom query duration (Histogram)
 
-### Content Metrics
+### Email Metrics (Custom)
 
-- `course.views` - Counter
-- `course.enrollments` - Counter
-- `course.completions` - Counter
-- `lesson.views` - Counter
-- `lesson.completions` - Counter
+- `devacademy_email_sent_total` - Emails sent (Counter)
+- `devacademy_email_send_duration_milliseconds` - Email send duration (Histogram)
 
-### Search Metrics
+### Node.js Runtime Metrics (Auto-instrumented)
 
-- `search.queries` - Counter
-- `search.duration` - Histogram (ms)
-- `search.results.count` - Histogram
+- `devacademy_nodejs_eventloop_delay_*` - Event loop delay percentiles (Gauge)
+- `devacademy_nodejs_eventloop_time_seconds_total` - Event loop time (Counter)
+- `devacademy_nodejs_eventloop_utilization_ratio` - Event loop utilization (Gauge)
+- `devacademy_v8js_gc_duration_seconds` - Garbage collection duration (Histogram)
+- `devacademy_v8js_memory_heap_*` - V8 heap memory metrics (Gauge)
 
-### Email Metrics
-
-- `email.sent` - Counter
-- `email.failures` - Counter
-- `email.send.duration` - Histogram (ms)
-- `notification.sent` - Counter
+**Note:** Metric names with `devacademy_` prefix are exported to Prometheus via OTLP collector. Internal OpenTelemetry metric names use dot notation (e.g., `http.client.request.duration`).
 
 ## 🔍 Common Grafana Queries
 
@@ -187,54 +173,54 @@ courseEnrollmentCounter.add(1, {
 
 ```promql
 # Request rate
-rate(http_server_requests_total[5m])
+rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # Error rate percentage
-(rate(http_server_errors_total[5m]) / rate(http_server_requests_total[5m])) * 100
+(rate(devacademy_api_errors_total[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])) * 100
 
 # Average latency
-rate(http_server_duration_sum[5m]) / rate(http_server_duration_count[5m])
+rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])
 
 # P95 latency
-histogram_quantile(0.95, rate(http_server_duration_bucket[5m]))
+histogram_quantile(0.95, rate(devacademy_http_client_request_duration_seconds_bucket[5m]))
 
 # Requests by route
-sum by (http_route) (rate(http_server_requests_total[5m]))
+sum by (http_route) (rate(devacademy_http_client_request_duration_seconds_count[5m]))
 ```
 
 ### Authentication & Security
 
 ```promql
 # Login success rate
-rate(user_login_success_total[5m]) / rate(user_login_attempts_total[5m])
+rate(devacademy_user_login_success_total[5m]) / rate(devacademy_user_login_attempts_total[5m])
 
 # Failed logins by country
-sum by (geo_country) (rate(user_login_failures_total[5m]))
+sum by (geo_country) (rate(devacademy_user_login_failures_total[5m]))
 
 # Suspicious login rate
-rate(user_login_suspicious_total[5m])
+rate(devacademy_user_login_suspicious_total[5m])
 
 # New location logins
-rate(user_login_new_location_total[5m])
+rate(devacademy_user_login_new_location_total[5m])
 ```
 
 ### Database Performance
 
 ```promql
 # Query rate
-rate(db_queries_total[5m])
+rate(devacademy_db_client_operation_duration_seconds_count[5m])
 
 # Average query latency
-rate(db_query_duration_sum[5m]) / rate(db_query_duration_count[5m])
+rate(devacademy_db_client_operation_duration_seconds_sum[5m]) / rate(devacademy_db_client_operation_duration_seconds_count[5m])
 
 # Slow queries (P99 latency)
-histogram_quantile(0.99, rate(db_query_duration_bucket[5m]))
+histogram_quantile(0.99, rate(devacademy_db_client_operation_duration_seconds_bucket[5m]))
 
 # Error rate
-rate(db_errors_total[5m]) / rate(db_queries_total[5m])
+rate(devacademy_db_errors_total[5m]) / rate(devacademy_db_client_operation_duration_seconds_count[5m])
 
 # Queries by table
-sum by (db_table) (rate(db_queries_total[5m]))
+sum by (db_table) (rate(devacademy_db_client_operation_duration_seconds_count[5m]))
 ```
 
 ### User Engagement
@@ -244,39 +230,39 @@ sum by (db_table) (rate(db_queries_total[5m]))
 user_active
 
 # Page views by path
-topk(10, sum by (page_path) (rate(page_views_total[5m])))
+topk(10, sum by (page_path) (rate(devacademy_page_views_total[5m])))
 
 # Course enrollments
-rate(course_enrollments_total[5m])
+rate(devacademy_course_enrollments_total[5m])
 
 # Completion rate
-rate(course_completions_total[5m]) / rate(course_enrollments_total[5m])
+rate(devacademy_course_completions_total[5m]) / rate(devacademy_course_enrollments_total[5m])
 ```
 
 ### External Services
 
 ```promql
 # API call rate by service
-sum by (api_service) (rate(api_calls_total[5m]))
+sum by (api_service) (rate(devacademy_api_calls_total[5m]))
 
 # API error rate
-rate(api_errors_total[5m]) / rate(api_calls_total[5m])
+rate(api_errors_total[5m]) / rate(devacademy_api_calls_total[5m])
 
 # API latency P95
-histogram_quantile(0.95, rate(api_call_duration_bucket[5m]))
+histogram_quantile(0.95, rate(devacademy_api_call_duration_milliseconds_bucket[5m]))
 ```
 
 ### Email Service
 
 ```promql
 # Email send rate
-rate(email_sent_total[5m])
+rate(devacademy_email_sent_total[5m])
 
 # Email failure rate
-rate(email_failures_total[5m]) / (rate(email_sent_total[5m]) + rate(email_failures_total[5m]))
+rate(devacademy_email_failures_total[5m]) / (rate(devacademy_email_sent_total[5m]) + rate(devacademy_email_failures_total[5m]))
 
 # Emails by type
-sum by (email_type) (rate(email_sent_total[5m]))
+sum by (email_type) (rate(devacademy_email_sent_total[5m]))
 ```
 
 ## 🎯 Alerting Rules
@@ -286,7 +272,7 @@ sum by (email_type) (rate(email_sent_total[5m]))
 **High Error Rate:**
 
 ```promql
-(rate(http_server_errors_total[5m]) / rate(http_server_requests_total[5m])) > 0.05
+(rate(devacademy_api_errors_total[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m])) > 0.05
 ```
 
 Alert when > 5% of requests are errors
@@ -294,7 +280,7 @@ Alert when > 5% of requests are errors
 **High P95 Latency:**
 
 ```promql
-histogram_quantile(0.95, rate(http_server_duration_bucket[5m])) > 1000
+histogram_quantile(0.95, rate(devacademy_http_client_request_duration_seconds_bucket[5m])) > 1000
 ```
 
 Alert when P95 latency > 1000ms
@@ -302,7 +288,7 @@ Alert when P95 latency > 1000ms
 **Database Errors:**
 
 ```promql
-rate(db_errors_total[5m]) > 0
+rate(devacademy_db_errors_total[5m]) > 0
 ```
 
 Alert on any database errors
@@ -318,7 +304,7 @@ Alert when external API errors > 1/sec
 **Suspicious Logins:**
 
 ```promql
-rate(user_login_suspicious_total[5m]) > 0.1
+rate(devacademy_user_login_suspicious_total[5m]) > 0.1
 ```
 
 Alert when suspicious logins > 0.1/sec
@@ -326,7 +312,7 @@ Alert when suspicious logins > 0.1/sec
 **Email Send Failures:**
 
 ```promql
-(rate(email_failures_total[5m]) / (rate(email_sent_total[5m]) + rate(email_failures_total[5m]))) > 0.1
+(rate(devacademy_email_failures_total[5m]) / (rate(devacademy_email_sent_total[5m]) + rate(devacademy_email_failures_total[5m]))) > 0.1
 ```
 
 Alert when email failure rate > 10%
