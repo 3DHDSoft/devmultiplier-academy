@@ -498,19 +498,19 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-4xl px-4 py-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="mb-1 text-2xl font-bold text-gray-900">{formData.email}</h1>
-          <h2 className="text-3xl font-bold text-gray-900">Profile</h2>
+        <div className="mb-4">
+          <h1 className="mb-0.5 text-xl font-bold text-gray-900">{formData.email}</h1>
+          <h2 className="text-2xl font-bold text-gray-900">Profile</h2>
         </div>
 
         {/* Tab Navigation */}
-        <div className="mb-6 border-b border-gray-200">
-          <nav className="flex space-x-8">
+        <div className="mb-4 border-b border-gray-200">
+          <nav className="flex space-x-6">
             <button
               onClick={() => setActiveTab('settings')}
-              className={`border-b-2 pb-3 text-sm font-medium transition ${
+              className={`border-b-2 pb-2 text-sm font-medium transition ${
                 activeTab === 'settings'
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
@@ -520,7 +520,7 @@ export default function ProfilePage() {
             </button>
             <button
               onClick={() => setActiveTab('notifications')}
-              className={`border-b-2 pb-3 text-sm font-medium transition ${
+              className={`border-b-2 pb-2 text-sm font-medium transition ${
                 activeTab === 'notifications'
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
@@ -533,47 +533,47 @@ export default function ProfilePage() {
 
         {/* Messages */}
         {error && (
-          <div className="mb-4 rounded-lg bg-red-50 p-3 text-red-800">
-            <p className="text-sm font-medium">Error</p>
-            <p className="text-sm">{error}</p>
+          <div className="mb-3 rounded-md bg-red-50 p-2.5 text-red-800">
+            <p className="text-xs font-medium">Error</p>
+            <p className="text-xs">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="mb-4 rounded-lg bg-green-50 p-3 text-green-800">
-            <p className="text-sm font-medium">Profile updated successfully!</p>
+          <div className="mb-3 rounded-md bg-green-50 p-2.5 text-green-800">
+            <p className="text-xs font-medium">Profile updated successfully!</p>
           </div>
         )}
 
         {/* Settings Tab */}
         {activeTab === 'settings' && (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Settings Section */}
-            <div className="rounded-lg bg-white p-6 shadow">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Settings</h3>
+            <div className="rounded-lg bg-white p-4 shadow">
+              <h3 className="mb-3 text-base font-semibold text-gray-900">Settings</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {/* Email (Verified) */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="email" className="mb-1 block text-xs font-medium text-gray-700">
                     Email
                   </label>
-                  <div className="mt-1 flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <input
                       type="email"
                       id="email"
                       name="email"
                       value={formData.email}
                       disabled
-                      className="block flex-1 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500"
+                      className="block flex-1 rounded-md border border-gray-300 bg-gray-50 px-2.5 py-1.5 text-sm text-gray-500"
                     />
-                    <span className="rounded-md bg-green-100 px-2 py-1 text-xs text-green-800">
+                    <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-800">
                       Verified
                     </span>
                     <button
                       type="button"
                       onClick={() => setShowEmailChangeModal(true)}
-                      className="rounded-lg border border-blue-600 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                      className="rounded-md border border-blue-600 px-2.5 py-1 text-xs font-medium text-blue-600 transition hover:bg-blue-50"
                     >
                       Update email
                     </button>
@@ -582,7 +582,7 @@ export default function ProfilePage() {
 
                 {/* Language */}
                 <div>
-                  <label htmlFor="locale" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="locale" className="mb-1 block text-xs font-medium text-gray-700">
                     Language
                   </label>
                   <select
@@ -590,7 +590,7 @@ export default function ProfilePage() {
                     name="locale"
                     value={formData.locale}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -604,7 +604,7 @@ export default function ProfilePage() {
 
                 {/* Dashboard Appearance */}
                 <div>
-                  <label htmlFor="dashboardAppearance" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="dashboardAppearance" className="mb-1 block text-xs font-medium text-gray-700">
                     Dashboard appearance
                   </label>
                   <select
@@ -612,7 +612,7 @@ export default function ProfilePage() {
                     name="dashboardAppearance"
                     value={formData.dashboardAppearance}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
@@ -622,98 +622,155 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Delete Profile Section */}
-            <div className="rounded-lg border-2 border-red-200 bg-white p-6 shadow">
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">Delete your profile</h3>
-              <p className="mb-4 text-sm text-gray-600">
-                Permanently delete the user {formData.email}
-              </p>
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </button>
               <button
                 type="button"
-                onClick={() => setShowDeleteModal(true)}
-                className="rounded-lg border border-red-600 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                onClick={() => router.push('/dashboard')}
+                className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
               >
-                Delete User
+                Cancel
               </button>
             </div>
 
             {/* Active Sessions */}
-            <div className="rounded-lg bg-white p-6 shadow">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Active sessions</h3>
+            <div className="rounded-lg bg-white p-4 shadow">
+              <h3 className="mb-3 text-base font-semibold text-gray-900">Active sessions</h3>
 
-              {loadingSessions ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+{loadingSessions ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="border-b border-gray-200 text-xs text-gray-700">
+                    <thead className="border-b border-gray-200 text-xs text-gray-600">
                       <tr>
-                        <th className="pb-3 font-semibold">Device</th>
-                        <th className="pb-3 font-semibold">Location</th>
-                        <th className="pb-3 font-semibold">Created</th>
-                        <th className="pb-3 font-semibold">Updated</th>
-                        <th className="pb-3"></th>
+                        <th className="pb-2 font-semibold">Device</th>
+                        <th className="pb-2 font-semibold">Location</th>
+                        <th className="pb-2 font-semibold">Login Count</th>
+                        <th className="pb-2 font-semibold">First Login</th>
+                        <th className="pb-2 font-semibold">Last Activity</th>
+                        <th className="pb-2"></th>
                       </tr>
                     </thead>
                     <tbody>
                       {sessions.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="py-8 text-center text-gray-500">
+                          <td colSpan={6} className="py-4 text-center text-sm text-gray-500">
                             No active sessions found
                           </td>
                         </tr>
                       ) : (
-                        sessions.map((sess) => {
-                          const browserDisplay = sess.browser || 'Unknown Browser';
-                          const location = [sess.city, sess.region, sess.country]
-                            .filter(Boolean)
-                            .join(', ') || 'Unknown Location';
-                          const isCurrentSession = session?.user?.sessionId === sess.id;
-                          const isTerminating = terminatingSessionId === sess.id;
+                        (() => {
+                          // Aggregate sessions by device and location
+                          const aggregatedMap = new Map<string, {
+                            deviceDisplay: string;
+                            location: string;
+                            sessions: Session[];
+                            firstCreated: string;
+                            lastUpdated: string;
+                            hasCurrentSession: boolean;
+                          }>();
 
-                          return (
-                            <tr key={sess.id} className="border-b border-gray-100 last:border-0">
-                              <td className="py-4">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-gray-900">{browserDisplay} ({sess.os || 'Unknown OS'})</span>
-                                  {isCurrentSession && (
-                                    <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
-                                      Current
-                                    </span>
-                                  )}
-                                </div>
-                              </td>
-                              <td className="py-4 text-gray-600">{location}</td>
-                              <td className="py-4 text-gray-600">
-                                {formatDate(sess.createdAt)}
-                              </td>
-                              <td className="py-4 text-gray-600">
-                                {sess.updatedAt ? formatDate(sess.updatedAt) : 'N/A'}
-                              </td>
-                              <td className="py-4 text-right">
-                                {isCurrentSession ? (
-                                  <span className="text-xs text-gray-400">Current session</span>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleTerminateSession(sess.id)}
-                                    disabled={isTerminating}
-                                    className="text-red-600 hover:text-red-800 disabled:opacity-50"
-                                    title="Terminate session"
-                                  >
-                                    {isTerminating ? (
-                                      <Loader2 className="h-5 w-5 animate-spin" />
-                                    ) : (
-                                      <MoreVertical className="h-5 w-5" />
+                          sessions.forEach((sess) => {
+                            const browserDisplay = sess.browser || 'Unknown Browser';
+                            const osDisplay = sess.os || 'Unknown OS';
+                            const deviceDisplay = `${browserDisplay} (${osDisplay})`;
+                            const location = [sess.city, sess.region, sess.country]
+                              .filter(Boolean)
+                              .join(', ') || 'Unknown Location';
+                            const key = `${deviceDisplay}|${location}`;
+                            const isCurrentSession = session?.user?.sessionId === sess.id;
+
+                            if (!aggregatedMap.has(key)) {
+                              aggregatedMap.set(key, {
+                                deviceDisplay,
+                                location,
+                                sessions: [],
+                                firstCreated: sess.createdAt,
+                                lastUpdated: sess.updatedAt || sess.createdAt,
+                                hasCurrentSession: isCurrentSession,
+                              });
+                            }
+
+                            const group = aggregatedMap.get(key)!;
+                            group.sessions.push(sess);
+
+                            // Update first created (earliest)
+                            if (new Date(sess.createdAt) < new Date(group.firstCreated)) {
+                              group.firstCreated = sess.createdAt;
+                            }
+
+                            // Update last updated (most recent)
+                            const sessUpdated = sess.updatedAt || sess.createdAt;
+                            if (new Date(sessUpdated) > new Date(group.lastUpdated)) {
+                              group.lastUpdated = sessUpdated;
+                            }
+
+                            // Mark if any session in group is current
+                            if (isCurrentSession) {
+                              group.hasCurrentSession = true;
+                            }
+                          });
+
+                          return Array.from(aggregatedMap.entries()).map(([key, group]) => {
+                            const isTerminating = group.sessions.some(s => terminatingSessionId === s.id);
+
+                            return (
+                              <tr key={key} className="border-b border-gray-100 last:border-0">
+                                <td className="py-2">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="text-sm text-gray-900">{group.deviceDisplay}</span>
+                                    {group.hasCurrentSession && (
+                                      <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800">
+                                        Current
+                                      </span>
                                     )}
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })
+                                  </div>
+                                </td>
+                                <td className="py-2 text-sm text-gray-600">{group.location}</td>
+                                <td className="py-2 text-sm font-semibold text-gray-900">{group.sessions.length}</td>
+                                <td className="py-2 text-sm text-gray-600">
+                                  {formatDate(group.firstCreated)}
+                                </td>
+                                <td className="py-2 text-sm text-gray-600">
+                                  {formatDate(group.lastUpdated)}
+                                </td>
+                                <td className="py-2 text-right">
+                                  {group.hasCurrentSession ? (
+                                    <span className="text-xs text-gray-400">Current session</span>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        // Terminate all sessions in this group
+                                        group.sessions.forEach(s => handleTerminateSession(s.id));
+                                      }}
+                                      disabled={isTerminating}
+                                      className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                      title="Terminate all sessions"
+                                    >
+                                      {isTerminating ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                      ) : (
+                                        <MoreVertical className="h-4 w-4" />
+                                      )}
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          });
+                        })()
                       )}
                     </tbody>
                   </table>
@@ -721,22 +778,19 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
-              >
-                {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-                {isSaving ? 'Saving...' : 'Save Changes'}
-              </button>
+            {/* Danger Zone - Delete Profile Section */}
+            <div className="rounded-lg border-2 border-red-200 bg-white p-4 shadow">
+              <h3 className="mb-2 text-sm font-bold text-red-600">Danger Zone</h3>
+              <h4 className="mb-1 text-sm font-semibold text-gray-900">Delete your profile</h4>
+              <p className="mb-3 text-xs text-gray-600">
+                Permanently delete the user {formData.email}
+              </p>
               <button
                 type="button"
-                onClick={() => router.push('/dashboard')}
-                className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                onClick={() => setShowDeleteModal(true)}
+                className="rounded-md border border-red-600 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50"
               >
-                Cancel
+                Delete User
               </button>
             </div>
           </form>
@@ -744,114 +798,114 @@ export default function ProfilePage() {
 
         {/* Notifications Tab */}
         {activeTab === 'notifications' && (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="rounded-lg bg-white p-6 shadow">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Email Notifications</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="rounded-lg bg-white p-4 shadow">
+              <h3 className="mb-3 text-base font-semibold text-gray-900">Email Notifications</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-2.5">
                 {/* Course Updates */}
-                <div className="flex items-start">
+                <div className="flex items-start gap-2">
                   <input
                     type="checkbox"
                     id="notifyOnCourseUpdates"
                     name="notifyOnCourseUpdates"
                     checked={formData.notifyOnCourseUpdates}
                     onChange={handleChange}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnCourseUpdates" className="ml-3">
+                  <label htmlFor="notifyOnCourseUpdates" className="flex-1">
                     <span className="block text-sm font-medium text-gray-900">
                       Course updates
                     </span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-xs text-gray-500">
                       Get notified when courses you're enrolled in are updated
                     </span>
                   </label>
                 </div>
 
                 {/* New Courses */}
-                <div className="flex items-start">
+                <div className="flex items-start gap-2">
                   <input
                     type="checkbox"
                     id="notifyOnNewCourses"
                     name="notifyOnNewCourses"
                     checked={formData.notifyOnNewCourses}
                     onChange={handleChange}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnNewCourses" className="ml-3">
+                  <label htmlFor="notifyOnNewCourses" className="flex-1">
                     <span className="block text-sm font-medium text-gray-900">
                       New courses
                     </span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-xs text-gray-500">
                       Be the first to know when new courses are available
                     </span>
                   </label>
                 </div>
 
                 {/* Completion Reminders */}
-                <div className="flex items-start">
+                <div className="flex items-start gap-2">
                   <input
                     type="checkbox"
                     id="notifyOnCompletionReminders"
                     name="notifyOnCompletionReminders"
                     checked={formData.notifyOnCompletionReminders}
                     onChange={handleChange}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnCompletionReminders" className="ml-3">
+                  <label htmlFor="notifyOnCompletionReminders" className="flex-1">
                     <span className="block text-sm font-medium text-gray-900">
                       Completion reminders
                     </span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-xs text-gray-500">
                       Gentle reminders to help you complete your courses
                     </span>
                   </label>
                 </div>
 
                 {/* Achievements */}
-                <div className="flex items-start">
+                <div className="flex items-start gap-2">
                   <input
                     type="checkbox"
                     id="notifyOnAchievements"
                     name="notifyOnAchievements"
                     checked={formData.notifyOnAchievements}
                     onChange={handleChange}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnAchievements" className="ml-3">
+                  <label htmlFor="notifyOnAchievements" className="flex-1">
                     <span className="block text-sm font-medium text-gray-900">
                       Achievements and milestones
                     </span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-xs text-gray-500">
                       Celebrate your learning progress with achievement notifications
                     </span>
                   </label>
                 </div>
 
                 {/* Messages */}
-                <div className="flex items-start">
+                <div className="flex items-start gap-2">
                   <input
                     type="checkbox"
                     id="notifyOnMessages"
                     name="notifyOnMessages"
                     checked={formData.notifyOnMessages}
                     onChange={handleChange}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnMessages" className="ml-3">
+                  <label htmlFor="notifyOnMessages" className="flex-1">
                     <span className="block text-sm font-medium text-gray-900">
                       Messages and replies
                     </span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-xs text-gray-500">
                       Get notified when instructors or students message you
                     </span>
                   </label>
                 </div>
 
                 {/* Email Digest Frequency */}
-                <div className="pt-4">
-                  <label htmlFor="emailDigestFrequency" className="block text-sm font-medium text-gray-900">
+                <div className="pt-2">
+                  <label htmlFor="emailDigestFrequency" className="mb-1 block text-xs font-medium text-gray-900">
                     Email digest frequency
                   </label>
                   <select
@@ -859,14 +913,14 @@ export default function ProfilePage() {
                     name="emailDigestFrequency"
                     value={formData.emailDigestFrequency}
                     onChange={handleChange}
-                    className="mt-2 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="none">Never</option>
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-xs text-gray-500">
                     Receive a summary of your activity and updates
                   </p>
                 </div>
@@ -874,19 +928,19 @@ export default function ProfilePage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
               >
-                {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
+                {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
               >
                 Cancel
               </button>
