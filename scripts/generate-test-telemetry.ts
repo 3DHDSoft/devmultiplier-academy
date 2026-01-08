@@ -12,12 +12,34 @@
  * Or: bunx tsx scripts/generate-test-telemetry.ts
  */
 
-import { trace } from '@opentelemetry/api';
+import { trace, metrics } from '@opentelemetry/api';
+import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
+import { resourceFromAttributes } from '@opentelemetry/resources';
+import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 
-// We need to import the instrumentation to ensure OpenTelemetry is initialized
-import '../instrumentation.node';
+// Initialize OpenTelemetry for this script
+const metricExporter = new OTLPMetricExporter({
+  url: 'http://otel-collector:4318/v1/metrics',
+});
 
-// Import metrics after instrumentation is loaded
+const metricReader = new PeriodicExportingMetricReader({
+  exporter: metricExporter,
+  exportIntervalMillis: 5000, // Export every 5 seconds for faster testing
+});
+
+const resource = resourceFromAttributes({
+  [ATTR_SERVICE_NAME]: 'dev-academy-web-test',
+});
+
+const meterProvider = new MeterProvider({
+  resource,
+  readers: [metricReader],
+});
+
+metrics.setGlobalMeterProvider(meterProvider);
+
+// Import metrics after MeterProvider is initialized
 import {
   recordLoginAttempt,
   recordDbQuery,

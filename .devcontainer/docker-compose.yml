@@ -113,6 +113,7 @@ services:
       - '${OTEL_COLLECTOR_GRPC_PORT:-4317}:4317' # OTLP gRPC receiver
       - '${OTEL_COLLECTOR_HTTP_PORT:-4318}:4318' # OTLP HTTP receiver
       - '${OTEL_COLLECTOR_METRICS_PORT:-8888}:8888' # Prometheus metrics (collector itself)
+      - '${OTEL_COLLECTOR_APP_METRICS_PORT:-8889}:8889' # Application metrics endpoint
       - '${OTEL_COLLECTOR_HEALTH_PORT:-13133}:13133' # Health check
     volumes:
       - ./otel-collector/otel-collector-config.yml:/etc/otelcol-contrib/config.yaml:ro

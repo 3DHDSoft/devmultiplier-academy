@@ -109,7 +109,7 @@
           },
           "editorMode": "code",
           "expr": "rate(devacademy_http_client_request_duration_seconds_count[5m])",
-          "legendFormat": "{{http_request_method}} {{server_address}}",
+          "legendFormat": "{{http_request_method}} {{http_route}}",
           "range": true,
           "refId": "A"
         }
@@ -179,14 +179,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m]) * 1000",
+          "expr": "sum(rate(devacademy_http_client_request_duration_seconds_sum[5m])) / sum(rate(devacademy_http_client_request_duration_seconds_count[5m])) * 1000",
           "legendFormat": "Avg Latency",
           "range": true,
           "refId": "A"
         }
       ],
       "title": "Average HTTP Client Response Time",
-      "type": "gauge"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -534,7 +534,7 @@
           },
           "editorMode": "code",
           "expr": "sum by (server_address) (rate(devacademy_http_client_request_duration_seconds_count[5m]))",
-          "legendFormat": "{{server_address}}",
+          "legendFormat": "{{http_route}}",
           "range": true,
           "refId": "A"
         }

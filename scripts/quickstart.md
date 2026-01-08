@@ -9,6 +9,7 @@ bun run telemetry:traffic
 ```
 
 This will:
+
 - Generate HTTP requests for 5 minutes
 - Create realistic traffic patterns
 - Populate most of your dashboard panels
@@ -27,9 +28,8 @@ This will:
 
 After running the traffic generator, you should see:
 
-✅ **HTTP Client Request Rate** - Line chart showing requests/second
-✅ **Average HTTP Response Time** - Gauge showing latency
-✅ **HTTP Requests by Endpoint** - Pie chart of endpoint distribution
+✅ **HTTP Client Request Rate** - Line chart showing requests/second ✅ **Average HTTP Response Time** - Gauge showing
+latency ✅ **HTTP Requests by Endpoint** - Pie chart of endpoint distribution
 
 ## 🔐 Test Login Metrics
 
@@ -39,8 +39,8 @@ To specifically test the login panel:
 bun run telemetry:login 50
 ```
 
-This generates 50 login attempts with realistic success/failure rates.
-**Note**: The script will wait 20 seconds to ensure metrics are exported.
+This generates 50 login attempts with realistic success/failure rates. **Note**: The script will wait 20 seconds to
+ensure metrics are exported.
 
 To simulate a security attack (burst of failed logins):
 
@@ -57,6 +57,7 @@ bun run telemetry:test
 ```
 
 This generates:
+
 - HTTP client metrics
 - API error metrics
 - Login activity metrics
@@ -89,6 +90,7 @@ BASE_URL=http://localhost:8080 bun run telemetry:traffic
 ### No data in dashboard?
 
 1. **Check your app is running**:
+
    ```bash
    curl http://localhost:3000
    ```
@@ -98,6 +100,7 @@ BASE_URL=http://localhost:8080 bun run telemetry:traffic
    - Metrics export every 60 seconds
 
 3. **Check Prometheus has data**:
+
    ```bash
    curl -s http://localhost:9090/api/v1/label/__name__/values | grep devacademy
    ```
@@ -110,6 +113,7 @@ BASE_URL=http://localhost:8080 bun run telemetry:traffic
 ### Scripts won't run?
 
 Make sure tsx is available (bun includes it by default):
+
 ```bash
 bunx tsx --version
 ```
@@ -117,6 +121,7 @@ bunx tsx --version
 ### Getting connection errors?
 
 Ensure your Next.js app is running:
+
 ```bash
 bun run dev
 ```
@@ -124,6 +129,7 @@ bun run dev
 ## 📖 Full Documentation
 
 For detailed information about each script and metric, see:
+
 - [readme-telemetry-testing.md](./readme-telemetry-testing.md)
 
 ## 🎉 Success Criteria
@@ -155,3 +161,7 @@ Once your dashboard is working:
 5. Set up alerting rules for production monitoring
 
 Enjoy your metrics! 📊✨
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

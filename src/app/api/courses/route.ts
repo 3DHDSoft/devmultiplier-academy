@@ -1,8 +1,9 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { withMetrics } from '@/lib/with-metrics';
 
-export async function GET() {
+async function handler() {
   try {
     const session = await auth();
     const userLocale = session?.user?.locale || 'en';
@@ -63,3 +64,5 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to fetch courses' }, { status: 500 });
   }
 }
+
+export const GET = withMetrics(handler, '/api/courses');

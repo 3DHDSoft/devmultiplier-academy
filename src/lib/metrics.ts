@@ -8,254 +8,302 @@
  */
 
 import { metrics } from '@opentelemetry/api';
-import type { Counter, Histogram, UpDownCounter, MetricOptions, Attributes } from '@opentelemetry/api';
+import type { Counter, Histogram, UpDownCounter, MetricOptions, Attributes, Meter } from '@opentelemetry/api';
 
-// Get the global meter for this service
-const meter = metrics.getMeter('dev-academy-web', '1.0.0');
+// Lazy-initialize the meter to ensure MeterProvider is registered first
+let _meter: Meter | null = null;
+function getMeter(): Meter {
+  if (!_meter) {
+    _meter = metrics.getMeter('dev-academy-web', '1.0.0');
+  }
+  return _meter;
+}
+
+// Helper to create lazy-initialized counters
+function createLazyCounter(name: string, options?: MetricOptions) {
+  let counter: Counter | null = null;
+  return {
+    add(value: number, attributes?: Attributes) {
+      if (!counter) counter = getMeter().createCounter(name, options);
+      counter.add(value, attributes);
+    }
+  };
+}
+
+// Helper to create lazy-initialized histograms
+function createLazyHistogram(name: string, options?: MetricOptions) {
+  let histogram: Histogram | null = null;
+  return {
+    record(value: number, attributes?: Attributes) {
+      if (!histogram) histogram = getMeter().createHistogram(name, options);
+      histogram.record(value, attributes);
+    }
+  };
+}
+
+// Helper to create lazy-initialized up-down counters
+function createLazyUpDownCounter(name: string, options?: MetricOptions) {
+  let counter: UpDownCounter | null = null;
+  return {
+    add(value: number, attributes?: Attributes) {
+      if (!counter) counter = getMeter().createUpDownCounter(name, options);
+      counter.add(value, attributes);
+    }
+  };
+}
 
 /**
  * Application Performance Metrics
  */
 
-// HTTP request metrics
-export const httpRequestCounter = meter.createCounter('http.server.requests', {
-  description: 'Total number of HTTP requests',
+// HTTP Server request metrics (incoming requests)
+export const httpServerRequestCounter = createLazyCounter('http_server_requests_total', {
+  description: 'Total number of HTTP server requests',
   unit: '1',
-}) as Counter;
+});
 
-export const httpRequestDuration = meter.createHistogram('http.server.duration', {
-  description: 'HTTP request duration',
-  unit: 'ms',
-}) as Histogram;
+export const httpServerRequestDuration = createLazyHistogram('http_server_request_duration_seconds', {
+  description: 'HTTP server request duration in seconds',
+  unit: 's',
+});
 
-export const httpRequestSize = meter.createHistogram('http.server.request.size', {
-  description: 'HTTP request body size',
+export const httpServerRequestSize = createLazyHistogram('http_server_request_size_bytes', {
+  description: 'HTTP server request body size',
   unit: 'bytes',
-}) as Histogram;
+});
 
-export const httpResponseSize = meter.createHistogram('http.server.response.size', {
-  description: 'HTTP response body size',
+export const httpServerResponseSize = createLazyHistogram('http_server_response_size_bytes', {
+  description: 'HTTP server response body size',
   unit: 'bytes',
-}) as Histogram;
+});
 
-export const httpErrorCounter = meter.createCounter('http.server.errors', {
-  description: 'Total number of HTTP errors',
+export const httpServerErrorCounter = createLazyCounter('http_server_errors_total', {
+  description: 'Total number of HTTP server errors',
   unit: '1',
-}) as Counter;
+});
+
+// Legacy aliases for backward compatibility (middleware still uses these)
+export const httpRequestCounter = httpServerRequestCounter;
+export const httpRequestDuration = httpServerRequestDuration;
+export const httpRequestSize = httpServerRequestSize;
+export const httpResponseSize = httpServerResponseSize;
+export const httpErrorCounter = httpServerErrorCounter;
 
 // Database metrics
-export const dbQueryCounter = meter.createCounter('db.queries', {
+export const dbQueryCounter = createLazyCounter('db.queries', {
   description: 'Total number of database queries',
   unit: '1',
-}) as Counter;
+});
 
-export const dbQueryDuration = meter.createHistogram('db.query.duration', {
+export const dbQueryDuration = createLazyHistogram('db.query.duration', {
   description: 'Database query duration',
   unit: 'ms',
-}) as Histogram;
+});
 
-export const dbErrorCounter = meter.createCounter('db.errors', {
+export const dbErrorCounter = createLazyCounter('db.errors', {
   description: 'Total number of database errors',
   unit: '1',
-}) as Counter;
+});
 
-export const dbConnectionPoolSize = meter.createUpDownCounter('db.connection_pool.size', {
+export const dbConnectionPoolSize = createLazyUpDownCounter('db.connection_pool.size', {
   description: 'Current database connection pool size',
   unit: '1',
-}) as UpDownCounter;
+});
 
 // API metrics
-export const apiCallCounter = meter.createCounter('api.calls', {
+export const apiCallCounter = createLazyCounter('api.calls', {
   description: 'Total number of external API calls',
   unit: '1',
-}) as Counter;
+});
 
-export const apiCallDuration = meter.createHistogram('api.call.duration', {
+export const apiCallDuration = createLazyHistogram('api.call.duration', {
   description: 'External API call duration',
   unit: 'ms',
-}) as Histogram;
+});
 
-export const apiErrorCounter = meter.createCounter('api.errors', {
+export const apiErrorCounter = createLazyCounter('api.errors', {
   description: 'Total number of external API errors',
   unit: '1',
-}) as Counter;
+});
 
 /**
  * Business Metrics - User Activity
  */
 
 // User authentication metrics
-export const loginAttemptCounter = meter.createCounter('user.login.attempts', {
+export const loginAttemptCounter = createLazyCounter('user.login.attempts', {
   description: 'Total number of login attempts',
   unit: '1',
-}) as Counter;
+});
 
-export const loginSuccessCounter = meter.createCounter('user.login.success', {
+export const loginSuccessCounter = createLazyCounter('user.login.success', {
   description: 'Total number of successful logins',
   unit: '1',
-}) as Counter;
+});
 
-export const loginFailureCounter = meter.createCounter('user.login.failures', {
+export const loginFailureCounter = createLazyCounter('user.login.failures', {
   description: 'Total number of failed logins',
   unit: '1',
-}) as Counter;
+});
 
-export const logoutCounter = meter.createCounter('user.logout', {
+export const logoutCounter = createLazyCounter('user.logout', {
   description: 'Total number of user logouts',
   unit: '1',
-}) as Counter;
+});
 
-export const newLocationLoginCounter = meter.createCounter('user.login.new_location', {
+export const newLocationLoginCounter = createLazyCounter('user.login.new_location', {
   description: 'Total number of logins from new locations',
   unit: '1',
-}) as Counter;
+});
 
-export const suspiciousLoginCounter = meter.createCounter('user.login.suspicious', {
+export const suspiciousLoginCounter = createLazyCounter('user.login.suspicious', {
   description: 'Total number of suspicious login attempts',
   unit: '1',
-}) as Counter;
+});
 
 // User registration metrics
-export const userRegistrationCounter = meter.createCounter('user.registration', {
+export const userRegistrationCounter = createLazyCounter('user.registration', {
   description: 'Total number of user registrations',
   unit: '1',
-}) as Counter;
+});
 
-export const userActivationCounter = meter.createCounter('user.activation', {
+export const userActivationCounter = createLazyCounter('user.activation', {
   description: 'Total number of user account activations',
   unit: '1',
-}) as Counter;
+});
 
 // Active users
-export const activeUsersGauge = meter.createUpDownCounter('user.active', {
+export const activeUsersGauge = createLazyUpDownCounter('user.active', {
   description: 'Number of currently active users',
   unit: '1',
-}) as UpDownCounter;
+});
 
-export const activeSessionsGauge = meter.createUpDownCounter('user.sessions.active', {
+export const activeSessionsGauge = createLazyUpDownCounter('user.sessions.active', {
   description: 'Number of currently active sessions',
   unit: '1',
-}) as UpDownCounter;
+});
 
 /**
  * Business Metrics - Feature Usage
  */
 
 // Page views
-export const pageViewCounter = meter.createCounter('page.views', {
+export const pageViewCounter = createLazyCounter('page.views', {
   description: 'Total number of page views',
   unit: '1',
-}) as Counter;
+});
 
-export const uniquePageViewCounter = meter.createCounter('page.views.unique', {
+export const uniquePageViewCounter = createLazyCounter('page.views.unique', {
   description: 'Total number of unique page views',
   unit: '1',
-}) as Counter;
+});
 
 // Course/content metrics
-export const courseViewCounter = meter.createCounter('course.views', {
+export const courseViewCounter = createLazyCounter('course.views', {
   description: 'Total number of course views',
   unit: '1',
-}) as Counter;
+});
 
-export const courseEnrollmentCounter = meter.createCounter('course.enrollments', {
+export const courseEnrollmentCounter = createLazyCounter('course.enrollments', {
   description: 'Total number of course enrollments',
   unit: '1',
-}) as Counter;
+});
 
-export const courseCompletionCounter = meter.createCounter('course.completions', {
+export const courseCompletionCounter = createLazyCounter('course.completions', {
   description: 'Total number of course completions',
   unit: '1',
-}) as Counter;
+});
 
-export const lessonViewCounter = meter.createCounter('lesson.views', {
+export const lessonViewCounter = createLazyCounter('lesson.views', {
   description: 'Total number of lesson views',
   unit: '1',
-}) as Counter;
+});
 
-export const lessonCompletionCounter = meter.createCounter('lesson.completions', {
+export const lessonCompletionCounter = createLazyCounter('lesson.completions', {
   description: 'Total number of lesson completions',
   unit: '1',
-}) as Counter;
+});
 
 // Search metrics
-export const searchCounter = meter.createCounter('search.queries', {
+export const searchCounter = createLazyCounter('search.queries', {
   description: 'Total number of search queries',
   unit: '1',
-}) as Counter;
+});
 
-export const searchDuration = meter.createHistogram('search.duration', {
+export const searchDuration = createLazyHistogram('search.duration', {
   description: 'Search query duration',
   unit: 'ms',
-}) as Histogram;
+});
 
-export const searchResultsHistogram = meter.createHistogram('search.results.count', {
+export const searchResultsHistogram = createLazyHistogram('search.results.count', {
   description: 'Number of search results returned',
   unit: '1',
-}) as Histogram;
+});
 
 /**
  * Business Metrics - Email & Notifications
  */
 
-export const emailSentCounter = meter.createCounter('email.sent', {
+export const emailSentCounter = createLazyCounter('email.sent', {
   description: 'Total number of emails sent',
   unit: '1',
-}) as Counter;
+});
 
-export const emailFailureCounter = meter.createCounter('email.failures', {
+export const emailFailureCounter = createLazyCounter('email.failures', {
   description: 'Total number of email send failures',
   unit: '1',
-}) as Counter;
+});
 
-export const emailDuration = meter.createHistogram('email.send.duration', {
+export const emailDuration = createLazyHistogram('email.send.duration', {
   description: 'Email send duration',
   unit: 'ms',
-}) as Histogram;
+});
 
-export const notificationCounter = meter.createCounter('notification.sent', {
+export const notificationCounter = createLazyCounter('notification.sent', {
   description: 'Total number of notifications sent',
   unit: '1',
-}) as Counter;
+});
 
 /**
  * Helper Functions
  */
 
 /**
- * Record HTTP request metrics
+ * Record HTTP server request metrics
  */
 export function recordHttpRequest(attributes: {
   method: string;
   route: string;
   statusCode: number;
-  duration: number;
+  duration: number; // Duration in milliseconds
   requestSize?: number;
   responseSize?: number;
 }) {
   const { method, route, statusCode, duration, requestSize, responseSize } = attributes;
 
   const commonAttrs: Attributes = {
-    'http.method': method,
-    'http.route': route,
-    'http.status_code': statusCode,
+    'http_request_method': method,
+    'http_route': route,
+    'http_response_status_code': statusCode.toString(),
   };
 
-  httpRequestCounter.add(1, commonAttrs);
-  httpRequestDuration.record(duration, commonAttrs);
+  httpServerRequestCounter.add(1, commonAttrs);
+
+  // Convert milliseconds to seconds for histogram (OpenTelemetry standard)
+  httpServerRequestDuration.record(duration / 1000, commonAttrs);
 
   if (requestSize !== undefined) {
-    httpRequestSize.record(requestSize, commonAttrs);
+    httpServerRequestSize.record(requestSize, commonAttrs);
   }
 
   if (responseSize !== undefined) {
-    httpResponseSize.record(responseSize, commonAttrs);
+    httpServerResponseSize.record(responseSize, commonAttrs);
   }
 
   if (statusCode >= 400) {
-    httpErrorCounter.add(1, {
+    httpServerErrorCounter.add(1, {
       ...commonAttrs,
-      'error.type': statusCode >= 500 ? 'server_error' : 'client_error',
+      'error_type': statusCode >= 500 ? 'server_error' : 'client_error',
     });
   }
 }
@@ -428,20 +476,20 @@ export function updateActiveSessions(change: number, attributes?: Attributes) {
 /**
  * Create a custom counter
  */
-export function createCounter(name: string, options?: MetricOptions): Counter {
-  return meter.createCounter(name, options) as Counter;
+export function createCounter(name: string, options?: MetricOptions) {
+  return createLazyCounter(name, options);
 }
 
 /**
  * Create a custom histogram
  */
-export function createHistogram(name: string, options?: MetricOptions): Histogram {
-  return meter.createHistogram(name, options) as Histogram;
+export function createHistogram(name: string, options?: MetricOptions) {
+  return createLazyHistogram(name, options);
 }
 
 /**
  * Create a custom up-down counter
  */
-export function createUpDownCounter(name: string, options?: MetricOptions): UpDownCounter {
-  return meter.createUpDownCounter(name, options) as UpDownCounter;
+export function createUpDownCounter(name: string, options?: MetricOptions) {
+  return createLazyUpDownCounter(name, options);
 }

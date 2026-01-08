@@ -5,14 +5,41 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev-x-academy-web",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "hostRequirements": {
+    "cpus": 4
+  },
 
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   //"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
 
-  // Features to add to the dev container. More info: https://containers.dev/features.
+  // Features to add to the dev container. More info: https://containers.dev/features, https://github.com/devcontainers/features.
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/copilot-cli:1": {},
+
+    // CLI
+    "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/vercel-cli:1": {},
+    "ghcr.io/r3dpoint/devcontainer-features/tailwindcss-standalone-cli:1": {},
+    "ghcr.io/nullcoder/devcontainer-features/stripe-cli:1": {},
+
+    // Utilities
+    "ghcr.io/iterative/features/nvtop:1": {},
+    "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {},
+    "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
+    "ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
+    "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {},
+
+    // Common Utilities, Oh My Zsh! - https://github.com/devcontainers/features/tree/main/src/common-utils
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true,
+      "upgradePackages": "true"
+    }
   },
 
   // ============================================================================
@@ -46,26 +73,26 @@
   // ============================================================================
   "forwardPorts": [
     // --- Application ---
-    3000,  // Next.js App
+    3000, // Next.js App
 
     // --- Database ---
-    5433,  // PostgreSQL 18 (mapped from container 5432)
-    5051,  // pgAdmin web UI
+    5433, // PostgreSQL 18 (mapped from container 5432)
+    5051, // pgAdmin web UI
 
     // --- OpenTelemetry Collector ---
-    4317,  // OTLP gRPC receiver (send traces/metrics here)
-    4318,  // OTLP HTTP receiver (send traces/metrics here)
-    8888,  // Collector internal metrics
-    8889,  // Prometheus exporter (Prometheus scrapes this)
+    4317, // OTLP gRPC receiver (send traces/metrics here)
+    4318, // OTLP HTTP receiver (send traces/metrics here)
+    8888, // Collector internal metrics
+    8889, // Prometheus exporter (Prometheus scrapes this)
     13133, // Health check endpoint
 
     // --- Tracing (Tempo) ---
-    3200,  // Tempo query frontend API
-    4319,  // Tempo OTLP gRPC (direct, bypasses collector)
+    3200, // Tempo query frontend API
+    4319, // Tempo OTLP gRPC (direct, bypasses collector)
 
     // --- Metrics & Dashboards ---
-    9090,  // Prometheus UI
-    3001   // Grafana dashboards
+    9090, // Prometheus UI
+    3001 // Grafana dashboards
   ],
 
   "portsAttributes": {
@@ -105,13 +132,15 @@
     "vscode": {
       // find /home/node/.vscode-server/extensions -maxdepth 1 -type d -name "*-*" | sed 's|.*/||' | sort
       "extensions": [
+        // Mermaid support
+        "bierner.markdown-mermaid",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
         "alefragnani.project-manager",
         "anthropic.claude-code",
         "bierner.github-markdown-preview",
         "bierner.markdown-checkbox",
         "bierner.markdown-emoji",
         "bierner.markdown-footnotes",
-        "bierner.markdown-mermaid",
         "bierner.markdown-preview-github-styles",
         "bierner.markdown-yaml-preamble",
         "bradlc.vscode-tailwindcss",
@@ -138,7 +167,6 @@
         "kumar-harsh.graphql-for-vscode",
         "mdickin.markdown-shortcuts",
         "mechatroner.rainbow-csv",
-        "mermaidchart.vscode-mermaid-chart",
         "mhutchie.git-graph",
         "mohsen1.prettify-json",
         "moshfeu.compare-folders",
@@ -158,10 +186,8 @@
         "shd101wyy.markdown-preview-enhanced",
         "streetsidesoftware.code-spell-checker",
         "teamsdevapp.vscode-ai-foundry",
-        "tomoyukim.vscode-mermaid-editor",
         "uctakeoff.vscode-counter",
         "vitest.explorer",
-        "vstirbu.vscode-mermaid-preview",
         "yzhang.markdown-all-in-one",
         "yzane.markdown-pdf",
         "ziyasal.vscode-open-in-github"

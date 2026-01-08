@@ -4,7 +4,8 @@ This document describes the password reset functionality implemented in the Dev 
 
 ## Overview
 
-The password reset feature allows users to securely reset their passwords via email verification. The implementation follows security best practices including:
+The password reset feature allows users to securely reset their passwords via email verification. The implementation
+follows security best practices including:
 
 - Secure random token generation
 - Token expiration (1 hour)
@@ -36,6 +37,7 @@ Indexes on: `email`, `token`, `expires`
 **Endpoint:** `POST /api/auth/forgot-password`
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com"
@@ -43,6 +45,7 @@ Indexes on: `email`, `token`, `expires`
 ```
 
 **Response (Always 200):**
+
 ```json
 {
   "success": true,
@@ -51,6 +54,7 @@ Indexes on: `email`, `token`, `expires`
 ```
 
 **Notes:**
+
 - Always returns success to prevent email enumeration
 - Only sends email if user exists and account is active
 - Invalidates any existing unused tokens for the same email
@@ -61,6 +65,7 @@ Indexes on: `email`, `token`, `expires`
 **Endpoint:** `GET /api/auth/reset-password?token={token}`
 
 **Response (Valid Token):**
+
 ```json
 {
   "valid": true,
@@ -69,6 +74,7 @@ Indexes on: `email`, `token`, `expires`
 ```
 
 **Response (Invalid Token):**
+
 ```json
 {
   "valid": false,
@@ -81,6 +87,7 @@ Indexes on: `email`, `token`, `expires`
 **Endpoint:** `POST /api/auth/reset-password`
 
 **Request Body:**
+
 ```json
 {
   "token": "abc123...",
@@ -89,6 +96,7 @@ Indexes on: `email`, `token`, `expires`
 ```
 
 **Response (Success):**
+
 ```json
 {
   "success": true,
@@ -97,6 +105,7 @@ Indexes on: `email`, `token`, `expires`
 ```
 
 **Response (Error):**
+
 ```json
 {
   "error": "Invalid or expired reset token|This reset link has already been used|..."
@@ -112,6 +121,7 @@ Indexes on: `email`, `token`, `expires`
 Users enter their email address to request a password reset link.
 
 **Features:**
+
 - Email validation
 - Success message (without revealing if account exists)
 - Link back to login page
@@ -120,6 +130,7 @@ Users enter their email address to request a password reset link.
 ### 2. Email
 
 Users receive an email with:
+
 - Personalized greeting
 - Clear call-to-action button
 - Plain text link as fallback
@@ -135,6 +146,7 @@ Users receive an email with:
 Users create a new password after clicking the email link.
 
 **Features:**
+
 - Automatic token validation on page load
 - Loading state during validation
 - Password strength requirements (min 8 characters)
@@ -146,21 +158,26 @@ Users create a new password after clicking the email link.
 ## Security Features
 
 ### 1. Token Security
+
 - Cryptographically secure random tokens (32 bytes, hex encoded)
 - One-time use enforcement
 - 1-hour expiration
 - Automatic invalidation of old tokens
 
 ### 2. Email Enumeration Prevention
+
 - Same response for existing and non-existing emails
 - No indication of whether an account exists
 
 ### 3. Rate Limiting
+
 Consider adding rate limiting to prevent abuse:
+
 - Limit reset requests per IP address
 - Limit reset requests per email address
 
 ### 4. Password Security
+
 - Minimum 8 characters enforced
 - Bcrypt hashing with salt rounds (10)
 - Client-side and server-side validation
@@ -195,6 +212,7 @@ The feature uses [Resend](https://resend.com) for email delivery. To set up:
 ### Manual Testing
 
 1. **Request Password Reset**
+
    ```bash
    curl -X POST http://localhost:3000/api/auth/forgot-password \
      -H "Content-Type: application/json" \
@@ -206,6 +224,7 @@ The feature uses [Resend](https://resend.com) for email delivery. To set up:
    - Click the reset link or copy the token
 
 3. **Verify Token**
+
    ```bash
    curl "http://localhost:3000/api/auth/reset-password?token=YOUR_TOKEN"
    ```
@@ -240,14 +259,14 @@ Consider setting up a cron job or database trigger for automatic cleanup.
 
 ## UI Pages
 
-1. **Login Page** - [/src/app/(auth)/login/page.tsx](/src/app/(auth)/login/page.tsx)
+1. **Login Page** - [/src/app/(auth)/login/page.tsx](</src/app/(auth)/login/page.tsx>)
    - Contains "Forgot password?" link
 
-2. **Forgot Password Page** - [/src/app/(auth)/forgot-password/page.tsx](/src/app/(auth)/forgot-password/page.tsx)
+2. **Forgot Password Page** - [/src/app/(auth)/forgot-password/page.tsx](</src/app/(auth)/forgot-password/page.tsx>)
    - Email input form
    - Success/error messaging
 
-3. **Reset Password Page** - [/src/app/(auth)/reset-password/page.tsx](/src/app/(auth)/reset-password/page.tsx)
+3. **Reset Password Page** - [/src/app/(auth)/reset-password/page.tsx](</src/app/(auth)/reset-password/page.tsx>)
    - Token validation
    - New password form
    - Password confirmation
@@ -306,6 +325,10 @@ Potential improvements:
 - Database Schema: [prisma/schema.prisma](../prisma/schema.prisma)
 - Forgot Password API: [src/app/api/auth/forgot-password/route.ts](../src/app/api/auth/forgot-password/route.ts)
 - Reset Password API: [src/app/api/auth/reset-password/route.ts](../src/app/api/auth/reset-password/route.ts)
-- Forgot Password Page: [src/app/(auth)/forgot-password/page.tsx](../src/app/(auth)/forgot-password/page.tsx)
-- Reset Password Page: [src/app/(auth)/reset-password/page.tsx](../src/app/(auth)/reset-password/page.tsx)
-- Login Page: [src/app/(auth)/login/page.tsx](../src/app/(auth)/login/page.tsx)
+- Forgot Password Page: [src/app/(auth)/forgot-password/page.tsx](<../src/app/(auth)/forgot-password/page.tsx>)
+- Reset Password Page: [src/app/(auth)/reset-password/page.tsx](<../src/app/(auth)/reset-password/page.tsx>)
+- Login Page: [src/app/(auth)/login/page.tsx](<../src/app/(auth)/login/page.tsx>)
+
+---
+
+_DevMultiplier Academy - Building 10x-100x Developers in the Age of AI_

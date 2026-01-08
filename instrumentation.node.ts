@@ -1,36 +1,26 @@
 /**
- * OpenTelemetry Node.js Instrumentation
+ * OpenTelemetry Node.js Instrumentation for Next.js + Vercel
  *
  * Configures OpenTelemetry with:
+ * - @vercel/otel for Next.js integration
  * - Automatic instrumentation for HTTP, Prisma, and more
  * - OTLP trace exporter for Grafana Cloud Tempo
  * - OTLP metrics exporter for Grafana Cloud Prometheus
  * - Custom resource attributes
  */
 
-import { NodeSDK } from '@opentelemetry/sdk-node';
+import { registerOTel } from '@vercel/otel';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { resourceFromAttributes } from '@opentelemetry/resources';
-import {
-  ATTR_SERVICE_NAME,
-  ATTR_SERVICE_VERSION,
-  SEMRESATTRS_DEPLOYMENT_ENVIRONMENT,
-} from '@opentelemetry/semantic-conventions';
-import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+import { diag, DiagConsoleLogger, DiagLogLevel, metrics } from '@opentelemetry/api';
 
 // Enable error-level logging only (change to DiagLogLevel.DEBUG for verbose debugging)
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 //diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
-
-// Service configuration
-const resource = resourceFromAttributes({
-  [ATTR_SERVICE_NAME]: 'dev-academy-web',
-  [ATTR_SERVICE_VERSION]: process.env.npm_package_version || '1.0.0',
-  [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'development',
-});
 
 // Environment-based endpoint configuration
 // Use local OTLP collector in development, Grafana Cloud in production
@@ -95,20 +85,49 @@ const metricReader = new PeriodicExportingMetricReader({
   exportIntervalMillis: 15000, // Export every 15 seconds
 });
 
-// Initialize OpenTelemetry SDK
-const sdk = new NodeSDK({
+// Create and register a MeterProvider manually to ensure it's available globally
+const resource = resourceFromAttributes({
+  [ATTR_SERVICE_NAME]: 'dev-academy-web',
+  [ATTR_SERVICE_VERSION]: '1.0.0',
+});
+
+const meterProvider = new MeterProvider({
   resource,
+  readers: [metricReader],
+});
+
+// Register the MeterProvider globally so metrics.getMeter() works
+metrics.setGlobalMeterProvider(meterProvider);
+
+console.log('✅ Global MeterProvider registered for application metrics');
+
+// Initialize OpenTelemetry SDK using @vercel/otel
+registerOTel({
+  serviceName: 'dev-academy-web',
   traceExporter,
   metricReader,
   instrumentations: [
     getNodeAutoInstrumentations({
-      // Auto-instrument HTTP requests
+      // Auto-instrument HTTP requests (creates traces + metrics)
       '@opentelemetry/instrumentation-http': {
         enabled: true,
         ignoreIncomingRequestHook: (request) => {
           // Ignore health checks and static assets
           const url = request.url || '';
           return url.includes('/_next/static') || url.includes('/favicon.ico') || url === '/health';
+        },
+        // Enable metrics collection for incoming HTTP requests
+        requestHook: (span, request) => {
+          // Add custom attributes to spans that will be converted to metrics
+          if (request.url) {
+            span.setAttribute('http.route', request.url);
+          }
+        },
+        responseHook: (span, response) => {
+          // Add response attributes
+          if (response.statusCode) {
+            span.setAttribute('http.status_code', response.statusCode);
+          }
         },
       },
       // Auto-instrument fetch calls (includes undici)
@@ -126,15 +145,10 @@ const sdk = new NodeSDK({
   ],
 });
 
-// Start the SDK
-sdk.start();
-console.log('✅ OpenTelemetry instrumentation initialized');
+console.log('✅ OpenTelemetry instrumentation initialized with @vercel/otel');
+console.log('📊 Metrics will be exported to:', metricsUrl, 'every 15 seconds');
+console.log('🔍 Metrics endpoint available at: http://otel-collector:8889/metrics (after first export)');
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  sdk
-    .shutdown()
-    // .then(() => console.log('OpenTelemetry SDK shut down successfully'))
-    .catch((error) => console.error('Error shutting down OpenTelemetry SDK', error))
-    .finally(() => process.exit(0));
-});
+// Initialize HTTP server metrics instrumentation
+import { initializeHttpServerMetrics } from './src/lib/http-server-metrics';
+initializeHttpServerMetrics();

@@ -48,7 +48,18 @@
       "Bash(python3:*)",
       "Bash(cut:*)",
       "Bash(pgrep:*)",
-      "Bash(claude auth status:*)"
+      "Bash(claude auth status:*)",
+      "Bash(timeout 15 bun run dev:*)",
+      "Bash(git config:*)",
+      "Bash(git lfs update:*)",
+      "Bash(git lfs:*)",
+      "Bash(timeout 3 curl:*)",
+      "Bash(timeout 5 curl:*)",
+      "Bash(docker exec:*)",
+      "Bash(for i in {1..5})",
+      "Bash(do curl -s http://localhost:3000/)",
+      "Bash(for i in {1..10})",
+      "Bash(do curl -s \"http://localhost:3000/api/courses\")"
     ]
   }
 }
