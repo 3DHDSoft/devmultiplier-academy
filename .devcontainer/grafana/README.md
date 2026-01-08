@@ -85,13 +85,27 @@ docker-compose up -d grafana prometheus
 
 ### Access Grafana
 
-- URL: http://localhost:3001
-- Username: `admin`
-- Password: `admin` (change on first login)
+- **URL**: http://localhost:3001
+- **Username**: `admin`
+- **Password**: `admin` (change on first login)
+- **Dashboard Refresh**: 15 seconds (configured for all dashboards)
 
 ### View Dashboards
 
 Navigate to **Dashboards** → **DevAcademy** folder
+
+## Environment Configuration
+
+The application automatically uses the local Grafana stack when running in development mode:
+
+```bash
+# In .env file
+NODE_ENV=development
+OTEL_USE_CLOUD=false
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+```
+
+For production deployment, see [OpenTelemetry Environment Switching Guide](../../docs/opentelemetry_environment_switching.md)
 
 ## Customization
 

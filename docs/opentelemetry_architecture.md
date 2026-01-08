@@ -700,9 +700,114 @@ graph LR
     linkStyle default stroke:#000000,stroke-width:2px
 ```
 
+## Metrics Endpoint
+
+### Overview
+
+The application exposes Prometheus-compatible metrics via a `/api/metrics` endpoint. This allows monitoring tools to scrape application metrics in the standard Prometheus text format.
+
+### Implementation
+
+**File**: [`src/app/api/metrics/route.ts`](../src/app/api/metrics/route.ts)
+
+The metrics endpoint:
+- Exposes basic application metrics (uptime, service info)
+- Returns data in Prometheus text format (version 0.0.4)
+- Can be extended to include OpenTelemetry metrics
+- Supports scraping by Prometheus, Grafana Agent, or similar tools
+
+### Current Metrics
+
+| Metric Name | Type | Description | Labels |
+|------------|------|-------------|--------|
+| `app_info` | gauge | Application metadata | `service`, `environment` |
+| `app_uptime_seconds` | counter | Application uptime in seconds | None |
+
+### Architecture Integration
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#93c5fd',
+  'primaryTextColor': '#000000',
+  'primaryBorderColor': '#2563eb',
+  'lineColor': '#000000',
+  'secondaryColor': '#c4b5fd',
+  'tertiaryColor': '#67e8f9',
+  'background': '#ffffff',
+  'textColor': '#000000',
+  'edgeLabelBackground': '#f1f5f9',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+graph LR
+    A[Prometheus/Grafana Agent] -->|HTTP GET /api/metrics| B[Next.js Metrics Endpoint]
+    B -->|Query| C[OpenTelemetry Metrics API]
+    B -->|Format as Prometheus text| D[Prometheus Response]
+    D -->|200 OK| A
+    A -->|Push to| E[Grafana Cloud Prometheus/Mimir]
+
+    style A fill:#fcd34d,stroke:#d97706,color:#000000,stroke-width:2px
+    style B fill:#93c5fd,stroke:#2563eb,color:#000000,stroke-width:2px
+    style C fill:#86efac,stroke:#16a34a,color:#000000,stroke-width:2px
+    style D fill:#67e8f9,stroke:#0891b2,color:#000000,stroke-width:2px
+    style E fill:#c4b5fd,stroke:#7c3aed,color:#000000,stroke-width:2px
+
+    linkStyle default stroke:#000000,stroke-width:2px
+```
+
+### Metrics vs Traces
+
+| Feature | Traces (Tempo) | Metrics (Prometheus) |
+|---------|---------------|---------------------|
+| **Data Type** | Spans with events | Time-series counters/gauges |
+| **Cardinality** | High (per-request) | Low (aggregated) |
+| **Storage** | Tempo backend | Prometheus/Mimir |
+| **Use Case** | Request debugging | Performance monitoring |
+| **Export Method** | OTLP push | HTTP scrape |
+| **Cost** | Higher for high traffic | Lower |
+
+### Extending the Metrics Endpoint
+
+To add full OpenTelemetry metrics support:
+
+1. **Install dependencies**:
+```bash
+bun add @opentelemetry/exporter-prometheus @opentelemetry/sdk-metrics
+```
+
+2. **Configure metrics in `instrumentation.node.ts`**:
+```typescript
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+import { MeterProvider } from '@opentelemetry/sdk-metrics';
+
+const prometheusExporter = new PrometheusExporter({
+  // Disabled: we'll use the metrics endpoint instead
+  // port: 9464,
+});
+
+const meterProvider = new MeterProvider({
+  readers: [prometheusExporter],
+});
+```
+
+3. **Update the metrics endpoint**:
+```typescript
+import { PrometheusSerializer } from '@opentelemetry/exporter-prometheus';
+
+export async function GET() {
+  const serializer = new PrometheusSerializer();
+  const metricsData = await meterProvider.forceFlush();
+  const response = serializer.serialize(metricsData);
+
+  return new NextResponse(response, {
+    headers: { 'Content-Type': 'text/plain; version=0.0.4' },
+  });
+}
+```
+
 ### Future Enhancements
 
-1. **Metrics Integration**: Add OpenTelemetry Metrics SDK
+1. **Metrics Integration**: ✅ Basic metrics endpoint implemented
+   - Next: Add OpenTelemetry Metrics SDK for full metric collection
 2. **Logs Integration**: Export structured logs with trace correlation
 3. **Custom Dashboards**: Create Grafana dashboards for key metrics
 4. **Alerting**: Set up alerts for SLO violations

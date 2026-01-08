@@ -84,7 +84,98 @@ Tracks failed login attempts with:
 - Events: `failed_attempts_threshold_reached`, `sending_failed_attempts_alert`, `failed_attempts_email_sent`,
   `skipped_alert_to_avoid_spam`
 
-## Setup Instructions
+## Environment-Based Configuration
+
+The application supports two observability backends:
+
+### Development: Local Grafana Stack
+- **OpenTelemetry Collector** - Receives and processes telemetry
+- **Grafana** - Visualization and dashboards (http://localhost:3001)
+- **Prometheus** - Metrics storage
+- **Tempo** - Distributed tracing storage
+- **Refresh Interval**: 15 seconds
+
+### Production: Grafana Cloud
+- **OTLP Gateway** - Managed collector endpoint
+- **Grafana Cloud** - Hosted visualization
+- **Mimir/Prometheus** - Managed metrics storage
+- **Tempo** - Managed tracing storage
+
+### Switching Between Environments
+
+Set the `OTEL_USE_CLOUD` environment variable:
+
+```bash
+# Development (default) - uses local stack
+OTEL_USE_CLOUD=false
+
+# Production - uses Grafana Cloud
+OTEL_USE_CLOUD=true
+```
+
+The application automatically uses Grafana Cloud when `NODE_ENV=production`, regardless of the `OTEL_USE_CLOUD` setting.
+
+## Local Development Setup
+
+### 1. Start the Local Observability Stack
+
+The local stack is already configured in your `.devcontainer/docker-compose.yml`:
+
+```bash
+# Start all services (from .devcontainer directory)
+docker-compose up -d
+
+# Or start specific services
+docker-compose up -d otel-collector prometheus tempo grafana
+```
+
+### 2. Verify Services are Running
+
+```bash
+# Check service status
+docker-compose ps
+
+# Expected services:
+# - otel-collector (ports 4317, 4318)
+# - prometheus (port 9090)
+# - tempo (port 3200)
+# - grafana (port 3001)
+```
+
+### 3. Access Local Grafana
+
+1. Open http://localhost:3001
+2. Login with:
+   - **Username**: `admin`
+   - **Password**: `admin` (or check `GRAFANA_ADMIN_PASSWORD` in `.env`)
+3. Navigate to **Dashboards** → **DevAcademy - Application Overview**
+4. The dashboard will refresh every **15 seconds**
+
+### 4. Configure Environment Variables
+
+Your `.env` file should have:
+
+```bash
+# Development configuration
+NODE_ENV=development
+OTEL_USE_CLOUD=false
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+```
+
+### 5. Run Your Application
+
+```bash
+bun run dev
+```
+
+You should see:
+```
+📊 OpenTelemetry configuration: Local Stack (development)
+  🏠 Using local OTLP collector: http://otel-collector:4318
+✅ OpenTelemetry instrumentation initialized
+```
+
+## Production Setup (Grafana Cloud)
 
 ### 1. Sign Up for Grafana Cloud (Free Tier)
 
@@ -104,19 +195,19 @@ Tracks failed login attempts with:
    Token: glc_xxx...
    ```
 
-### 3. Configure Environment Variables
+### 3. Configure Environment Variables for Production
 
-Add these to your `.env.local` file:
+Add these to your `.env.local` or production environment variables:
 
 ```bash
-# OpenTelemetry Configuration
-OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp/v1/traces
+# Production OpenTelemetry Configuration
+NODE_ENV=production
+OTEL_USE_CLOUD=true
+OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp
 OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <base64_encoded_credentials>"}
-
-# Optional: Set service name and environment
-OTEL_SERVICE_NAME=dev-academy-web
-OTEL_DEPLOYMENT_ENVIRONMENT=production
 ```
+
+**Note**: When `NODE_ENV=production`, the app automatically uses Grafana Cloud even without setting `OTEL_USE_CLOUD=true`.
 
 **Note:** For the `Authorization` header, you need to base64 encode `<instance-id>:<token>`:
 
@@ -331,6 +422,87 @@ Create a new dashboard in Grafana and import this JSON:
   }
 }
 ```
+
+## Prometheus Metrics Endpoint
+
+The application exposes a `/api/metrics` endpoint that provides metrics in Prometheus text format. This endpoint can be scraped by Prometheus or other monitoring tools.
+
+### Endpoint Details
+
+**URL**: `http://localhost:3000/api/metrics` (or your production domain)
+
+**Method**: `GET`
+
+**Response Format**: `text/plain; version=0.0.4`
+
+### Available Metrics
+
+Currently exposed metrics:
+
+- **app_info**: Application information gauge with service name and environment labels
+- **app_uptime_seconds**: Application uptime in seconds (counter)
+
+### Example Response
+
+```prometheus
+# HELP app_info Application information
+# TYPE app_info gauge
+app_info{service="dev-academy-web",environment="development"} 1
+
+# HELP app_uptime_seconds Application uptime in seconds
+# TYPE app_uptime_seconds counter
+app_uptime_seconds 1234.567
+```
+
+### Configuring Prometheus to Scrape
+
+Add this job to your `prometheus.yml` configuration:
+
+```yaml
+scrape_configs:
+  - job_name: 'dev-academy-web'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['localhost:3000']
+    metrics_path: '/api/metrics'
+```
+
+### Grafana Cloud Integration
+
+If you're using Grafana Cloud, you can configure the Grafana Agent to scrape this endpoint:
+
+1. Navigate to **Connections** → **Grafana Cloud** → **Configure**
+2. Add a new scrape configuration in the agent config:
+
+```yaml
+metrics:
+  configs:
+    - name: dev-academy-web
+      scrape_configs:
+        - job_name: 'dev-academy-web'
+          static_configs:
+            - targets: ['your-domain.com:443']
+          scheme: https
+          metrics_path: '/api/metrics'
+```
+
+### Future Enhancements
+
+The metrics endpoint can be enhanced to include:
+
+- Request rate and latency metrics from OpenTelemetry
+- Custom business metrics (user registrations, enrollments, etc.)
+- Database connection pool metrics
+- Cache hit/miss ratios
+- Error rates by endpoint
+
+To add more detailed metrics, install the Prometheus exporter:
+
+```bash
+bun add @opentelemetry/exporter-prometheus
+```
+
+Then update the metrics endpoint to use the PrometheusSerializer for full OpenTelemetry metrics export.
 
 ## Useful TraceQL Queries
 

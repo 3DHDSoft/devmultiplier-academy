@@ -32,39 +32,48 @@ const resource = resourceFromAttributes({
   [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'development',
 });
 
-// Configure OTLP exporter for Grafana Cloud
-// Uncomment these lines for debugging exporter configuration:
-// console.log('🔧 Configuring OTLP Exporter:');
-// console.log('  URL:', process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318/v1/traces');
-// console.log('  Headers configured:', !!process.env.OTEL_EXPORTER_OTLP_HEADERS);
+// Environment-based endpoint configuration
+// Use local OTLP collector in development, Grafana Cloud in production
+const isProduction = process.env.NODE_ENV === 'production';
+const useCloudBackend = process.env.OTEL_USE_CLOUD === 'true' || isProduction;
 
-const headersEnv = process.env.OTEL_EXPORTER_OTLP_HEADERS;
-// console.log('  Raw OTEL_EXPORTER_OTLP_HEADERS:', process.env.OTEL_EXPORTER_OTLP_HEADERS);
-delete process.env.OTEL_EXPORTER_OTLP_HEADERS;
+console.log(`📊 OpenTelemetry configuration: ${useCloudBackend ? 'Grafana Cloud' : 'Local Stack'} (${process.env.NODE_ENV})`);
 
-// Parse headers - support both JSON format and key=value format
+// Configure OTLP exporter endpoint based on environment
+let endpoint: string;
 let headers: Record<string, string> = {};
-if (headersEnv) {
-  if (headersEnv.startsWith('{')) {
-    // JSON format: {"Authorization":"Basic ..."}
-    headers = JSON.parse(headersEnv);
-  } else {
-    // key=value format: Authorization=Basic ...
-    const pairs = headersEnv.split(',');
-    pairs.forEach((pair) => {
-      const [key, ...valueParts] = pair.split('=');
-      if (key && valueParts.length > 0) {
-        headers[key.trim()] = valueParts.join('=').trim();
-      }
-    });
+
+if (useCloudBackend) {
+  // Production: Use Grafana Cloud
+  const headersEnv = process.env.OTEL_EXPORTER_OTLP_HEADERS;
+  delete process.env.OTEL_EXPORTER_OTLP_HEADERS;
+
+  // Parse headers - support both JSON format and key=value format
+  if (headersEnv) {
+    if (headersEnv.startsWith('{')) {
+      // JSON format: {"Authorization":"Basic ..."}
+      headers = JSON.parse(headersEnv);
+    } else {
+      // key=value format: Authorization=Basic ...
+      const pairs = headersEnv.split(',');
+      pairs.forEach((pair) => {
+        const [key, ...valueParts] = pair.split('=');
+        if (key && valueParts.length > 0) {
+          headers[key.trim()] = valueParts.join('=').trim();
+        }
+      });
+    }
   }
+
+  endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'https://otlp-gateway-prod-us-east-3.grafana.net/otlp';
+  console.log('  ☁️  Using Grafana Cloud endpoint:', endpoint);
+} else {
+  // Development: Use local OTLP collector
+  endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://otel-collector:4318';
+  console.log('  🏠 Using local OTLP collector:', endpoint);
 }
-// console.log('  Parsed headers type:', typeof headers);
-// console.log('  Parsed headers:', headers);
-// console.log('  Parsed headers keys:', Object.keys(headers));
 
 // Append /v1/traces to the endpoint if not already present
-const endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318';
 const url = endpoint.endsWith('/v1/traces') ? endpoint : `${endpoint}/v1/traces`;
 
 const traceExporter = new OTLPTraceExporter({
@@ -72,7 +81,7 @@ const traceExporter = new OTLPTraceExporter({
   headers,
 });
 
-// Configure OTLP metrics exporter for Grafana Cloud
+// Configure OTLP metrics exporter
 const metricsUrl = endpoint.endsWith('/v1/metrics') ? endpoint : endpoint.replace(/\/v1\/traces$/, '') + '/v1/metrics';
 
 const metricExporter = new OTLPMetricExporter({

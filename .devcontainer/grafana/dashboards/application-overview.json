@@ -108,13 +108,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_http_server_requests_total[5m])",
-          "legendFormat": "{{http_method}} {{http_route}}",
+          "expr": "rate(devacademy_http_client_request_duration_seconds_count[5m])",
+          "legendFormat": "{{http_request_method}} {{server_address}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "HTTP Request Rate",
+      "title": "HTTP Client Request Rate",
       "type": "timeseries"
     },
     {
@@ -179,13 +179,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_http_server_duration_sum[5m]) / rate(devacademy_http_server_duration_count[5m])",
+          "expr": "rate(devacademy_http_client_request_duration_seconds_sum[5m]) / rate(devacademy_http_client_request_duration_seconds_count[5m]) * 1000",
           "legendFormat": "Avg Latency",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Average Response Time",
+      "title": "Average HTTP Client Response Time",
       "type": "gauge"
     },
     {
@@ -271,13 +271,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_http_server_errors_total[5m]) / rate(devacademy_http_server_requests_total[5m])",
-          "legendFormat": "{{error_type}}",
+          "expr": "rate(devacademy_api_errors_total[5m])",
+          "legendFormat": "{{error_type}} - {{api_service}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "HTTP Error Rate",
+      "title": "API Error Rate",
       "type": "timeseries"
     },
     {
@@ -477,8 +477,8 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_db_queries_total[5m])",
-          "legendFormat": "{{db_operation}}",
+          "expr": "rate(devacademy_db_client_operation_duration_seconds_count[5m])",
+          "legendFormat": "{{db_operation_name}}",
           "range": true,
           "refId": "A"
         }
@@ -533,17 +533,17 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (page_path) (rate(devacademy_page_views_total[5m]))",
-          "legendFormat": "{{page_path}}",
+          "expr": "sum by (server_address) (rate(devacademy_http_client_request_duration_seconds_count[5m]))",
+          "legendFormat": "{{server_address}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Page Views Distribution",
+      "title": "HTTP Requests by Endpoint",
       "type": "piechart"
     }
   ],
-  "refresh": "5s",
+  "refresh": "15s",
   "schemaVersion": 39,
   "tags": ["devacademy", "overview"],
   "templating": {
