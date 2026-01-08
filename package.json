@@ -35,7 +35,10 @@
     "e2e:ui": "playwright test --ui",
     "e2e:debug": "playwright test --debug",
     "e2e:headed": "playwright test --headed",
-    "prepare": "NODE_OPTIONS='' husky"
+    "prepare": "NODE_OPTIONS='' husky",
+    "telemetry:test": "tsx scripts/generate-test-telemetry.ts",
+    "telemetry:traffic": "tsx scripts/generate-continuous-traffic.ts",
+    "telemetry:login": "tsx scripts/test-login-metrics.ts"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
