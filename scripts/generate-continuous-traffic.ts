@@ -5,10 +5,11 @@
  * Generates realistic HTTP traffic to your Next.js app to populate dashboards.
  * This script makes actual HTTP requests that will be captured by OpenTelemetry instrumentation.
  *
- * Run: npx tsx scripts/generate-continuous-traffic.ts
+ * Run: bun run telemetry:traffic
+ * Or: bunx tsx scripts/generate-continuous-traffic.ts
  */
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3001';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 const DURATION_MINUTES = parseInt(process.env.DURATION_MINUTES || '5', 10);
 const REQUESTS_PER_MINUTE = parseInt(process.env.REQUESTS_PER_MINUTE || '10', 10);
 

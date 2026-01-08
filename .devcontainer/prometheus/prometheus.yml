@@ -18,10 +18,11 @@ scrape_configs:
     scrape_interval: 10s
 
   # OpenTelemetry Collector internal metrics
-  - job_name: 'otel-collector-internal'
-    static_configs:
-      - targets: ['otel-collector:8888']
-    scrape_interval: 30s
+  # Disabled: OTEL collector doesn't expose internal metrics on port 8888
+  # - job_name: 'otel-collector-internal'
+  #   static_configs:
+  #     - targets: ['otel-collector:8888']
+  #   scrape_interval: 30s
 
   # Next.js application (when configured with a Prometheus exporter)
   - job_name: 'nextjs-app'
@@ -30,12 +31,14 @@ scrape_configs:
     metrics_path: '/api/metrics'
     scrape_interval: 10s
 
-  # PostgreSQL exporter (if added)
-  - job_name: 'postgres'
-    static_configs:
-      - targets: ['postgres-exporter:9187']
+  # PostgreSQL exporter - Disabled: postgres-exporter service not configured
+  # To enable: Add postgres-exporter service to docker-compose.yml
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
 
-  # Node exporter (if added for system metrics)
-  - job_name: 'node'
-    static_configs:
-      - targets: ['node-exporter:9100']
+  # Node exporter - Disabled: node-exporter service not configured
+  # To enable: Add node-exporter service to docker-compose.yml
+  # - job_name: 'node'
+  #   static_configs:
+  #     - targets: ['node-exporter:9100']

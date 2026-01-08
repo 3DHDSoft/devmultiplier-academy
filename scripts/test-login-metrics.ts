@@ -4,7 +4,8 @@
  *
  * This directly calls the login logging functions to generate login metrics.
  *
- * Run: npx tsx scripts/test-login-metrics.ts
+ * Run: bun run telemetry:login [num_attempts]
+ * Or: bunx tsx scripts/test-login-metrics.ts [num_attempts] [--burst]
  */
 
 import '../instrumentation.node';
@@ -122,19 +123,19 @@ async function main() {
   }
 
   console.log('\n✅ Login metrics generation complete!');
-  console.log('⏳ Waiting 5 seconds for metrics to be exported...\n');
+  console.log('⏳ Waiting 20 seconds for metrics to be exported...');
+  console.log('   (Metrics export every 15 seconds)\n');
 
-  await sleep(5000);
+  // Wait for at least one metric export cycle (15s + 5s buffer)
+  await sleep(20000);
 
   console.log('✨ Metrics should now be visible in your Grafana dashboard');
-  console.log('   Dashboard: DevAcademy - Application Overview');
+  console.log('   Dashboard: http://localhost:3001 → DevAcademy → Application Overview');
   console.log('   Panel: Login Activity');
-  console.log('   Note: Metrics are exported every 60 seconds, you may need to wait\n');
+  console.log('   If you don\'t see data, wait 15 more seconds and refresh\n');
 
-  // Exit after a short delay
-  setTimeout(() => {
-    process.exit(0);
-  }, 2000);
+  // Exit cleanly
+  process.exit(0);
 }
 
 main().catch((error) => {

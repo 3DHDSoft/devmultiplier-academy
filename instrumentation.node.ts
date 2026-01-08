@@ -89,10 +89,10 @@ const metricExporter = new OTLPMetricExporter({
   headers,
 });
 
-// Configure metric reader with 60-second export interval
+// Configure metric reader with 15-second export interval
 const metricReader = new PeriodicExportingMetricReader({
   exporter: metricExporter,
-  exportIntervalMillis: 60000, // Export every 60 seconds
+  exportIntervalMillis: 15000, // Export every 15 seconds
 });
 
 // Initialize OpenTelemetry SDK

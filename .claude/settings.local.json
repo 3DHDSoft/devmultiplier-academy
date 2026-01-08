@@ -40,7 +40,15 @@
       "Bash(else)",
       "Bash(fi)",
       "Bash(done)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(kill:*)",
+      "Bash(pkill:*)",
+      "Bash(netstat:*)",
+      "Bash(docker compose:*)",
+      "Bash(python3:*)",
+      "Bash(cut:*)",
+      "Bash(pgrep:*)",
+      "Bash(claude auth status:*)"
     ]
   }
 }

@@ -4,6 +4,11 @@ set -e
 
 echo "🚀 Setting up Dev Web Development Environment..."
 
+# Install global npm packages
+echo "🌍 Installing global npm packages..."
+bun add -g npm-check-updates
+echo "✅ Global packages installed"
+
 # Install project dependencies if package.json exists
 if [ -f "package.json" ]; then
     echo "📦 Installing npm dependencies with Bun..."

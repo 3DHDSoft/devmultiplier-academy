@@ -35,6 +35,8 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT:-5433}
     volumes:
       - ../..:/workspaces:cached
+      - claude_auth_data:/home/node/.claude:cached
+      - claude_config:/home/node/.claude.json:cached
     networks:
       - dev-web-net
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
@@ -191,6 +193,10 @@ volumes:
   node_modules:
     driver: local
   bun_cache:
+    driver: local
+  claude_auth_data:
+    driver: local
+  claude_config:
     driver: local
   postgres_web_data:
     driver: local

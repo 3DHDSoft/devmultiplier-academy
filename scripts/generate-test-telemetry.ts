@@ -8,7 +8,8 @@
  * - Login activity metrics
  * - Database query metrics
  *
- * Run: npx tsx scripts/generate-test-telemetry.ts
+ * Run: bun run telemetry:test
+ * Or: bunx tsx scripts/generate-test-telemetry.ts
  */
 
 import { trace } from '@opentelemetry/api';
@@ -191,25 +192,24 @@ async function main() {
     await generateDatabaseMetrics();
 
     console.log('\n✅ Telemetry generation complete!');
-    console.log('⏳ Waiting 5 seconds for metrics to be exported...');
+    console.log('⏳ Waiting 20 seconds for metrics to be exported...');
+    console.log('   (Metrics export every 15 seconds)');
 
-    // Wait for metrics to be exported (metric reader exports every 60s by default)
-    await sleep(5000);
+    // Wait for at least one metric export cycle (15s + 5s buffer)
+    await sleep(20000);
 
-    console.log('\n✨ Done! Check your Grafana dashboard at http://localhost:3000');
-    console.log('   Dashboard: DevAcademy - Application Overview');
-    console.log('   Note: Metrics are exported every 60 seconds, so you may need to wait a bit');
+    console.log('\n✨ Done! Metrics should now be visible in Grafana');
+    console.log('   Dashboard: http://localhost:3001 → DevAcademy → Application Overview');
+    console.log('   If you don\'t see data, wait 15 more seconds and refresh');
 
   } catch (error) {
     console.error('❌ Error generating telemetry:', error);
     process.exit(1);
   }
 
-  // Force exit after a delay to ensure metrics are exported
-  setTimeout(() => {
-    console.log('\n👋 Exiting...');
-    process.exit(0);
-  }, 2000);
+  // Exit cleanly
+  console.log('\n👋 Exiting...');
+  process.exit(0);
 }
 
 main();

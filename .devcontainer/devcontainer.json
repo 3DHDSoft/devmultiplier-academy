@@ -15,14 +15,83 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 3001, 5433, 8008, 9323],
+  // ============================================================================
+  // PORT FORWARDING CONFIGURATION
+  // ============================================================================
+  // Forward ports from containers to localhost for local development access.
+  // See docker-compose.yml for container port mappings.
+  //
+  // OBSERVABILITY STACK (OpenTelemetry):
+  // ------------------------------------
+  // The OTel stack provides distributed tracing and metrics collection:
+  //
+  //   Next.js App ──OTLP──> OTel Collector ──> Tempo (traces)
+  //                                       ──> Prometheus (metrics)
+  //                                                  │
+  //                                                  v
+  //                                              Grafana (dashboards)
+  //
+  // DEBUG ENDPOINTS:
+  //   - http://localhost:9090       Prometheus UI (query metrics)
+  //   - http://localhost:3001       Grafana dashboards (admin/admin)
+  //   - http://localhost:3200       Tempo API (trace queries)
+  //   - http://localhost:13133      OTel Collector health check
+  //   - http://localhost:8888       OTel Collector self-metrics
+  //   - http://localhost:8889/metrics  Prometheus scrape endpoint (app metrics)
+  //
+  // SENDING TELEMETRY (from app):
+  //   - grpc://localhost:4317       OTLP gRPC (preferred, faster)
+  //   - http://localhost:4318       OTLP HTTP (fallback)
+  //
+  // ============================================================================
+  "forwardPorts": [
+    // --- Application ---
+    3000,  // Next.js App
+
+    // --- Database ---
+    5433,  // PostgreSQL 18 (mapped from container 5432)
+    5051,  // pgAdmin web UI
+
+    // --- OpenTelemetry Collector ---
+    4317,  // OTLP gRPC receiver (send traces/metrics here)
+    4318,  // OTLP HTTP receiver (send traces/metrics here)
+    8888,  // Collector internal metrics
+    8889,  // Prometheus exporter (Prometheus scrapes this)
+    13133, // Health check endpoint
+
+    // --- Tracing (Tempo) ---
+    3200,  // Tempo query frontend API
+    4319,  // Tempo OTLP gRPC (direct, bypasses collector)
+
+    // --- Metrics & Dashboards ---
+    9090,  // Prometheus UI
+    3001   // Grafana dashboards
+  ],
 
   "portsAttributes": {
+    // Application
     "3000": { "label": "Next.js App", "onAutoForward": "notify" },
-    "3001": { "label": "API Server", "onAutoForward": "notify" },
+
+    // Database
     "5433": { "label": "PostgreSQL 18", "onAutoForward": "silent" },
-    "8008": { "label": "pgAdmin", "onAutoForward": "silent" }
+    "5051": { "label": "pgAdmin", "onAutoForward": "silent" },
+
+    // OTel Collector - Ingestion
+    "4317": { "label": "OTLP gRPC", "onAutoForward": "silent" },
+    "4318": { "label": "OTLP HTTP", "onAutoForward": "silent" },
+
+    // OTel Collector - Debug/Metrics
+    "8888": { "label": "OTel Collector Metrics", "onAutoForward": "silent" },
+    "8889": { "label": "OTel Prometheus Export", "onAutoForward": "silent" },
+    "13133": { "label": "OTel Health", "onAutoForward": "silent" },
+
+    // Tempo (Tracing)
+    "3200": { "label": "Tempo", "onAutoForward": "silent" },
+    "4319": { "label": "Tempo OTLP", "onAutoForward": "silent" },
+
+    // Prometheus & Grafana
+    "9090": { "label": "Prometheus", "onAutoForward": "silent" },
+    "3001": { "label": "Grafana", "onAutoForward": "notify" }
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.

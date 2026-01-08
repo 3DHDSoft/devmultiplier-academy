@@ -4,9 +4,9 @@ These scripts help you generate test data to verify your Grafana dashboards are 
 
 ## Prerequisites
 
-1. Make sure your application is running: `npm run dev`
+1. Make sure your application is running: `bun run dev`
 2. Ensure OpenTelemetry stack is up (Grafana, Prometheus, OTEL Collector)
-3. Open Grafana dashboard at http://localhost:3000
+3. Open Grafana dashboard at http://localhost:3001
 
 ## Scripts Overview
 
@@ -15,17 +15,17 @@ These scripts help you generate test data to verify your Grafana dashboards are 
 Generates realistic HTTP traffic to your application by making actual requests.
 
 ```bash
-npx tsx scripts/generate-continuous-traffic.ts
+bun run telemetry:traffic
 ```
 
 **Environment Variables:**
-- `BASE_URL` - Target URL (default: http://localhost:3001)
+- `BASE_URL` - Target URL (default: http://localhost:3000)
 - `DURATION_MINUTES` - How long to run (default: 5)
 - `REQUESTS_PER_MINUTE` - Request rate (default: 10)
 
 **Example:**
 ```bash
-DURATION_MINUTES=10 REQUESTS_PER_MINUTE=20 npx tsx scripts/generate-continuous-traffic.ts
+DURATION_MINUTES=10 REQUESTS_PER_MINUTE=20 bun run telemetry:traffic
 ```
 
 **What it generates:**
@@ -38,7 +38,7 @@ DURATION_MINUTES=10 REQUESTS_PER_MINUTE=20 npx tsx scripts/generate-continuous-t
 Generates login activity metrics directly.
 
 ```bash
-npx tsx scripts/test-login-metrics.ts [num_attempts]
+bun run telemetry:login [num_attempts]
 ```
 
 **Options:**
@@ -48,10 +48,10 @@ npx tsx scripts/test-login-metrics.ts [num_attempts]
 **Examples:**
 ```bash
 # Generate 50 login attempts
-npx tsx scripts/test-login-metrics.ts 50
+bun run telemetry:login 50
 
 # Generate with failed login burst (simulates attack)
-npx tsx scripts/test-login-metrics.ts 50 --burst
+bun run telemetry:login 50 --burst
 ```
 
 **What it generates:**
@@ -64,7 +64,7 @@ npx tsx scripts/test-login-metrics.ts 50 --burst
 Generates a variety of telemetry data including HTTP, API, login, and database metrics.
 
 ```bash
-npx tsx scripts/generate-test-telemetry.ts
+bun run telemetry:test
 ```
 
 **What it generates:**
@@ -112,36 +112,49 @@ Your [application-overview.json](/.devcontainer/grafana/dashboards/application-o
 
 ## Viewing the Data
 
-1. **Wait for metrics export**: Metrics are exported every 60 seconds, so you may need to wait up to 1 minute to see data
+1. **Wait for metrics export**:
+   - Metrics are exported every 15 seconds
+   - The test scripts wait 20 seconds to ensure metrics are exported before exiting
+   - After running a script, wait for it to complete fully before checking Grafana
 
 2. **Check Prometheus**: Verify metrics are being collected
    ```bash
    # List all metrics with "devacademy" prefix
    curl -s http://localhost:9090/api/v1/label/__name__/values | jq -r '.data[]' | grep devacademy
+
+   # Query specific metrics to see if they have data
+   curl -s 'http://localhost:9090/api/v1/query?query=devacademy_user_login_attempts_total'
    ```
 
 3. **View in Grafana**:
-   - Navigate to http://localhost:3000
+   - Navigate to http://localhost:3001
    - Go to Dashboards → DevAcademy → Application Overview
    - Set time range to "Last 15 minutes"
    - Click "Refresh" button
+   - If no data appears, wait 15 more seconds and click refresh again
 
 ## Troubleshooting
 
 ### No data showing in dashboard
 
-1. Check if metrics are being exported:
+1. **View raw metrics directly** (very helpful for debugging):
+   - Open http://localhost:9090/metrics in your browser
+   - This shows all metrics that Prometheus is collecting
+   - Search for `devacademy_` to find your application metrics
+   - Verify metric names match what your dashboard queries expect
+
+2. Check if metrics are being exported:
    ```bash
    # Check Prometheus targets
    curl http://localhost:9090/api/v1/targets
    ```
 
-2. Check OTEL collector logs:
+3. Check OTEL collector logs:
    ```bash
    docker logs otel-collector
    ```
 
-3. Verify your app is instrumented:
+4. Verify your app is instrumented:
    ```bash
    # You should see this in your app logs
    # ✅ OpenTelemetry instrumentation initialized
@@ -153,9 +166,23 @@ The dashboard expects specific metric names with the `devacademy_` prefix. Check
 
 ### Slow data refresh
 
-- Metrics are exported every 60 seconds (configured in [instrumentation.node.ts:95](/instrumentation.node.ts#L95))
+- Metrics are exported every 15 seconds (configured in [instrumentation.node.ts:95](/instrumentation.node.ts#L95))
+- The test scripts wait 20 seconds to ensure at least one export cycle completes
 - Grafana dashboard refreshes every 15 seconds
-- Prometheus scrapes may have a delay
+- Prometheus scrapes the OTEL Collector every 10 seconds
+- **Total latency**: Expect up to 20-30 seconds from script start to data appearing in Grafana
+
+### Script exits but no data appears
+
+If you ran a test script but don't see data in Grafana:
+
+1. Make sure the script completed fully (waited the full 20 seconds)
+2. Check if metrics exist in Prometheus:
+   ```bash
+   curl -s http://localhost:9090/api/v1/label/__name__/values | grep devacademy
+   ```
+3. If metrics exist but dashboards show "No data", adjust the time range in Grafana to "Last 15 minutes" or "Last 1 hour"
+4. The test scripts generate metrics with the current timestamp - if your system clock is wrong, they won't appear in the expected time range
 
 ## Running in Production
 

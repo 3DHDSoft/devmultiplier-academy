@@ -5,7 +5,7 @@
 Run this single command to generate traffic and see data in your dashboard:
 
 ```bash
-npm run telemetry:traffic
+bun run telemetry:traffic
 ```
 
 This will:
@@ -15,10 +15,13 @@ This will:
 
 ## ⚡ See Results
 
-1. **Open Grafana**: http://localhost:3000
+1. **Open Grafana**: http://localhost:3001
 2. **Navigate to**: Dashboards → DevAcademy → Application Overview
 3. **Set time range**: Last 15 minutes
-4. **Wait**: ~60 seconds for first metrics to appear (metrics export interval)
+4. **Wait**: 15-30 seconds for first metrics to appear
+   - Metrics export every 15 seconds
+   - Prometheus scrapes every 10 seconds
+   - Much faster than before!
 
 ## 📊 Expected Results
 
@@ -33,15 +36,16 @@ After running the traffic generator, you should see:
 To specifically test the login panel:
 
 ```bash
-npm run telemetry:login 50
+bun run telemetry:login 50
 ```
 
 This generates 50 login attempts with realistic success/failure rates.
+**Note**: The script will wait 20 seconds to ensure metrics are exported.
 
 To simulate a security attack (burst of failed logins):
 
 ```bash
-npm run telemetry:login 50 -- --burst
+bun run telemetry:login 50 --burst
 ```
 
 ## 🎯 Test Everything
@@ -49,7 +53,7 @@ npm run telemetry:login 50 -- --burst
 To generate all types of metrics at once:
 
 ```bash
-npm run telemetry:test
+bun run telemetry:test
 ```
 
 This generates:
@@ -58,24 +62,26 @@ This generates:
 - Login activity metrics
 - Database query metrics
 
+**Note**: The script will wait 20 seconds to ensure metrics are exported before exiting.
+
 ## 🎛️ Custom Configuration
 
 ### Longer Traffic Test
 
 ```bash
-DURATION_MINUTES=10 REQUESTS_PER_MINUTE=30 npm run telemetry:traffic
+DURATION_MINUTES=10 REQUESTS_PER_MINUTE=30 bun run telemetry:traffic
 ```
 
 ### High Load Test
 
 ```bash
-REQUESTS_PER_MINUTE=100 npm run telemetry:traffic
+REQUESTS_PER_MINUTE=100 bun run telemetry:traffic
 ```
 
 ### Target Different Server
 
 ```bash
-BASE_URL=http://localhost:3000 npm run telemetry:traffic
+BASE_URL=http://localhost:8080 bun run telemetry:traffic
 ```
 
 ## ❓ Troubleshooting
@@ -84,7 +90,7 @@ BASE_URL=http://localhost:3000 npm run telemetry:traffic
 
 1. **Check your app is running**:
    ```bash
-   curl http://localhost:3001
+   curl http://localhost:3000
    ```
 
 2. **Verify metrics are being exported**:
@@ -103,24 +109,22 @@ BASE_URL=http://localhost:3000 npm run telemetry:traffic
 
 ### Scripts won't run?
 
-Make sure tsx is available:
+Make sure tsx is available (bun includes it by default):
 ```bash
-npm install -g tsx
-# or use npx (automatically downloads)
-npx tsx --version
+bunx tsx --version
 ```
 
 ### Getting connection errors?
 
 Ensure your Next.js app is running:
 ```bash
-npm run dev
+bun run dev
 ```
 
 ## 📖 Full Documentation
 
 For detailed information about each script and metric, see:
-- [README-TELEMETRY-TESTING.md](./README-TELEMETRY-TESTING.md)
+- [readme-telemetry-testing.md](./readme-telemetry-testing.md)
 
 ## 🎉 Success Criteria
 
