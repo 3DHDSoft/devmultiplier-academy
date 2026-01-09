@@ -59,7 +59,8 @@
       "Bash(for i in {1..5})",
       "Bash(do curl -s http://localhost:3000/)",
       "Bash(for i in {1..10})",
-      "Bash(do curl -s \"http://localhost:3000/api/courses\")"
+      "Bash(do curl -s \"http://localhost:3000/api/courses\")",
+      "Bash(vercel env pull:*)"
     ]
   }
 }

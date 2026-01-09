@@ -37,6 +37,7 @@ yarn-error.log*
 !.env.template
 !.env.example
 .env.vercel.cloud
+.env.vercel.import
 
 # vercel
 .vercel
