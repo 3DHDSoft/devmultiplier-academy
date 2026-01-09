@@ -14,7 +14,7 @@ const DURATION_MINUTES = parseInt(process.env.DURATION_MINUTES || '5', 10);
 const REQUESTS_PER_MINUTE = parseInt(process.env.REQUESTS_PER_MINUTE || '10', 10);
 
 // Sleep utility
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Random helpers
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -83,7 +83,9 @@ async function makeRequest() {
     return { success: status < 400, duration, status };
   } catch (error) {
     const duration = Date.now() - startTime;
-    console.log(`❌ ${endpoint.method} ${endpoint.path} - Error: ${error instanceof Error ? error.message : 'Unknown'} (${duration}ms)`);
+    console.log(
+      `❌ ${endpoint.method} ${endpoint.path} - Error: ${error instanceof Error ? error.message : 'Unknown'} (${duration}ms)`
+    );
 
     return { success: false, duration, status: 0 };
   }
@@ -151,7 +153,7 @@ async function main() {
     console.error(`❌ Cannot reach server at ${BASE_URL}`);
     console.error(`   Error: ${error instanceof Error ? error.message : 'Unknown'}`);
     console.error(`\n💡 Make sure your Next.js app is running:`);
-    console.error(`   npm run dev\n`);
+    console.error(`   bun run dev\n`);
     process.exit(1);
   }
 

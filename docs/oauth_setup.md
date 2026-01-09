@@ -168,7 +168,7 @@ LINKEDIN_CLIENT_SECRET="your-linkedin-client-secret"
 1. Start your development server:
 
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 2. Navigate to `http://localhost:3000/login`

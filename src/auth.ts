@@ -58,23 +58,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       tenantId: process.env.MICROSOFT_TENANT_ID,
     }),
 
-    // LinkedIn OAuth Provider
+    // LinkedIn OAuth Provider (uses OpenID Connect)
     LinkedInProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID!,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
-      authorization: {
-        params: { scope: 'openid profile email' },
-      },
-      issuer: 'https://www.linkedin.com',
-      jwks_endpoint: 'https://www.linkedin.com/oauth/openid/jwks',
-      profile(profile) {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-        };
-      },
     }),
 
     // Credentials Provider (Email/Password)
@@ -230,6 +217,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 locale: 'en',
                 timezone: 'UTC',
                 status: 'active',
+                updatedAt: new Date(),
               },
             });
             console.log(`Created new OAuth user: ${user.email}`);

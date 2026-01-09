@@ -28,7 +28,7 @@ docker-compose up -d otel-collector tempo prometheus grafana
 
 ```bash
 # Stop the dev server (Ctrl+C) and restart
-npm run dev
+bun run dev
 ```
 
 ## Switching Between Local and Grafana Cloud
@@ -80,33 +80,36 @@ Grafana (port 3001)
 
 ## Ports
 
-| Service                | Port  | Purpose                          |
-|------------------------|-------|----------------------------------|
-| Next.js App            | 3000  | Application                      |
-| Grafana                | 3001  | Visualization dashboard          |
-| Tempo                  | 3200  | Trace query API                  |
-| OTEL Collector (gRPC)  | 4317  | Receive telemetry (gRPC)        |
-| OTEL Collector (HTTP)  | 4318  | Receive telemetry (HTTP)        |
-| OTEL Collector Metrics | 8888  | Collector internal metrics       |
-| OTEL Collector Export  | 8889  | Prometheus scrape endpoint       |
-| Prometheus             | 9090  | Metrics query API                |
-| OTEL Collector Health  | 13133 | Health check endpoint            |
+| Service                | Port  | Purpose                    |
+| ---------------------- | ----- | -------------------------- |
+| Next.js App            | 3000  | Application                |
+| Grafana                | 3001  | Visualization dashboard    |
+| Tempo                  | 3200  | Trace query API            |
+| OTEL Collector (gRPC)  | 4317  | Receive telemetry (gRPC)   |
+| OTEL Collector (HTTP)  | 4318  | Receive telemetry (HTTP)   |
+| OTEL Collector Metrics | 8888  | Collector internal metrics |
+| OTEL Collector Export  | 8889  | Prometheus scrape endpoint |
+| Prometheus             | 9090  | Metrics query API          |
+| OTEL Collector Health  | 13133 | Health check endpoint      |
 
 ## Troubleshooting
 
 ### No data in Grafana?
 
 1. Check if containers are running:
+
    ```bash
    docker ps | grep -E "otel-collector|tempo|prometheus|grafana"
    ```
 
 2. Check OpenTelemetry Collector logs:
+
    ```bash
    docker logs otel-collector
    ```
 
 3. Verify your Next.js app started with instrumentation:
+
    ```bash
    # Look for this message in the Next.js logs:
    # "✅ OpenTelemetry instrumentation initialized"

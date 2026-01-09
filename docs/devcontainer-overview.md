@@ -2,7 +2,9 @@
 
 ## Executive Summary
 
-This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and developing a production-grade Next.js educational platform with enterprise-level observability.
+This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring
+hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and
+developing a production-grade Next.js educational platform with enterprise-level observability.
 
 ## Table of Contents
 
@@ -25,6 +27,7 @@ This devcontainer transforms the **DevMultiplier Academy website** from a comple
 ### Problem It Solves
 
 Setting up this project traditionally requires:
+
 - Installing Node.js 22 and Bun 1.3.5+
 - Setting up PostgreSQL 18 with PostGIS extensions
 - Configuring an entire observability stack (OpenTelemetry, Prometheus, Tempo, Grafana)
@@ -46,18 +49,21 @@ Setting up this project traditionally requires:
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
-- [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [VS Code](https://code.visualstudio.com/) with
+  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - 4+ CPU cores and 20GB RAM available
 
 ### First Time Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/3DHDSoft/devmultiplier-academy.git
    cd devmultiplier-academy
    ```
 
 2. **Open in VS Code**
+
    ```bash
    code .
    ```
@@ -73,6 +79,7 @@ Setting up this project traditionally requires:
    - Services start and health checks pass
 
 5. **Verify everything works**
+
    ```bash
    # Check database connection
    psql -h postgres -U admin -d academy -c "SELECT version();"
@@ -148,37 +155,41 @@ App sends telemetry → OTEL Collector (port 4318)
 
 ### 1. Complete Application Stack
 
-| Component | Version | Purpose |
-|-----------|---------|---------|
-| Node.js | 22.x | JavaScript runtime |
-| Bun | 1.3.5+ | Fast package manager |
-| Next.js | 16.1.1 | React framework |
-| React | 19.2.3 | UI library |
-| TypeScript | 5.x | Type safety |
-| PostgreSQL | 18.1 | Primary database |
-| PostGIS | 3.6 | Spatial extensions |
-| Prisma | 7.2.0 | Database ORM |
+| Component  | Version | Purpose              |
+| ---------- | ------- | -------------------- |
+| Node.js    | 22.x    | JavaScript runtime   |
+| Bun        | 1.3.5+  | Fast package manager |
+| Next.js    | 16.1.1  | React framework      |
+| React      | 19.2.3  | UI library           |
+| TypeScript | 5.x     | Type safety          |
+| PostgreSQL | 18.1    | Primary database     |
+| PostGIS    | 3.6     | Spatial extensions   |
+| Prisma     | 7.2.0   | Database ORM         |
 
 ### 2. Enterprise Observability
 
 Complete monitoring stack that mirrors production:
 
 **OpenTelemetry Collector**
+
 - Receives traces and metrics from Next.js app
 - Routes data to appropriate backends
 - Ports: 4317 (gRPC), 4318 (HTTP)
 
 **Grafana Tempo**
+
 - Distributed tracing backend
 - Query traces by ID or attributes
 - Port: 3200
 
 **Prometheus**
+
 - Time-series metrics database
 - Scrapes metrics every 15 seconds
 - Port: 9090
 
 **Grafana**
+
 - Unified visualization platform
 - 3 pre-built dashboards:
   - **Application Overview**: Request rates, response times, error rates
@@ -192,12 +203,14 @@ Complete monitoring stack that mirrors production:
 Pre-installed and configured automatically:
 
 #### AI & Productivity
+
 - `anthropic.claude-code` - Claude Code assistant
 - `GitHub.copilot` - AI pair programming
 - `GitHub.copilot-chat` - Chat interface
 - `alefragnani.project-manager` - Project switching
 
 #### Git Tools
+
 - `eamodio.gitlens` - Advanced Git visualization
 - `mhutchie.git-graph` - Commit graph
 - `donjayamanne.githistory` - File history
@@ -205,6 +218,7 @@ Pre-installed and configured automatically:
 - `github.vscode-github-actions` - CI/CD workflows
 
 #### Language Support
+
 - `ms-vscode.vscode-typescript-next` - Latest TypeScript features
 - `dbaeumer.vscode-eslint` - Linting
 - `esbenp.prettier-vscode` - Code formatting
@@ -212,18 +226,21 @@ Pre-installed and configured automatically:
 - `kumar-harsh.graphql-for-vscode` - GraphQL schemas
 
 #### Testing & Quality
+
 - `ms-playwright.playwright` - E2E testing
 - `vitest.explorer` - Unit test runner
 - `streetsidesoftware.code-spell-checker` - Spell checking
 - `kisstkondoros.vscode-codemetrics` - Complexity analysis
 
 #### Database
+
 - `doublefint.pgsql` - PostgreSQL support
 - `bradymholt.pgformatter` - SQL formatting
 - `mtxr.sqltools` - Query runner
 - `mtxr.sqltools-driver-pg` - PostgreSQL driver
 
 #### Markdown (7 extensions)
+
 - `bierner.markdown-mermaid` - Diagram support
 - `goessner.mdmath` - Math equations
 - `yzhang.markdown-all-in-one` - Shortcuts & TOC
@@ -233,6 +250,7 @@ Pre-installed and configured automatically:
 - `bierner.markdown-github-preview` - GitHub styling
 
 #### Docker & DevOps
+
 - `ms-azuretools.vscode-docker` - Container management
 - `docker.docker` - Dockerfile support
 
@@ -240,33 +258,36 @@ Pre-installed and configured automatically:
 
 Installed via devcontainer features:
 
-| Tool | Purpose | Usage |
-|------|---------|-------|
-| `git` | Version control | Standard Git operations |
-| `git-lfs` | Large file storage | Track binary files |
-| `gh` | GitHub CLI | `gh pr create`, `gh issue list` |
-| `vercel` | Deployment | `vercel deploy` |
-| `stripe` | Payment testing | `stripe listen --forward-to localhost:3000/api/webhooks` |
-| `tailwindcss` | CSS standalone | `tailwindcss -i input.css -o output.css` |
-| `jq` | JSON processor | `cat data.json \| jq '.users[0]'` |
-| `tmux` | Terminal multiplexer | Multiple terminal sessions |
-| `ffmpeg` | Media processing | Video/audio conversion |
-| `nvtop` | GPU monitoring | Track GPU usage |
+| Tool          | Purpose              | Usage                                                    |
+| ------------- | -------------------- | -------------------------------------------------------- |
+| `git`         | Version control      | Standard Git operations                                  |
+| `git-lfs`     | Large file storage   | Track binary files                                       |
+| `gh`          | GitHub CLI           | `gh pr create`, `gh issue list`                          |
+| `vercel`      | Deployment           | `vercel deploy`                                          |
+| `stripe`      | Payment testing      | `stripe listen --forward-to localhost:3000/api/webhooks` |
+| `tailwindcss` | CSS standalone       | `tailwindcss -i input.css -o output.css`                 |
+| `jq`          | JSON processor       | `cat data.json \| jq '.users[0]'`                        |
+| `tmux`        | Terminal multiplexer | Multiple terminal sessions                               |
+| `ffmpeg`      | Media processing     | Video/audio conversion                                   |
+| `nvtop`       | GPU monitoring       | Track GPU usage                                          |
 
 ### 5. Development Environment
 
 **Shell**: Zsh with Oh My Zsh
+
 - Syntax highlighting
 - Auto-suggestions
 - Git status in prompt
 - Custom themes and plugins
 
 **Package Manager**: Bun
+
 - 3x faster than npm/yarn
 - Drop-in replacement
 - Native TypeScript support
 
 **Database Client**: psql
+
 - Direct PostgreSQL access
 - Pre-configured connection
 
@@ -282,6 +303,7 @@ Working Directory: /workspaces/dev-x-academy-web
 ```
 
 **Installed Dependencies**:
+
 - PostgreSQL client (`psql`)
 - Playwright browser dependencies
 - X11 display utilities (for headless testing)
@@ -300,6 +322,7 @@ Database: academy
 ```
 
 **Features**:
+
 - PostGIS 3.6 spatial extensions
 - All contrib modules enabled
 - Custom configuration via [postgresql.conf](.devcontainer/config/postgres/postgresql.conf)
@@ -308,10 +331,12 @@ Database: academy
 - 2.81GB shared memory for parallel queries
 
 **Resource Limits**:
+
 - Memory: 18GB limit, 11GB reserved
 - CPU: 4 cores limit, 2 cores reserved
 
 **Volumes**:
+
 - `postgres_web_data`: Database files
 - `postgres_web_backups`: Backup location
 
@@ -325,6 +350,7 @@ Credentials: admin@admin.com / YourVeryStr0ngPassword
 ```
 
 Web-based database administration tool with:
+
 - Visual query builder
 - Schema designer
 - Import/export tools
@@ -345,6 +371,7 @@ Ports:
 **Configuration**: [otel-collector-config.yml](.devcontainer/otel-collector/otel-collector-config.yml)
 
 Routes telemetry from Next.js to:
+
 - Tempo (traces via OTLP)
 - Prometheus (metrics via exporter)
 
@@ -361,6 +388,7 @@ Ports:
 **Configuration**: [tempo.yml](.devcontainer/tempo/tempo.yml)
 
 Stores distributed traces for:
+
 - Request tracing across services
 - Performance bottleneck identification
 - Error root cause analysis
@@ -376,6 +404,7 @@ Port: 9090
 **Configuration**: [prometheus.yml](.devcontainer/prometheus/prometheus.yml)
 
 Scrapes metrics from:
+
 - OTEL Collector (every 15s)
 - Next.js app metrics endpoint
 
@@ -389,7 +418,9 @@ Credentials: admin / admin
 ```
 
 **Provisioned Resources**:
-- Datasources: [Prometheus](.devcontainer/grafana/provisioning/datasources/prometheus.yml), [Tempo](.devcontainer/grafana/provisioning/datasources/tempo.yml)
+
+- Datasources: [Prometheus](.devcontainer/grafana/provisioning/datasources/prometheus.yml),
+  [Tempo](.devcontainer/grafana/provisioning/datasources/tempo.yml)
 - Dashboard Config: [dashboards.yml](.devcontainer/grafana/provisioning/dashboards/dashboards.yml)
 - Pre-built Dashboards:
   - [Application Overview](.devcontainer/grafana/dashboards/application-overview.json)
@@ -405,22 +436,26 @@ Credentials: admin / admin
 Runs **once** after container is created:
 
 1. **Claude Code Setup**
+
    ```bash
    mkdir -p /home/node/.claude
    chmod 700 /home/node/.claude
    ```
 
 2. **Global Packages**
+
    ```bash
    bun add -g npm-check-updates
    ```
 
 3. **Project Dependencies**
+
    ```bash
    bun install
    ```
 
 4. **Wait for Services**
+
    ```bash
    until pg_isready -h postgres -U admin -d academy; do
      sleep 2
@@ -428,6 +463,7 @@ Runs **once** after container is created:
    ```
 
 5. **Fix Permissions**
+
    ```bash
    chmod 644 .devcontainer/prometheus/prometheus.yml
    # ... other config files
@@ -493,20 +529,20 @@ docker logs otel-collector  # View collector logs
 
 ### Port Forwarding Table
 
-| Port | Service | Label | Auto-Forward | Purpose |
-|------|---------|-------|--------------|---------|
-| 3000 | Next.js | Next.js App | notify | Application server |
-| 3001 | Grafana | Grafana | notify | Dashboards |
-| 3200 | Tempo | Tempo | silent | Trace queries |
-| 4317 | OTEL | OTLP gRPC | silent | Telemetry ingestion |
-| 4318 | OTEL | OTLP HTTP | silent | Telemetry ingestion |
-| 4319 | Tempo | Tempo OTLP | silent | Direct trace ingestion |
-| 5051 | pgAdmin | pgAdmin | silent | Database admin |
-| 5433 | PostgreSQL | PostgreSQL 18 | silent | Database connection |
-| 8888 | OTEL | OTel Collector Metrics | silent | Collector self-metrics |
-| 8889 | OTEL | OTel Prometheus Export | silent | Metrics scraping |
-| 9090 | Prometheus | Prometheus | silent | Metrics queries |
-| 13133 | OTEL | OTel Health | silent | Health checks |
+| Port  | Service    | Label                  | Auto-Forward | Purpose                |
+| ----- | ---------- | ---------------------- | ------------ | ---------------------- |
+| 3000  | Next.js    | Next.js App            | notify       | Application server     |
+| 3001  | Grafana    | Grafana                | notify       | Dashboards             |
+| 3200  | Tempo      | Tempo                  | silent       | Trace queries          |
+| 4317  | OTEL       | OTLP gRPC              | silent       | Telemetry ingestion    |
+| 4318  | OTEL       | OTLP HTTP              | silent       | Telemetry ingestion    |
+| 4319  | Tempo      | Tempo OTLP             | silent       | Direct trace ingestion |
+| 5051  | pgAdmin    | pgAdmin                | silent       | Database admin         |
+| 5433  | PostgreSQL | PostgreSQL 18          | silent       | Database connection    |
+| 8888  | OTEL       | OTel Collector Metrics | silent       | Collector self-metrics |
+| 8889  | OTEL       | OTel Prometheus Export | silent       | Metrics scraping       |
+| 9090  | Prometheus | Prometheus             | silent       | Metrics queries        |
+| 13133 | OTEL       | OTel Health            | silent       | Health checks          |
 
 ### Port Access Examples
 
@@ -589,21 +625,22 @@ OTEL_COLLECTOR_HTTP_PORT=4318
 
 All data persists across container rebuilds:
 
-| Volume | Purpose | Contents |
-|--------|---------|----------|
-| `claude_auth_data` | Claude Code auth | API tokens, session data |
-| `postgres_web_data` | PostgreSQL data | Database files, WAL logs |
-| `postgres_web_backups` | Database backups | pg_dump outputs |
-| `pgadmin_web_data` | pgAdmin settings | Saved queries, connections |
-| `prometheus_web_data` | Metrics storage | Time-series data |
-| `grafana_web_data` | Grafana data | Dashboards, users, settings |
-| `tempo_web_data` | Trace storage | Distributed traces |
-| `node_modules` | Dependencies | npm packages |
-| `bun_cache` | Package cache | Downloaded packages |
+| Volume                 | Purpose          | Contents                    |
+| ---------------------- | ---------------- | --------------------------- |
+| `claude_auth_data`     | Claude Code auth | API tokens, session data    |
+| `postgres_web_data`    | PostgreSQL data  | Database files, WAL logs    |
+| `postgres_web_backups` | Database backups | pg_dump outputs             |
+| `pgadmin_web_data`     | pgAdmin settings | Saved queries, connections  |
+| `prometheus_web_data`  | Metrics storage  | Time-series data            |
+| `grafana_web_data`     | Grafana data     | Dashboards, users, settings |
+| `tempo_web_data`       | Trace storage    | Distributed traces          |
+| `node_modules`         | Dependencies     | npm packages                |
+| `bun_cache`            | Package cache    | Downloaded packages         |
 
 ### Backup & Restore
 
 **Backup Database**:
+
 ```bash
 docker exec postgres pg_dump -U admin academy > backup.sql
 # Or inside container:
@@ -611,16 +648,19 @@ pg_dump -U admin academy > /var/lib/postgresql/backups/backup-$(date +%Y%m%d).sq
 ```
 
 **Restore Database**:
+
 ```bash
 docker exec -i postgres psql -U admin academy < backup.sql
 ```
 
 **Export Volume**:
+
 ```bash
 docker run --rm -v postgres_web_data:/data -v $(pwd):/backup ubuntu tar czf /backup/postgres-data.tar.gz -C /data .
 ```
 
 **Import Volume**:
+
 ```bash
 docker run --rm -v postgres_web_data:/data -v $(pwd):/backup ubuntu tar xzf /backup/postgres-data.tar.gz -C /data
 ```
@@ -635,17 +675,21 @@ docker run --rm -v postgres_web_data:/data -v $(pwd):/backup ubuntu tar xzf /bac
    - Home directory: `/home/node`
 
 2. **Security Options**
+
    ```yaml
    security_opt:
      - no-new-privileges:true
    ```
+
    Prevents privilege escalation attacks
 
 3. **Read-Only Mounts**
+
    ```yaml
    volumes:
      - ./config/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
    ```
+
    Configuration files mounted read-only
 
 4. **Network Isolation**
@@ -673,16 +717,18 @@ docker run --rm -v postgres_web_data:/data -v $(pwd):/backup ubuntu tar xzf /bac
 ### Secrets Management
 
 **DO NOT commit**:
+
 - `.env.local` (application secrets)
 - `.devcontainer/.env` (infrastructure secrets)
 
 **Use environment variables**:
+
 ```bash
 # Good
-DATABASE_URL=$DATABASE_URL npm run migrate
+DATABASE_URL=$DATABASE_URL bun run migrate
 
 # Bad (hardcoded)
-DATABASE_URL=postgresql://admin:password@localhost:5432/db npm run migrate
+DATABASE_URL=postgresql://admin:password@localhost:5432/db bun run migrate
 ```
 
 ## Use Cases
@@ -692,6 +738,7 @@ DATABASE_URL=postgresql://admin:password@localhost:5432/db npm run migrate
 **Scenario**: DevMultiplier Academy teaches professional web development
 
 **Benefits**:
+
 - Students get working environment in 10 minutes
 - Instructors don't debug environment setup
 - Everyone sees same results
@@ -699,6 +746,7 @@ DATABASE_URL=postgresql://admin:password@localhost:5432/db npm run migrate
 - Pre-configured tools reduce cognitive load
 
 **Example Workflow**:
+
 ```bash
 # Student starts course
 git clone <repo>
@@ -713,6 +761,7 @@ code .
 **Scenario**: 5-10 developers collaborating on codebase
 
 **Benefits**:
+
 - Eliminates "works on my machine"
 - New team members productive day 1
 - Database schema in sync (migrations in version control)
@@ -720,6 +769,7 @@ code .
 - Shared debugging tools (Grafana dashboards)
 
 **Example Workflow**:
+
 ```bash
 # New developer joins
 git clone <repo>
@@ -734,12 +784,14 @@ bun run dev
 **Scenario**: External contributors want to submit PRs
 
 **Benefits**:
+
 - No setup documentation needed
 - README can focus on features, not installation
 - Contributors can test locally
 - Maintainers review with same environment
 
 **Example Workflow**:
+
 ```bash
 # Contributor forks repo
 git clone <fork>
@@ -753,12 +805,14 @@ code .
 **Scenario**: Developer works from multiple machines or uses GitHub Codespaces
 
 **Benefits**:
+
 - Same environment everywhere
 - Cloud-based development (Codespaces)
 - Data persists in volumes
 - Claude Code auth preserved
 
 **Example Workflow**:
+
 ```bash
 # On laptop
 git push
@@ -777,12 +831,14 @@ git pull
 **Scenario**: Need to replicate production issue locally
 
 **Benefits**:
+
 - Same PostgreSQL version as production
 - Observability stack mirrors production
 - Can trace requests end-to-end
 - Test migrations safely
 
 **Example Workflow**:
+
 ```bash
 # Export production database
 pg_dump -h prod.example.com > prod-backup.sql
@@ -803,6 +859,7 @@ bun run dev
 **Symptom**: "Failed to start container"
 
 **Solutions**:
+
 ```bash
 # Check Docker is running
 docker ps
@@ -822,6 +879,7 @@ F1 → "Dev Containers: Rebuild Container"
 **Symptom**: `psql: could not connect to server`
 
 **Solutions**:
+
 ```bash
 # Check PostgreSQL is running
 docker ps | grep postgres
@@ -844,6 +902,7 @@ docker exec -it postgres psql -U admin -d academy -c "SELECT version();"
 **Symptom**: "Port 3000 is already allocated"
 
 **Solutions**:
+
 ```bash
 # Find process using port
 lsof -i :3000  # macOS/Linux
@@ -863,29 +922,34 @@ ports: ['3001:3000']  # Use 3001 instead
 **Solutions**:
 
 1. **Check all containers running**:
+
    ```bash
    docker ps | grep -E "otel-collector|tempo|prometheus|grafana"
    ```
 
 2. **Verify OTEL Collector health**:
+
    ```bash
    curl http://localhost:13133/health
    # Should return: {"status":"OK"}
    ```
 
 3. **Check OTEL Collector logs**:
+
    ```bash
    docker logs otel-collector
    # Look for errors
    ```
 
 4. **Verify Next.js instrumentation**:
+
    ```bash
    bun run dev
    # Look for: "✅ OpenTelemetry instrumentation initialized"
    ```
 
 5. **Test telemetry manually**:
+
    ```bash
    bun run telemetry:test
    # Generates test traces and metrics
@@ -911,6 +975,7 @@ ports: ['3001:3000']  # Use 3001 instead
    - Allocate more CPU/memory if available
 
 2. **Check volume performance**:
+
    ```bash
    # macOS: Ensure volumes use cached mode
    volumes:
@@ -918,6 +983,7 @@ ports: ['3001:3000']  # Use 3001 instead
    ```
 
 3. **Exclude files from sync**:
+
    ```bash
    # Add to .gitignore
    node_modules/
@@ -935,6 +1001,7 @@ ports: ['3001:3000']  # Use 3001 instead
 **Symptom**: "Permission denied" when accessing files
 
 **Solutions**:
+
 ```bash
 # Check file ownership
 ls -la
@@ -952,6 +1019,7 @@ sudo chmod 700 /home/node/.claude
 **Symptom**: VS Code extension not functioning
 
 **Solutions**:
+
 ```bash
 # Reinstall extension in container
 F1 → "Dev Containers: Rebuild Container"
@@ -968,6 +1036,7 @@ F1 → "Extensions: Install from VSIX..."
 **Symptom**: Need to restart monitoring services
 
 **Solutions**:
+
 ```bash
 # Restart individual service
 docker restart otel-collector
@@ -999,6 +1068,7 @@ OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <your-token>"}
 ```
 
 Restart Next.js app:
+
 ```bash
 # Stop dev server (Ctrl+C)
 bun run dev
@@ -1019,6 +1089,7 @@ log_statement = 'all'
 ```
 
 Restart PostgreSQL:
+
 ```bash
 docker restart postgres
 ```
@@ -1035,6 +1106,7 @@ Edit [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json#L135):
 ```
 
 Rebuild container:
+
 ```bash
 F1 → "Dev Containers: Rebuild Container"
 ```
@@ -1048,10 +1120,11 @@ Edit [.devcontainer/post-start.sh](.devcontainer/post-start.sh):
 echo "Running custom startup..."
 
 # Your commands here
-npm run db:seed
+bun run db:seed
 ```
 
 Make executable:
+
 ```bash
 chmod +x .devcontainer/post-start.sh
 ```
@@ -1075,6 +1148,7 @@ chmod +x .devcontainer/post-start.sh
 ### Docker Desktop Settings
 
 **macOS/Windows**:
+
 ```
 Settings → Resources:
   CPUs: 6-8
@@ -1083,18 +1157,19 @@ Settings → Resources:
   Disk: 100GB
 ```
 
-**Linux**:
-Native Docker has full system access, no limits needed.
+**Linux**: Native Docker has full system access, no limits needed.
 
 ## Performance Tips
 
 1. **Use cached volumes**:
+
    ```yaml
    volumes:
      - ../..:/workspaces:cached
    ```
 
 2. **Exclude unnecessary files**:
+
    ```gitignore
    node_modules/
    .next/
@@ -1102,11 +1177,13 @@ Native Docker has full system access, no limits needed.
    ```
 
 3. **Use Bun instead of npm**:
+
    ```bash
    bun install  # 3x faster
    ```
 
 4. **Enable BuildKit**:
+
    ```bash
    export DOCKER_BUILDKIT=1
    ```
@@ -1171,6 +1248,7 @@ bun run telemetry:test                         # Generate test data
 ## Changelog
 
 ### Version 1.0 (Current)
+
 - PostgreSQL 18 with PostGIS 3.6
 - Complete observability stack (OTEL, Tempo, Prometheus, Grafana)
 - 50+ VS Code extensions
@@ -1181,8 +1259,7 @@ bun run telemetry:test                         # Generate test data
 
 ## License
 
-This devcontainer configuration is part of the DevMultiplier Academy project.
-See main project LICENSE for details.
+This devcontainer configuration is part of the DevMultiplier Academy project. See main project LICENSE for details.
 
 ---
 
