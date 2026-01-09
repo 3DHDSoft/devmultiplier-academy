@@ -335,4 +335,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     updateAge: 24 * 60 * 60, // Update session every 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, // Required for devcontainers and proxied environments
 });

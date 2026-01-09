@@ -63,7 +63,10 @@
       "Bash(vercel env pull:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(PGPASSWORD=postgres psql:*)",
+      "Bash(npx prisma db push:*)"
     ]
   }
 }

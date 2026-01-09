@@ -213,10 +213,6 @@
   // "remoteUser": "root" // node
 
   "containerEnv": {
-    "DATABASE_URL": "postgresql://admin:academy2026@postgres:5432/academy",
-    "POSTGRES_DB": "academy",
-    "POSTGRES_USER": "admin",
-    "POSTGRES_PASSWORD": "academy2026",
     "NODE_ENV": "development"
   }
 }
