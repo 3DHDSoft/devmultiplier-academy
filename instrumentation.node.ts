@@ -107,7 +107,7 @@ registerOTel({
   traceExporter,
   metricReader,
   instrumentations: [
-    getNodeAutoInstrumentations({
+    ...getNodeAutoInstrumentations({
       // Auto-instrument HTTP requests (creates traces + metrics)
       '@opentelemetry/instrumentation-http': {
         enabled: true,

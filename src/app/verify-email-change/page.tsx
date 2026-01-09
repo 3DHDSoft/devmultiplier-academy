@@ -9,14 +9,16 @@ function VerifyEmailChangeContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(() =>
+    token ? 'loading' : 'error'
+  );
+  const [message, setMessage] = useState(() =>
+    token ? '' : 'Invalid verification link'
+  );
   const [newEmail, setNewEmail] = useState('');
 
   useEffect(() => {
     if (!token) {
-      setStatus('error');
-      setMessage('Invalid verification link');
       return;
     }
 
@@ -45,7 +47,7 @@ function VerifyEmailChangeContent() {
           setStatus('error');
           setMessage(data.error || 'Failed to verify email change');
         }
-      } catch (error) {
+      } catch (_error) {
         setStatus('error');
         setMessage('An unexpected error occurred. Please try again.');
       }

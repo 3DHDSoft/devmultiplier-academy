@@ -11,10 +11,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { recordHttpRequest } from './metrics';
 
-type RouteHandler = (request: NextRequest, context?: any) => Promise<Response> | Response;
+type RouteContext = { params?: Record<string, string | string[]> };
+type RouteHandler = (request: NextRequest, context?: RouteContext) => Promise<Response> | Response;
 
 export function withMetrics(handler: RouteHandler, route?: string): RouteHandler {
-  return async function metricsWrapper(request: NextRequest, context?: any) {
+  return async function metricsWrapper(request: NextRequest, context?: RouteContext) {
     const startTime = Date.now();
     const method = request.method;
     const pathname = route || new URL(request.url).pathname;
@@ -61,7 +62,7 @@ export function createMetricsHandlers<T extends Record<string, RouteHandler>>(
   handlers: T,
   route?: string
 ): T {
-  const wrappedHandlers: any = {};
+  const wrappedHandlers: Record<string, RouteHandler> = {};
 
   for (const [method, handler] of Object.entries(handlers)) {
     wrappedHandlers[method] = withMetrics(handler, route);

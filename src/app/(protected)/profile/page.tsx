@@ -284,7 +284,7 @@ export default function ProfilePage() {
     };
 
     fetchProfile();
-  }, [session?.user?.id]); // Only re-fetch if user ID changes
+  }, [session?.user]); // Only re-fetch if user changes
 
   // Fetch active sessions when tab changes to settings
   useEffect(() => {
@@ -834,7 +834,7 @@ export default function ProfilePage() {
                       Course updates
                     </span>
                     <span className="block text-sm text-gray-500">
-                      Get notified when courses you're enrolled in are updated
+                      Get notified when courses you&apos;re enrolled in are updated
                     </span>
                   </label>
                 </div>
@@ -980,7 +980,7 @@ export default function ProfilePage() {
                 <>
                   <div className="mb-4 rounded-lg bg-blue-50 p-3">
                     <p className="text-sm text-blue-800">
-                      A verification link will be sent to your new email address. You'll need to click it to complete the change.
+                      A verification link will be sent to your new email address. You&apos;ll need to click it to complete the change.
                     </p>
                   </div>
 

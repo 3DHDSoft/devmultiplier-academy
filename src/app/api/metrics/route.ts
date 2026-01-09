@@ -14,7 +14,7 @@ export const runtime = 'nodejs';
 export async function GET() {
   try {
     // Get the meter provider
-    const meterProvider = metrics.getMeterProvider();
+    const _meterProvider = metrics.getMeterProvider();
 
     // For now, return a simple response indicating the endpoint is working
     // In a production setup, you would integrate with a Prometheus exporter

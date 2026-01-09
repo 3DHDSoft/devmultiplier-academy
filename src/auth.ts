@@ -197,7 +197,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: '/login',
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile: _profile }) {
       // For OAuth providers, ensure user exists in database
       if (account?.provider !== 'credentials') {
         try {

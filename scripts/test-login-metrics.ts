@@ -28,7 +28,7 @@ const testUsers = [
 
 const cities = ['New York', 'London', 'Tokyo', 'Paris', 'Berlin', 'Sydney', 'Singapore', 'Toronto'];
 const countries = ['US', 'GB', 'JP', 'FR', 'DE', 'AU', 'SG', 'CA'];
-const ipAddresses = [
+const _ipAddresses = [
   '203.0.113.1',
   '198.51.100.1',
   '192.0.2.1',

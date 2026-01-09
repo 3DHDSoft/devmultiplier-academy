@@ -43,7 +43,7 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
 
   // Hook into response finish event
   const originalEnd = res.end;
-  res.end = function (this: ServerResponse, ...args: any[]) {
+  res.end = function (this: ServerResponse, ...args: Parameters<ServerResponse['end']>) {
     const duration = (Date.now() - startTime) / 1000; // Convert to seconds
     const statusCode = res.statusCode || 200;
 
