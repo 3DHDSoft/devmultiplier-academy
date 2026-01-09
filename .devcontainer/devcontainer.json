@@ -146,6 +146,7 @@
         "bradlc.vscode-tailwindcss",
         "bradymholt.pgformatter",
         "codezombiech.gitignore",
+        "databricks.neon-local-connect",
         "davidanson.vscode-markdownlint",
         "dbaeumer.vscode-eslint",
         "docker.docker",

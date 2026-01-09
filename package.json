@@ -41,6 +41,7 @@
     "telemetry:login": "NODE_OPTIONS='' tsx scripts/test-login-metrics.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.67.3",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.209.0",
