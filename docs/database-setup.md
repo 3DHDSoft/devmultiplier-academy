@@ -71,7 +71,7 @@ Host (pooled):   ep-aged-bar-ahbjhuve-pooler.c-3.us-east-1.aws.neon.tech
 Port:            5432
 Database:        neondb
 User:            neondb_owner
-Password:        npg_OJWCmdEtbp06
+Password:        [pw]
 SSL:             require
 ```
 
@@ -89,7 +89,7 @@ Use the unpooled connection for migrations:
 
 ```bash
 # Option 1: Inline DATABASE_URL
-DATABASE_URL="postgresql://neondb_owner:npg_OJWCmdEtbp06@ep-aged-bar-ahbjhuve-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" bun prisma migrate deploy
+DATABASE_URL="postgresql://neondb_owner:[pw]@[host]/neondb?sslmode=require&channel_binding=require" bun prisma migrate deploy
 
 # Option 2: Using dotenv-cli with .env.vercel.cloud
 dotenv -e .env.vercel.cloud -- bun prisma migrate deploy
@@ -124,7 +124,7 @@ Right-click **Servers** → **Register** → **Server**
 | Port                 | `5432`                                             |
 | Maintenance database | `neondb`                                           |
 | Username             | `neondb_owner`                                     |
-| Password             | `npg_OJWCmdEtbp06`                                 |
+| Password             | `[pw]`                                             |
 | Save password        | Yes (optional)                                     |
 
 ### Step 4: SSL Tab
