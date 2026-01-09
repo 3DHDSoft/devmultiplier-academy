@@ -28,14 +28,6 @@ const testUsers = [
 
 const cities = ['New York', 'London', 'Tokyo', 'Paris', 'Berlin', 'Sydney', 'Singapore', 'Toronto'];
 const countries = ['US', 'GB', 'JP', 'FR', 'DE', 'AU', 'SG', 'CA'];
-const _ipAddresses = [
-  '203.0.113.1',
-  '198.51.100.1',
-  '192.0.2.1',
-  '203.0.113.50',
-  '198.51.100.100',
-];
-
 const failureReasons = [
   'invalid_password',
   'account_locked',

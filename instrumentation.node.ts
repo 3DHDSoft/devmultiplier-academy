@@ -105,7 +105,7 @@ console.log('✅ Global MeterProvider registered for application metrics');
 registerOTel({
   serviceName: 'dev-academy-web',
   traceExporter,
-  metricReader,
+  metricReaders: [metricReader],
   instrumentations: [
     ...getNodeAutoInstrumentations({
       // Auto-instrument HTTP requests (creates traces + metrics)
@@ -113,13 +113,13 @@ registerOTel({
         enabled: true,
         ignoreIncomingRequestHook: (request) => {
           // Ignore health checks and static assets
-          const url = request.url || '';
+          const url = 'url' in request ? request.url || '' : '';
           return url.includes('/_next/static') || url.includes('/favicon.ico') || url === '/health';
         },
         // Enable metrics collection for incoming HTTP requests
         requestHook: (span, request) => {
           // Add custom attributes to spans that will be converted to metrics
-          if (request.url) {
+          if ('url' in request && request.url) {
             span.setAttribute('http.route', request.url);
           }
         },

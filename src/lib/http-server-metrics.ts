@@ -42,8 +42,9 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
   const route = extractRoute(url);
 
   // Hook into response finish event
-  const originalEnd = res.end;
-  res.end = function (this: ServerResponse, ...args: Parameters<ServerResponse['end']>) {
+  const originalEnd = res.end.bind(res);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  res.end = function (this: ServerResponse, ...args: any[]) {
     const duration = (Date.now() - startTime) / 1000; // Convert to seconds
     const statusCode = res.statusCode || 200;
 
@@ -62,7 +63,8 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
     }
 
     // Call original end method
-    return originalEnd.apply(this, args);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (originalEnd as any).apply(this, args);
   };
 }
 

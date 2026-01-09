@@ -32,7 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {
           id: profile.id.toString(),
           name: profile.name || profile.login,
-          email: profile.email,
+          email: profile.email ?? undefined,
           image: profile.avatar_url,
         };
       },
@@ -55,7 +55,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     MicrosoftEntraIDProvider({
       clientId: process.env.MICROSOFT_CLIENT_ID!,
       clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
-      tenantId: process.env.MICROSOFT_TENANT_ID,
+      issuer: `https://login.microsoftonline.com/${process.env.MICROSOFT_TENANT_ID || 'common'}/v2.0`,
     }),
 
     // LinkedIn OAuth Provider (uses OpenID Connect)
@@ -199,7 +199,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ user, account, profile: _profile }) {
       // For OAuth providers, ensure user exists in database
-      if (account?.provider !== 'credentials') {
+      if (account && account.provider !== 'credentials') {
         try {
           // Check if user exists
           let dbUser = await prisma.users.findUnique({
@@ -246,7 +246,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 token_type: account.token_type,
                 scope: account.scope,
                 id_token: account.id_token,
-                session_state: account.session_state,
+                session_state: typeof account.session_state === 'string' ? account.session_state : null,
               },
             });
           }
