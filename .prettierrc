@@ -1,0 +1,44 @@
+{
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "jsxSingleQuote": false,
+  "singleAttributePerLine": true,
+  "proseWrap": "always",
+  "htmlWhitespaceSensitivity": "css",
+  "plugins": [ "prettier-plugin-tailwindcss" ],
+
+  "overrides": [
+    {
+      "files": [ "*.ts", "*.tsx" ],
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": [ "*.js", "*.jsx" ],
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": [ "*.json", "*.jsonc", "*.json5" ],
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "parser": "markdown",
+        "proseWrap": "always"
+      }
+    }
+  ]
+}

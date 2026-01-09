@@ -1,0 +1,13 @@
+{
+  "extends": "markdownlint/style/prettier",
+  "default": true,
+  "no-html": false,
+  "no-bare-urls": true,
+  "line-length": {
+    "line_length": 100,
+    "heading_line_length": 100,
+    "headers": true,
+    "code_blocks": false,
+    "code_lines": false
+  }
+}

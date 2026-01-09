@@ -1,30 +1,99 @@
 {
-  "name": "devmultiplier-academy",
+  "name": "dev-x-academy-web",
+  "description": "DevMultiplier Academy website",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "DevMultiplier Academy",
+    "url": "https://DevMultiplier.com",
+    "organization": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3DHDSoft/devmultiplier-academy.git"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "bun": ">=1.3.5"
+  },
+  "packageManager": "bun@1.3.5",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "NODE_OPTIONS='' next dev",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
-    "lint": "eslint"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
+    "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:debug": "playwright test --debug",
+    "e2e:headed": "playwright test --headed",
+    "prepare": "NODE_OPTIONS='' husky",
+    "telemetry:test": "NODE_OPTIONS='' tsx scripts/generate-test-telemetry.ts",
+    "telemetry:traffic": "NODE_OPTIONS='' tsx scripts/generate-continuous-traffic.ts",
+    "telemetry:login": "NODE_OPTIONS='' tsx scripts/test-login-metrics.ts"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.67.3",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.209.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.209.0",
+    "@opentelemetry/resources": "^2.3.0",
+    "@opentelemetry/sdk-metrics": "^2.3.0",
+    "@opentelemetry/sdk-node": "^0.209.0",
+    "@opentelemetry/semantic-conventions": "^1.38.0",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@vercel/otel": "^2.1.0",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
+    "next-auth": "^5.0.0-beta.30",
+    "next-intl": "^4.7.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "tailwind-merge": "^3.4.0"
+    "resend": "^6.7.0",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.5"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --cache --fix",
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{ts,tsx,js,jsx,css,md,json}": "prettier --write"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@prisma/client": "^7.2.0",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "happy-dom": "^20.1.0",
+    "husky": "^9.1.7",
+    "prettier": "^3",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "prisma": "^7.2.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.16"
   }
 }

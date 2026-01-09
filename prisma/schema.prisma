@@ -1,0 +1,268 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Course {
+  id                  String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  slug                String                @unique
+  status              String                @default("draft")
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime
+  course_progress     course_progress[]
+  course_translations course_translations[]
+  enrollments         enrollments[]
+  modules             modules[]
+  instructors         instructors[]         @relation("CourseToInstructor")
+}
+
+model accounts {
+  id                String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId            String  @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  users             users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model course_progress {
+  id              String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId          String   @db.Uuid
+  courseId        String   @db.Uuid
+  lessonId        String?
+  modulesComplete Int      @default(0)
+  lessonsComplete Int      @default(0)
+  lastAccessedAt  DateTime @default(now())
+  updatedAt       DateTime
+  Course          Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  users           users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+}
+
+model course_translations {
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  courseId       String   @db.Uuid
+  locale         String
+  title          String
+  description    String
+  content        String
+  thumbnail      String?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  Course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, locale])
+  @@index([courseId])
+  @@index([locale])
+}
+
+model email_change_tokens {
+  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId       String   @db.Uuid
+  currentEmail String
+  newEmail     String
+  token        String   @unique
+  expires      DateTime
+  used         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expires])
+  @@index([token])
+  @@index([userId])
+}
+
+model enrollments {
+  id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId      String    @db.Uuid
+  courseId    String    @db.Uuid
+  status      String    @default("active")
+  progress    Int       @default(0)
+  completedAt DateTime?
+  enrolledAt  DateTime  @default(now())
+  updatedAt   DateTime
+  Course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  users       users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+  @@index([status])
+  @@index([userId])
+}
+
+model instructors {
+  id     String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name   String
+  email  String   @unique
+  bio    String?
+  avatar String?
+  Course Course[] @relation("CourseToInstructor")
+}
+
+model lesson_translations {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  lessonId  String   @db.Uuid
+  locale    String
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  lessons   lessons  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, locale])
+}
+
+model lessons {
+  id                  String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  moduleId            String                @db.Uuid
+  order               Int
+  videoUrl            String?
+  duration            Int?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime
+  lesson_translations lesson_translations[]
+  modules             modules               @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@index([moduleId])
+}
+
+model login_logs {
+  id            String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId        String   @db.Uuid
+  email         String
+  ipAddress     String?
+  userAgent     String?
+  country       String?
+  city          String?
+  region        String?
+  latitude      Float?
+  longitude     Float?
+  success       Boolean  @default(true)
+  failureReason String?
+  createdAt     DateTime @default(now())
+  users         users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([ipAddress])
+  @@index([userId])
+}
+
+model module_translations {
+  id          String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  moduleId    String   @db.Uuid
+  locale      String
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  modules     modules  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([moduleId, locale])
+}
+
+model modules {
+  id                  String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  courseId            String                @db.Uuid
+  order               Int
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime
+  lessons             lessons[]
+  module_translations module_translations[]
+  Course              Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([courseId])
+}
+
+model password_reset_tokens {
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  email     String
+  token     String   @unique
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([expires])
+  @@index([token])
+}
+
+model sessions {
+  id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  sessionToken String    @unique
+  userId       String    @db.Uuid
+  expires      DateTime
+  ipAddress    String?
+  userAgent    String?
+  device       String?
+  browser      String?
+  os           String?
+  country      String?
+  city         String?
+  region       String?
+  latitude     Float?
+  longitude    Float?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  users        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId])
+}
+
+model users {
+  id                          String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  email                       String?               @unique
+  emailVerified               DateTime?
+  name                        String?
+  password                    String?
+  avatar                      String?
+  bio                         String?
+  locale                      String                @default("en")
+  timezone                    String                @default("UTC")
+  status                      String                @default("active")
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime
+  isAdmin                     Boolean               @default(false)
+  dashboardAppearance         String                @default("light")
+  emailDigestFrequency        String                @default("weekly")
+  notifyOnAchievements        Boolean               @default(true)
+  notifyOnCompletionReminders Boolean               @default(true)
+  notifyOnCourseUpdates       Boolean               @default(true)
+  notifyOnMessages            Boolean               @default(true)
+  notifyOnNewCourses          Boolean               @default(true)
+  accounts                    accounts[]
+  course_progress             course_progress[]
+  email_change_tokens         email_change_tokens[]
+  enrollments                 enrollments[]
+  login_logs                  login_logs[]
+  sessions                    sessions[]
+
+  @@index([email])
+  @@index([locale])
+}
+
+model verificationtokens {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

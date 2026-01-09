@@ -1,0 +1,62 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'dev-academy'
+    environment: 'development'
+
+scrape_configs:
+  # Prometheus itself - Disabled to avoid Go runtime metrics pollution
+  # - job_name: 'prometheus'
+  #   static_configs:
+  #     - targets: ['localhost:9090']
+
+  # OpenTelemetry Collector - Scrapes application metrics from OTEL Collector
+  # Filters out Go runtime metrics to keep only application metrics
+  - job_name: 'otel-collector'
+    static_configs:
+      - targets: ['otel-collector:8889']
+    scrape_interval: 10s
+    metric_relabel_configs:
+      # Drop all Go runtime metrics
+      - source_labels: [__name__]
+        regex: 'go_.*'
+        action: drop
+      # Drop process metrics
+      - source_labels: [__name__]
+        regex: 'process_.*'
+        action: drop
+      # Drop promhttp metrics
+      - source_labels: [__name__]
+        regex: 'promhttp_.*'
+        action: drop
+      # Keep only devacademy namespace metrics (from your app)
+      - source_labels: [__name__]
+        regex: 'devacademy_.*'
+        action: keep
+
+  # OpenTelemetry Collector internal metrics
+  # Disabled: OTEL collector doesn't expose internal metrics on port 8888
+  # - job_name: 'otel-collector-internal'
+  #   static_configs:
+  #     - targets: ['otel-collector:8888']
+  #   scrape_interval: 30s
+
+  # Next.js application direct metrics endpoint (optional, can be disabled)
+  - job_name: 'nextjs-app'
+    static_configs:
+      - targets: ['dev-x-academy-web:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 10s
+
+  # PostgreSQL exporter - Disabled: postgres-exporter service not configured
+  # To enable: Add postgres-exporter service to docker-compose.yml
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
+
+  # Node exporter - Disabled: node-exporter service not configured
+  # To enable: Add node-exporter service to docker-compose.yml
+  # - job_name: 'node'
+  #   static_configs:
+  #     - targets: ['node-exporter:9100']

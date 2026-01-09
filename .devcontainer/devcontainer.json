@@ -1,80 +1,167 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-	"name": "TS Node.js",
+  "name": "TS Node.js",
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev-x-academy-web",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	//"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts"
-    },
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+  "hostRequirements": {
+    "cpus": 4
   },
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 3001, 5432, 8008],
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  //"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm"
+
+  // Features to add to the dev container. More info: https://containers.dev/features, https://github.com/devcontainers/features.
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/copilot-cli:1": {},
+
+    // CLI
+    "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/vercel-cli:1": {},
+    "ghcr.io/r3dpoint/devcontainer-features/tailwindcss-standalone-cli:1": {},
+    "ghcr.io/nullcoder/devcontainer-features/stripe-cli:1": {},
+
+    // Utilities
+    "ghcr.io/iterative/features/nvtop:1": {},
+    "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {},
+    "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
+    "ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
+    "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {},
+
+    // Common Utilities, Oh My Zsh! - https://github.com/devcontainers/features/tree/main/src/common-utils
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true,
+      "upgradePackages": "true"
+    }
+  },
+
+  // ============================================================================
+  // PORT FORWARDING CONFIGURATION
+  // ============================================================================
+  // Forward ports from containers to localhost for local development access.
+  // See docker-compose.yml for container port mappings.
+  //
+  // OBSERVABILITY STACK (OpenTelemetry):
+  // ------------------------------------
+  // The OTel stack provides distributed tracing and metrics collection:
+  //
+  //   Next.js App ──OTLP──> OTel Collector ──> Tempo (traces)
+  //                                       ──> Prometheus (metrics)
+  //                                                  │
+  //                                                  v
+  //                                              Grafana (dashboards)
+  //
+  // DEBUG ENDPOINTS:
+  //   - http://localhost:9090       Prometheus UI (query metrics)
+  //   - http://localhost:3001       Grafana dashboards (admin/admin)
+  //   - http://localhost:3200       Tempo API (trace queries)
+  //   - http://localhost:13133      OTel Collector health check
+  //   - http://localhost:8888       OTel Collector self-metrics
+  //   - http://localhost:8889/metrics  Prometheus scrape endpoint (app metrics)
+  //
+  // SENDING TELEMETRY (from app):
+  //   - grpc://localhost:4317       OTLP gRPC (preferred, faster)
+  //   - http://localhost:4318       OTLP HTTP (fallback)
+  //
+  // ============================================================================
+  "forwardPorts": [
+    // --- Application ---
+    3000, // Next.js App
+
+    // --- Database ---
+    5433, // PostgreSQL 18 (mapped from container 5432)
+    5051, // pgAdmin web UI
+
+    // --- OpenTelemetry Collector ---
+    4317, // OTLP gRPC receiver (send traces/metrics here)
+    4318, // OTLP HTTP receiver (send traces/metrics here)
+    8888, // Collector internal metrics
+    8889, // Prometheus exporter (Prometheus scrapes this)
+    13133, // Health check endpoint
+
+    // --- Tracing (Tempo) ---
+    3200, // Tempo query frontend API
+    4319, // Tempo OTLP gRPC (direct, bypasses collector)
+
+    // --- Metrics & Dashboards ---
+    9090, // Prometheus UI
+    3001 // Grafana dashboards
+  ],
 
   "portsAttributes": {
+    // Application
     "3000": { "label": "Next.js App", "onAutoForward": "notify" },
-    "3001": { "label": "API Server", "onAutoForward": "notify" },
-    "5432": { "label": "PostgreSQL 18", "onAutoForward": "silent" },
-    "8008": { "label": "pgAdmin", "onAutoForward": "silent" }
+
+    // Database
+    "5433": { "label": "PostgreSQL 18", "onAutoForward": "silent" },
+    "5051": { "label": "pgAdmin", "onAutoForward": "silent" },
+
+    // OTel Collector - Ingestion
+    "4317": { "label": "OTLP gRPC", "onAutoForward": "silent" },
+    "4318": { "label": "OTLP HTTP", "onAutoForward": "silent" },
+
+    // OTel Collector - Debug/Metrics
+    "8888": { "label": "OTel Collector Metrics", "onAutoForward": "silent" },
+    "8889": { "label": "OTel Prometheus Export", "onAutoForward": "silent" },
+    "13133": { "label": "OTel Health", "onAutoForward": "silent" },
+
+    // Tempo (Tracing)
+    "3200": { "label": "Tempo", "onAutoForward": "silent" },
+    "4319": { "label": "Tempo OTLP", "onAutoForward": "silent" },
+
+    // Prometheus & Grafana
+    "9090": { "label": "Prometheus", "onAutoForward": "silent" },
+    "3001": { "label": "Grafana", "onAutoForward": "notify" }
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
-	// postCreateCommand
+  // postCreateCommand
   "postStartCommand": "bash .devcontainer/post-start.sh",
 
-	// Configure tool-specific properties.
+  // Configure tool-specific properties.
   "customizations": {
     "vscode": {
       // find /home/node/.vscode-server/extensions -maxdepth 1 -type d -name "*-*" | sed 's|.*/||' | sort
       "extensions": [
-        "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss",
-        "prisma.prisma",
-        "mtxr.sqltools",
-        "mtxr.sqltools-driver-pg",
-        "humao.rest-client",
-        "redhat.vscode-yaml",
-        "streetsidesoftware.code-spell-checker",
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "eamodio.gitlens",
-        "dbaeumer.vscode-eslint",
-        "ms-azuretools.vscode-docker",
-        "ms-dotnettools.csdevkit",
-        "ms-vscode.vscode-typescript-next",
-        "ms-dotnettools.csharp",
+        // Mermaid support
+        "bierner.markdown-mermaid",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
         "alefragnani.project-manager",
         "anthropic.claude-code",
         "bierner.github-markdown-preview",
         "bierner.markdown-checkbox",
         "bierner.markdown-emoji",
         "bierner.markdown-footnotes",
-        "bierner.markdown-mermaid",
         "bierner.markdown-preview-github-styles",
         "bierner.markdown-yaml-preamble",
+        "bradlc.vscode-tailwindcss",
         "bradymholt.pgformatter",
         "codezombiech.gitignore",
         "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
         "docker.docker",
         "donjayamanne.git-extension-pack",
         "donjayamanne.githistory",
         "doublefint.pgsql",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "george-alisson.html-preview-vscode",
         "github.vscode-github-actions",
         "github.vscode-pull-request-github",
         "goessner.mdmath",
         "huizhou.githd",
+        "humao.rest-client",
         "inferrinizzard.prettier-sql-vscode",
         "kisstkondoros.vscode-codemetrics",
         "kumar-harsh.graphql-for-vscode",
@@ -84,11 +171,23 @@
         "mohsen1.prettify-json",
         "moshfeu.compare-folders",
         "ms-azuretools.vscode-azureresourcegroups",
+        "ms-azuretools.vscode-docker",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-playwright.playwright",
+        "ms-vscode.vscode-typescript-next",
         "ms-windows-ai-studio.windows-ai-studio",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "prisma.prisma",
         "redhat.vscode-xml",
-        "shd101wyy.markdown-preview-enhanced",
+        "redhat.vscode-yaml",
         "rvest.vs-code-prettier-eslint",
+        "shd101wyy.markdown-preview-enhanced",
+        "streetsidesoftware.code-spell-checker",
         "teamsdevapp.vscode-ai-foundry",
+        "uctakeoff.vscode-counter",
+        "vitest.explorer",
         "yzhang.markdown-all-in-one",
         "yzane.markdown-pdf",
         "ziyasal.vscode-open-in-github"
@@ -99,19 +198,24 @@
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit"
         },
-        "typescript.preferences.importModuleSpecifier": "relative"
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "markdownlint.config": {
+          "extends": "markdownlint/style/prettier",
+          "default": true
+        },
+        "http.proxyStrictSSL": false
       }
     }
   },
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root" // node
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root" // node
 
   "containerEnv": {
-    "DATABASE_URL": "postgresql://sa:Dev-Multiplier-2026_Str0ng@postgres:5432/adventure_works",
-    "POSTGRES_DB": "adventure_works",
-    "POSTGRES_USER": "sa",
-    "POSTGRES_PASSWORD": "Dev-Multiplier-2026_Str0ng",
+    "DATABASE_URL": "postgresql://admin:academy2026@postgres:5432/academy",
+    "POSTGRES_DB": "academy",
+    "POSTGRES_USER": "admin",
+    "POSTGRES_PASSWORD": "academy2026",
     "NODE_ENV": "development"
   }
 }
