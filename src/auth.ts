@@ -1,6 +1,10 @@
 import '@/auth.types';
 import NextAuth, { type User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
+import MicrosoftEntraIDProvider from 'next-auth/providers/microsoft-entra-id';
+import LinkedInProvider from 'next-auth/providers/linkedin';
 import { prisma } from './lib/prisma';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
@@ -20,6 +24,60 @@ const signInSchema = z.object({
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
+    // GitHub OAuth Provider
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name || profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+        };
+      },
+    }),
+
+    // Google OAuth Provider
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
+    }),
+
+    // Microsoft Entra ID (Azure AD) Provider
+    MicrosoftEntraIDProvider({
+      clientId: process.env.MICROSOFT_CLIENT_ID!,
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
+      tenantId: process.env.MICROSOFT_TENANT_ID,
+    }),
+
+    // LinkedIn OAuth Provider
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID!,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
+      authorization: {
+        params: { scope: 'openid profile email' },
+      },
+      issuer: 'https://www.linkedin.com',
+      jwks_endpoint: 'https://www.linkedin.com/oauth/openid/jwks',
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
+    }),
+
+    // Credentials Provider (Email/Password)
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -152,6 +210,80 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: '/login',
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // For OAuth providers, ensure user exists in database
+      if (account?.provider !== 'credentials') {
+        try {
+          // Check if user exists
+          let dbUser = await prisma.users.findUnique({
+            where: { email: user.email! },
+          });
+
+          // Create user if doesn't exist
+          if (!dbUser) {
+            dbUser = await prisma.users.create({
+              data: {
+                email: user.email!,
+                name: user.name,
+                avatar: user.image,
+                emailVerified: new Date(),
+                locale: 'en',
+                timezone: 'UTC',
+                status: 'active',
+              },
+            });
+            console.log(`Created new OAuth user: ${user.email}`);
+          }
+
+          // Create or update account link
+          const existingAccount = await prisma.accounts.findUnique({
+            where: {
+              provider_providerAccountId: {
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              },
+            },
+          });
+
+          if (!existingAccount) {
+            await prisma.accounts.create({
+              data: {
+                userId: dbUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                refresh_token: account.refresh_token,
+                access_token: account.access_token,
+                expires_at: account.expires_at,
+                token_type: account.token_type,
+                scope: account.scope,
+                id_token: account.id_token,
+                session_state: account.session_state,
+              },
+            });
+          }
+
+          // Log successful OAuth login
+          await logLogin({
+            userId: dbUser.id,
+            email: user.email!,
+            success: true,
+            userName: user.name,
+          }).catch((err) => console.error('Failed to log OAuth login:', err));
+
+          // Track session for OAuth users
+          const sessionId = await trackSession(dbUser.id);
+          user.sessionId = sessionId;
+          user.id = dbUser.id;
+
+          return true;
+        } catch (error) {
+          console.error('OAuth sign-in error:', error);
+          return false;
+        }
+      }
+      return true;
+    },
     async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;

@@ -501,8 +501,8 @@ export default function ProfilePage() {
       <main className="mx-auto max-w-4xl px-4 py-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-4">
-          <h1 className="mb-0.5 text-xl font-bold text-gray-900">{formData.email}</h1>
-          <h2 className="text-2xl font-bold text-gray-900">Profile</h2>
+          <h1 className="mb-1 text-2xl font-bold text-gray-900">{formData.email}</h1>
+          <h2 className="text-3xl font-bold text-gray-900">Profile</h2>
         </div>
 
         {/* Tab Navigation */}
@@ -534,14 +534,14 @@ export default function ProfilePage() {
         {/* Messages */}
         {error && (
           <div className="mb-3 rounded-md bg-red-50 p-2.5 text-red-800">
-            <p className="text-xs font-medium">Error</p>
-            <p className="text-xs">{error}</p>
+            <p className="text-sm font-medium">Error</p>
+            <p className="text-sm">{error}</p>
           </div>
         )}
 
         {success && (
           <div className="mb-3 rounded-md bg-green-50 p-2.5 text-green-800">
-            <p className="text-xs font-medium">Profile updated successfully!</p>
+            <p className="text-sm font-medium">Profile updated successfully!</p>
           </div>
         )}
 
@@ -550,12 +550,12 @@ export default function ProfilePage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Settings Section */}
             <div className="rounded-lg bg-white p-4 shadow">
-              <h3 className="mb-3 text-base font-semibold text-gray-900">Settings</h3>
+              <h3 className="mb-3 text-lg font-semibold text-gray-900">Settings</h3>
 
               <div className="space-y-3">
                 {/* Email (Verified) */}
                 <div>
-                  <label htmlFor="email" className="mb-1 block text-xs font-medium text-gray-700">
+                  <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
                     Email
                   </label>
                   <div className="flex items-center gap-2">
@@ -582,7 +582,7 @@ export default function ProfilePage() {
 
                 {/* Language */}
                 <div>
-                  <label htmlFor="locale" className="mb-1 block text-xs font-medium text-gray-700">
+                  <label htmlFor="locale" className="mb-1 block text-sm font-medium text-gray-700">
                     Language
                   </label>
                   <select
@@ -604,7 +604,7 @@ export default function ProfilePage() {
 
                 {/* Dashboard Appearance */}
                 <div>
-                  <label htmlFor="dashboardAppearance" className="mb-1 block text-xs font-medium text-gray-700">
+                  <label htmlFor="dashboardAppearance" className="mb-1 block text-sm font-medium text-gray-700">
                     Dashboard appearance
                   </label>
                   <select
@@ -643,7 +643,7 @@ export default function ProfilePage() {
 
             {/* Active Sessions */}
             <div className="rounded-lg bg-white p-4 shadow">
-              <h3 className="mb-3 text-base font-semibold text-gray-900">Active sessions</h3>
+              <h3 className="mb-3 text-lg font-semibold text-gray-900">Active sessions</h3>
 
 {loadingSessions ? (
                 <div className="flex items-center justify-center py-4">
@@ -780,15 +780,15 @@ export default function ProfilePage() {
 
             {/* Danger Zone - Delete Profile Section */}
             <div className="rounded-lg border-2 border-red-200 bg-white p-4 shadow">
-              <h3 className="mb-2 text-sm font-bold text-red-600">Danger Zone</h3>
-              <h4 className="mb-1 text-sm font-semibold text-gray-900">Delete your profile</h4>
-              <p className="mb-3 text-xs text-gray-600">
+              <h3 className="mb-2 text-lg font-bold text-red-600">Danger Zone</h3>
+              <h4 className="mb-1 text-base font-semibold text-gray-900">Delete your profile</h4>
+              <p className="mb-3 text-sm text-gray-600">
                 Permanently delete the user {formData.email}
               </p>
               <button
                 type="button"
                 onClick={() => setShowDeleteModal(true)}
-                className="rounded-md border border-red-600 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50"
+                className="rounded-md border border-red-600 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
               >
                 Delete User
               </button>
@@ -800,7 +800,7 @@ export default function ProfilePage() {
         {activeTab === 'notifications' && (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="rounded-lg bg-white p-4 shadow">
-              <h3 className="mb-3 text-base font-semibold text-gray-900">Email Notifications</h3>
+              <h3 className="mb-3 text-lg font-semibold text-gray-900">Email Notifications</h3>
 
               <div className="space-y-2.5">
                 {/* Course Updates */}
@@ -817,7 +817,7 @@ export default function ProfilePage() {
                     <span className="block text-sm font-medium text-gray-900">
                       Course updates
                     </span>
-                    <span className="block text-xs text-gray-500">
+                    <span className="block text-sm text-gray-500">
                       Get notified when courses you're enrolled in are updated
                     </span>
                   </label>
@@ -837,7 +837,7 @@ export default function ProfilePage() {
                     <span className="block text-sm font-medium text-gray-900">
                       New courses
                     </span>
-                    <span className="block text-xs text-gray-500">
+                    <span className="block text-sm text-gray-500">
                       Be the first to know when new courses are available
                     </span>
                   </label>
@@ -857,7 +857,7 @@ export default function ProfilePage() {
                     <span className="block text-sm font-medium text-gray-900">
                       Completion reminders
                     </span>
-                    <span className="block text-xs text-gray-500">
+                    <span className="block text-sm text-gray-500">
                       Gentle reminders to help you complete your courses
                     </span>
                   </label>
@@ -877,7 +877,7 @@ export default function ProfilePage() {
                     <span className="block text-sm font-medium text-gray-900">
                       Achievements and milestones
                     </span>
-                    <span className="block text-xs text-gray-500">
+                    <span className="block text-sm text-gray-500">
                       Celebrate your learning progress with achievement notifications
                     </span>
                   </label>
@@ -897,7 +897,7 @@ export default function ProfilePage() {
                     <span className="block text-sm font-medium text-gray-900">
                       Messages and replies
                     </span>
-                    <span className="block text-xs text-gray-500">
+                    <span className="block text-sm text-gray-500">
                       Get notified when instructors or students message you
                     </span>
                   </label>
@@ -905,7 +905,7 @@ export default function ProfilePage() {
 
                 {/* Email Digest Frequency */}
                 <div className="pt-2">
-                  <label htmlFor="emailDigestFrequency" className="mb-1 block text-xs font-medium text-gray-900">
+                  <label htmlFor="emailDigestFrequency" className="mb-1 block text-sm font-medium text-gray-900">
                     Email digest frequency
                   </label>
                   <select
@@ -920,7 +920,7 @@ export default function ProfilePage() {
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-sm text-gray-500">
                     Receive a summary of your activity and updates
                   </p>
                 </div>
