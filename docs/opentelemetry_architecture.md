@@ -704,13 +704,15 @@ graph LR
 
 ### Overview
 
-The application exposes Prometheus-compatible metrics via a `/api/metrics` endpoint. This allows monitoring tools to scrape application metrics in the standard Prometheus text format.
+The application exposes Prometheus-compatible metrics via a `/api/metrics` endpoint. This allows monitoring tools to
+scrape application metrics in the standard Prometheus text format.
 
 ### Implementation
 
 **File**: [`src/app/api/metrics/route.ts`](../src/app/api/metrics/route.ts)
 
 The metrics endpoint:
+
 - Exposes basic application metrics (uptime, service info)
 - Returns data in Prometheus text format (version 0.0.4)
 - Can be extended to include OpenTelemetry metrics
@@ -718,10 +720,10 @@ The metrics endpoint:
 
 ### Current Metrics
 
-| Metric Name | Type | Description | Labels |
-|------------|------|-------------|--------|
-| `app_info` | gauge | Application metadata | `service`, `environment` |
-| `app_uptime_seconds` | counter | Application uptime in seconds | None |
+| Metric Name          | Type    | Description                   | Labels                   |
+| -------------------- | ------- | ----------------------------- | ------------------------ |
+| `app_info`           | gauge   | Application metadata          | `service`, `environment` |
+| `app_uptime_seconds` | counter | Application uptime in seconds | None                     |
 
 ### Architecture Integration
 
@@ -756,25 +758,27 @@ graph LR
 
 ### Metrics vs Traces
 
-| Feature | Traces (Tempo) | Metrics (Prometheus) |
-|---------|---------------|---------------------|
-| **Data Type** | Spans with events | Time-series counters/gauges |
-| **Cardinality** | High (per-request) | Low (aggregated) |
-| **Storage** | Tempo backend | Prometheus/Mimir |
-| **Use Case** | Request debugging | Performance monitoring |
-| **Export Method** | OTLP push | HTTP scrape |
-| **Cost** | Higher for high traffic | Lower |
+| Feature           | Traces (Tempo)          | Metrics (Prometheus)        |
+| ----------------- | ----------------------- | --------------------------- |
+| **Data Type**     | Spans with events       | Time-series counters/gauges |
+| **Cardinality**   | High (per-request)      | Low (aggregated)            |
+| **Storage**       | Tempo backend           | Prometheus/Mimir            |
+| **Use Case**      | Request debugging       | Performance monitoring      |
+| **Export Method** | OTLP push               | HTTP scrape                 |
+| **Cost**          | Higher for high traffic | Lower                       |
 
 ### Extending the Metrics Endpoint
 
 To add full OpenTelemetry metrics support:
 
 1. **Install dependencies**:
+
 ```bash
 bun add @opentelemetry/exporter-prometheus @opentelemetry/sdk-metrics
 ```
 
 2. **Configure metrics in `instrumentation.node.ts`**:
+
 ```typescript
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { MeterProvider } from '@opentelemetry/sdk-metrics';
@@ -790,6 +794,7 @@ const meterProvider = new MeterProvider({
 ```
 
 3. **Update the metrics endpoint**:
+
 ```typescript
 import { PrometheusSerializer } from '@opentelemetry/exporter-prometheus';
 

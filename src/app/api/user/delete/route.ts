@@ -36,10 +36,7 @@ export async function POST(req: NextRequest) {
 
     // Verify password
     if (!user.password) {
-      return NextResponse.json(
-        { error: 'Cannot delete account without password set' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Cannot delete account without password set' }, { status: 400 });
     }
 
     const isPasswordValid = await bcrypt.compare(validatedData.password, user.password);
@@ -61,16 +58,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid input', details: error.issues },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
     }
 
     console.error('Delete account error:', error);
-    return NextResponse.json(
-      { error: 'Failed to delete account' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });
   }
 }

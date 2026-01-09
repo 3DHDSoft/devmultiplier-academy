@@ -39,14 +39,14 @@ const prisma = basePrisma.$extends({
           'db.system': 'postgresql',
           'db.operation': operation,
           'db.table': model || 'unknown',
-          'error': 'true',
+          error: 'true',
         });
 
         dbQueryDuration.record(duration, {
           'db.system': 'postgresql',
           'db.operation': operation,
           'db.table': model || 'unknown',
-          'error': 'true',
+          error: 'true',
         });
 
         // Record error counter

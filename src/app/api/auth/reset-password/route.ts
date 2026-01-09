@@ -20,24 +20,15 @@ export async function POST(req: NextRequest) {
 
     // Validate token
     if (!resetToken) {
-      return NextResponse.json(
-        { error: 'Invalid or expired reset token' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 400 });
     }
 
     if (resetToken.used) {
-      return NextResponse.json(
-        { error: 'This reset link has already been used' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'This reset link has already been used' }, { status: 400 });
     }
 
     if (resetToken.expires < new Date()) {
-      return NextResponse.json(
-        { error: 'This reset link has expired. Please request a new one.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'This reset link has expired. Please request a new one.' }, { status: 400 });
     }
 
     // Find the user
@@ -46,10 +37,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Hash the new password
@@ -75,17 +63,11 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid input', details: error.issues },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
     }
 
     console.error('Reset password error:', error);
-    return NextResponse.json(
-      { error: 'Failed to reset password' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to reset password' }, { status: 500 });
   }
 }
 
@@ -95,10 +77,7 @@ export async function GET(req: NextRequest) {
     const token = req.nextUrl.searchParams.get('token');
 
     if (!token) {
-      return NextResponse.json(
-        { error: 'Token is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Token is required' }, { status: 400 });
     }
 
     const resetToken = await prisma.password_reset_tokens.findUnique({
@@ -111,24 +90,15 @@ export async function GET(req: NextRequest) {
     });
 
     if (!resetToken) {
-      return NextResponse.json(
-        { valid: false, error: 'Invalid token' },
-        { status: 400 }
-      );
+      return NextResponse.json({ valid: false, error: 'Invalid token' }, { status: 400 });
     }
 
     if (resetToken.used) {
-      return NextResponse.json(
-        { valid: false, error: 'Token already used' },
-        { status: 400 }
-      );
+      return NextResponse.json({ valid: false, error: 'Token already used' }, { status: 400 });
     }
 
     if (resetToken.expires < new Date()) {
-      return NextResponse.json(
-        { valid: false, error: 'Token expired' },
-        { status: 400 }
-      );
+      return NextResponse.json({ valid: false, error: 'Token expired' }, { status: 400 });
     }
 
     return NextResponse.json({
@@ -137,9 +107,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error('Token verification error:', error);
-    return NextResponse.json(
-      { error: 'Failed to verify token' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to verify token' }, { status: 500 });
   }
 }

@@ -55,7 +55,9 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
-    console.log(`Email changed from ${emailChangeToken.currentEmail} to ${emailChangeToken.newEmail} for user ${emailChangeToken.userId}`);
+    console.log(
+      `Email changed from ${emailChangeToken.currentEmail} to ${emailChangeToken.newEmail} for user ${emailChangeToken.userId}`
+    );
 
     return NextResponse.json({
       success: true,

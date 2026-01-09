@@ -31,10 +31,7 @@ export function withMetrics(handler: RouteHandler, route?: string): RouteHandler
       // Handle errors
       console.error('Error in route handler:', error);
       statusCode = 500;
-      response = NextResponse.json(
-        { error: 'Internal server error' },
-        { status: 500 }
-      );
+      response = NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 
     // Record metrics
@@ -58,10 +55,7 @@ export function withMetrics(handler: RouteHandler, route?: string): RouteHandler
 /**
  * Create metrics-enabled route handlers for all HTTP methods
  */
-export function createMetricsHandlers<T extends Record<string, RouteHandler>>(
-  handlers: T,
-  route?: string
-): T {
+export function createMetricsHandlers<T extends Record<string, RouteHandler>>(handlers: T, route?: string): T {
   const wrappedHandlers: Record<string, RouteHandler> = {};
 
   for (const [method, handler] of Object.entries(handlers)) {

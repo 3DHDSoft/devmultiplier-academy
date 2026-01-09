@@ -78,13 +78,23 @@ export async function PATCH(req: NextRequest) {
         ...(validatedData.avatar !== undefined && { avatar: validatedData.avatar }),
         ...(validatedData.locale !== undefined && { locale: validatedData.locale }),
         ...(validatedData.timezone !== undefined && { timezone: validatedData.timezone }),
-        ...(validatedData.dashboardAppearance !== undefined && { dashboardAppearance: validatedData.dashboardAppearance }),
-        ...(validatedData.notifyOnCourseUpdates !== undefined && { notifyOnCourseUpdates: validatedData.notifyOnCourseUpdates }),
+        ...(validatedData.dashboardAppearance !== undefined && {
+          dashboardAppearance: validatedData.dashboardAppearance,
+        }),
+        ...(validatedData.notifyOnCourseUpdates !== undefined && {
+          notifyOnCourseUpdates: validatedData.notifyOnCourseUpdates,
+        }),
         ...(validatedData.notifyOnNewCourses !== undefined && { notifyOnNewCourses: validatedData.notifyOnNewCourses }),
-        ...(validatedData.notifyOnCompletionReminders !== undefined && { notifyOnCompletionReminders: validatedData.notifyOnCompletionReminders }),
-        ...(validatedData.notifyOnAchievements !== undefined && { notifyOnAchievements: validatedData.notifyOnAchievements }),
+        ...(validatedData.notifyOnCompletionReminders !== undefined && {
+          notifyOnCompletionReminders: validatedData.notifyOnCompletionReminders,
+        }),
+        ...(validatedData.notifyOnAchievements !== undefined && {
+          notifyOnAchievements: validatedData.notifyOnAchievements,
+        }),
         ...(validatedData.notifyOnMessages !== undefined && { notifyOnMessages: validatedData.notifyOnMessages }),
-        ...(validatedData.emailDigestFrequency !== undefined && { emailDigestFrequency: validatedData.emailDigestFrequency }),
+        ...(validatedData.emailDigestFrequency !== undefined && {
+          emailDigestFrequency: validatedData.emailDigestFrequency,
+        }),
       },
       select: {
         id: true,

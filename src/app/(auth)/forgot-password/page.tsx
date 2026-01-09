@@ -60,8 +60,8 @@ export default function ForgotPasswordPage() {
               <p className="text-sm text-green-800">
                 <strong>Check your email!</strong>
                 <br />
-                If an account exists with this email, we&apos;ve sent a password reset link.
-                Please check your inbox and spam folder.
+                If an account exists with this email, we&apos;ve sent a password reset link. Please check your inbox and
+                spam folder.
               </p>
             </div>
           )}
@@ -75,10 +75,16 @@ export default function ForgotPasswordPage() {
 
           {/* Form */}
           {!success && (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4"
+            >
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="mb-1 block text-sm font-medium text-gray-700"
+                >
                   Email Address
                 </label>
                 <input

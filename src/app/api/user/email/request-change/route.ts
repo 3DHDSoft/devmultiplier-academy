@@ -82,10 +82,7 @@ export async function POST(req: NextRequest) {
       await sendEmailChangeVerification(validatedData.newEmail, user.email, token);
     } catch (emailError) {
       console.error('Failed to send verification email:', emailError);
-      return NextResponse.json(
-        { error: 'Failed to send verification email. Please try again.' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
     }
 
     return NextResponse.json({

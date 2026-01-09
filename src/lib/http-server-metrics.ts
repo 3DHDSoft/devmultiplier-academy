@@ -50,9 +50,9 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
     // Record metrics
     try {
       const attrs = {
-        'http_request_method': method,
-        'http_route': route,
-        'http_response_status_code': statusCode.toString(),
+        http_request_method: method,
+        http_route: route,
+        http_response_status_code: statusCode.toString(),
       };
 
       httpServerRequestCounter.add(1, attrs);

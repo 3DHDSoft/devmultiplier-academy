@@ -44,11 +44,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
 
     // Microsoft Entra ID (Azure AD) Provider

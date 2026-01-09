@@ -65,20 +65,14 @@ export async function DELETE(req: NextRequest) {
       // Terminate specific session
       const success = await terminateSession(session.user.id, validatedData.sessionId);
       if (!success) {
-        return NextResponse.json(
-          { error: 'Session not found or already terminated' },
-          { status: 404 }
-        );
+        return NextResponse.json({ error: 'Session not found or already terminated' }, { status: 404 });
       }
       return NextResponse.json({
         success: true,
         message: 'Session terminated',
       });
     } else {
-      return NextResponse.json(
-        { error: 'Either sessionId or terminateAll must be provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Either sessionId or terminateAll must be provided' }, { status: 400 });
     }
   } catch (error) {
     if (error instanceof z.ZodError) {

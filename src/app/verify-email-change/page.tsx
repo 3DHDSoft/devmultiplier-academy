@@ -9,12 +9,8 @@ function VerifyEmailChangeContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(() =>
-    token ? 'loading' : 'error'
-  );
-  const [message, setMessage] = useState(() =>
-    token ? '' : 'Invalid verification link'
-  );
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(() => (token ? 'loading' : 'error'));
+  const [message, setMessage] = useState(() => (token ? '' : 'Invalid verification link'));
   const [newEmail, setNewEmail] = useState('');
 
   useEffect(() => {
@@ -79,9 +75,7 @@ function VerifyEmailChangeContent() {
                 </p>
               </div>
             )}
-            <p className="mt-4 text-sm text-gray-500">
-              Redirecting to login page in 3 seconds...
-            </p>
+            <p className="mt-4 text-sm text-gray-500">Redirecting to login page in 3 seconds...</p>
             <button
               onClick={() => router.push('/login')}
               className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700"
@@ -119,11 +113,13 @@ function VerifyEmailChangeContent() {
 
 export default function VerifyEmailChangePage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+        </div>
+      }
+    >
       <VerifyEmailChangeContent />
     </Suspense>
   );
