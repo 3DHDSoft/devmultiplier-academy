@@ -1517,11 +1517,10 @@ In your Vercel project settings, add:
 // next.config.ts
 import { withSentryConfig } from '@sentry/nextjs';
 
+// Note: In Next.js 15+, instrumentation is built-in and enabled by default.
+// No experimental.instrumentationHook needed - just create instrumentation.ts in your project root.
 const nextConfig = {
-  // Enable instrumentation hook
-  experimental: {
-    instrumentationHook: true,
-  },
+  // Your config here
 };
 
 export default withSentryConfig(nextConfig, {
