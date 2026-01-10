@@ -7,21 +7,23 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (status === 'authenticated' && session) {
+    if (status === 'authenticated' && !isRedirecting) {
+      setIsRedirecting(true);
       window.location.href = '/dashboard';
     }
-  }, [session, status]);
+  }, [status, isRedirecting]);
 
-  // Show loading while checking session
-  if (status === 'loading') {
+  // Show loading while checking session or redirecting
+  if (status === 'loading' || isRedirecting) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
         <div className="text-white">Loading...</div>
