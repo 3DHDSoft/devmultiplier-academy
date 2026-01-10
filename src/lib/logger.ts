@@ -1,8 +1,9 @@
 /**
- * Structured Logging with Pino
+ * Structured Logging with Axiom Integration
  *
  * This module provides a production-ready logger with:
  * - Environment-aware configuration (pretty dev, JSON prod)
+ * - Axiom integration for production log aggregation
  * - Automatic sensitive data redaction
  * - Module-specific child loggers
  * - Request-scoped loggers with correlation IDs
@@ -62,6 +63,11 @@ type LogFn = {
 const isDev = process.env.NODE_ENV === 'development';
 const isTest = process.env.NODE_ENV === 'test';
 const isProd = process.env.NODE_ENV === 'production';
+
+// Axiom configuration (auto-set by Vercel integration)
+const AXIOM_DATASET = process.env.AXIOM_DATASET;
+const AXIOM_TOKEN = process.env.AXIOM_TOKEN;
+const hasAxiom = Boolean(AXIOM_DATASET && AXIOM_TOKEN);
 
 // =============================================================================
 // Configuration
@@ -155,6 +161,87 @@ const LEVEL_COLORS: Record<string, string> = {
   debug: COLORS.cyan,
   trace: COLORS.gray,
 };
+
+// =============================================================================
+// Axiom Transport
+// =============================================================================
+
+/**
+ * Buffer for batching logs to Axiom
+ */
+const axiomBuffer: Record<string, unknown>[] = [];
+const AXIOM_BATCH_SIZE = 10;
+const AXIOM_FLUSH_INTERVAL = 5000; // 5 seconds
+let axiomFlushTimer: NodeJS.Timeout | null = null;
+
+/**
+ * Send logs to Axiom
+ */
+async function sendToAxiom(logs: Record<string, unknown>[]): Promise<void> {
+  if (!hasAxiom || logs.length === 0) return;
+
+  try {
+    const response = await fetch(`https://api.axiom.co/v1/datasets/${AXIOM_DATASET}/ingest`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AXIOM_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(logs),
+    });
+
+    if (!response.ok) {
+      console.error(`Axiom ingest failed: ${response.status} ${response.statusText}`);
+    }
+  } catch (error) {
+    // Silently fail - don't let logging errors affect the application
+    console.error('Failed to send logs to Axiom:', error);
+  }
+}
+
+/**
+ * Flush the Axiom buffer
+ */
+async function flushAxiomBuffer(): Promise<void> {
+  if (axiomBuffer.length === 0) return;
+
+  const logs = axiomBuffer.splice(0, axiomBuffer.length);
+  await sendToAxiom(logs);
+}
+
+/**
+ * Queue a log entry for Axiom
+ */
+function queueForAxiom(logEntry: Record<string, unknown>): void {
+  if (!hasAxiom) return;
+
+  axiomBuffer.push({
+    ...logEntry,
+    _time: new Date().toISOString(),
+  });
+
+  // Flush if batch size reached
+  if (axiomBuffer.length >= AXIOM_BATCH_SIZE) {
+    flushAxiomBuffer();
+  }
+
+  // Set up interval flush if not already running
+  if (!axiomFlushTimer) {
+    axiomFlushTimer = setInterval(() => {
+      flushAxiomBuffer();
+    }, AXIOM_FLUSH_INTERVAL);
+
+    // Unref the timer so it doesn't keep the process alive
+    if (axiomFlushTimer.unref) {
+      axiomFlushTimer.unref();
+    }
+  }
+}
+
+// Flush on process exit
+if (typeof process !== 'undefined') {
+  process.on('beforeExit', () => flushAxiomBuffer());
+}
 
 /**
  * Redact sensitive values from an object
@@ -250,6 +337,11 @@ function createLoggerInstance(bindings: Record<string, unknown> = {}): Logger {
       if (logObj.err && typeof logObj.err === 'object' && 'stack' in logObj.err) {
         console.log(COLORS.gray + (logObj.err as Error).stack + COLORS.reset);
       }
+    }
+
+    // Send to Axiom if configured (works in any environment)
+    if (hasAxiom) {
+      queueForAxiom(logEntry);
     }
   };
 
@@ -420,4 +512,24 @@ export function startTimer(): { elapsed: () => number } {
   return {
     elapsed: () => Date.now() - start,
   };
+}
+
+/**
+ * Flush all pending logs to Axiom
+ *
+ * Call this before serverless functions exit to ensure all logs are sent.
+ *
+ * @example
+ * ```typescript
+ * // In API route
+ * export async function GET() {
+ *   logger.info('Processing request');
+ *   // ... do work ...
+ *   await flushLogs();
+ *   return NextResponse.json({ success: true });
+ * }
+ * ```
+ */
+export async function flushLogs(): Promise<void> {
+  await flushAxiomBuffer();
 }
