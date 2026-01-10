@@ -96,7 +96,7 @@ cp commands/workflows/*.md ~/.claude/commands/
 
 ```bash
 # Install the marketplace CLI
-npm install -g bwc-cli
+bun install -g bwc-cli
 
 # Initialize configuration
 bwc init
@@ -205,7 +205,7 @@ curl -sL https://raw.githubusercontent.com/wshobson/commands/main/tools/security
 ### 4. Use the Marketplace CLI
 
 ```bash
-npm install -g bwc-cli
+bun install -g bwc-cli
 bwc init
 bwc add --agent backend-architect
 bwc add --command commit

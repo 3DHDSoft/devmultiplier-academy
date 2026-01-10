@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)",
+      "Bash(bun install:*)",
       "Bash(npx prisma generate)",
       "Bash(npx prisma migrate dev:*)",
       "Bash(bunx prisma migrate:*)",
@@ -68,7 +68,9 @@
       "Bash(PGPASSWORD=postgres psql:*)",
       "Bash(npx prisma db push:*)",
       "Bash(git reset:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(sudo npm install:*)",
+      "Bash(claude:*)"
     ]
   }
 }
