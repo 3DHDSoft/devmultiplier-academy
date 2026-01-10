@@ -77,9 +77,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         let userId = '';
 
         try {
+          // Debug: Log that authorize was called (will show in Axiom)
+          authLogger.debug({ hasCredentials: !!credentials, credentialKeys: credentials ? Object.keys(credentials) : [] }, 'Authorize called');
+
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
           userEmail = validatedCredentials.email;
+
+          authLogger.debug({ email: userEmail }, 'Credentials validated, looking up user');
 
           // Find user in database
           const user = await prisma.users.findUnique({
@@ -178,6 +183,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           return returnUser;
         } catch (error) {
+          // Log error details for debugging
+          authLogger.error({
+            err: error,
+            userEmail: userEmail || 'not-set',
+            userId: userId || 'not-set',
+            isZodError: error instanceof z.ZodError,
+          }, 'Authorization error');
+
           // Log error if we have user info
           if (userId && userEmail) {
             await logLogin({
@@ -340,7 +353,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   logger: {
     error(code, ...message) {
       // CredentialsSignin is expected for failed login attempts - log as warning
-      if (code.name === 'CredentialsSignin' || code.message?.includes('CredentialsSignin')) {
+      // Check multiple properties as the error object structure varies between dev and production
+      const isCredentialsSignin =
+        code.name === 'CredentialsSignin' ||
+        (code as { type?: string }).type === 'CredentialsSignin' ||
+        code.message?.includes('CredentialsSignin');
+
+      if (isCredentialsSignin) {
         authLogger.warn({ code: 'CredentialsSignin' }, 'Failed login attempt');
       } else {
         authLogger.error({ err: code, details: message }, 'Auth error');
