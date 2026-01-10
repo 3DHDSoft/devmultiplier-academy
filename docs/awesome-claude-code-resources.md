@@ -216,25 +216,66 @@ bwc add --command commit
 ## 📁 Recommended Project Structure
 
 ```
-📁 your-project/
-├── 📝 CLAUDE.md                      # Main instructions
-├── 📝 CLAUDE.local.md                # Personal (git-ignored)
+📦 your-project/
+├── 📄 CLAUDE.md                          # Main project instructions
+├── 📄 CLAUDE.local.md                    # Personal settings (git-ignored)
 └── 📁 .claude/
-    ├── 📁 rules/                     # Scoped instructions
-    │   ├── 📝 typescript.md
-    │   └── 📝 testing.md
-    ├── 📁 commands/                  # Slash commands
-    │   ├── 📝 review.md
-    │   └── 📝 deploy.md
-    ├── 📁 agents/                    # Custom subagents
-    │   ├── 📝 dba.md
-    │   └── 📝 security-reviewer.md
-    ├── 📁 skills/                    # Auto-discovered skills
-    │   └── 📁 database-optimization/
-    │       └── 📝 SKILL.md
-    └── 📁 output-styles/             # Response formatting
-        └── 📝 technical-writer.md
+    ├── 📁 rules/                         # Coding standards & patterns
+    │   ├── 📄 typescript.md              # TypeScript strict mode & patterns
+    │   ├── 📄 testing.md                 # Vitest & Playwright conventions
+    │   ├── 📄 api-routes.md              # API handler patterns
+    │   ├── 📄 components.md              # React component guidelines
+    │   ├── 📄 prisma.md                  # Database query patterns
+    │   ├── 📄 i18n.md                    # Internationalization rules
+    │   └── 📄 security.md                # Security checklist (OWASP)
+    ├── 📁 commands/                      # Slash commands (/command)
+    │   ├── 📄 review.md                  # Code review workflow
+    │   ├── 📄 deploy.md                  # Deployment workflow
+    │   ├── 📄 commit.md                  # Conventional commits
+    │   ├── 📄 pr.md                      # Pull request creation
+    │   ├── 📄 migrate.md                 # Database migrations
+    │   ├── 📄 seed.md                    # Database seeding
+    │   ├── 📄 i18n-check.md              # Translation completeness
+    │   ├── 📄 api-test.md                # API endpoint testing
+    │   ├── 📄 metrics.md                 # OpenTelemetry monitoring
+    │   └── 📄 env-check.md               # Environment validation
+    ├── 📁 agents/                        # Specialized AI subagents
+    │   ├── 📄 dba.md                     # Database Administrator
+    │   ├── 📄 security-reviewer.md       # Security auditor (OWASP)
+    │   ├── 📄 api-developer.md           # API development patterns
+    │   ├── 📄 frontend-developer.md      # React/Next.js components
+    │   ├── 📄 i18n-specialist.md         # Internationalization
+    │   ├── 📄 devops-engineer.md         # CI/CD & Docker
+    │   ├── 📄 performance-analyst.md     # Performance optimization
+    │   └── 📄 accessibility-auditor.md   # WCAG compliance
+    ├── 📁 skills/                        # Multi-step workflows
+    │   ├── 📁 database-optimization/
+    │   │   └── 📄 SKILL.md               # Query & index optimization
+    │   ├── 📁 api-scaffolding/
+    │   │   └── 📄 SKILL.md               # CRUD API generation
+    │   ├── 📁 component-generator/
+    │   │   └── 📄 SKILL.md               # React component scaffolding
+    │   ├── 📁 translation-sync/
+    │   │   └── 📄 SKILL.md               # Translation file sync
+    │   ├── 📁 test-generator/
+    │   │   └── 📄 SKILL.md               # Test generation
+    │   └── 📁 migration-planner/
+    │       └── 📄 SKILL.md               # Database migration planning
+    └── 📁 output-styles/                 # Response formatting
+        └── 📄 technical-writer.md        # Docs with Mermaid & emojis
+
+Legend: 📦 Root | 📁 Directory | 📄 File
 ```
+
+### Configuration Categories
+
+| Category        | Purpose                                    | Location          |
+| --------------- | ------------------------------------------ | ----------------- |
+| **Rules**       | Auto-loaded coding standards by file type  | `.claude/rules/`  |
+| **Commands**    | User-invoked workflows (`/command`)        | `.claude/commands/` |
+| **Agents**      | Specialized AI personas for complex tasks  | `.claude/agents/` |
+| **Skills**      | Multi-step guided workflows                | `.claude/skills/` |
+| **Output Styles** | Response formatting templates            | `.claude/output-styles/` |
 
 ---
 

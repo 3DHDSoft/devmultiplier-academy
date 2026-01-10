@@ -37,27 +37,40 @@ bun run format:fix       # Prettier with auto-fix
 - **Database**: PostgreSQL with Prisma ORM
 - **Auth**: NextAuth v5 (credentials + OAuth: GitHub, Google, Microsoft, LinkedIn)
 - **Styling**: Tailwind CSS v4
+- **i18n**: next-intl for internationalization
 - **Testing**: Vitest (unit), Playwright (e2e)
 
 ### Directory Structure
 
 ```
-src/
-├── app/                    # Next.js App Router
-│   ├── (auth)/             # Auth pages (login, register, forgot-password)
-│   ├── (protected)/        # Protected pages (dashboard, profile, admin)
-│   └── api/                # API routes
-├── components/
-│   ├── layout/             # Header, Footer, LayoutWrapper
-│   ├── sections/           # Hero, Courses, Pricing, CTA
-│   └── ui/                 # Reusable components (Button, etc.)
-├── lib/                    # Utilities and services
-│   ├── prisma.ts           # Prisma client singleton
-│   ├── metrics.ts          # OpenTelemetry metrics
-│   └── email-service.ts    # Resend email integration
-├── generated/prisma/       # Generated Prisma client (do not edit)
-└── auth.ts                 # NextAuth configuration
+📦 /
+├── 📄 middleware.ts              # Root middleware (auth + metrics)
+├── 📄 instrumentation.ts         # OpenTelemetry setup entry point
+├── 📁 prisma/
+│   └── 📄 schema.prisma          # Database schema
+└── 📁 src/
+    ├── 📄 auth.ts                # NextAuth configuration
+    ├── 📁 app/                   # Next.js App Router
+    │   ├── 📁 (auth)/            # Auth pages (login, register, forgot-password)
+    │   ├── 📁 (protected)/       # Protected pages (dashboard, profile, admin)
+    │   └── 📁 api/               # API routes
+    ├── 📁 components/
+    │   ├── 📁 layout/            # Header, Footer, LayoutWrapper
+    │   ├── 📁 sections/          # Hero, Courses, Pricing, CTA
+    │   └── 📁 ui/                # Reusable components (Button, etc.)
+    ├── 📁 lib/                   # Utilities and services
+    │   ├── 📄 prisma.ts          # Prisma client singleton
+    │   ├── 📄 metrics.ts         # OpenTelemetry metrics helpers
+    │   ├── 📄 email-service.ts   # Resend email integration
+    │   ├── 📄 login-logger.ts    # Login attempt logging
+    │   └── 📄 session-tracker.ts # Session validation
+    └── 📁 generated/prisma/      # Generated Prisma client (do not edit)
 ```
+
+**Legend:**
+- 📦 Project root
+- 📁 Directory
+- 📄 File
 
 ### Key Patterns
 
@@ -65,11 +78,11 @@ src/
 
 **API Routes**: Follow REST conventions in `src/app/api/`. Each route exports handlers like `GET`, `POST`, `PUT`, `DELETE`.
 
-**Authentication**: JWT-based sessions via NextAuth. Protected routes check `authjs.session-token` cookie in middleware.
+**Authentication**: JWT-based sessions via NextAuth v5. Protected routes (`/dashboard`, `/courses`, `/profile`, `/enrollments`) check `authjs.session-token` cookie in root `middleware.ts`. Session tracking validates active sessions in the JWT callback.
 
-**Database**: Prisma with PostgreSQL. Models include users, courses, modules, lessons, enrollments, and progress tracking. All content supports i18n via `*_translations` tables.
+**Database**: Prisma with PostgreSQL. Models include users, courses, modules, lessons, enrollments, and progress tracking. All content supports i18n via `*_translations` tables (course_translations, module_translations, lesson_translations).
 
-**Observability**: OpenTelemetry instrumentation via `instrumentation.ts`. Metrics recorded for HTTP requests and page views.
+**Observability**: OpenTelemetry instrumentation via `instrumentation.ts` (loads `instrumentation.node.ts` server-side). Metrics recorded for HTTP requests and page views in middleware.
 
 ### Path Alias
 Use `@/` to import from `src/`:
