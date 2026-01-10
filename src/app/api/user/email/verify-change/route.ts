@@ -1,13 +1,16 @@
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { ValidationError, NotFoundError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const verifyEmailChangeSchema = z.object({
   token: z.string().min(1, 'Token is required'),
 });
 
-export async function POST(req: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const body = await req.json();
     const validatedData = verifyEmailChangeSchema.parse(body);
 
@@ -26,17 +29,17 @@ export async function POST(req: NextRequest) {
     });
 
     if (!emailChangeToken) {
-      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 400 });
+      throw new ValidationError('Invalid or expired token');
     }
 
     // Check if token is already used
     if (emailChangeToken.used) {
-      return NextResponse.json({ error: 'This token has already been used' }, { status: 400 });
+      throw new ValidationError('This token has already been used');
     }
 
     // Check if token is expired
     if (new Date() > emailChangeToken.expires) {
-      return NextResponse.json({ error: 'Token has expired. Please request a new email change' }, { status: 400 });
+      throw new ValidationError('Token has expired. Please request a new email change');
     }
 
     // Update user email and mark token as used in a transaction
@@ -55,30 +58,28 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
-    console.log(`Email changed from ${emailChangeToken.currentEmail} to ${emailChangeToken.newEmail} for user ${emailChangeToken.userId}`);
+    apiLogger.info(
+      { userId: emailChangeToken.userId, oldEmail: emailChangeToken.currentEmail, newEmail: emailChangeToken.newEmail },
+      'Email changed successfully'
+    );
 
     return NextResponse.json({
       success: true,
       message: 'Email address updated successfully',
       newEmail: emailChangeToken.newEmail,
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-    console.error('Verify email change error:', error);
-    return NextResponse.json({ error: 'Failed to verify email change' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/email/verify-change' }
+);
 
 // GET endpoint to check if a token is valid (without using it)
-export async function GET(req: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const token = searchParams.get('token');
 
     if (!token) {
-      return NextResponse.json({ error: 'Token is required' }, { status: 400 });
+      throw new ValidationError('Token is required');
     }
 
     const emailChangeToken = await prisma.email_change_tokens.findUnique({
@@ -92,15 +93,15 @@ export async function GET(req: NextRequest) {
     });
 
     if (!emailChangeToken) {
-      return NextResponse.json({ valid: false, error: 'Invalid token' }, { status: 400 });
+      throw new NotFoundError('Token');
     }
 
     if (emailChangeToken.used) {
-      return NextResponse.json({ valid: false, error: 'Token already used' }, { status: 400 });
+      throw new ValidationError('Token already used');
     }
 
     if (new Date() > emailChangeToken.expires) {
-      return NextResponse.json({ valid: false, error: 'Token expired' }, { status: 400 });
+      throw new ValidationError('Token expired');
     }
 
     return NextResponse.json({
@@ -108,8 +109,6 @@ export async function GET(req: NextRequest) {
       currentEmail: emailChangeToken.currentEmail,
       newEmail: emailChangeToken.newEmail,
     });
-  } catch (error) {
-    console.error('Check token error:', error);
-    return NextResponse.json({ error: 'Failed to verify token' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/email/verify-change' }
+);

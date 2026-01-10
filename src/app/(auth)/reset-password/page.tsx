@@ -141,10 +141,16 @@ export default function ResetPasswordPage() {
 
           {/* Form - Only show if token is valid and not validating */}
           {!isValidating && tokenValid && !success && (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4"
+            >
               {/* Password Field */}
               <div>
-                <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="mb-1 block text-sm font-medium text-gray-700"
+                >
                   New Password
                 </label>
                 <input
@@ -207,7 +213,10 @@ export default function ResetPasswordPage() {
 
           {/* Back to Login */}
           <div className="mt-6 text-center">
-            <Link href="/login" className="text-sm text-blue-600 hover:text-blue-700">
+            <Link
+              href="/login"
+              className="text-sm text-blue-600 hover:text-blue-700"
+            >
               ← Back to login
             </Link>
           </div>

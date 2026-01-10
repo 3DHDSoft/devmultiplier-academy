@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)",
+      "Bash(bun install:*)",
       "Bash(npx prisma generate)",
       "Bash(npx prisma migrate dev:*)",
       "Bash(bunx prisma migrate:*)",
@@ -59,7 +59,21 @@
       "Bash(for i in {1..5})",
       "Bash(do curl -s http://localhost:3000/)",
       "Bash(for i in {1..10})",
-      "Bash(do curl -s \"http://localhost:3000/api/courses\")"
+      "Bash(do curl -s \"http://localhost:3000/api/courses\")",
+      "Bash(vercel env pull:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(PGPASSWORD=postgres psql:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(git reset:*)",
+      "Bash(git push:*)",
+      "Bash(sudo npm install:*)",
+      "Bash(claude:*)",
+      "Bash(source .env.local)",
+      "Bash(git rev-parse:*)",
+      "Bash(git pull:*)"
     ]
   }
 }

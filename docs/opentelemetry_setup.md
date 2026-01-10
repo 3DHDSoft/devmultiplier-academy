@@ -89,6 +89,7 @@ Tracks failed login attempts with:
 The application supports two observability backends:
 
 ### Development: Local Grafana Stack
+
 - **OpenTelemetry Collector** - Receives and processes telemetry
 - **Grafana** - Visualization and dashboards (http://localhost:3001)
 - **Prometheus** - Metrics storage
@@ -96,6 +97,7 @@ The application supports two observability backends:
 - **Refresh Interval**: 15 seconds
 
 ### Production: Grafana Cloud
+
 - **OTLP Gateway** - Managed collector endpoint
 - **Grafana Cloud** - Hosted visualization
 - **Mimir/Prometheus** - Managed metrics storage
@@ -169,6 +171,7 @@ bun run dev
 ```
 
 You should see:
+
 ```
 📊 OpenTelemetry configuration: Local Stack (development)
   🏠 Using local OTLP collector: http://otel-collector:4318
@@ -207,7 +210,8 @@ OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp
 OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <base64_encoded_credentials>"}
 ```
 
-**Note**: When `NODE_ENV=production`, the app automatically uses Grafana Cloud even without setting `OTEL_USE_CLOUD=true`.
+**Note**: When `NODE_ENV=production`, the app automatically uses Grafana Cloud even without setting
+`OTEL_USE_CLOUD=true`.
 
 **Note:** For the `Authorization` header, you need to base64 encode `<instance-id>:<token>`:
 
@@ -425,7 +429,8 @@ Create a new dashboard in Grafana and import this JSON:
 
 ## Prometheus Metrics Endpoint
 
-The application exposes a `/api/metrics` endpoint that provides metrics in Prometheus text format. This endpoint can be scraped by Prometheus or other monitoring tools.
+The application exposes a `/api/metrics` endpoint that provides metrics in Prometheus text format. This endpoint can be
+scraped by Prometheus or other monitoring tools.
 
 ### Endpoint Details
 

@@ -285,9 +285,9 @@ export async function sendEmailChangeVerification(
   token: string
 ): Promise<void> {
   const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email-change?token=${token}`;
-  
+
   const subject = 'Verify Your New Email Address - Dev Academy';
-  
+
   const html = `
     <!DOCTYPE html>
     <html>

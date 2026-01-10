@@ -42,7 +42,8 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
   const route = extractRoute(url);
 
   // Hook into response finish event
-  const originalEnd = res.end;
+  const originalEnd = res.end.bind(res);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   res.end = function (this: ServerResponse, ...args: any[]) {
     const duration = (Date.now() - startTime) / 1000; // Convert to seconds
     const statusCode = res.statusCode || 200;
@@ -50,9 +51,9 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
     // Record metrics
     try {
       const attrs = {
-        'http_request_method': method,
-        'http_route': route,
-        'http_response_status_code': statusCode.toString(),
+        http_request_method: method,
+        http_route: route,
+        http_response_status_code: statusCode.toString(),
       };
 
       httpServerRequestCounter.add(1, attrs);
@@ -62,7 +63,8 @@ export function instrumentResponse(req: IncomingMessage, res: ServerResponse) {
     }
 
     // Call original end method
-    return originalEnd.apply(this, args);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (originalEnd as any).apply(this, args);
   };
 }
 

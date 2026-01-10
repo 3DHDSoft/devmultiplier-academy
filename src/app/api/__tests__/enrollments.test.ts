@@ -19,8 +19,8 @@ describe('POST /api/enrollments', () => {
     });
 
     it('should accept authenticated requests with valid session', () => {
-      const session: { users: { email: string; id: string; locale: string } } = {
-        users: {
+      const session: { user: { email: string; id: string; locale: string } } = {
+        user: {
           email: 'user@example.com',
           id: '123',
           locale: 'en',
@@ -152,7 +152,7 @@ describe('GET /api/enrollments', () => {
         },
       };
 
-      const courseTitle = enrollment.course.translations[0]?.title || 'Untitled';
+      const courseTitle = enrollment.Course.translations[0]?.title || 'Untitled';
       expect(courseTitle).toBe('DDD Course');
     });
 
@@ -164,7 +164,7 @@ describe('GET /api/enrollments', () => {
         },
       };
 
-      const courseTitle = enrollment.course.translations[0]?.title || 'Untitled';
+      const courseTitle = enrollment.Course.translations[0]?.title || 'Untitled';
       expect(courseTitle).toBe('Untitled');
     });
   });

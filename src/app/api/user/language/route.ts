@@ -2,6 +2,9 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const VALID_LOCALES = ['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu'] as const;
 
@@ -9,16 +12,18 @@ const updateLanguageSchema = z.object({
   locale: z.enum(VALID_LOCALES),
 });
 
-export async function PATCH(req: NextRequest) {
-  try {
+export const PATCH = withErrorHandling(
+  async (req: NextRequest) => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
     const validatedData = updateLanguageSchema.parse(body);
+
+    apiLogger.debug({ email: session.user.email, locale: validatedData.locale }, 'Updating language preference');
 
     const user = await prisma.users.update({
       where: { email: session.user.email },
@@ -32,23 +37,13 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
+    apiLogger.info({ userId: user.id, locale: user.locale }, 'Language preference updated');
+
     return NextResponse.json({
       success: true,
       locale: user.locale,
       user,
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        {
-          error: 'Invalid locale',
-          validLocales: VALID_LOCALES,
-          details: error.issues,
-        },
-        { status: 400 }
-      );
-    }
-    console.error('Error updating language preference:', error);
-    return NextResponse.json({ error: 'Failed to update language preference' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/language' }
+);

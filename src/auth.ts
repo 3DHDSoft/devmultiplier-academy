@@ -10,11 +10,16 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { logLogin } from './lib/login-logger';
 import { trackSession, isSessionValid } from './lib/session-tracker';
+import { authLogger } from './lib/logger';
 
 // Validate required environment variables
 if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET is not set. Run: openssl rand -base64 32');
 }
+
+//TEST!!! to force a new deployment
+const i = 0;
+console.log(i);
 
 // Zod schema for email/password validation
 const signInSchema = z.object({
@@ -32,7 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {
           id: profile.id.toString(),
           name: profile.name || profile.login,
-          email: profile.email,
+          email: profile.email ?? undefined,
           image: profile.avatar_url,
         };
       },
@@ -44,18 +49,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
 
     // Microsoft Entra ID (Azure AD) Provider
     MicrosoftEntraIDProvider({
       clientId: process.env.MICROSOFT_CLIENT_ID!,
       clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
-      tenantId: process.env.MICROSOFT_TENANT_ID,
+      issuer: `https://login.microsoftonline.com/${process.env.MICROSOFT_TENANT_ID || 'common'}/v2.0`,
     }),
 
     // LinkedIn OAuth Provider (uses OpenID Connect)
@@ -76,9 +81,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         let userId = '';
 
         try {
+          // Debug: Log that authorize was called (will show in Axiom)
+          authLogger.debug(
+            { hasCredentials: !!credentials, credentialKeys: credentials ? Object.keys(credentials) : [] },
+            'Authorize called'
+          );
+
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
           userEmail = validatedCredentials.email;
+
+          authLogger.debug({ email: userEmail }, 'Credentials validated, looking up user');
 
           // Find user in database
           const user = await prisma.users.findUnique({
@@ -177,6 +190,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           return returnUser;
         } catch (error) {
+          // Log error details for debugging
+          authLogger.error(
+            {
+              err: error,
+              userEmail: userEmail || 'not-set',
+              userId: userId || 'not-set',
+              isZodError: error instanceof z.ZodError,
+            },
+            'Authorization error'
+          );
+
           // Log error if we have user info
           if (userId && userEmail) {
             await logLogin({
@@ -197,9 +221,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: '/login',
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile: _profile }) {
       // For OAuth providers, ensure user exists in database
-      if (account?.provider !== 'credentials') {
+      if (account && account.provider !== 'credentials') {
         try {
           // Check if user exists
           let dbUser = await prisma.users.findUnique({
@@ -246,7 +270,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 token_type: account.token_type,
                 scope: account.scope,
                 id_token: account.id_token,
-                session_state: account.session_state,
+                session_state: typeof account.session_state === 'string' ? account.session_state : null,
               },
             });
           }
@@ -335,4 +359,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     updateAge: 24 * 60 * 60, // Update session every 24 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, // Required for devcontainers and proxied environments
+  logger: {
+    error(code, ...message) {
+      // CredentialsSignin is expected for failed login attempts - log as warning
+      // Check multiple properties as the error object structure varies between dev and production
+      const isCredentialsSignin =
+        code.name === 'CredentialsSignin' ||
+        (code as { type?: string }).type === 'CredentialsSignin' ||
+        code.message?.includes('CredentialsSignin');
+
+      if (isCredentialsSignin) {
+        authLogger.warn({ code: 'CredentialsSignin' }, 'Failed login attempt');
+      } else {
+        authLogger.error({ err: code, details: message }, 'Auth error');
+      }
+    },
+    warn(code) {
+      authLogger.warn({ code }, 'Auth warning');
+    },
+    debug(code, ...message) {
+      authLogger.debug({ code, details: message }, 'Auth debug');
+    },
+  },
 });

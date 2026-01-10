@@ -2,17 +2,26 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, AuthorizationError, ConflictError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const enrollmentSchema = z.object({
   courseId: z.string().uuid('Invalid course ID'),
 });
 
-export async function GET() {
-  try {
+/**
+ * GET /api/enrollments
+ * Get all enrollments for the authenticated user
+ */
+export const GET = withErrorHandling(
+  async () => {
+    apiLogger.info('Fetching enrollments');
+
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const userLocale = session.user.locale || 'en';
@@ -61,18 +70,20 @@ export async function GET() {
     }));
 
     return NextResponse.json(formattedEnrollments);
-  } catch (error) {
-    console.error('Error fetching enrollments:', error);
-    return NextResponse.json({ error: 'Failed to fetch enrollments' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/enrollments' }
+);
 
-export async function POST(req: NextRequest) {
-  try {
+/**
+ * POST /api/enrollments
+ * Create a new enrollment for the authenticated user
+ */
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -85,39 +96,41 @@ export async function POST(req: NextRequest) {
     });
 
     if (!course) {
-      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+      throw new NotFoundError('Course', courseId);
     }
 
     if (course.status !== 'published') {
-      return NextResponse.json({ error: 'Course is not available for enrollment' }, { status: 403 });
+      throw new AuthorizationError('Course is not available for enrollment');
+    }
+
+    // Get user
+    const user = await prisma.users.findUnique({
+      where: { email: session.user.email },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw new NotFoundError('User');
     }
 
     // Check if already enrolled
     const existingEnrollment = await prisma.enrollments.findUnique({
       where: {
         userId_courseId: {
-          userId: (await prisma.users.findUnique({
-            where: { email: session.user.email },
-            select: { id: true },
-          }))!.id,
+          userId: user.id,
           courseId,
         },
       },
     });
 
     if (existingEnrollment) {
-      return NextResponse.json({ error: 'Already enrolled in this course' }, { status: 409 });
+      throw new ConflictError('Already enrolled in this course');
     }
 
     // Create enrollment
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email },
-      select: { id: true },
-    });
-
     const enrollment = await prisma.enrollments.create({
       data: {
-        userId: user!.id,
+        userId: user.id,
         courseId,
         status: 'active',
         updatedAt: new Date(),
@@ -132,11 +145,6 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(enrollment, { status: 201 });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid request', details: error.issues }, { status: 400 });
-    }
-    console.error('Error creating enrollment:', error);
-    return NextResponse.json({ error: 'Failed to create enrollment' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/enrollments' }
+);

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { LayoutWrapper } from '@/components/layout/layout-wrapper';
+import { AxiomWebVitals } from 'next-axiom';
 
 export const metadata: Metadata = {
   title: 'DevMultiplier Academy | Become a 10x-100x Developer in the Age of AI',
@@ -46,6 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        <AxiomWebVitals />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

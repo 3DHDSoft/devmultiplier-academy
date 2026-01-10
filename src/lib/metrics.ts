@@ -26,7 +26,7 @@ function createLazyCounter(name: string, options?: MetricOptions) {
     add(value: number, attributes?: Attributes) {
       if (!counter) counter = getMeter().createCounter(name, options);
       counter.add(value, attributes);
-    }
+    },
   };
 }
 
@@ -37,7 +37,7 @@ function createLazyHistogram(name: string, options?: MetricOptions) {
     record(value: number, attributes?: Attributes) {
       if (!histogram) histogram = getMeter().createHistogram(name, options);
       histogram.record(value, attributes);
-    }
+    },
   };
 }
 
@@ -48,7 +48,7 @@ function createLazyUpDownCounter(name: string, options?: MetricOptions) {
     add(value: number, attributes?: Attributes) {
       if (!counter) counter = getMeter().createUpDownCounter(name, options);
       counter.add(value, attributes);
-    }
+    },
   };
 }
 
@@ -282,9 +282,9 @@ export function recordHttpRequest(attributes: {
   const { method, route, statusCode, duration, requestSize, responseSize } = attributes;
 
   const commonAttrs: Attributes = {
-    'http_request_method': method,
-    'http_route': route,
-    'http_response_status_code': statusCode.toString(),
+    http_request_method: method,
+    http_route: route,
+    http_response_status_code: statusCode.toString(),
   };
 
   httpServerRequestCounter.add(1, commonAttrs);
@@ -303,7 +303,7 @@ export function recordHttpRequest(attributes: {
   if (statusCode >= 400) {
     httpServerErrorCounter.add(1, {
       ...commonAttrs,
-      'error_type': statusCode >= 500 ? 'server_error' : 'client_error',
+      error_type: statusCode >= 500 ? 'server_error' : 'client_error',
     });
   }
 }

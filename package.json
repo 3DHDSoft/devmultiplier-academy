@@ -14,19 +14,19 @@
     "url": "https://github.com/3DHDSoft/devmultiplier-academy.git"
   },
   "engines": {
-    "node": ">=22.0.0",
+    "node": "22.x",
     "bun": ">=1.3.5"
   },
   "packageManager": "bun@1.3.5",
   "scripts": {
     "dev": "NODE_OPTIONS='' next dev",
-    "build": "NODE_ENV=production next build",
+    "build": "prisma generate && NODE_ENV=production next build",
     "start": "next start",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
-    "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' doc/",
+    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' docs/",
+    "format:fix": "prettier -w 'src/**/*.{js,jsx,ts,tsx,css,md,mdx,json}' docs/",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
@@ -41,6 +41,8 @@
     "telemetry:login": "NODE_OPTIONS='' tsx scripts/test-login-metrics.ts"
   },
   "dependencies": {
+    "@axiomhq/js": "^1.3.1",
+    "@neondatabase/serverless": "^1.0.2",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.67.3",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.209.0",
@@ -57,6 +59,7 @@
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
     "next-auth": "^5.0.0-beta.30",
+    "next-axiom": "^1.10.0",
     "next-intl": "^4.7.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",

@@ -634,7 +634,7 @@ All data persists across container rebuilds:
 | `prometheus_web_data`  | Metrics storage  | Time-series data            |
 | `grafana_web_data`     | Grafana data     | Dashboards, users, settings |
 | `tempo_web_data`       | Trace storage    | Distributed traces          |
-| `node_modules`         | Dependencies     | npm packages                |
+| `node_modules`         | Dependencies     | bun packages                |
 | `bun_cache`            | Package cache    | Downloaded packages         |
 
 ### Backup & Restore

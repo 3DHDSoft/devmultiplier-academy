@@ -1,16 +1,21 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling, RouteContext } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, AuthorizationError } from '@/lib/errors';
 
-export async function GET(_req: NextRequest, { params }: { params: { courseId: string } }) {
-  try {
+export const GET = withErrorHandling(
+  async (_req: NextRequest, context?: RouteContext) => {
+    if (!context?.params) {
+      throw new NotFoundError('Course progress');
+    }
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
-    const courseId = params.courseId;
+    const { courseId } = await context.params;
 
     // Get user
     const user = await prisma.users.findUnique({
@@ -19,7 +24,7 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFoundError('User');
     }
 
     // Verify enrollment
@@ -34,7 +39,7 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!enrollment) {
-      return NextResponse.json({ error: 'Not enrolled in this course' }, { status: 403 });
+      throw new AuthorizationError('Not enrolled in this course');
     }
 
     // Get course progress
@@ -74,7 +79,7 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
     });
 
     if (!course) {
-      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+      throw new NotFoundError('Course', courseId);
     }
 
     // Calculate totals
@@ -106,8 +111,6 @@ export async function GET(_req: NextRequest, { params }: { params: { courseId: s
       lastAccessedAt: courseProgress?.lastAccessedAt || enrollment.progress > 0 ? new Date() : null,
       updatedAt: courseProgress?.updatedAt,
     });
-  } catch (error) {
-    console.error('Error fetching progress:', error);
-    return NextResponse.json({ error: 'Failed to fetch progress' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/progress/[courseId]' }
+);

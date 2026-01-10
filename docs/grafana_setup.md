@@ -36,6 +36,7 @@ docker-compose up -d prometheus grafana
 Open your browser and navigate to: **http://localhost:3001**
 
 **Default credentials:**
+
 - Username: `admin`
 - Password: `admin`
 
@@ -85,9 +86,11 @@ GRAFANA_ADMIN_PASSWORD=admin
 
 ### Prometheus Configuration
 
-Prometheus scrape configuration is located at [.devcontainer/prometheus/prometheus.yml](.devcontainer/prometheus/prometheus.yml).
+Prometheus scrape configuration is located at
+[.devcontainer/prometheus/prometheus.yml](.devcontainer/prometheus/prometheus.yml).
 
 **Default scrape targets:**
+
 - Prometheus itself: `localhost:9090`
 - Next.js app: `dev-x-academy-web:3000/api/metrics`
 
@@ -96,6 +99,7 @@ Prometheus scrape configuration is located at [.devcontainer/prometheus/promethe
 Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.devcontainer/grafana/dashboards/).
 
 **Available dashboards:**
+
 - `application-overview.json`
 - `security-monitoring.json`
 - `performance-metrics.json`
@@ -104,57 +108,57 @@ Dashboards are automatically loaded from [.devcontainer/grafana/dashboards/](.de
 
 ### HTTP Metrics
 
-| Metric Name | Type | Description |
-|-------------|------|-------------|
-| `devacademy_http_client_request_duration_seconds_count` | Counter | Total HTTP requests |
-| `devacademy_http_client_request_duration_seconds` | Histogram | Request duration in ms |
-| `devacademy_api_errors_total` | Counter | Total HTTP errors |
-| `devacademy_http_client_request_size` | Histogram | Request body size in bytes |
-| `devacademy_http_client_response_size` | Histogram | Response body size in bytes |
+| Metric Name                                             | Type      | Description                 |
+| ------------------------------------------------------- | --------- | --------------------------- |
+| `devacademy_http_client_request_duration_seconds_count` | Counter   | Total HTTP requests         |
+| `devacademy_http_client_request_duration_seconds`       | Histogram | Request duration in ms      |
+| `devacademy_api_errors_total`                           | Counter   | Total HTTP errors           |
+| `devacademy_http_client_request_size`                   | Histogram | Request body size in bytes  |
+| `devacademy_http_client_response_size`                  | Histogram | Response body size in bytes |
 
 **Labels:** `http_method`, `http_route`, `http_status_code`, `error_type`
 
 ### Authentication Metrics
 
-| Metric Name | Type | Description |
-|-------------|------|-------------|
-| `devacademy_user_login_attempts_total` | Counter | Total login attempts |
-| `devacademy_user_login_success_total` | Counter | Successful logins |
-| `devacademy_user_login_failures_total` | Counter | Failed logins |
-| `devacademy_user_login_suspicious_total` | Counter | Suspicious login attempts |
+| Metric Name                                | Type    | Description               |
+| ------------------------------------------ | ------- | ------------------------- |
+| `devacademy_user_login_attempts_total`     | Counter | Total login attempts      |
+| `devacademy_user_login_success_total`      | Counter | Successful logins         |
+| `devacademy_user_login_failures_total`     | Counter | Failed logins             |
+| `devacademy_user_login_suspicious_total`   | Counter | Suspicious login attempts |
 | `devacademy_user_login_new_location_total` | Counter | Logins from new locations |
 
 **Labels:** `user_id`, `failure_reason`, `geo_country`, `geo_city`
 
 ### Database Metrics
 
-| Metric Name | Type | Description |
-|-------------|------|-------------|
-| `devacademy_db_client_operation_duration_seconds_count` | Counter | Total database queries |
-| `devacademy_db_client_operation_duration_seconds` | Histogram | Query duration in ms |
-| `devacademy_db_errors_total` | Counter | Database errors |
-| `db_connection_pool_size` | UpDownCounter | Connection pool size |
+| Metric Name                                             | Type          | Description            |
+| ------------------------------------------------------- | ------------- | ---------------------- |
+| `devacademy_db_client_operation_duration_seconds_count` | Counter       | Total database queries |
+| `devacademy_db_client_operation_duration_seconds`       | Histogram     | Query duration in ms   |
+| `devacademy_db_errors_total`                            | Counter       | Database errors        |
+| `db_connection_pool_size`                               | UpDownCounter | Connection pool size   |
 
 **Labels:** `db_operation`, `db_table`, `error_type`
 
 ### API Metrics
 
-| Metric Name | Type | Description |
-|-------------|------|-------------|
-| `devacademy_api_calls_total` | Counter | External API calls |
+| Metric Name                                 | Type      | Description             |
+| ------------------------------------------- | --------- | ----------------------- |
+| `devacademy_api_calls_total`                | Counter   | External API calls      |
 | `devacademy_api_call_duration_milliseconds` | Histogram | API call duration in ms |
-| `api_errors_total` | Counter | API call errors |
+| `api_errors_total`                          | Counter   | API call errors         |
 
 **Labels:** `api_service`, `api_endpoint`, `api_status_code`, `error_type`
 
 ### Business Metrics
 
-| Metric Name | Type | Description |
-|-------------|------|-------------|
-| `devacademy_page_views_total` | Counter | Page views |
-| `course_views_total` | Counter | Course views |
-| `lesson_views_total` | Counter | Lesson views |
-| `devacademy_email_sent_total` | Counter | Emails sent |
+| Metric Name                       | Type    | Description         |
+| --------------------------------- | ------- | ------------------- |
+| `devacademy_page_views_total`     | Counter | Page views          |
+| `course_views_total`              | Counter | Course views        |
+| `lesson_views_total`              | Counter | Lesson views        |
+| `devacademy_email_sent_total`     | Counter | Emails sent         |
 | `devacademy_email_failures_total` | Counter | Email send failures |
 
 **Labels:** `page_path`, `email_type`, `course_id`, `lesson_id`
@@ -290,16 +294,19 @@ Summary: Multiple suspicious login attempts detected
 ### Dashboards Not Loading
 
 **Check Grafana logs:**
+
 ```bash
 docker logs grafana
 ```
 
 **Verify dashboard files exist:**
+
 ```bash
 ls -la .devcontainer/grafana/dashboards/
 ```
 
 **Restart Grafana:**
+
 ```bash
 docker-compose restart grafana
 ```
@@ -319,6 +326,7 @@ Visit: http://localhost:3000/api/metrics
 You should see metrics in Prometheus format.
 
 **3. Check Prometheus logs:**
+
 ```bash
 docker logs prometheus
 ```
@@ -332,17 +340,20 @@ Try: `devacademy_http_client_request_duration_seconds_count`
 ### Connection Issues
 
 **Check all containers are running:**
+
 ```bash
 docker-compose ps
 ```
 
 **Check network connectivity:**
+
 ```bash
 docker exec -it grafana ping prometheus
 docker exec -it prometheus ping dev-x-academy-web
 ```
 
 **Restart the entire stack:**
+
 ```bash
 docker-compose down
 docker-compose up -d
@@ -366,6 +377,7 @@ Your metrics are already being exported to Grafana Cloud via OpenTelemetry. You 
 - Use **Grafana Cloud** for production monitoring
 
 The local setup gives you:
+
 - Faster queries (no network latency)
 - Development without affecting production dashboards
 - Ability to test dashboard changes before deploying

@@ -2,6 +2,9 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const updateProfileSchema = z.object({
   name: z.string().optional(),
@@ -18,12 +21,12 @@ const updateProfileSchema = z.object({
   emailDigestFrequency: z.enum(['none', 'daily', 'weekly', 'monthly']).optional(),
 });
 
-export async function GET() {
-  try {
+export const GET = withErrorHandling(
+  async () => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const user = await prisma.users.findUnique({
@@ -49,26 +52,26 @@ export async function GET() {
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFoundError('User');
     }
 
     return NextResponse.json(user);
-  } catch (error) {
-    console.error('Error fetching profile:', error);
-    return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/profile' }
+);
 
-export async function PATCH(req: NextRequest) {
-  try {
+export const PATCH = withErrorHandling(
+  async (req: NextRequest) => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
     const validatedData = updateProfileSchema.parse(body);
+
+    apiLogger.debug({ email: session.user.email }, 'Updating user profile');
 
     const user = await prisma.users.update({
       where: { email: session.user.email },
@@ -78,13 +81,23 @@ export async function PATCH(req: NextRequest) {
         ...(validatedData.avatar !== undefined && { avatar: validatedData.avatar }),
         ...(validatedData.locale !== undefined && { locale: validatedData.locale }),
         ...(validatedData.timezone !== undefined && { timezone: validatedData.timezone }),
-        ...(validatedData.dashboardAppearance !== undefined && { dashboardAppearance: validatedData.dashboardAppearance }),
-        ...(validatedData.notifyOnCourseUpdates !== undefined && { notifyOnCourseUpdates: validatedData.notifyOnCourseUpdates }),
+        ...(validatedData.dashboardAppearance !== undefined && {
+          dashboardAppearance: validatedData.dashboardAppearance,
+        }),
+        ...(validatedData.notifyOnCourseUpdates !== undefined && {
+          notifyOnCourseUpdates: validatedData.notifyOnCourseUpdates,
+        }),
         ...(validatedData.notifyOnNewCourses !== undefined && { notifyOnNewCourses: validatedData.notifyOnNewCourses }),
-        ...(validatedData.notifyOnCompletionReminders !== undefined && { notifyOnCompletionReminders: validatedData.notifyOnCompletionReminders }),
-        ...(validatedData.notifyOnAchievements !== undefined && { notifyOnAchievements: validatedData.notifyOnAchievements }),
+        ...(validatedData.notifyOnCompletionReminders !== undefined && {
+          notifyOnCompletionReminders: validatedData.notifyOnCompletionReminders,
+        }),
+        ...(validatedData.notifyOnAchievements !== undefined && {
+          notifyOnAchievements: validatedData.notifyOnAchievements,
+        }),
         ...(validatedData.notifyOnMessages !== undefined && { notifyOnMessages: validatedData.notifyOnMessages }),
-        ...(validatedData.emailDigestFrequency !== undefined && { emailDigestFrequency: validatedData.emailDigestFrequency }),
+        ...(validatedData.emailDigestFrequency !== undefined && {
+          emailDigestFrequency: validatedData.emailDigestFrequency,
+        }),
       },
       select: {
         id: true,
@@ -105,12 +118,9 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
+    apiLogger.info({ userId: user.id }, 'User profile updated');
+
     return NextResponse.json(user);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-    console.error('Error updating profile:', error);
-    return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/profile' }
+);

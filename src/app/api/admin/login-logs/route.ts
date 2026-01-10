@@ -1,13 +1,17 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-middleware';
 import { prisma } from '@/lib/prisma';
+import { withErrorHandling } from '@/lib/api-handler';
+import { apiLogger } from '@/lib/logger';
 
-export async function GET() {
-  // Check if user is admin
-  const adminCheck = await requireAdmin();
-  if (adminCheck) return adminCheck; // Return error response if not admin
+export const GET = withErrorHandling(
+  async () => {
+    // Check if user is admin
+    const adminCheck = await requireAdmin();
+    if (adminCheck) return adminCheck; // Return error response if not admin
 
-  try {
+    apiLogger.info('Fetching login logs');
+
     // Get last 100 login attempts
     const logs = await prisma.login_logs.findMany({
       orderBy: { createdAt: 'desc' },
@@ -35,8 +39,6 @@ export async function GET() {
       stats,
       total: logs.length,
     });
-  } catch (error) {
-    console.error('Error fetching login logs:', error);
-    return NextResponse.json({ error: 'Failed to fetch login logs' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/admin/login-logs' }
+);

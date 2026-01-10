@@ -4,30 +4,31 @@ A comprehensive guide for migrating from GitHub Copilot to Claude Code's configu
 
 ## Feature Comparison Table
 
-| Feature | GitHub Copilot | Claude Code |
-|---------|---------------|-------------|
-| **Instructions** | `.github/instructions/*.md` | `CLAUDE.md` or `.claude/CLAUDE.md` |
-| **Scoped rules** | `applyTo: '**/*.md'` frontmatter | `.claude/rules/*.md` directory |
-| **Agents** | Agent mode / Chat participants | **Subagents** (`.claude/agents/*.md`) |
-| **Prompts** | Prompt files | **Slash Commands** (`.claude/commands/*.md`) |
-| **Skills** | N/A | **Skills** (`.claude/skills/`) |
-| **Output Styles** | N/A | **Output Styles** (`.claude/output-styles/*.md`) |
-| **Personal config** | User settings | `~/.claude/CLAUDE.md` |
-| **Local overrides** | N/A | `CLAUDE.local.md` (git-ignored) |
-| **Enterprise policy** | N/A | System-level `CLAUDE.md` |
+| Feature               | GitHub Copilot                   | Claude Code                                      |
+| --------------------- | -------------------------------- | ------------------------------------------------ |
+| **Instructions**      | `.github/instructions/*.md`      | `CLAUDE.md` or `.claude/CLAUDE.md`               |
+| **Scoped rules**      | `applyTo: '**/*.md'` frontmatter | `.claude/rules/*.md` directory                   |
+| **Agents**            | Agent mode / Chat participants   | **Subagents** (`.claude/agents/*.md`)            |
+| **Prompts**           | Prompt files                     | **Slash Commands** (`.claude/commands/*.md`)     |
+| **Skills**            | N/A                              | **Skills** (`.claude/skills/`)                   |
+| **Output Styles**     | N/A                              | **Output Styles** (`.claude/output-styles/*.md`) |
+| **Personal config**   | User settings                    | `~/.claude/CLAUDE.md`                            |
+| **Local overrides**   | N/A                              | `CLAUDE.local.md` (git-ignored)                  |
+| **Enterprise policy** | N/A                              | System-level `CLAUDE.md`                         |
 
 ## Claude Code Memory Hierarchy
 
 Claude Code uses a hierarchical memory system where files higher in the hierarchy take precedence:
 
-| Memory Type | Location | Purpose | Shared With |
-|-------------|----------|---------|-------------|
-| **Enterprise policy** | System paths* | Organization-wide standards | All users |
-| **Project memory** | `./CLAUDE.md` | Team-shared instructions | Team via source control |
-| **User memory** | `~/.claude/CLAUDE.md` | Personal preferences | Just you (all projects) |
-| **Project local** | `./CLAUDE.local.md` | Personal project-specific | Just you (current project) |
+| Memory Type           | Location              | Purpose                     | Shared With                |
+| --------------------- | --------------------- | --------------------------- | -------------------------- |
+| **Enterprise policy** | System paths\*        | Organization-wide standards | All users                  |
+| **Project memory**    | `./CLAUDE.md`         | Team-shared instructions    | Team via source control    |
+| **User memory**       | `~/.claude/CLAUDE.md` | Personal preferences        | Just you (all projects)    |
+| **Project local**     | `./CLAUDE.local.md`   | Personal project-specific   | Just you (current project) |
 
-*Enterprise paths:
+\*Enterprise paths:
+
 - macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md`
 - Linux: `/etc/claude-code/CLAUDE.md`
 - Windows: `C:\Program Files\ClaudeCode\CLAUDE.md`
@@ -57,17 +58,19 @@ In your `CLAUDE.md`, use the `@path/to/file` syntax to import existing instructi
 # Project Instructions
 
 ## Imported Rules
-@.github/instructions/markdown_instructions.md
-@.github/instructions/typescript_instructions.md
+
+@.github/instructions/markdown_instructions.md @.github/instructions/typescript_instructions.md
 
 ## Additional Context
+
 - See @README.md for project overview
 - See @package.json for available commands
 ```
 
 ### Option 3: Bootstrap with /init
 
-Run the `/init` command in Claude Code to auto-generate a `CLAUDE.md` based on your project structure, then merge in your custom instructions.
+Run the `/init` command in Claude Code to auto-generate a `CLAUDE.md` based on your project structure, then merge in
+your custom instructions.
 
 ```bash
 # In your project directory
@@ -96,6 +99,7 @@ applyTo: '**/*.md'
 ---
 
 ## Markdown Content Rules
+
 1. Use appropriate heading levels...
 ```
 
@@ -105,13 +109,14 @@ applyTo: '**/*.md'
 # Markdown Documentation Standards
 
 ## Scope
+
 These rules apply when working with Markdown files (`*.md`).
 
 ## Content Rules
+
 - Use appropriate heading levels (H2, H3, etc.)
 - Do not use H1 headings (generated from title)
-- Use fenced code blocks with language specification
-...
+- Use fenced code blocks with language specification ...
 ```
 
 ### Step 3: Create main CLAUDE.md
@@ -120,24 +125,30 @@ These rules apply when working with Markdown files (`*.md`).
 # Project: Your Project Name
 
 ## Overview
+
 Brief description of the project.
 
 ## Tech Stack
+
 - Frontend: Next.js 15, TypeScript, Tailwind CSS
 - Database: PostgreSQL 18, SQL Server 2025
 
 ## Commands
+
 - `bun run dev` - Start development server
 - `bun run build` - Build for production
 - `bun test` - Run tests
 
 ## Code Standards
+
 See `.claude/rules/` for detailed guidelines:
+
 - @.claude/rules/markdown.md
 - @.claude/rules/code-style.md
 - @.claude/rules/testing.md
 
 ## Project Structure
+
 - `/src` - Source code
 - `/docs` - Documentation
 - `/tests` - Test files
@@ -148,6 +159,7 @@ See `.claude/rules/` for detailed guidelines:
 ### Scoping Rules
 
 **GitHub Copilot** uses frontmatter to scope rules:
+
 ```yaml
 ---
 applyTo: '**/*.md'
@@ -155,6 +167,7 @@ applyTo: '**/*.md'
 ```
 
 **Claude Code** uses directory structure and file naming:
+
 ```
 .claude/rules/
 ├── markdown.md      # Markdown-specific rules
@@ -165,6 +178,7 @@ applyTo: '**/*.md'
 ### Dynamic Loading
 
 Claude Code discovers `CLAUDE.md` files recursively:
+
 - Starts from current working directory
 - Recurses up to (but not including) root `/`
 - Nested `CLAUDE.md` files in subdirectories are loaded when Claude reads files in those subtrees
@@ -199,7 +213,8 @@ You'll be prompted to select which memory file to store this in.
 
 ## Subagents (Custom Agents)
 
-Subagents are specialized AI assistants that Claude Code can delegate tasks to. Each subagent has its own context window, system prompt, and tool access.
+Subagents are specialized AI assistants that Claude Code can delegate tasks to. Each subagent has its own context
+window, system prompt, and tool access.
 
 ### Location
 
@@ -215,7 +230,7 @@ Subagents are specialized AI assistants that Claude Code can delegate tasks to. 
 name: backend-architect
 description: Use this agent for backend system design, API architecture, and database schema decisions
 tools: Bash, Read, Write, Edit
-model: sonnet                  # Options: sonnet, opus, haiku, or 'inherit'
+model: sonnet # Options: sonnet, opus, haiku, or 'inherit'
 permissionMode: default
 color: blue
 ---
@@ -228,6 +243,7 @@ You are a backend architecture specialist. Your responsibilities:
 4. Ensure security best practices
 
 When analyzing code:
+
 - Check for N+1 query problems
 - Validate proper error handling
 - Ensure consistent naming conventions
@@ -235,11 +251,11 @@ When analyzing code:
 
 ### Built-in Subagents
 
-| Subagent | Purpose |
-|----------|---------|
-| **Plan** | Creates detailed implementation plans (used in plan mode) |
-| **Explore** | Fast, read-only codebase scanning and analysis |
-| **Task** | General-purpose task execution |
+| Subagent    | Purpose                                                   |
+| ----------- | --------------------------------------------------------- |
+| **Plan**    | Creates detailed implementation plans (used in plan mode) |
+| **Explore** | Fast, read-only codebase scanning and analysis            |
+| **Task**    | General-purpose task execution                            |
 
 ### Creating Custom Agents
 
@@ -285,15 +301,16 @@ Provide actionable feedback with specific line references.
 
 ### Using Variables
 
-| Variable | Description |
-|----------|-------------|
+| Variable     | Description                   |
+| ------------ | ----------------------------- |
 | `$ARGUMENTS` | Text passed after the command |
-| `$FILE` | Current file path |
-| `$SELECTION` | Currently selected text |
+| `$FILE`      | Current file path             |
+| `$SELECTION` | Currently selected text       |
 
 ### Example Commands
 
 **`/test` - Generate tests:**
+
 ```markdown
 # .claude/commands/test.md
 
@@ -306,6 +323,7 @@ Generate comprehensive tests for $ARGUMENTS:
 ```
 
 **`/explain` - Explain code:**
+
 ```markdown
 # .claude/commands/explain.md
 
@@ -314,18 +332,21 @@ Explain the following code in detail:
 $ARGUMENTS
 
 Include:
+
 1. What the code does
 2. How it works step-by-step
 3. Any potential issues or improvements
 ```
 
 **`/migrate` - Database migration:**
+
 ```markdown
 # .claude/commands/migrate.md
 
 Create a database migration for: $ARGUMENTS
 
 Requirements:
+
 - Use the project's migration framework
 - Include both up and down migrations
 - Add appropriate indexes
@@ -362,12 +383,13 @@ Skills are structured capabilities that Claude automatically applies when releva
 # .claude/skills/database-optimization/SKILL.md
 
 ---
-name: database-optimization
-description: PostgreSQL and SQL Server query optimization patterns
-triggers:
-  - "optimize query"
-  - "slow query"
-  - "database performance"
+
+name: database-optimization description: PostgreSQL and SQL Server query optimization patterns triggers:
+
+- "optimize query"
+- "slow query"
+- "database performance"
+
 ---
 
 ## Database Optimization Skill
@@ -380,18 +402,19 @@ When optimizing database queries:
 4. **Consider query restructuring** before adding indexes
 
 ### Reference Files
+
 - @patterns.md for common optimization patterns
 - @examples/query-optimization.sql for examples
 ```
 
 ### Skills vs Slash Commands
 
-| Aspect | Skills | Slash Commands |
-|--------|--------|----------------|
-| Invocation | Auto-applied when relevant | Manual `/command` |
-| Structure | Directory with supporting files | Single markdown file |
-| Use case | Complex, multi-file workflows | Simple, repeatable prompts |
-| Discovery | Automatic based on task | Terminal autocomplete |
+| Aspect     | Skills                          | Slash Commands             |
+| ---------- | ------------------------------- | -------------------------- |
+| Invocation | Auto-applied when relevant      | Manual `/command`          |
+| Structure  | Directory with supporting files | Single markdown file       |
+| Use case   | Complex, multi-file workflows   | Simple, repeatable prompts |
+| Discovery  | Automatic based on task         | Terminal autocomplete      |
 
 ---
 
@@ -412,8 +435,9 @@ Output styles customize how Claude responds based on the type of work.
 # .claude/output-styles/technical-writer.md
 
 ---
-name: technical-writer
-description: Clear, structured documentation with examples
+
+name: technical-writer description: Clear, structured documentation with examples
+
 ---
 
 You are a technical documentation specialist. When responding:
@@ -425,6 +449,7 @@ You are a technical documentation specialist. When responding:
 5. End with a "Summary" section
 
 Avoid:
+
 - Jargon without explanation
 - Walls of text
 - Assumptions about prior knowledge
@@ -433,6 +458,7 @@ Avoid:
 ### Example Output Styles
 
 **`code-reviewer.md`:**
+
 ```markdown
 ---
 name: code-reviewer
@@ -449,6 +475,7 @@ For every code review:
 ```
 
 **`brainstorm.md`:**
+
 ```markdown
 ---
 name: brainstorm
@@ -499,15 +526,15 @@ When brainstorming:
 
 ## Quick Reference Commands
 
-| Command | Purpose |
-|---------|---------|
-| `/init` | Bootstrap CLAUDE.md from project |
-| `/memory` | Edit memory files directly |
-| `/agents` | Manage subagents |
-| `/mcp` | Manage MCP server connections |
-| `/compact` | Compress conversation history |
-| `#` | Quick-add to memory |
+| Command    | Purpose                          |
+| ---------- | -------------------------------- |
+| `/init`    | Bootstrap CLAUDE.md from project |
+| `/memory`  | Edit memory files directly       |
+| `/agents`  | Manage subagents                 |
+| `/mcp`     | Manage MCP server connections    |
+| `/compact` | Compress conversation history    |
+| `#`        | Quick-add to memory              |
 
 ---
 
-*DevMultiplier Academy - AI-Assisted Development Configuration Standards*
+_DevMultiplier Academy - AI-Assisted Development Configuration Standards_

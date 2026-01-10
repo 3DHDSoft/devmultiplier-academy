@@ -1,20 +1,22 @@
 import { auth } from '@/auth';
 import { NextResponse } from 'next/server';
 import { getLoginHistory } from '@/lib/login-logger';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, ValidationError } from '@/lib/errors';
 
-export async function GET() {
-  try {
+export const GET = withErrorHandling(
+  async () => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     // Get the user ID from session
     const userId = (session.user as { id?: string }).id;
 
     if (!userId) {
-      return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
+      throw new ValidationError('User ID not found in session');
     }
 
     // Get login history for the user
@@ -24,8 +26,6 @@ export async function GET() {
       history: loginHistory,
       total: loginHistory.length,
     });
-  } catch (error) {
-    console.error('Error fetching login history:', error);
-    return NextResponse.json({ error: 'Failed to fetch login history' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/login-history' }
+);
