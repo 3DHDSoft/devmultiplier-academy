@@ -71,7 +71,8 @@
       "Bash(git push:*)",
       "Bash(sudo npm install:*)",
       "Bash(claude:*)",
-      "Bash(source .env.local)"
+      "Bash(source .env.local)",
+      "Bash(git rev-parse:*)"
     ]
   }
 }

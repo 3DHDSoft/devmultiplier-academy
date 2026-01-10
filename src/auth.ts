@@ -78,7 +78,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         try {
           // Debug: Log that authorize was called (will show in Axiom)
-          authLogger.debug({ hasCredentials: !!credentials, credentialKeys: credentials ? Object.keys(credentials) : [] }, 'Authorize called');
+          authLogger.debug(
+            { hasCredentials: !!credentials, credentialKeys: credentials ? Object.keys(credentials) : [] },
+            'Authorize called'
+          );
 
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
@@ -184,12 +187,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return returnUser;
         } catch (error) {
           // Log error details for debugging
-          authLogger.error({
-            err: error,
-            userEmail: userEmail || 'not-set',
-            userId: userId || 'not-set',
-            isZodError: error instanceof z.ZodError,
-          }, 'Authorization error');
+          authLogger.error(
+            {
+              err: error,
+              userEmail: userEmail || 'not-set',
+              userId: userId || 'not-set',
+              isZodError: error instanceof z.ZodError,
+            },
+            'Authorization error'
+          );
 
           // Log error if we have user info
           if (userId && userEmail) {
