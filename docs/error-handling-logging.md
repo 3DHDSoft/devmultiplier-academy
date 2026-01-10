@@ -5,6 +5,12 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Vercel + Neon + Axiom Stack](#vercel--neon--axiom-stack-recommended)
+  - [Why This Stack](#why-this-stack)
+  - [Axiom Setup](#axiom-setup)
+  - [Next.js Integration with next-axiom](#nextjs-integration-with-next-axiom)
+  - [Neon OpenTelemetry Integration](#neon-opentelemetry-integration)
+  - [Unified Dashboard](#unified-dashboard)
 - [Error Handling Patterns](#error-handling-patterns)
   - [Custom Error Classes](#custom-error-classes)
   - [Result Pattern (No-Throw)](#result-pattern-no-throw)
@@ -27,12 +33,26 @@
 
 A robust error handling and logging strategy requires:
 
-| Concern | Local Development | Production Cloud |
-|---------|-------------------|------------------|
-| **Logging** | Pretty-printed console | Structured JSON → aggregator |
-| **Error Tracking** | Stack traces in terminal | Centralized monitoring + alerts |
-| **Tracing** | Optional | Distributed tracing for debugging |
-| **Alerting** | None | Slack/Email on critical errors |
+| Concern                 | Local Development        | Production Cloud        |
+| ----------------------- | ------------------------ | ----------------------- |
+| **Logging**             | Pretty-printed console   | Structured JSON → Axiom |
+| **Error Tracking**      | Stack traces in terminal | Axiom + optional Sentry |
+| **Database Monitoring** | Neon Console             | Neon → Axiom (OTEL)     |
+| **Alerting**            | None                     | Axiom Monitors          |
+
+### Recommended Stack: Vercel + Neon + Axiom
+
+For projects hosted on **Vercel** with **Neon** database, we recommend:
+
+| Tool                  | Purpose                             | Cost                 |
+| --------------------- | ----------------------------------- | -------------------- |
+| **next-axiom**        | Application logs & Web Vitals       | Free (500GB/mo)      |
+| **Axiom**             | Log aggregation, dashboards, alerts | Free tier available  |
+| **Neon OTEL**         | Database metrics & logs             | Scale/Business plans |
+| **Pino**              | Local development pretty printing   | Free                 |
+| **Sentry** (optional) | Detailed error tracking + replays   | Free tier available  |
+
+> **Skip to**: [Vercel + Neon + Axiom Stack](#vercel--neon--axiom-stack-recommended) for the complete setup guide.
 
 ### Goals
 
@@ -41,6 +61,394 @@ A robust error handling and logging strategy requires:
 3. **Type-safe errors** that integrate with TypeScript
 4. **Zero-config local development** with production-ready output
 5. **Sensitive data redaction** in all environments
+6. **Unified observability** for application and database in one dashboard
+
+---
+
+## Vercel + Neon + Axiom Stack (Recommended)
+
+This section provides specific setup instructions for the **Vercel + Neon + Axiom** combination—the most cost-effective
+observability stack for your infrastructure.
+
+### Why This Stack
+
+| Component                | What It Provides                                | Cost                   |
+| ------------------------ | ----------------------------------------------- | ---------------------- |
+| **Vercel Observability** | Built-in request monitoring, function insights  | Free (all plans)       |
+| **Axiom**                | Log aggregation, dashboards, alerts, Web Vitals | Free tier: 500GB/month |
+| **Neon Monitoring**      | Database metrics dashboard                      | Free (built-in)        |
+| **Neon → Axiom (OTEL)**  | Database logs & metrics in Axiom                | Scale/Business plans   |
+
+#### Cost Comparison
+
+| Approach                  | Monthly Cost (Low Traffic) | Monthly Cost (High Traffic) |
+| ------------------------- | -------------------------- | --------------------------- |
+| Vercel Drains → Axiom     | $10+ (Drain fees)          | $50+                        |
+| **next-axiom library**    | **$0**                     | **$0** (under 500GB)        |
+| Vercel Observability Plus | $10/month base             | $10+                        |
+
+> **Recommendation**: Use the `next-axiom` library instead of Vercel Log Drains to avoid the $0.50/GB drain fees while
+> getting the same logging capabilities.
+
+### Axiom Setup
+
+#### 1. Create Axiom Account
+
+1. Sign up at [axiom.co](https://axiom.co) (free tier includes 500GB/month)
+2. Create a new dataset named `nextjs-logs` (or your preferred name)
+3. Create an API token with **ingest** permissions for your dataset
+
+#### 2. Environment Variables
+
+```bash
+# .env.local
+NEXT_PUBLIC_AXIOM_DATASET=nextjs-logs
+NEXT_PUBLIC_AXIOM_TOKEN=xaat-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+# Optional: For server-side only logging
+AXIOM_TOKEN=xaat-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+AXIOM_DATASET=nextjs-logs
+```
+
+### Next.js Integration with next-axiom
+
+The `next-axiom` library sends logs directly from your application without using Vercel's Log Drains, avoiding
+additional costs.
+
+#### Installation
+
+```bash
+bun add next-axiom
+```
+
+#### Configure next.config.ts
+
+```typescript
+// next.config.ts
+import { withAxiom } from 'next-axiom';
+
+const nextConfig = {
+  // Your existing Next.js config
+};
+
+export default withAxiom(nextConfig);
+```
+
+This wraps your config to proxy Axiom ingest calls, improving deliverability.
+
+#### Add Web Vitals Tracking
+
+```typescript
+// app/layout.tsx
+import { AxiomWebVitals } from 'next-axiom';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <AxiomWebVitals />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+> **Note**: Web Vitals are only sent from production deployments.
+
+#### Server Component Logging
+
+```typescript
+// app/api/users/route.ts
+import { Logger } from 'next-axiom';
+
+export async function GET() {
+  const logger = new Logger();
+
+  logger.info('Fetching users', { endpoint: '/api/users' });
+
+  try {
+    const users = await db.user.findMany();
+    logger.info('Users fetched successfully', { count: users.length });
+
+    // IMPORTANT: Flush logs before returning response
+    await logger.flush();
+
+    return Response.json(users);
+  } catch (error) {
+    logger.error('Failed to fetch users', { error });
+    await logger.flush();
+    throw error;
+  }
+}
+```
+
+#### Client Component Logging
+
+```typescript
+// components/checkout-button.tsx
+'use client';
+
+import { useLogger } from 'next-axiom';
+
+export function CheckoutButton() {
+  const logger = useLogger();
+
+  const handleCheckout = async () => {
+    logger.info('Checkout initiated', { timestamp: Date.now() });
+
+    try {
+      // ... checkout logic
+      logger.info('Checkout completed');
+    } catch (error) {
+      logger.error('Checkout failed', { error });
+    }
+  };
+
+  return <button onClick={handleCheckout}>Checkout</button>;
+}
+```
+
+#### Server Actions Logging
+
+```typescript
+// app/actions/create-order.ts
+'use server';
+
+import { Logger } from 'next-axiom';
+
+export async function createOrder(formData: FormData) {
+  const logger = new Logger().with({ action: 'createOrder' });
+
+  const orderId = crypto.randomUUID();
+  logger.info('Creating order', { orderId });
+
+  try {
+    // ... order creation logic
+    logger.info('Order created', { orderId });
+    await logger.flush();
+    return { success: true, orderId };
+  } catch (error) {
+    logger.error('Order creation failed', { orderId, error });
+    await logger.flush();
+    return { success: false, error: 'Failed to create order' };
+  }
+}
+```
+
+#### Middleware Logging
+
+```typescript
+// middleware.ts
+import { Logger } from 'next-axiom';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export async function middleware(request: NextRequest) {
+  const logger = new Logger({ source: 'middleware' });
+  const requestId = crypto.randomUUID();
+
+  logger.info('Incoming request', {
+    requestId,
+    method: request.method,
+    path: request.nextUrl.pathname,
+    userAgent: request.headers.get('user-agent'),
+  });
+
+  const response = NextResponse.next();
+  response.headers.set('x-request-id', requestId);
+
+  // Note: Don't await flush in middleware for performance
+  logger.flush();
+
+  return response;
+}
+
+export const config = {
+  matcher: ['/api/:path*', '/((?!_next/static|_next/image|favicon.ico).*)'],
+};
+```
+
+### Neon OpenTelemetry Integration
+
+Send Neon database metrics and Postgres logs to Axiom for a unified observability view.
+
+> **Requirement**: Neon Scale or Business plan for OTEL export.
+
+#### 1. Get Axiom OTEL Endpoint
+
+In Axiom:
+
+1. Go to **Settings** → **Endpoints**
+2. Create a new **OpenTelemetry** endpoint
+3. Copy the endpoint URL (e.g., `https://api.axiom.co/v1/traces`)
+4. Note your API token
+
+#### 2. Configure Neon OTEL Integration
+
+In the Neon Console:
+
+1. Navigate to your project → **Settings** → **Integrations**
+2. Find **OpenTelemetry** and click **Configure**
+3. Enter the following:
+
+| Setting                 | Value                            |
+| ----------------------- | -------------------------------- |
+| **Telemetry to export** | ✅ Metrics, ✅ Postgres logs     |
+| **Connection**          | HTTP                             |
+| **Endpoint**            | `https://api.axiom.co/v1/traces` |
+| **Authentication**      | Bearer                           |
+| **Bearer Token**        | Your Axiom API token             |
+
+4. Add resource attribute:
+   - **Key**: `service.name`
+   - **Value**: `neon-database`
+
+5. Click **Save**
+
+#### 3. Verify Data Flow
+
+After configuration, you should see Neon data in Axiom within a few minutes:
+
+```sql
+-- In Axiom APL (Axiom Processing Language)
+['nextjs-logs']
+| where ['service.name'] == 'neon-database'
+| take 10
+```
+
+### Unified Dashboard
+
+Create a unified dashboard in Axiom that combines:
+
+- Next.js application logs
+- Web Vitals metrics
+- Neon database logs
+- Error tracking
+
+#### Sample Axiom APL Queries
+
+**Error Rate by Endpoint**:
+
+```apl
+['nextjs-logs']
+| where level == 'error'
+| summarize count() by bin(_time, 1h), ['request.path']
+| render timechart
+```
+
+**Slow Database Queries**:
+
+```apl
+['nextjs-logs']
+| where ['service.name'] == 'neon-database'
+| where duration_ms > 100
+| project _time, query, duration_ms
+| order by duration_ms desc
+```
+
+**Web Vitals Summary**:
+
+```apl
+['nextjs-logs']
+| where ['webVital.name'] in ('LCP', 'FID', 'CLS')
+| summarize
+    p50=percentile(['webVital.value'], 50),
+    p95=percentile(['webVital.value'], 95)
+  by ['webVital.name']
+```
+
+**Request Latency by Route**:
+
+```apl
+['nextjs-logs']
+| where isnotnull(duration)
+| summarize
+    avg_duration=avg(duration),
+    p99_duration=percentile(duration, 99),
+    request_count=count()
+  by ['request.path']
+| order by request_count desc
+```
+
+### Combining with Pino Logger
+
+For advanced use cases, you can combine `next-axiom` with Pino for structured logging:
+
+```typescript
+// lib/logger.ts
+import pino from 'pino';
+import { Logger as AxiomLogger } from 'next-axiom';
+
+const isDev = process.env.NODE_ENV === 'development';
+
+// Pino for local development (pretty printing)
+export const localLogger = pino({
+  level: process.env.LOG_LEVEL || 'info',
+  transport: isDev ? { target: 'pino-pretty', options: { colorize: true } } : undefined,
+});
+
+// Axiom for production
+export function createLogger(source?: string) {
+  if (isDev) {
+    return {
+      info: (message: string, data?: object) => localLogger.info(data, message),
+      warn: (message: string, data?: object) => localLogger.warn(data, message),
+      error: (message: string, data?: object) => localLogger.error(data, message),
+      debug: (message: string, data?: object) => localLogger.debug(data, message),
+      flush: async () => {},
+    };
+  }
+
+  return new AxiomLogger({ source });
+}
+
+// Usage
+const logger = createLogger('api');
+logger.info('Processing request', { userId: '123' });
+await logger.flush();
+```
+
+### Alerting Setup
+
+Configure Axiom monitors for critical events:
+
+#### 1. Error Spike Alert
+
+```apl
+['nextjs-logs']
+| where level == 'error'
+| summarize error_count = count() by bin(_time, 5m)
+| where error_count > 10
+```
+
+**Trigger**: When error count exceeds 10 in 5 minutes
+
+#### 2. Slow Response Alert
+
+```apl
+['nextjs-logs']
+| where duration > 3000
+| summarize slow_count = count() by bin(_time, 5m)
+| where slow_count > 5
+```
+
+**Trigger**: When more than 5 requests take >3s in 5 minutes
+
+#### 3. Database Connection Alert
+
+```apl
+['nextjs-logs']
+| where ['service.name'] == 'neon-database'
+| where message contains 'connection' and level == 'error'
+| summarize count() by bin(_time, 5m)
+```
+
+**Trigger**: Any database connection errors
 
 ---
 
@@ -102,9 +510,7 @@ export class ValidationError extends AppError {
  */
 export class NotFoundError extends AppError {
   constructor(resource: string, identifier?: string) {
-    const message = identifier
-      ? `${resource} not found: ${identifier}`
-      : `${resource} not found`;
+    const message = identifier ? `${resource} not found: ${identifier}` : `${resource} not found`;
     super(message, 'NOT_FOUND', 404, true, { resource, identifier });
   }
 }
@@ -131,9 +537,7 @@ export class AuthorizationError extends AppError {
  * Rate limiting errors (429)
  */
 export class RateLimitError extends AppError {
-  constructor(
-    public readonly retryAfter?: number
-  ) {
+  constructor(public readonly retryAfter?: number) {
     super('Too many requests', 'RATE_LIMIT_ERROR', 429, true, { retryAfter });
   }
 }
@@ -151,11 +555,7 @@ export class DatabaseError extends AppError {
  * External service errors (502)
  */
 export class ExternalServiceError extends AppError {
-  constructor(
-    service: string,
-    message: string,
-    context?: Record<string, unknown>
-  ) {
+  constructor(service: string, message: string, context?: Record<string, unknown>) {
     super(`${service}: ${message}`, 'EXTERNAL_SERVICE_ERROR', 502, false, {
       service,
       ...context,
@@ -188,9 +588,7 @@ For predictable error handling without try/catch everywhere. Inspired by Rust's 
 /**
  * Discriminated union for success/failure results
  */
-export type Result<T, E = AppError> =
-  | { success: true; data: T }
-  | { success: false; error: E };
+export type Result<T, E = AppError> = { success: true; data: T } | { success: false; error: E };
 
 /**
  * Create a success result
@@ -222,12 +620,7 @@ export async function tryCatch<T>(
     }
     const appError = errorTransform
       ? errorTransform(error)
-      : new AppError(
-          error instanceof Error ? error.message : 'Unknown error',
-          'UNKNOWN_ERROR',
-          500,
-          false
-        );
+      : new AppError(error instanceof Error ? error.message : 'Unknown error', 'UNKNOWN_ERROR', 500, false);
     return err(appError);
   }
 }
@@ -281,10 +674,7 @@ const result = await getUserById(userId);
 if (!result.success) {
   // Handle error - type is narrowed to AppError
   logger.warn({ error: result.error }, 'Failed to get user');
-  return NextResponse.json(
-    { error: result.error.message },
-    { status: result.error.statusCode }
-  );
+  return NextResponse.json({ error: result.error.message }, { status: result.error.statusCode });
 }
 
 // result.data is typed as User
@@ -306,10 +696,7 @@ type RouteContext = {
   params: Promise<Record<string, string>>;
 };
 
-type ApiHandler = (
-  request: NextRequest,
-  context?: RouteContext
-) => Promise<NextResponse>;
+type ApiHandler = (request: NextRequest, context?: RouteContext) => Promise<NextResponse>;
 
 interface ApiHandlerOptions {
   /** Log successful requests */
@@ -321,15 +708,11 @@ interface ApiHandlerOptions {
 /**
  * Wraps an API route handler with consistent error handling and logging
  */
-export function withErrorHandling(
-  handler: ApiHandler,
-  options: ApiHandlerOptions = {}
-): ApiHandler {
+export function withErrorHandling(handler: ApiHandler, options: ApiHandlerOptions = {}): ApiHandler {
   const { logSuccess = true, transformError } = options;
 
   return async (request, context) => {
-    const requestId =
-      request.headers.get('x-request-id') || crypto.randomUUID();
+    const requestId = request.headers.get('x-request-id') || crypto.randomUUID();
     const startTime = Date.now();
 
     // Create child logger with request context
@@ -356,16 +739,12 @@ export function withErrorHandling(
       // Add request ID to response headers
       response.headers.set('x-request-id', requestId);
       return response;
-
     } catch (error) {
       const duration = Date.now() - startTime;
 
       // Handle Zod validation errors
       if (error instanceof ZodError) {
-        log.warn(
-          { errors: error.errors, duration },
-          'Validation failed'
-        );
+        log.warn({ errors: error.errors, duration }, 'Validation failed');
         return NextResponse.json(
           {
             error: 'Validation failed',
@@ -406,10 +785,7 @@ export function withErrorHandling(
       // Transform unknown errors if transformer provided
       if (transformError && !isAppError(error)) {
         const transformed = transformError(error);
-        log.error(
-          { err: error, transformedError: transformed.toJSON(), duration },
-          'Transformed error'
-        );
+        log.error({ err: error, transformedError: transformed.toJSON(), duration }, 'Transformed error');
         return NextResponse.json(
           {
             error: transformed.message,
@@ -459,10 +835,10 @@ import { unwrap } from '@/lib/result';
 
 export const GET = withErrorHandling(async (request, context) => {
   const { id } = await context!.params;
-  
+
   const result = await getUserById(id);
   const user = unwrap(result); // Throws if error, caught by wrapper
-  
+
   return NextResponse.json(user);
 });
 ```
@@ -675,9 +1051,7 @@ export const config = {
 import { logger } from '@/lib/logger';
 import { AppError, isOperationalError } from '@/lib/errors';
 
-type ActionResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string; code: string };
+type ActionResult<T> = { success: true; data: T } | { success: false; error: string; code: string };
 
 /**
  * Wrap server actions with logging and error handling
@@ -696,20 +1070,14 @@ export function withActionLogging<TInput, TOutput>(
     try {
       const data = await action(input);
 
-      log.info(
-        { duration: Date.now() - startTime },
-        'Action completed'
-      );
+      log.info({ duration: Date.now() - startTime }, 'Action completed');
 
       return { success: true, data };
     } catch (error) {
       const duration = Date.now() - startTime;
 
       if (isOperationalError(error)) {
-        log.warn(
-          { error: (error as AppError).toJSON(), duration },
-          'Action failed (operational)'
-        );
+        log.warn({ error: (error as AppError).toJSON(), duration }, 'Action failed (operational)');
         return {
           success: false,
           error: (error as AppError).message,
@@ -717,10 +1085,7 @@ export function withActionLogging<TInput, TOutput>(
         };
       }
 
-      log.error(
-        { err: error, duration },
-        'Action failed (unexpected)'
-      );
+      log.error({ err: error, duration }, 'Action failed (unexpected)');
 
       return {
         success: false,
@@ -753,20 +1118,14 @@ export const requestContext = new AsyncLocalStorage<RequestContext>();
 /**
  * Run a function within a request context
  */
-export function runWithContext<T>(
-  context: Omit<RequestContext, 'logger'>,
-  fn: () => T
-): T {
+export function runWithContext<T>(context: Omit<RequestContext, 'logger'>, fn: () => T): T {
   const contextLogger = logger.child({
     requestId: context.requestId,
     userId: context.userId,
     sessionId: context.sessionId,
   });
 
-  return requestContext.run(
-    { ...context, logger: contextLogger },
-    fn
-  );
+  return requestContext.run({ ...context, logger: contextLogger }, fn);
 }
 
 /**
@@ -904,10 +1263,7 @@ interface ErrorContext {
 /**
  * Report an error to both logger and Sentry
  */
-export function captureError(
-  error: Error | AppError | unknown,
-  context?: ErrorContext
-): void {
+export function captureError(error: Error | AppError | unknown, context?: ErrorContext): void {
   const errorObj = error instanceof Error ? error : new Error(String(error));
 
   // Always log locally
@@ -1052,10 +1408,7 @@ import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { Resource } from '@opentelemetry/resources';
-import {
-  ATTR_SERVICE_NAME,
-  ATTR_SERVICE_VERSION,
-} from '@opentelemetry/semantic-conventions';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 
 export function register() {
   const resource = new Resource({
@@ -1066,24 +1419,24 @@ export function register() {
 
   const sdk = new NodeSDK({
     resource,
-    
+
     traceExporter: new OTLPTraceExporter({
       url: `${process.env.OTEL_EXPORTER_OTLP_ENDPOINT}/v1/traces`,
     }),
-    
+
     logRecordProcessor: new SimpleLogRecordProcessor(
       new OTLPLogExporter({
         url: `${process.env.OTEL_EXPORTER_OTLP_ENDPOINT}/v1/logs`,
       })
     ),
-    
+
     metricReader: new PeriodicExportingMetricReader({
       exporter: new OTLPMetricExporter({
         url: `${process.env.OTEL_EXPORTER_OTLP_ENDPOINT}/v1/metrics`,
       }),
       exportIntervalMillis: 60000,
     }),
-    
+
     instrumentations: [
       getNodeAutoInstrumentations({
         '@opentelemetry/instrumentation-fs': { enabled: false },
@@ -1094,7 +1447,8 @@ export function register() {
   sdk.start();
 
   process.on('SIGTERM', () => {
-    sdk.shutdown()
+    sdk
+      .shutdown()
       .then(() => console.log('Tracing terminated'))
       .catch((error) => console.error('Error terminating tracing', error))
       .finally(() => process.exit(0));
@@ -1114,24 +1468,48 @@ NODE_ENV=development
 LOG_LEVEL=debug
 SERVICE_NAME=devmultiplier-web
 
+# Axiom (recommended for Vercel + Neon stack)
+NEXT_PUBLIC_AXIOM_DATASET=nextjs-logs
+NEXT_PUBLIC_AXIOM_TOKEN=xaat-xxx
+AXIOM_TOKEN=xaat-xxx
+AXIOM_DATASET=nextjs-logs
+
+# Neon Database
+DATABASE_URL=postgresql://user:pass@ep-xxx.us-east-2.aws.neon.tech/dbname?sslmode=require
+
 # .env.production (production)
 NODE_ENV=production
 LOG_LEVEL=info
 SERVICE_NAME=devmultiplier-web
 
-# Sentry
+# Axiom
+NEXT_PUBLIC_AXIOM_DATASET=nextjs-logs
+NEXT_PUBLIC_AXIOM_TOKEN=xaat-xxx
+AXIOM_TOKEN=xaat-xxx
+AXIOM_DATASET=nextjs-logs
+
+# Sentry (optional, for error tracking)
 NEXT_PUBLIC_SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
 SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
 SENTRY_AUTH_TOKEN=sntrys_xxx
 
-# Axiom (if using)
-AXIOM_TOKEN=xapt-xxx
-AXIOM_DATASET=nextjs-logs
-AXIOM_ORG_ID=your-org
-
-# OpenTelemetry (if using)
+# OpenTelemetry (if using self-hosted)
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
+
+### Vercel Environment Variables Setup
+
+In your Vercel project settings, add:
+
+| Variable                    | Environment | Description              |
+| --------------------------- | ----------- | ------------------------ |
+| `NEXT_PUBLIC_AXIOM_DATASET` | All         | Axiom dataset name       |
+| `NEXT_PUBLIC_AXIOM_TOKEN`   | All         | Axiom ingest token       |
+| `AXIOM_TOKEN`               | All         | Server-side Axiom token  |
+| `AXIOM_DATASET`             | All         | Server-side dataset name |
+| `DATABASE_URL`              | All         | Neon connection string   |
+| `SENTRY_DSN`                | Production  | Sentry DSN (server)      |
+| `NEXT_PUBLIC_SENTRY_DSN`    | Production  | Sentry DSN (client)      |
 
 ### Next.js Configuration
 
@@ -1161,48 +1539,64 @@ export default withSentryConfig(nextConfig, {
 
 ## Implementation Checklist
 
-### Phase 1: Core Setup
+### Phase 0: Vercel + Neon + Axiom Setup (Recommended)
 
-- [ ] Install Pino and configure logger (`lib/logger.ts`)
+- [ ] Create Axiom account (free tier: 500GB/month)
+- [ ] Create `nextjs-logs` dataset in Axiom
+- [ ] Generate Axiom API token with ingest permissions
+- [ ] Install `next-axiom` package
+- [ ] Configure `next.config.ts` with `withAxiom`
+- [ ] Add `<AxiomWebVitals />` to root layout
+- [ ] Add environment variables to Vercel project
+- [ ] (Optional) Configure Neon OTEL integration for database logs
+- [ ] Verify logs appearing in Axiom dashboard
+- [ ] Set up basic alerts in Axiom
+
+### Phase 1: Core Error Handling Setup
+
+- [ ] Install Pino for local development (`pino`, `pino-pretty`)
 - [ ] Create custom error classes (`lib/errors.ts`)
 - [ ] Implement Result pattern (`lib/result.ts`)
 - [ ] Create API handler wrapper (`lib/api-handler.ts`)
+- [ ] Create unified logger that works with both Pino (dev) and Axiom (prod)
 
-### Phase 2: Integration
+### Phase 2: Application Integration
 
-- [ ] Add request logging middleware
+- [ ] Add request logging to middleware
 - [ ] Implement request context with AsyncLocalStorage
-- [ ] Update existing API routes to use wrapper
+- [ ] Update existing API routes to use error handler wrapper
 - [ ] Add logging to database operations
+- [ ] Add logging to server actions
 
-### Phase 3: Production Monitoring
+### Phase 3: Production Error Monitoring
 
-- [ ] Set up Sentry (or alternative)
-- [ ] Configure source map uploads
-- [ ] Set up alerting rules
+- [ ] (Optional) Set up Sentry for detailed error tracking
+- [ ] Configure source map uploads if using Sentry
+- [ ] Set up alerting rules in Axiom
 - [ ] Test error reporting end-to-end
+- [ ] Create runbooks for common error scenarios
 
-### Phase 4: Polish
+### Phase 4: Dashboards & Alerts
 
-- [ ] Add log rotation for local development
-- [ ] Configure log retention policies
-- [ ] Create dashboards for key metrics
-- [ ] Document runbooks for common errors
+- [ ] Create Axiom dashboard for application metrics
+- [ ] Add Web Vitals visualization
+- [ ] Add database metrics (if Neon OTEL configured)
+- [ ] Configure error spike alerts
+- [ ] Configure slow response alerts
+- [ ] Set up Slack/email notification channels
 
 ---
 
 ## Package Summary
 
-### Required Packages
+### Recommended Stack (Vercel + Neon + Axiom)
 
 ```bash
-# Core logging
-bun add pino pino-pretty
+# Primary logging (required)
+bun add next-axiom
 
-# Error tracking (choose one)
-bun add @sentry/nextjs       # Sentry
-# OR
-bun add @axiomhq/pino        # Axiom
+# Local development pretty printing
+bun add pino pino-pretty
 
 # Validation
 bun add zod
@@ -1211,16 +1605,63 @@ bun add zod
 bun add -D @types/pino
 ```
 
-### Optional Packages
+### Optional: Enhanced Error Tracking
 
 ```bash
-# OpenTelemetry (full observability)
+# Sentry for detailed error tracking + session replay
+bun add @sentry/nextjs
+```
+
+### Optional: OpenTelemetry (Self-Hosted)
+
+```bash
+# Full observability stack
 bun add @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/auto-instrumentations-node
 
-# Additional utilities
-bun add neverthrow            # Alternative Result library with more features
-bun add ts-results-es         # Another Result implementation
+# Exporters
+bun add @opentelemetry/exporter-trace-otlp-http @opentelemetry/exporter-logs-otlp-http
 ```
+
+### Optional: Alternative Result Libraries
+
+```bash
+# More feature-rich Result implementations
+bun add neverthrow            # Popular, well-maintained
+bun add ts-results-es         # Rust-inspired
+```
+
+### Version Compatibility
+
+| Package          | Minimum Version | Notes                           |
+| ---------------- | --------------- | ------------------------------- |
+| `next-axiom`     | 1.x             | Requires Next.js 13+ App Router |
+| `next`           | 14.x / 15.x     | App Router recommended          |
+| `pino`           | 8.x             | ES modules support              |
+| `@sentry/nextjs` | 8.x             | Next.js 15 support              |
+
+---
+
+## Alternative Observability Stacks
+
+If Axiom doesn't fit your needs, here are alternatives for Vercel + Neon:
+
+| Stack                            | Pros                                               | Cons                             | Cost                 |
+| -------------------------------- | -------------------------------------------------- | -------------------------------- | -------------------- |
+| **Axiom** (Recommended)          | 500GB free, great Vercel integration, unified view | Limited free plan features       | Free → $25/mo        |
+| **Better Stack**                 | Unified logging + uptime monitoring, Neon guide    | Less Vercel-specific features    | Free → $24/mo        |
+| **Vercel Observability Plus**    | Native integration, 30-day retention               | App only (no Neon), costs add up | $10/mo base + events |
+| **Datadog**                      | Enterprise features, APM                           | Expensive, complex               | ~$15/host/mo+        |
+| **Grafana Cloud**                | Open standards, Neon integration                   | More setup required              | Free → usage-based   |
+| **Self-hosted (OTEL + Grafana)** | Full control, no vendor lock-in                    | Maintenance overhead             | Infrastructure cost  |
+
+### When to Choose Each
+
+- **Axiom**: Best balance of features and cost for small-to-medium projects
+- **Better Stack**: If you also need uptime monitoring and incident management
+- **Vercel Observability Plus**: If you're already paying for Pro and want simplicity
+- **Datadog**: Enterprise requirements, existing Datadog infrastructure
+- **Grafana Cloud**: Team already knows PromQL/Grafana, need custom dashboards
+- **Self-hosted**: Strict data residency requirements, DevOps expertise available
 
 ---
 
@@ -1228,40 +1669,58 @@ bun add ts-results-es         # Another Result implementation
 
 ### Log Levels
 
-| Level | When to Use |
-|-------|-------------|
-| `fatal` | System is unusable, immediate action required |
-| `error` | Error conditions, exceptions, failures |
-| `warn` | Warning conditions, deprecated features, retries |
-| `info` | Informational messages (request completed, job done) |
-| `debug` | Detailed debugging information |
-| `trace` | Very detailed tracing (function entry/exit) |
+| Level   | When to Use                                          |
+| ------- | ---------------------------------------------------- |
+| `fatal` | System is unusable, immediate action required        |
+| `error` | Error conditions, exceptions, failures               |
+| `warn`  | Warning conditions, deprecated features, retries     |
+| `info`  | Informational messages (request completed, job done) |
+| `debug` | Detailed debugging information                       |
+| `trace` | Very detailed tracing (function entry/exit)          |
 
 ### Error Codes
 
-| Code | HTTP | Description |
-|------|------|-------------|
-| `VALIDATION_ERROR` | 400 | Invalid input data |
-| `AUTHENTICATION_ERROR` | 401 | Not authenticated |
-| `AUTHORIZATION_ERROR` | 403 | Not authorized |
-| `NOT_FOUND` | 404 | Resource not found |
-| `RATE_LIMIT_ERROR` | 429 | Too many requests |
-| `INTERNAL_ERROR` | 500 | Unexpected server error |
-| `DATABASE_ERROR` | 500 | Database operation failed |
-| `EXTERNAL_SERVICE_ERROR` | 502 | Third-party service failed |
+| Code                     | HTTP | Description                |
+| ------------------------ | ---- | -------------------------- |
+| `VALIDATION_ERROR`       | 400  | Invalid input data         |
+| `AUTHENTICATION_ERROR`   | 401  | Not authenticated          |
+| `AUTHORIZATION_ERROR`    | 403  | Not authorized             |
+| `NOT_FOUND`              | 404  | Resource not found         |
+| `RATE_LIMIT_ERROR`       | 429  | Too many requests          |
+| `INTERNAL_ERROR`         | 500  | Unexpected server error    |
+| `DATABASE_ERROR`         | 500  | Database operation failed  |
+| `EXTERNAL_SERVICE_ERROR` | 502  | Third-party service failed |
 
 ---
 
 ## Resources
 
+### Primary Stack Documentation
+
+- [next-axiom GitHub](https://github.com/axiomhq/next-axiom)
+- [Axiom Documentation](https://axiom.co/docs)
+- [Axiom Vercel Integration](https://axiom.co/docs/apps/vercel)
+- [Vercel Observability](https://vercel.com/docs/observability)
+- [Vercel Drains](https://vercel.com/docs/observability/log-drains)
+- [Neon Monitoring](https://neon.com/docs/introduction/monitoring)
+- [Neon OpenTelemetry Integration](https://neon.com/docs/reference/metrics-logs)
+
+### Additional Resources
+
 - [Pino Documentation](https://getpino.io/)
 - [Sentry Next.js Guide](https://docs.sentry.io/platforms/javascript/guides/nextjs/)
-- [Axiom Documentation](https://axiom.co/docs)
 - [OpenTelemetry JS](https://opentelemetry.io/docs/instrumentation/js/)
 - [Next.js Error Handling](https://nextjs.org/docs/app/building-your-application/routing/error-handling)
+- [Axiom APL Query Language](https://axiom.co/docs/apl/introduction)
+
+### Community & Support
+
+- [Axiom Discord](https://axiom.co/discord)
+- [Neon Discord](https://neon.tech/discord)
+- [Vercel Community](https://vercel.com/community)
 
 ---
 
-*Document Version: 1.0.0*  
-*Last Updated: January 2026*  
-*Author: DevMultiplier Academy*
+_Document Version: 1.0.0_  
+_Last Updated: January 2026_  
+_Author: DevMultiplier Academy_

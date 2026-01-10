@@ -227,7 +227,8 @@ bwc add --command commit
     │   ├── 📄 components.md              # React component guidelines
     │   ├── 📄 prisma.md                  # Database query patterns
     │   ├── 📄 i18n.md                    # Internationalization rules
-    │   └── 📄 security.md                # Security checklist (OWASP)
+    │   ├── 📄 security.md                # Security checklist (OWASP)
+    │   └── 📄 error-handling.md          # Error classes, Result pattern, logging
     ├── 📁 commands/                      # Slash commands (/command)
     │   ├── 📄 review.md                  # Code review workflow
     │   ├── 📄 deploy.md                  # Deployment workflow
@@ -238,7 +239,8 @@ bwc add --command commit
     │   ├── 📄 i18n-check.md              # Translation completeness
     │   ├── 📄 api-test.md                # API endpoint testing
     │   ├── 📄 metrics.md                 # OpenTelemetry monitoring
-    │   └── 📄 env-check.md               # Environment validation
+    │   ├── 📄 env-check.md               # Environment validation
+    │   └── 📄 logs.md                    # Log analysis with Pino/jq
     ├── 📁 agents/                        # Specialized AI subagents
     │   ├── 📄 dba.md                     # Database Administrator
     │   ├── 📄 security-reviewer.md       # Security auditor (OWASP)
@@ -247,7 +249,8 @@ bwc add --command commit
     │   ├── 📄 i18n-specialist.md         # Internationalization
     │   ├── 📄 devops-engineer.md         # CI/CD & Docker
     │   ├── 📄 performance-analyst.md     # Performance optimization
-    │   └── 📄 accessibility-auditor.md   # WCAG compliance
+    │   ├── 📄 accessibility-auditor.md   # WCAG compliance
+    │   └── 📄 error-detective.md         # Debugging & log investigation
     ├── 📁 skills/                        # Multi-step workflows
     │   ├── 📁 database-optimization/
     │   │   └── 📄 SKILL.md               # Query & index optimization
@@ -259,8 +262,10 @@ bwc add --command commit
     │   │   └── 📄 SKILL.md               # Translation file sync
     │   ├── 📁 test-generator/
     │   │   └── 📄 SKILL.md               # Test generation
-    │   └── 📁 migration-planner/
-    │       └── 📄 SKILL.md               # Database migration planning
+    │   ├── 📁 migration-planner/
+    │   │   └── 📄 SKILL.md               # Database migration planning
+    │   └── 📁 error-setup/
+    │       └── 📄 SKILL.md               # Error handling infrastructure
     └── 📁 output-styles/                 # Response formatting
         └── 📄 technical-writer.md        # Docs with Mermaid & emojis
 
@@ -269,13 +274,13 @@ Legend: 📦 Root | 📁 Directory | 📄 File
 
 ### Configuration Categories
 
-| Category        | Purpose                                    | Location          |
-| --------------- | ------------------------------------------ | ----------------- |
-| **Rules**       | Auto-loaded coding standards by file type  | `.claude/rules/`  |
-| **Commands**    | User-invoked workflows (`/command`)        | `.claude/commands/` |
-| **Agents**      | Specialized AI personas for complex tasks  | `.claude/agents/` |
-| **Skills**      | Multi-step guided workflows                | `.claude/skills/` |
-| **Output Styles** | Response formatting templates            | `.claude/output-styles/` |
+| Category          | Purpose                                   | Location                 |
+| ----------------- | ----------------------------------------- | ------------------------ |
+| **Rules**         | Auto-loaded coding standards by file type | `.claude/rules/`         |
+| **Commands**      | User-invoked workflows (`/command`)       | `.claude/commands/`      |
+| **Agents**        | Specialized AI personas for complex tasks | `.claude/agents/`        |
+| **Skills**        | Multi-step guided workflows               | `.claude/skills/`        |
+| **Output Styles** | Response formatting templates             | `.claude/output-styles/` |
 
 ---
 
