@@ -82,7 +82,7 @@ bun run format:fix       # Prettier with auto-fix
 
 **Database**: Prisma with PostgreSQL. Models include users, courses, modules, lessons, enrollments, and progress tracking. All content supports i18n via `*_translations` tables (course_translations, module_translations, lesson_translations).
 
-**Observability**: OpenTelemetry instrumentation via `instrumentation.ts` (loads `instrumentation.node.ts` server-side). Metrics recorded for HTTP requests and page views in middleware.
+**Observability**: OpenTelemetry instrumentation via `instrumentation.ts` (loads `instrumentation.node.ts` server-side). Metrics recorded for HTTP requests and page views in middleware. Note: In Next.js 15+, instrumentation is built-in and enabled by default - no `experimental.instrumentationHook` config needed.
 
 ### Path Alias
 Use `@/` to import from `src/`:
