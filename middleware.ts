@@ -8,8 +8,10 @@ const protectedRoutes = ['/dashboard', '/courses', '/profile', '/enrollments'];
 export function middleware(request: NextRequest) {
   const startTime = Date.now();
 
-  // Check for session cookie (Auth.js uses 'authjs.session-token')
-  const sessionCookie = request.cookies.has('authjs.session-token');
+  // Check for session cookie (Auth.js uses 'authjs.session-token' in dev, '__Secure-authjs.session-token' in production with HTTPS)
+  const sessionCookie =
+    request.cookies.has('authjs.session-token') ||
+    request.cookies.has('__Secure-authjs.session-token');
   const pathname = request.nextUrl.pathname;
 
   // Check if the current route is protected

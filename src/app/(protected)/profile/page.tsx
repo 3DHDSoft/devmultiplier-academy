@@ -99,7 +99,10 @@ function md5(str: string): string {
   x[(((str.length + 8) >> 6) << 4) + 14] = str.length * 8;
 
   for (let i = 0; i < x.length; i += 16) {
-    const oldA = a, oldB = b, oldC = c, oldD = d;
+    const oldA = a,
+      oldB = b,
+      oldC = c,
+      oldD = d;
 
     a = md5ff(a, b, c, d, x[i + 0], 7, 0xd76aa478);
     d = md5ff(d, a, b, c, x[i + 1], 12, 0xe8c7b756);
@@ -284,7 +287,7 @@ export default function ProfilePage() {
     };
 
     fetchProfile();
-  }, [session?.user?.id]); // Only re-fetch if user ID changes
+  }, [session?.user]); // Only re-fetch if user changes
 
   // Fetch active sessions when tab changes to settings
   useEffect(() => {
@@ -547,7 +550,10 @@ export default function ProfilePage() {
 
         {/* Settings Tab */}
         {activeTab === 'settings' && (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             {/* Settings Section */}
             <div className="rounded-lg bg-white p-4 shadow">
               <h3 className="mb-3 text-lg font-semibold text-gray-900">Settings</h3>
@@ -555,7 +561,10 @@ export default function ProfilePage() {
               <div className="space-y-3">
                 {/* Email (Verified) */}
                 <div>
-                  <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
                     Email
                   </label>
                   <div className="flex items-center gap-2">
@@ -567,9 +576,7 @@ export default function ProfilePage() {
                       disabled
                       className="block flex-1 rounded-md border border-gray-300 bg-gray-50 px-2.5 py-1.5 text-sm text-gray-500"
                     />
-                    <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-800">
-                      Verified
-                    </span>
+                    <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-800">Verified</span>
                     <button
                       type="button"
                       onClick={() => setShowEmailChangeModal(true)}
@@ -582,7 +589,10 @@ export default function ProfilePage() {
 
                 {/* Language */}
                 <div>
-                  <label htmlFor="locale" className="mb-1 block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="locale"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
                     Language
                   </label>
                   <select
@@ -604,7 +614,10 @@ export default function ProfilePage() {
 
                 {/* Dashboard Appearance */}
                 <div>
-                  <label htmlFor="dashboardAppearance" className="mb-1 block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="dashboardAppearance"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
                     Dashboard appearance
                   </label>
                   <select
@@ -622,7 +635,10 @@ export default function ProfilePage() {
 
                 {/* Bio */}
                 <div>
-                  <label htmlFor="bio" className="mb-1 block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="bio"
+                    className="mb-1 block text-sm font-medium text-gray-700"
+                  >
                     Bio
                   </label>
                   <textarea
@@ -661,7 +677,7 @@ export default function ProfilePage() {
             <div className="rounded-lg bg-white p-4 shadow">
               <h3 className="mb-3 text-lg font-semibold text-gray-900">Active sessions</h3>
 
-{loadingSessions ? (
+              {loadingSessions ? (
                 <div className="flex items-center justify-center py-4">
                   <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                 </div>
@@ -681,29 +697,34 @@ export default function ProfilePage() {
                     <tbody>
                       {sessions.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="py-4 text-center text-sm text-gray-500">
+                          <td
+                            colSpan={6}
+                            className="py-4 text-center text-sm text-gray-500"
+                          >
                             No active sessions found
                           </td>
                         </tr>
                       ) : (
                         (() => {
                           // Aggregate sessions by device and location
-                          const aggregatedMap = new Map<string, {
-                            deviceDisplay: string;
-                            location: string;
-                            sessions: Session[];
-                            firstCreated: string;
-                            lastUpdated: string;
-                            hasCurrentSession: boolean;
-                          }>();
+                          const aggregatedMap = new Map<
+                            string,
+                            {
+                              deviceDisplay: string;
+                              location: string;
+                              sessions: Session[];
+                              firstCreated: string;
+                              lastUpdated: string;
+                              hasCurrentSession: boolean;
+                            }
+                          >();
 
                           sessions.forEach((sess) => {
                             const browserDisplay = sess.browser || 'Unknown Browser';
                             const osDisplay = sess.os || 'Unknown OS';
                             const deviceDisplay = `${browserDisplay} (${osDisplay})`;
-                            const location = [sess.city, sess.region, sess.country]
-                              .filter(Boolean)
-                              .join(', ') || 'Unknown Location';
+                            const location =
+                              [sess.city, sess.region, sess.country].filter(Boolean).join(', ') || 'Unknown Location';
                             const key = `${deviceDisplay}|${location}`;
                             const isCurrentSession = session?.user?.sessionId === sess.id;
 
@@ -739,10 +760,13 @@ export default function ProfilePage() {
                           });
 
                           return Array.from(aggregatedMap.entries()).map(([key, group]) => {
-                            const isTerminating = group.sessions.some(s => terminatingSessionId === s.id);
+                            const isTerminating = group.sessions.some((s) => terminatingSessionId === s.id);
 
                             return (
-                              <tr key={key} className="border-b border-gray-100 last:border-0">
+                              <tr
+                                key={key}
+                                className="border-b border-gray-100 last:border-0"
+                              >
                                 <td className="py-2">
                                   <div className="flex items-center gap-1.5">
                                     <span className="text-sm text-gray-900">{group.deviceDisplay}</span>
@@ -755,12 +779,8 @@ export default function ProfilePage() {
                                 </td>
                                 <td className="py-2 text-sm text-gray-600">{group.location}</td>
                                 <td className="py-2 text-sm font-semibold text-gray-900">{group.sessions.length}</td>
-                                <td className="py-2 text-sm text-gray-600">
-                                  {formatDate(group.firstCreated)}
-                                </td>
-                                <td className="py-2 text-sm text-gray-600">
-                                  {formatDate(group.lastUpdated)}
-                                </td>
+                                <td className="py-2 text-sm text-gray-600">{formatDate(group.firstCreated)}</td>
+                                <td className="py-2 text-sm text-gray-600">{formatDate(group.lastUpdated)}</td>
                                 <td className="py-2 text-right">
                                   {group.hasCurrentSession ? (
                                     <span className="text-xs text-gray-400">Current session</span>
@@ -769,7 +789,7 @@ export default function ProfilePage() {
                                       type="button"
                                       onClick={() => {
                                         // Terminate all sessions in this group
-                                        group.sessions.forEach(s => handleTerminateSession(s.id));
+                                        group.sessions.forEach((s) => handleTerminateSession(s.id));
                                       }}
                                       disabled={isTerminating}
                                       className="text-red-600 hover:text-red-800 disabled:opacity-50"
@@ -798,9 +818,7 @@ export default function ProfilePage() {
             <div className="rounded-lg border-2 border-red-200 bg-white p-4 shadow">
               <h3 className="mb-2 text-lg font-bold text-red-600">Danger Zone</h3>
               <h4 className="mb-1 text-base font-semibold text-gray-900">Delete your profile</h4>
-              <p className="mb-3 text-sm text-gray-600">
-                Permanently delete the user {formData.email}
-              </p>
+              <p className="mb-3 text-sm text-gray-600">Permanently delete the user {formData.email}</p>
               <button
                 type="button"
                 onClick={() => setShowDeleteModal(true)}
@@ -814,7 +832,10 @@ export default function ProfilePage() {
 
         {/* Notifications Tab */}
         {activeTab === 'notifications' && (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             <div className="rounded-lg bg-white p-4 shadow">
               <h3 className="mb-3 text-lg font-semibold text-gray-900">Email Notifications</h3>
 
@@ -829,12 +850,13 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnCourseUpdates" className="flex-1">
-                    <span className="block text-sm font-medium text-gray-900">
-                      Course updates
-                    </span>
+                  <label
+                    htmlFor="notifyOnCourseUpdates"
+                    className="flex-1"
+                  >
+                    <span className="block text-sm font-medium text-gray-900">Course updates</span>
                     <span className="block text-sm text-gray-500">
-                      Get notified when courses you're enrolled in are updated
+                      Get notified when courses you&apos;re enrolled in are updated
                     </span>
                   </label>
                 </div>
@@ -849,10 +871,11 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnNewCourses" className="flex-1">
-                    <span className="block text-sm font-medium text-gray-900">
-                      New courses
-                    </span>
+                  <label
+                    htmlFor="notifyOnNewCourses"
+                    className="flex-1"
+                  >
+                    <span className="block text-sm font-medium text-gray-900">New courses</span>
                     <span className="block text-sm text-gray-500">
                       Be the first to know when new courses are available
                     </span>
@@ -869,10 +892,11 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnCompletionReminders" className="flex-1">
-                    <span className="block text-sm font-medium text-gray-900">
-                      Completion reminders
-                    </span>
+                  <label
+                    htmlFor="notifyOnCompletionReminders"
+                    className="flex-1"
+                  >
+                    <span className="block text-sm font-medium text-gray-900">Completion reminders</span>
                     <span className="block text-sm text-gray-500">
                       Gentle reminders to help you complete your courses
                     </span>
@@ -889,10 +913,11 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnAchievements" className="flex-1">
-                    <span className="block text-sm font-medium text-gray-900">
-                      Achievements and milestones
-                    </span>
+                  <label
+                    htmlFor="notifyOnAchievements"
+                    className="flex-1"
+                  >
+                    <span className="block text-sm font-medium text-gray-900">Achievements and milestones</span>
                     <span className="block text-sm text-gray-500">
                       Celebrate your learning progress with achievement notifications
                     </span>
@@ -909,10 +934,11 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnMessages" className="flex-1">
-                    <span className="block text-sm font-medium text-gray-900">
-                      Messages and replies
-                    </span>
+                  <label
+                    htmlFor="notifyOnMessages"
+                    className="flex-1"
+                  >
+                    <span className="block text-sm font-medium text-gray-900">Messages and replies</span>
                     <span className="block text-sm text-gray-500">
                       Get notified when instructors or students message you
                     </span>
@@ -921,7 +947,10 @@ export default function ProfilePage() {
 
                 {/* Email Digest Frequency */}
                 <div className="pt-2">
-                  <label htmlFor="emailDigestFrequency" className="mb-1 block text-sm font-medium text-gray-900">
+                  <label
+                    htmlFor="emailDigestFrequency"
+                    className="mb-1 block text-sm font-medium text-gray-900"
+                  >
                     Email digest frequency
                   </label>
                   <select
@@ -936,9 +965,7 @@ export default function ProfilePage() {
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Receive a summary of your activity and updates
-                  </p>
+                  <p className="mt-1 text-sm text-gray-500">Receive a summary of your activity and updates</p>
                 </div>
               </div>
             </div>
@@ -966,28 +993,28 @@ export default function ProfilePage() {
 
         {/* Email Change Modal */}
         {showEmailChangeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
               <h3 className="mb-4 text-xl font-bold text-gray-900">Update Email Address</h3>
 
               {emailChangeSuccess ? (
                 <div className="rounded-lg bg-green-50 p-4">
                   <p className="text-green-800">
-                    Verification email sent! Please check your new email inbox and click the verification link to complete the change.
+                    Verification email sent! Please check your new email inbox and click the verification link to
+                    complete the change.
                   </p>
                 </div>
               ) : (
                 <>
                   <div className="mb-4 rounded-lg bg-blue-50 p-3">
                     <p className="text-sm text-blue-800">
-                      A verification link will be sent to your new email address. You'll need to click it to complete the change.
+                      A verification link will be sent to your new email address. You&apos;ll need to click it to
+                      complete the change.
                     </p>
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                      Current Email
-                    </label>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Current Email</label>
                     <input
                       type="email"
                       value={formData.email}
@@ -997,28 +1024,24 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                      New Email Address
-                    </label>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">New Email Address</label>
                     <input
                       type="email"
                       value={newEmail}
                       onChange={(e) => setNewEmail(e.target.value)}
                       placeholder="Enter new email address"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                      Password
-                    </label>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Password</label>
                     <input
                       type="password"
                       value={emailChangePassword}
                       onChange={(e) => setEmailChangePassword(e.target.value)}
                       placeholder="Enter your password to confirm"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
                     />
                   </div>
 
@@ -1057,19 +1080,23 @@ export default function ProfilePage() {
 
         {/* Delete Account Modal */}
         {showDeleteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
               <h3 className="mb-4 text-xl font-bold text-gray-900">Delete Account</h3>
 
               <div className="mb-4 rounded-lg bg-red-50 p-3">
                 <p className="text-sm text-red-800">
-                  <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and enrollments, will be permanently deleted.
+                  <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and
+                  enrollments, will be permanently deleted.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="deletePassword" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="deletePassword"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Password
                   </label>
                   <input
@@ -1083,7 +1110,10 @@ export default function ProfilePage() {
                 </div>
 
                 <div>
-                  <label htmlFor="deleteConfirmation" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="deleteConfirmation"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Type DELETE to confirm
                   </label>
                   <input

@@ -2,7 +2,9 @@
 
 ## Core Purpose
 
-This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and developing a production-grade Next.js educational platform with enterprise-level observability.
+This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring
+hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and
+developing a production-grade Next.js educational platform with enterprise-level observability.
 
 ---
 
@@ -11,6 +13,7 @@ This devcontainer transforms the **DevMultiplier Academy website** from a comple
 ### Problem It Solves
 
 Setting up this project traditionally requires:
+
 - Installing Node.js 22 and Bun 1.3.5+
 - Setting up PostgreSQL 18 with PostGIS extensions
 - Configuring an entire observability stack (OpenTelemetry, Prometheus, Tempo, Grafana)
@@ -34,37 +37,41 @@ Setting up this project traditionally requires:
 
 ### 1. Complete Application Stack
 
-| Component | Version | Purpose |
-|-----------|---------|---------|
-| Node.js | 22.x | JavaScript runtime |
-| Bun | 1.3.5+ | Fast package manager |
-| Next.js | 16.1.1 | React framework |
-| React | 19.2.3 | UI library |
-| TypeScript | 5.x | Type safety |
-| PostgreSQL | 18.1 | Primary database |
-| PostGIS | 3.6 | Spatial extensions |
-| Prisma | 7.2.0 | Database ORM |
+| Component  | Version | Purpose              |
+| ---------- | ------- | -------------------- |
+| Node.js    | 22.x    | JavaScript runtime   |
+| Bun        | 1.3.5+  | Fast package manager |
+| Next.js    | 16.1.1  | React framework      |
+| React      | 19.2.3  | UI library           |
+| TypeScript | 5.x     | Type safety          |
+| PostgreSQL | 18.1    | Primary database     |
+| PostGIS    | 3.6     | Spatial extensions   |
+| Prisma     | 7.2.0   | Database ORM         |
 
 ### 2. Enterprise Observability (Production-Grade Monitoring)
 
 Complete monitoring stack that mirrors production:
 
 **OpenTelemetry Collector**
+
 - Receives traces and metrics from Next.js app
 - Routes data to appropriate backends
 - Ports: 4317 (gRPC), 4318 (HTTP)
 
 **Grafana Tempo**
+
 - Distributed tracing backend
 - Query traces by ID or attributes
 - Port: 3200
 
 **Prometheus**
+
 - Time-series metrics database
 - Scrapes metrics every 15 seconds
 - Port: 9090
 
 **Grafana**
+
 - Unified visualization platform
 - 3 pre-built dashboards:
   - **Application Overview**: Request rates, response times, error rates
@@ -73,33 +80,40 @@ Complete monitoring stack that mirrors production:
 - Port: 3001
 - Credentials: admin/admin
 
-**What This Means**: You can see exactly how your code performs in real-time, trace slow database queries, and monitor security events—just like production systems.
+**What This Means**: You can see exactly how your code performs in real-time, trace slow database queries, and monitor
+security events—just like production systems.
 
 ### 3. 50+ Pre-installed VS Code Extensions
 
 Carefully curated tools that install automatically:
 
 **AI Assistants**
+
 - Claude Code
 - GitHub Copilot
 
 **Testing**
+
 - Playwright
 - Vitest
 
 **Git Tools**
+
 - GitLens
 - Git Graph
 - Git History
 
 **Database**
+
 - PostgreSQL formatter
 - SQLTools
 
 **Documentation**
+
 - 7 Markdown extensions with Mermaid diagrams
 
 **Code Quality**
+
 - ESLint
 - Prettier
 - Spell checker
@@ -115,6 +129,7 @@ Carefully curated tools that install automatically:
 ### 5. Automated Setup & Health Checks
 
 Two lifecycle scripts ensure everything works:
+
 - **post-create.sh**: Installs dependencies, waits for PostgreSQL, configures permissions
 - **post-start.sh**: Verifies database connections on every restart
 
@@ -172,6 +187,7 @@ Two lifecycle scripts ensure everything works:
 ### 4. Data Persistence
 
 9 Docker volumes preserve your work across container rebuilds:
+
 - Database data and backups
 - Grafana dashboards you customize
 - Claude Code authentication
@@ -188,10 +204,9 @@ Two lifecycle scripts ensure everything works:
 
 ## Who Benefits Most
 
-✅ **Educational Institutions**: Students get working environments in minutes
-✅ **Development Teams**: 5+ developers need consistency
-✅ **Open Source Projects**: Contributors avoid setup friction
-✅ **Remote Teams**: Works identically locally or in GitHub Codespaces
+✅ **Educational Institutions**: Students get working environments in minutes ✅ **Development Teams**: 5+ developers
+need consistency ✅ **Open Source Projects**: Contributors avoid setup friction ✅ **Remote Teams**: Works identically
+locally or in GitHub Codespaces
 
 ---
 
@@ -217,18 +232,21 @@ Two lifecycle scripts ensure everything works:
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
-- [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [VS Code](https://code.visualstudio.com/) with
+  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - 4+ CPU cores and 20GB RAM available
 
 ### First Time Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/3DHDSoft/devmultiplier-academy.git
    cd devmultiplier-academy
    ```
 
 2. **Open in VS Code**
+
    ```bash
    code .
    ```
@@ -244,6 +262,7 @@ Two lifecycle scripts ensure everything works:
    - Services start and health checks pass
 
 5. **Verify everything works**
+
    ```bash
    # Check database connection
    psql -h postgres -U admin -d academy -c "SELECT version();"
@@ -267,6 +286,7 @@ Two lifecycle scripts ensure everything works:
 **Scenario**: DevMultiplier Academy teaches professional web development
 
 **Benefits**:
+
 - Students get working environment in 10 minutes
 - Instructors don't debug environment setup
 - Everyone sees same results
@@ -274,6 +294,7 @@ Two lifecycle scripts ensure everything works:
 - Pre-configured tools reduce cognitive load
 
 **Example Workflow**:
+
 ```bash
 # Student starts course
 git clone <repo>
@@ -288,6 +309,7 @@ code .
 **Scenario**: 5-10 developers collaborating on codebase
 
 **Benefits**:
+
 - Eliminates "works on my machine"
 - New team members productive day 1
 - Database schema in sync (migrations in version control)
@@ -299,6 +321,7 @@ code .
 **Scenario**: External contributors want to submit PRs
 
 **Benefits**:
+
 - No setup documentation needed
 - README can focus on features, not installation
 - Contributors can test locally
@@ -309,6 +332,7 @@ code .
 **Scenario**: Developer works from multiple machines or uses GitHub Codespaces
 
 **Benefits**:
+
 - Same environment everywhere
 - Cloud-based development (Codespaces)
 - Data persists in volumes
@@ -319,6 +343,7 @@ code .
 **Scenario**: Need to replicate production issue locally
 
 **Benefits**:
+
 - Same PostgreSQL version as production
 - Observability stack mirrors production
 - Can trace requests end-to-end
@@ -330,16 +355,16 @@ code .
 
 ### All Services & Ports
 
-| Service | Container | Port(s) | Purpose |
-|---------|-----------|---------|---------|
-| Dev Environment | dev-x-academy-web | - | Your coding workspace |
-| Next.js App | (in dev container) | 3000 | Application server |
-| PostgreSQL | postgres | 5433→5432 | Database with PostGIS |
-| pgAdmin | pgadmin | 5051→80 | Database admin UI |
-| OTEL Collector | otel-collector | 4317, 4318 | Telemetry pipeline |
-| Tempo | tempo | 3200 | Trace storage |
-| Prometheus | prometheus | 9090 | Metrics storage |
-| Grafana | grafana | 3001→3000 | Visualization dashboards |
+| Service         | Container          | Port(s)    | Purpose                  |
+| --------------- | ------------------ | ---------- | ------------------------ |
+| Dev Environment | dev-x-academy-web  | -          | Your coding workspace    |
+| Next.js App     | (in dev container) | 3000       | Application server       |
+| PostgreSQL      | postgres           | 5433→5432  | Database with PostGIS    |
+| pgAdmin         | pgadmin            | 5051→80    | Database admin UI        |
+| OTEL Collector  | otel-collector     | 4317, 4318 | Telemetry pipeline       |
+| Tempo           | tempo              | 3200       | Trace storage            |
+| Prometheus      | prometheus         | 9090       | Metrics storage          |
+| Grafana         | grafana            | 3001→3000  | Visualization dashboards |
 
 **Total**: 8 services, 14 ports forwarded, all pre-configured
 
@@ -455,7 +480,8 @@ bun run telemetry:test
 
 ## Bottom Line
 
-This is a **production-grade, enterprise-level development environment** that eliminates weeks of setup time and provides:
+This is a **production-grade, enterprise-level development environment** that eliminates weeks of setup time and
+provides:
 
 - ⚡ **10-minute onboarding** vs. 4-hour manual setup
 - 🎯 **Zero version conflicts** across team members
@@ -463,13 +489,15 @@ This is a **production-grade, enterprise-level development environment** that el
 - 🧪 **Complete testing stack** (unit + E2E)
 - 🛡️ **Enterprise security practices** built-in
 
-Perfect for an academy/educational platform that needs to onboard developers quickly while teaching professional-grade development practices with real monitoring and tracing tools.
+Perfect for an academy/educational platform that needs to onboard developers quickly while teaching professional-grade
+development practices with real monitoring and tracing tools.
 
 ---
 
 ## Additional Documentation
 
 For comprehensive details, see:
+
 - **Full Documentation**: [docs/devcontainer-overview.md](devcontainer-overview.md)
 - **Detailed Executive Overview**: [docs/devcontainer-executive-overview.md](devcontainer-executive-overview.md)
 - **Observability Guide**: [.devcontainer/observability-setup.md](../.devcontainer/observability-setup.md)

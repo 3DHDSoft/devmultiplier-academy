@@ -12,11 +12,11 @@ docker-compose up -d prometheus grafana
 
 ## Access Services
 
-| Service | URL | Credentials |
-|---------|-----|-------------|
-| **Grafana** | http://localhost:3001 | admin / admin |
-| **Prometheus** | http://localhost:9090 | (no auth) |
-| **Next.js App** | http://localhost:3000 | - |
+| Service         | URL                   | Credentials   |
+| --------------- | --------------------- | ------------- |
+| **Grafana**     | http://localhost:3001 | admin / admin |
+| **Prometheus**  | http://localhost:9090 | (no auth)     |
+| **Next.js App** | http://localhost:3000 | -             |
 
 ## View Dashboards
 
@@ -94,11 +94,13 @@ docker-compose down -v
 **Wait 60 seconds** - Metrics are exported every minute
 
 **Generate traffic:**
+
 ```bash
 for i in {1..10}; do curl http://localhost:3000/; sleep 1; done
 ```
 
 **Check metrics endpoint:**
+
 ```bash
 curl http://localhost:3000/api/metrics
 ```
@@ -106,11 +108,13 @@ curl http://localhost:3000/api/metrics
 ### Can't Access Grafana
 
 **Check if container is running:**
+
 ```bash
 docker ps | grep grafana
 ```
 
 **Check logs:**
+
 ```bash
 docker logs grafana
 ```
@@ -118,11 +122,13 @@ docker logs grafana
 **Try different port:**
 
 Edit [.devcontainer/.env](.devcontainer/.env):
+
 ```bash
 GRAFANA_PORT=3002
 ```
 
 Then restart:
+
 ```bash
 docker-compose restart grafana
 ```
@@ -130,16 +136,19 @@ docker-compose restart grafana
 ### Prometheus Not Scraping
 
 **Check Prometheus logs:**
+
 ```bash
 docker logs prometheus
 ```
 
 **Verify network connectivity:**
+
 ```bash
 docker exec -it prometheus ping dev-x-academy-web
 ```
 
 **Reload configuration:**
+
 ```bash
 curl -X POST http://localhost:9090/-/reload
 ```

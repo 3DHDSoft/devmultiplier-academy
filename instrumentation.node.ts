@@ -13,10 +13,8 @@ import { registerOTel } from '@vercel/otel';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
-import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
-import { resourceFromAttributes } from '@opentelemetry/resources';
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { diag, DiagConsoleLogger, DiagLogLevel, metrics } from '@opentelemetry/api';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 
 // Enable error-level logging only (change to DiagLogLevel.DEBUG for verbose debugging)
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
@@ -85,41 +83,26 @@ const metricReader = new PeriodicExportingMetricReader({
   exportIntervalMillis: 15000, // Export every 15 seconds
 });
 
-// Create and register a MeterProvider manually to ensure it's available globally
-const resource = resourceFromAttributes({
-  [ATTR_SERVICE_NAME]: 'dev-academy-web',
-  [ATTR_SERVICE_VERSION]: '1.0.0',
-});
-
-const meterProvider = new MeterProvider({
-  resource,
-  readers: [metricReader],
-});
-
-// Register the MeterProvider globally so metrics.getMeter() works
-metrics.setGlobalMeterProvider(meterProvider);
-
-console.log('✅ Global MeterProvider registered for application metrics');
-
 // Initialize OpenTelemetry SDK using @vercel/otel
+// Note: registerOTel will create and register the MeterProvider globally
 registerOTel({
   serviceName: 'dev-academy-web',
   traceExporter,
-  metricReader,
+  metricReaders: [metricReader],
   instrumentations: [
-    getNodeAutoInstrumentations({
+    ...getNodeAutoInstrumentations({
       // Auto-instrument HTTP requests (creates traces + metrics)
       '@opentelemetry/instrumentation-http': {
         enabled: true,
         ignoreIncomingRequestHook: (request) => {
           // Ignore health checks and static assets
-          const url = request.url || '';
+          const url = 'url' in request ? request.url || '' : '';
           return url.includes('/_next/static') || url.includes('/favicon.ico') || url === '/health';
         },
         // Enable metrics collection for incoming HTTP requests
         requestHook: (span, request) => {
           // Add custom attributes to spans that will be converted to metrics
-          if (request.url) {
+          if ('url' in request && request.url) {
             span.setAttribute('http.route', request.url);
           }
         },

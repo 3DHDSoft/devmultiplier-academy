@@ -1,12 +1,15 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { withMetrics } from '@/lib/with-metrics';
+import { withErrorHandling } from '@/lib/api-handler';
+import { apiLogger } from '@/lib/logger';
 
-async function handler() {
-  try {
+export const GET = withErrorHandling(
+  async () => {
     const session = await auth();
     const userLocale = session?.user?.locale || 'en';
+
+    apiLogger.debug({ userLocale }, 'Fetching courses');
 
     // Get all published courses with translations for user's locale
     const courses = await prisma.course.findMany({
@@ -59,10 +62,6 @@ async function handler() {
     }));
 
     return NextResponse.json(formattedCourses);
-  } catch (error) {
-    console.error('Error fetching courses:', error);
-    return NextResponse.json({ error: 'Failed to fetch courses' }, { status: 500 });
-  }
-}
-
-export const GET = withMetrics(handler, '/api/courses');
+  },
+  { route: '/api/courses' }
+);

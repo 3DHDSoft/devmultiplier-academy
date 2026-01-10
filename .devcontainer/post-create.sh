@@ -11,14 +11,19 @@ sudo chown -R node:node /home/node/.claude
 chmod 700 /home/node/.claude
 echo "✅ Claude Code auth directory ready"
 
-# Install global npm packages
-echo "🌍 Installing global npm packages..."
+# Install global bun packages
+echo "🌍 Installing global bun packages..."
 bun add -g npm-check-updates
 echo "✅ Global packages installed"
 
+# Install Claude Code CLI
+echo "🤖 Installing Claude Code CLI..."
+sudo npm install -g @anthropic-ai/claude-code
+echo "✅ Claude Code CLI installed (run 'claude' to start)"
+
 # Install project dependencies if package.json exists
 if [ -f "package.json" ]; then
-    echo "📦 Installing npm dependencies with Bun..."
+    echo "📦 Installing bun dependencies with Bun..."
     bun install
 fi
 

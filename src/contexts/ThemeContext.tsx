@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 
 type Theme = 'light' | 'dark' | 'system';
@@ -16,7 +16,15 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const [theme, setThemeState] = useState<Theme>('light');
-  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('light');
+  const [systemPrefersDark, setSystemPrefersDark] = useState(false);
+
+  // Derive effectiveTheme from theme and system preference
+  const effectiveTheme = useMemo<'light' | 'dark'>(() => {
+    if (theme === 'system') {
+      return systemPrefersDark ? 'dark' : 'light';
+    }
+    return theme;
+  }, [theme, systemPrefersDark]);
 
   // Get user's theme preference from session
   useEffect(() => {
@@ -37,44 +45,33 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const root = window.document.documentElement;
 
-    let resolvedTheme: 'light' | 'dark' = 'light';
-
-    if (theme === 'system') {
-      // Detect system preference
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      resolvedTheme = systemPrefersDark ? 'dark' : 'light';
-    } else {
-      resolvedTheme = theme;
-    }
-
-    setEffectiveTheme(resolvedTheme);
-
     // Remove both classes first
     root.classList.remove('light', 'dark');
     // Add the resolved theme class
-    root.classList.add(resolvedTheme);
+    root.classList.add(effectiveTheme);
 
     // Also set data attribute for CSS
-    root.setAttribute('data-theme', resolvedTheme);
-  }, [theme]);
+    root.setAttribute('data-theme', effectiveTheme);
+  }, [effectiveTheme]);
 
-  // Listen for system theme changes when theme is 'system'
+  // Listen for system theme changes and initialize system preference
   useEffect(() => {
-    if (theme !== 'system') return;
-
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // Initialize on mount - using callback to avoid synchronous setState warning
+    const initializeSystemPreference = () => {
+      setSystemPrefersDark(mediaQuery.matches);
+    };
+    // Use requestAnimationFrame to defer the state update
+    requestAnimationFrame(initializeSystemPreference);
+
     const handleChange = (e: MediaQueryListEvent) => {
-      const root = window.document.documentElement;
-      const newTheme = e.matches ? 'dark' : 'light';
-      setEffectiveTheme(newTheme);
-      root.classList.remove('light', 'dark');
-      root.classList.add(newTheme);
-      root.setAttribute('data-theme', newTheme);
+      setSystemPrefersDark(e.matches);
     };
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme]);
+  }, []);
 
   const setTheme = async (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -97,11 +94,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, effectiveTheme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, effectiveTheme, setTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

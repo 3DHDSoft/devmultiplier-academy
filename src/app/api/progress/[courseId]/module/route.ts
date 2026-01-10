@@ -2,20 +2,26 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { withErrorHandling, RouteContext } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, AuthorizationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const markModuleCompleteSchema = z.object({
   moduleId: z.string().uuid('Invalid module ID'),
 });
 
-export async function PATCH(req: NextRequest, { params }: { params: { courseId: string } }) {
-  try {
+export const PATCH = withErrorHandling(
+  async (req: NextRequest, context?: RouteContext) => {
+    if (!context?.params) {
+      throw new NotFoundError('Module');
+    }
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
-    const courseId = params.courseId;
+    const { courseId } = await context.params;
     const body = await req.json();
     const { moduleId } = markModuleCompleteSchema.parse(body);
 
@@ -26,7 +32,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFoundError('User');
     }
 
     // Verify enrollment
@@ -41,7 +47,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     });
 
     if (!enrollment) {
-      return NextResponse.json({ error: 'Not enrolled in this course' }, { status: 403 });
+      throw new AuthorizationError('Not enrolled in this course');
     }
 
     // Verify module belongs to this course
@@ -51,8 +57,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     });
 
     if (!courseModule || courseModule.courseId !== courseId) {
-      return NextResponse.json({ error: 'Module not found' }, { status: 404 });
+      throw new NotFoundError('Module', moduleId);
     }
+
+    apiLogger.debug({ userId: user.id, courseId, moduleId }, 'Marking module complete');
 
     // Get all lessons in module
     const lessonsInModule = await prisma.lessons.findMany({
@@ -147,11 +155,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
         overallProgress,
       },
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid request', details: error.issues }, { status: 400 });
-    }
-    console.error('Error marking module complete:', error);
-    return NextResponse.json({ error: 'Failed to update progress' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/progress/[courseId]/module' }
+);

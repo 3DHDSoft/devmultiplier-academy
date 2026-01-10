@@ -6,10 +6,10 @@ This guide explains how to switch between local and cloud observability backends
 
 The application supports two observability configurations:
 
-| Environment | Backend | Use Case | Configuration |
-|------------|---------|----------|---------------|
+| Environment     | Backend             | Use Case                     | Configuration                                    |
+| --------------- | ------------------- | ---------------------------- | ------------------------------------------------ |
 | **Development** | Local Grafana Stack | Local development, debugging | `OTEL_USE_CLOUD=false` or `NODE_ENV=development` |
-| **Production** | Grafana Cloud | Production deployment | `OTEL_USE_CLOUD=true` or `NODE_ENV=production` |
+| **Production**  | Grafana Cloud       | Production deployment        | `OTEL_USE_CLOUD=true` or `NODE_ENV=production`   |
 
 ## Architecture Comparison
 
@@ -33,6 +33,7 @@ graph LR
 ```
 
 **Benefits:**
+
 - No external dependencies
 - Fast iteration cycle
 - Full control over data
@@ -40,6 +41,7 @@ graph LR
 - 15-second dashboard refresh
 
 **Services:**
+
 - OpenTelemetry Collector (http://localhost:4318)
 - Grafana (http://localhost:3001)
 - Prometheus (http://localhost:9090)
@@ -65,6 +67,7 @@ graph LR
 ```
 
 **Benefits:**
+
 - Managed infrastructure
 - Global availability
 - Long-term retention
@@ -90,14 +93,14 @@ const useCloudBackend = process.env.OTEL_USE_CLOUD === 'true' || isProduction;
 
 **Examples:**
 
-| `NODE_ENV` | `OTEL_USE_CLOUD` | Result |
-|-----------|------------------|--------|
-| `development` | (not set) | Local Stack |
-| `development` | `false` | Local Stack |
-| `development` | `true` | Grafana Cloud |
-| `production` | (any value) | Grafana Cloud |
-| (not set) | `false` | Local Stack |
-| (not set) | `true` | Grafana Cloud |
+| `NODE_ENV`    | `OTEL_USE_CLOUD` | Result        |
+| ------------- | ---------------- | ------------- |
+| `development` | (not set)        | Local Stack   |
+| `development` | `false`          | Local Stack   |
+| `development` | `true`           | Grafana Cloud |
+| `production`  | (any value)      | Grafana Cloud |
+| (not set)     | `false`          | Local Stack   |
+| (not set)     | `true`           | Grafana Cloud |
 
 ## Setup Instructions
 
@@ -142,6 +145,7 @@ bun run dev
 ```
 
 **Expected Console Output:**
+
 ```
 📊 OpenTelemetry configuration: Local Stack (development)
   🏠 Using local OTLP collector: http://otel-collector:4318
@@ -197,6 +201,7 @@ bun run start
 ```
 
 **Expected Console Output:**
+
 ```
 📊 OpenTelemetry configuration: Grafana Cloud (production)
   ☁️  Using Grafana Cloud endpoint: https://otlp-gateway-prod-us-east-3.grafana.net/otlp
@@ -234,18 +239,21 @@ OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <your-credentials>"}
 ### Metrics Not Appearing in Local Grafana
 
 **Check 1: Services Running**
+
 ```bash
 docker-compose ps
 # All services should be "Up"
 ```
 
 **Check 2: OTLP Collector Logs**
+
 ```bash
 docker-compose logs otel-collector
 # Should show "Everything is ready"
 ```
 
 **Check 3: Application Configuration**
+
 ```bash
 # Check console output when starting app
 bun run dev
@@ -253,10 +261,12 @@ bun run dev
 ```
 
 **Check 4: Prometheus Targets**
+
 1. Open http://localhost:9090/targets
 2. Verify `otel-collector` target is UP
 
 **Check 5: Generate Test Traffic**
+
 ```bash
 # Generate some requests
 for i in {1..10}; do curl http://localhost:3000/; sleep 1; done
@@ -265,6 +275,7 @@ for i in {1..10}; do curl http://localhost:3000/; sleep 1; done
 ### Not Connecting to Grafana Cloud
 
 **Check 1: Credentials**
+
 ```bash
 # Verify base64 encoding
 echo "MTIzNDU2OmdsY194eHguLi4=" | base64 -d
@@ -272,6 +283,7 @@ echo "MTIzNDU2OmdsY194eHguLi4=" | base64 -d
 ```
 
 **Check 2: Environment Variables Loaded**
+
 ```typescript
 // Add temporary debug logging to instrumentation.node.ts
 console.log('OTEL_USE_CLOUD:', process.env.OTEL_USE_CLOUD);
@@ -280,6 +292,7 @@ console.log('Endpoint:', process.env.OTEL_EXPORTER_OTLP_ENDPOINT);
 ```
 
 **Check 3: Network Connectivity**
+
 ```bash
 curl -X POST https://otlp-gateway-prod-us-east-3.grafana.net/otlp/v1/traces \
   -H "Authorization: Basic <your-base64>" \
@@ -289,6 +302,7 @@ curl -X POST https://otlp-gateway-prod-us-east-3.grafana.net/otlp/v1/traces \
 ```
 
 **Check 4: Enable Debug Logging**
+
 ```typescript
 // instrumentation.node.ts
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
@@ -314,6 +328,7 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 ### Environment Variable Management
 
 **Development (`.env`):**
+
 ```bash
 NODE_ENV=development
 OTEL_USE_CLOUD=false
@@ -321,6 +336,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
 ```
 
 **Local Testing (`.env.local` - gitignored):**
+
 ```bash
 # Can override to test cloud integration
 OTEL_USE_CLOUD=true
@@ -328,6 +344,7 @@ OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <real-credentials>"}
 ```
 
 **Production (Hosting Platform):**
+
 ```bash
 NODE_ENV=production
 OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-prod-us-east-3.grafana.net/otlp
@@ -338,32 +355,38 @@ OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <real-credentials>"}
 ## Quick Reference
 
 ### Start Local Stack
+
 ```bash
 cd .devcontainer && docker-compose up -d
 ```
 
 ### Stop Local Stack
+
 ```bash
 cd .devcontainer && docker-compose down
 ```
 
 ### View Local Services
+
 - Grafana: http://localhost:3001
 - Prometheus: http://localhost:9090
 - Tempo: http://localhost:3200
 - OTLP Collector: http://localhost:4318
 
 ### Switch to Cloud (Temporary)
+
 ```bash
 OTEL_USE_CLOUD=true bun run dev
 ```
 
 ### Switch to Local (Temporary)
+
 ```bash
 OTEL_USE_CLOUD=false bun run dev
 ```
 
 ### Check Current Configuration
+
 ```bash
 # Look for this line in console output:
 # "📊 OpenTelemetry configuration: Local Stack (development)"
@@ -380,8 +403,7 @@ OTEL_USE_CLOUD=false bun run dev
 
 ---
 
-**Last Updated**: 2026-01-07
-**Version**: 1.0.0
+**Last Updated**: 2026-01-07 **Version**: 1.0.0
 
 ---
 

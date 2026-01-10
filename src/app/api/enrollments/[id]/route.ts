@@ -1,16 +1,24 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling, RouteContext } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, AuthorizationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
-  try {
+export const GET = withErrorHandling(
+  async (_req: NextRequest, context?: RouteContext) => {
+    if (!context?.params) {
+      throw new NotFoundError('Enrollment');
+    }
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
-    const enrollmentId = params.id;
+    const { id: enrollmentId } = await context.params;
+
+    apiLogger.debug({ enrollmentId }, 'Fetching enrollment details');
 
     const enrollment = await prisma.enrollments.findUnique({
       where: { id: enrollmentId },
@@ -33,7 +41,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     });
 
     if (!enrollment) {
-      return NextResponse.json({ error: 'Enrollment not found' }, { status: 404 });
+      throw new NotFoundError('Enrollment', enrollmentId);
     }
 
     // Verify user owns this enrollment
@@ -43,7 +51,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     });
 
     if (enrollment.userId !== user!.id) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      throw new AuthorizationError('You do not have access to this enrollment');
     }
 
     const courseProgress = await prisma.course_progress.findUnique({
@@ -68,8 +76,6 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
         lastAccessedAt: courseProgress?.lastAccessedAt,
       },
     });
-  } catch (error) {
-    console.error('Error fetching enrollment:', error);
-    return NextResponse.json({ error: 'Failed to fetch enrollment' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/enrollments/[id]' }
+);

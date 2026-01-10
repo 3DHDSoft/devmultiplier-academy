@@ -45,8 +45,8 @@ describe('PATCH /api/user/language', () => {
     });
 
     it('should accept authenticated requests', () => {
-      const session: { users: { email: string; id: string } } = {
-        users: {
+      const session: { user: { email: string; id: string } } = {
+        user: {
           email: 'user@example.com',
           id: 'user-123',
         },
