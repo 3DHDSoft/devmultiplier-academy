@@ -3,18 +3,21 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, ValidationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const deleteAccountSchema = z.object({
   password: z.string().min(1, 'Password is required for account deletion'),
   confirmation: z.literal('DELETE', 'You must type DELETE to confirm'),
 });
 
-export async function POST(req: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -31,37 +34,33 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFoundError('User');
     }
 
     // Verify password
     if (!user.password) {
-      return NextResponse.json({ error: 'Cannot delete account without password set' }, { status: 400 });
+      throw new ValidationError('Cannot delete account without password set');
     }
 
     const isPasswordValid = await bcrypt.compare(validatedData.password, user.password);
 
     if (!isPasswordValid) {
-      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+      throw new AuthenticationError('Invalid password');
     }
+
+    apiLogger.info({ userId: user.id, email: user.email }, 'Deleting user account');
 
     // Delete user and all related data (cascading deletes handled by foreign keys)
     await prisma.users.delete({
       where: { id: user.id },
     });
 
-    console.log(`User account deleted: ${user.email}`);
+    apiLogger.info({ userId: user.id, email: user.email }, 'User account deleted successfully');
 
     return NextResponse.json({
       success: true,
       message: 'Account deleted successfully',
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-
-    console.error('Delete account error:', error);
-    return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/delete' }
+);

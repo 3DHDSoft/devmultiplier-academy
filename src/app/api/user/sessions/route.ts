@@ -2,27 +2,28 @@ import { auth } from '@/auth';
 import { getUserSessions, terminateSession, terminateAllOtherSessions } from '@/lib/session-tracker';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, ValidationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 /**
  * GET /api/user/sessions
  * Get all active sessions for the current user
  */
-export async function GET() {
-  try {
+export const GET = withErrorHandling(
+  async () => {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const sessions = await getUserSessions(session.user.id);
 
     return NextResponse.json({ sessions });
-  } catch (error) {
-    console.error('Error fetching sessions:', error);
-    return NextResponse.json({ error: 'Failed to fetch sessions' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/sessions' }
+);
 
 const deleteSessionSchema = z.object({
   sessionId: z.string().optional(),
@@ -33,12 +34,12 @@ const deleteSessionSchema = z.object({
  * DELETE /api/user/sessions
  * Terminate a specific session or all other sessions
  */
-export async function DELETE(req: NextRequest) {
-  try {
+export const DELETE = withErrorHandling(
+  async (req: NextRequest) => {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -48,6 +49,9 @@ export async function DELETE(req: NextRequest) {
       // Terminate all other sessions (excluding current one)
       const currentSessionId = session.user.sessionId;
       const count = await terminateAllOtherSessions(session.user.id, currentSessionId);
+
+      apiLogger.info({ userId: session.user.id, count }, 'Terminated all other sessions');
+
       return NextResponse.json({
         success: true,
         message: `${count} session(s) terminated`,
@@ -56,29 +60,24 @@ export async function DELETE(req: NextRequest) {
     } else if (validatedData.sessionId) {
       // Prevent terminating current session
       if (session.user.sessionId && validatedData.sessionId === session.user.sessionId) {
-        return NextResponse.json(
-          { error: 'Cannot terminate your current session. Please log out instead.' },
-          { status: 400 }
-        );
+        throw new ValidationError('Cannot terminate your current session. Please log out instead.');
       }
 
       // Terminate specific session
       const success = await terminateSession(session.user.id, validatedData.sessionId);
       if (!success) {
-        return NextResponse.json({ error: 'Session not found or already terminated' }, { status: 404 });
+        throw new NotFoundError('Session');
       }
+
+      apiLogger.info({ userId: session.user.id, sessionId: validatedData.sessionId }, 'Session terminated');
+
       return NextResponse.json({
         success: true,
         message: 'Session terminated',
       });
     } else {
-      return NextResponse.json({ error: 'Either sessionId or terminateAll must be provided' }, { status: 400 });
+      throw new ValidationError('Either sessionId or terminateAll must be provided');
     }
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-    console.error('Error terminating session:', error);
-    return NextResponse.json({ error: 'Failed to terminate session' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/sessions' }
+);

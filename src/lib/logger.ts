@@ -184,7 +184,7 @@ async function sendToAxiom(logs: Record<string, unknown>[]): Promise<void> {
     const response = await fetch(`https://api.axiom.co/v1/datasets/${AXIOM_DATASET}/ingest`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${AXIOM_TOKEN}`,
+        Authorization: `Bearer ${AXIOM_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(logs),

@@ -362,7 +362,6 @@ export function getContextSnapshot(): Omit<RequestContext, 'logger'> | null {
   const ctx = getContext();
   if (!ctx) return null;
 
-   
   const { logger: _, ...snapshot } = ctx;
   return {
     ...snapshot,

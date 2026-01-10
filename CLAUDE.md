@@ -120,3 +120,69 @@ Required variables (see `.env` for full list):
 - E2e tests: `e2e/` directory
 - Test environment: happy-dom
 - Coverage thresholds: 70% for lines, functions, branches, statements
+
+## Error Handling & Logging Standards
+
+**IMPORTANT**: All code must use structured error handling and logging. Never use raw `console.log/error`.
+
+### Loggers (from `@/lib/logger`)
+```typescript
+import { apiLogger, dbLogger, authLogger, cacheLogger, emailLogger } from '@/lib/logger';
+
+// Use module-specific loggers
+apiLogger.info({ userId, courseId }, 'User enrolled in course');
+dbLogger.debug({ query, duration }, 'Query executed');
+authLogger.warn({ code: 'CredentialsSignin' }, 'Failed login attempt');
+```
+
+### API Routes - Use `withErrorHandling` wrapper
+```typescript
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, ValidationError } from '@/lib/errors';
+
+export const GET = withErrorHandling(
+  async (req: NextRequest) => {
+    // Throw typed errors - they're automatically handled
+    if (!session) throw new AuthenticationError();
+    if (!resource) throw new NotFoundError('Course', id);
+
+    return NextResponse.json(data);
+  },
+  { route: '/api/my-route' }
+);
+```
+
+### Error Classes (from `@/lib/errors`)
+| Error Class | HTTP Status | Use Case |
+|-------------|-------------|----------|
+| `ValidationError` | 400 | Invalid input, Zod failures |
+| `AuthenticationError` | 401 | Not logged in |
+| `AuthorizationError` | 403 | No permission |
+| `NotFoundError` | 404 | Resource doesn't exist |
+| `ConflictError` | 409 | Duplicate, already exists |
+| `RateLimitError` | 429 | Too many requests |
+| `ExternalServiceError` | 502 | Third-party API failures |
+
+### Expected vs Unexpected Errors
+- **Expected errors** (wrong password, not found): Log as `warn`, return clean message
+- **Unexpected errors** (DB down, null pointer): Log as `error` with stack trace
+
+### Third-Party Library Logging
+Configure custom loggers for libraries (like NextAuth):
+```typescript
+logger: {
+  error(code, ...message) {
+    if (code.name === 'CredentialsSignin') {
+      authLogger.warn({ code: 'CredentialsSignin' }, 'Failed login attempt');
+    } else {
+      authLogger.error({ err: code }, 'Auth error');
+    }
+  },
+}
+```
+
+### Observability Stack
+- **Logs** → Axiom (via `@/lib/logger` + `next-axiom`)
+- **Metrics** → Grafana Cloud (via OpenTelemetry)
+- **Traces** → Grafana Cloud (via OpenTelemetry)
+- **Web Vitals** → Axiom (in production)

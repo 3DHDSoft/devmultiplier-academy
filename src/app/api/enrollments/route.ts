@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withErrorHandling } from '@/lib/api-handler';
 import { AuthenticationError, NotFoundError, AuthorizationError, ConflictError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
 const enrollmentSchema = z.object({
   courseId: z.string().uuid('Invalid course ID'),
@@ -15,6 +16,8 @@ const enrollmentSchema = z.object({
  */
 export const GET = withErrorHandling(
   async () => {
+    apiLogger.info('Fetching enrollments');
+
     const session = await auth();
 
     if (!session?.user?.email) {

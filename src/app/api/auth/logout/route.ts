@@ -1,14 +1,16 @@
 import { signOut } from '@/auth';
 import { NextResponse } from 'next/server';
+import { withErrorHandling } from '@/lib/api-handler';
+import { authLogger } from '@/lib/logger';
 
-export async function POST() {
-  try {
+export const POST = withErrorHandling(
+  async () => {
+    authLogger.info('User signing out');
+
     // Use Auth.js signOut with redirect option
     await signOut({ redirectTo: '/login' });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Sign out error:', error);
-    return NextResponse.json({ error: 'Sign out failed' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/auth/logout' }
+);

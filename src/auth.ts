@@ -10,6 +10,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { logLogin } from './lib/login-logger';
 import { trackSession, isSessionValid } from './lib/session-tracker';
+import { authLogger } from './lib/logger';
 
 // Validate required environment variables
 if (!process.env.NEXTAUTH_SECRET) {
@@ -336,4 +337,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   trustHost: true, // Required for devcontainers and proxied environments
+  logger: {
+    error(code, ...message) {
+      // CredentialsSignin is expected for failed login attempts - log as warning
+      if (code.name === 'CredentialsSignin' || code.message?.includes('CredentialsSignin')) {
+        authLogger.warn({ code: 'CredentialsSignin' }, 'Failed login attempt');
+      } else {
+        authLogger.error({ err: code, details: message }, 'Auth error');
+      }
+    },
+    warn(code) {
+      authLogger.warn({ code }, 'Auth warning');
+    },
+    debug(code, ...message) {
+      authLogger.debug({ code, details: message }, 'Auth debug');
+    },
+  },
 });

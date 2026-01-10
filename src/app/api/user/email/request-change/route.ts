@@ -4,18 +4,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import crypto from 'crypto';
 import { sendEmailChangeVerification } from '@/lib/email-service';
+import { withErrorHandling } from '@/lib/api-handler';
+import { AuthenticationError, NotFoundError, ConflictError } from '@/lib/errors';
+import { apiLogger, emailLogger } from '@/lib/logger';
 
 const requestEmailChangeSchema = z.object({
   newEmail: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required to change email'),
 });
 
-export async function POST(req: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      throw new AuthenticationError();
     }
 
     const body = await req.json();
@@ -32,13 +35,13 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user || !user.email) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFoundError('User');
     }
 
     // Verify password
     const bcrypt = await import('bcryptjs');
     if (!user.password || !(await bcrypt.compare(validatedData.password, user.password))) {
-      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+      throw new AuthenticationError('Invalid password');
     }
 
     // Check if new email is already in use
@@ -47,8 +50,10 @@ export async function POST(req: NextRequest) {
     });
 
     if (existingUser) {
-      return NextResponse.json({ error: 'Email address already in use' }, { status: 409 });
+      throw new ConflictError('Email address already in use');
     }
+
+    apiLogger.info({ userId: user.id, newEmail: validatedData.newEmail }, 'Email change requested');
 
     // Invalidate any existing email change tokens for this user
     await prisma.email_change_tokens.updateMany({
@@ -80,20 +85,19 @@ export async function POST(req: NextRequest) {
     // Send verification email to NEW email address
     try {
       await sendEmailChangeVerification(validatedData.newEmail, user.email, token);
+      emailLogger.info({ userId: user.id, newEmail: validatedData.newEmail }, 'Email change verification sent');
     } catch (emailError) {
-      console.error('Failed to send verification email:', emailError);
-      return NextResponse.json({ error: 'Failed to send verification email. Please try again.' }, { status: 500 });
+      emailLogger.error(
+        { err: emailError, userId: user.id, newEmail: validatedData.newEmail },
+        'Failed to send email change verification'
+      );
+      throw emailError;
     }
 
     return NextResponse.json({
       success: true,
       message: `Verification email sent to ${validatedData.newEmail}`,
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-    console.error('Request email change error:', error);
-    return NextResponse.json({ error: 'Failed to request email change' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/user/email/request-change' }
+);

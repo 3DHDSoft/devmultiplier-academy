@@ -1,12 +1,20 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandling, RouteContext } from '@/lib/api-handler';
+import { NotFoundError, AuthorizationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
-  try {
+export const GET = withErrorHandling(
+  async (_req: NextRequest, context?: RouteContext) => {
+    if (!context?.params) {
+      throw new NotFoundError('Course');
+    }
     const session = await auth();
     const userLocale = session?.user?.locale || 'en';
-    const courseId = params.id;
+    const { id: courseId } = await context.params;
+
+    apiLogger.debug({ courseId, userLocale }, 'Fetching course details');
 
     const course = await prisma.course.findUnique({
       where: { id: courseId },
@@ -86,12 +94,12 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     });
 
     if (!course) {
-      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+      throw new NotFoundError('Course', courseId);
     }
 
     // Check if course is published (or user is admin/instructor)
     if (course.status !== 'published') {
-      return NextResponse.json({ error: 'Course not available' }, { status: 403 });
+      throw new AuthorizationError('Course not available');
     }
 
     // Format response with translation fallbacks
@@ -126,8 +134,6 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     };
 
     return NextResponse.json(formattedCourse);
-  } catch (error) {
-    console.error('Error fetching course:', error);
-    return NextResponse.json({ error: 'Failed to fetch course' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/courses/[id]' }
+);

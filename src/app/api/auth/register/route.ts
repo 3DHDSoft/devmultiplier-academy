@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { withErrorHandling } from '@/lib/api-handler';
+import { ConflictError } from '@/lib/errors';
+import { authLogger } from '@/lib/logger';
 
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -10,10 +13,12 @@ const registerSchema = z.object({
   locale: z.enum(['en', 'es', 'pt', 'hi', 'zh', 'de', 'hu']).default('en'),
 });
 
-export async function POST(req: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const body = await req.json();
     const validatedData = registerSchema.parse(body);
+
+    authLogger.info({ email: validatedData.email }, 'Registration attempt');
 
     // Check if user already exists
     const existingUser = await prisma.users.findUnique({
@@ -21,7 +26,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (existingUser) {
-      return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
+      throw new ConflictError('Email already registered');
     }
 
     // Hash password
@@ -46,6 +51,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    authLogger.info({ userId: user.id, email: user.email }, 'User registered successfully');
+
     return NextResponse.json(
       {
         success: true,
@@ -53,12 +60,6 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-
-    console.error('Registration error:', error);
-    return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/auth/register' }
+);

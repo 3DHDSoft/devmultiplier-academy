@@ -2,14 +2,17 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
+import { withErrorHandling } from '@/lib/api-handler';
+import { ValidationError, NotFoundError } from '@/lib/errors';
+import { authLogger } from '@/lib/logger';
 
 const resetPasswordSchema = z.object({
   token: z.string().min(1, 'Token is required'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
-export async function POST(req: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const body = await req.json();
     const validatedData = resetPasswordSchema.parse(body);
 
@@ -20,15 +23,15 @@ export async function POST(req: NextRequest) {
 
     // Validate token
     if (!resetToken) {
-      return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 400 });
+      throw new ValidationError('Invalid or expired reset token');
     }
 
     if (resetToken.used) {
-      return NextResponse.json({ error: 'This reset link has already been used' }, { status: 400 });
+      throw new ValidationError('This reset link has already been used');
     }
 
     if (resetToken.expires < new Date()) {
-      return NextResponse.json({ error: 'This reset link has expired. Please request a new one.' }, { status: 400 });
+      throw new ValidationError('This reset link has expired. Please request a new one.');
     }
 
     // Find the user
@@ -37,7 +40,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      throw new NotFoundError('User');
     }
 
     // Hash the new password
@@ -55,29 +58,23 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
-    console.log(`Password reset successful for ${resetToken.email}`);
+    authLogger.info({ email: resetToken.email }, 'Password reset successful');
 
     return NextResponse.json({
       success: true,
       message: 'Password has been reset successfully. You can now log in with your new password.',
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid input', details: error.issues }, { status: 400 });
-    }
-
-    console.error('Reset password error:', error);
-    return NextResponse.json({ error: 'Failed to reset password' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/auth/reset-password' }
+);
 
 // GET endpoint to verify if a token is valid
-export async function GET(req: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  async (req: NextRequest) => {
     const token = req.nextUrl.searchParams.get('token');
 
     if (!token) {
-      return NextResponse.json({ error: 'Token is required' }, { status: 400 });
+      throw new ValidationError('Token is required');
     }
 
     const resetToken = await prisma.password_reset_tokens.findUnique({
@@ -105,8 +102,6 @@ export async function GET(req: NextRequest) {
       valid: true,
       email: resetToken.email,
     });
-  } catch (error) {
-    console.error('Token verification error:', error);
-    return NextResponse.json({ error: 'Failed to verify token' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/auth/reset-password' }
+);

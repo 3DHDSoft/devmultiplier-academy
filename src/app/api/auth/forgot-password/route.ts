@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import crypto from 'crypto';
 import { Resend } from 'resend';
+import { withErrorHandling } from '@/lib/api-handler';
+import { authLogger, emailLogger } from '@/lib/logger';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,10 +12,12 @@ const forgotPasswordSchema = z.object({
   email: z.string().email('Invalid email address'),
 });
 
-export async function POST(req: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  async (req: NextRequest) => {
     const body = await req.json();
     const validatedData = forgotPasswordSchema.parse(body);
+
+    authLogger.info({ email: validatedData.email }, 'Password reset requested');
 
     // Check if user exists
     const user = await prisma.users.findUnique({
@@ -118,9 +122,9 @@ export async function POST(req: NextRequest) {
           `,
         });
 
-        console.log(`Password reset email sent to ${validatedData.email}`);
+        emailLogger.info({ email: validatedData.email }, 'Password reset email sent');
       } catch (emailError) {
-        console.error('Error sending password reset email:', emailError);
+        emailLogger.error({ err: emailError, email: validatedData.email }, 'Failed to send password reset email');
         // Don't fail the request if email fails - log it instead
       }
     }
@@ -130,12 +134,6 @@ export async function POST(req: NextRequest) {
       success: true,
       message: 'If an account exists with this email, a password reset link has been sent.',
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid email address', details: error.issues }, { status: 400 });
-    }
-
-    console.error('Forgot password error:', error);
-    return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
-  }
-}
+  },
+  { route: '/api/auth/forgot-password' }
+);

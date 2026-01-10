@@ -66,7 +66,7 @@ export interface ApiHandlerOptions {
   /** Route path for metrics (auto-detected if not provided) */
   route?: string;
 
-  /** Whether to log successful requests (default: true) */
+  /** Whether to log successful requests (default: false to reduce noise). Slow requests (>1s) are always logged as warnings. */
   logSuccess?: boolean;
 
   /** Whether to log request body for debugging (default: false) */
@@ -193,7 +193,11 @@ export function withErrorHandling(
   handler: ApiHandler | ApiHandlerWithLogger,
   options: ApiHandlerOptions = {}
 ): ApiHandler {
-  const { route, logSuccess = true, logRequestBody = false, transformError, includeRequestId = true } = options;
+  // Default logSuccess to false to reduce log noise - only log errors/warnings
+  const { route, logSuccess = false, logRequestBody = false, transformError, includeRequestId = true } = options;
+
+  // Threshold for logging slow requests (ms)
+  const SLOW_REQUEST_THRESHOLD = 1000;
 
   return async (request: NextRequest, context?: RouteContext): Promise<NextResponse> => {
     // Generate or extract request ID
@@ -208,16 +212,14 @@ export function withErrorHandling(
       path: pathname,
     });
 
-    // Log request start (debug level)
+    // Only log request body in debug mode if explicitly enabled
     if (logRequestBody && request.method !== 'GET') {
       try {
         const body = await request.clone().json();
-        log.debug({ body }, 'Request received');
+        log.debug({ body }, 'Request received with body');
       } catch {
-        log.debug('Request received (no body)');
+        // No body to log
       }
-    } else {
-      log.debug('Request received');
     }
 
     let response: NextResponse;
@@ -239,10 +241,13 @@ export function withErrorHandling(
         response.headers.set('x-request-id', requestId);
       }
 
-      // Log successful requests
+      // Log successful requests only if explicitly enabled or if request was slow
+      const duration = Date.now() - startTime;
       if (logSuccess) {
-        const duration = Date.now() - startTime;
         log.info({ statusCode, duration }, 'Request completed');
+      } else if (duration > SLOW_REQUEST_THRESHOLD) {
+        // Always log slow requests as warnings
+        log.warn({ statusCode, duration }, 'Slow request completed');
       }
     } catch (error) {
       const duration = Date.now() - startTime;
