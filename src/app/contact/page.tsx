@@ -3,6 +3,13 @@
 import { useState } from 'react';
 import { Mail, MessageSquare } from 'lucide-react';
 
+interface FieldErrors {
+  name?: string[];
+  email?: string[];
+  subject?: string[];
+  message?: string[];
+}
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,15 +18,39 @@ export default function ContactPage() {
     message: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
+    setFieldErrors({});
+    setGeneralError(null);
 
-    // TODO: Integrate with email service or form handler
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setStatus('success');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        if (data.details) {
+          setFieldErrors(data.details);
+        } else {
+          setGeneralError(data.error || 'Failed to send message');
+        }
+        setStatus('error');
+        return;
+      }
+
+      setStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch {
+      setGeneralError('Failed to send message. Please try again.');
+      setStatus('error');
+    }
   };
 
   return (
@@ -69,7 +100,13 @@ export default function ContactPage() {
                 Thanks for your message! {"We'll"} get back to you within 24 hours.
               </div>
             ) : (
-              <form
+              <>
+                {generalError && (
+                  <div className="mt-6 rounded-lg bg-red-50 p-6 text-red-800">
+                    {generalError}
+                  </div>
+                )}
+                <form
                 onSubmit={handleSubmit}
                 className="mt-6 space-y-6"
               >
@@ -87,8 +124,19 @@ export default function ContactPage() {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="border-light-gray text-navy focus:border-blue focus:ring-blue mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none"
+                      aria-invalid={!!fieldErrors.name}
+                      aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+                      className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
+                        fieldErrors.name
+                          ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
+                          : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
+                      }`}
                     />
+                    {fieldErrors.name && (
+                      <p id="name-error" role="alert" className="mt-1 text-sm text-red-600">
+                        {fieldErrors.name[0]}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -103,8 +151,19 @@ export default function ContactPage() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="border-light-gray text-navy focus:border-blue focus:ring-blue mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none"
+                      aria-invalid={!!fieldErrors.email}
+                      aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+                      className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
+                        fieldErrors.email
+                          ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
+                          : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
+                      }`}
                     />
+                    {fieldErrors.email && (
+                      <p id="email-error" role="alert" className="mt-1 text-sm text-red-600">
+                        {fieldErrors.email[0]}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -121,8 +180,19 @@ export default function ContactPage() {
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="border-light-gray text-navy focus:border-blue focus:ring-blue mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none"
+                    aria-invalid={!!fieldErrors.subject}
+                    aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
+                    className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
+                      fieldErrors.subject
+                        ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
+                        : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
+                    }`}
                   />
+                  {fieldErrors.subject && (
+                    <p id="subject-error" role="alert" className="mt-1 text-sm text-red-600">
+                      {fieldErrors.subject[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -138,8 +208,19 @@ export default function ContactPage() {
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="border-light-gray text-navy focus:border-blue focus:ring-blue mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none"
+                    aria-invalid={!!fieldErrors.message}
+                    aria-describedby={fieldErrors.message ? 'message-error' : undefined}
+                    className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
+                      fieldErrors.message
+                        ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
+                        : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
+                    }`}
                   />
+                  {fieldErrors.message && (
+                    <p id="message-error" role="alert" className="mt-1 text-sm text-red-600">
+                      {fieldErrors.message[0]}
+                    </p>
+                  )}
                 </div>
 
                 <button
@@ -150,6 +231,7 @@ export default function ContactPage() {
                   {status === 'loading' ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
+              </>
             )}
           </div>
         </div>
