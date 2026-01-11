@@ -1469,6 +1469,7 @@ Authorization: Basic base64(instanceId:token)
 ```
 
 Where:
+
 - `instanceId` - Your Grafana Cloud instance ID (e.g., `1486847`)
 - `token` - Your Grafana Cloud API token starting with `glc_...`
 
@@ -1515,11 +1516,11 @@ curl -v -X POST \
 
 #### Common Issues
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| 401 Unauthorized | Token not Base64 encoded with instanceId | Encode as `base64(instanceId:token)` |
-| 400 Bad Request | Malformed JSON in headers env var | Remove outer quotes from JSON value |
-| Connection timeout | Wrong endpoint region | Check your Grafana Cloud region URL |
+| Issue              | Cause                                    | Solution                             |
+| ------------------ | ---------------------------------------- | ------------------------------------ |
+| 401 Unauthorized   | Token not Base64 encoded with instanceId | Encode as `base64(instanceId:token)` |
+| 400 Bad Request    | Malformed JSON in headers env var        | Remove outer quotes from JSON value  |
+| Connection timeout | Wrong endpoint region                    | Check your Grafana Cloud region URL  |
 
 ---
 
@@ -1572,18 +1573,18 @@ OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic MTQ4Njg0NzpnbGNfZXlK..."}
 
 In your Vercel project settings, add:
 
-| Variable                       | Environment | Description                                      |
-| ------------------------------ | ----------- | ------------------------------------------------ |
-| `NEXT_PUBLIC_AXIOM_DATASET`    | All         | Axiom dataset name                               |
-| `NEXT_PUBLIC_AXIOM_TOKEN`      | All         | Axiom ingest token                               |
-| `AXIOM_TOKEN`                  | All         | Server-side Axiom token                          |
-| `AXIOM_DATASET`                | All         | Server-side dataset name                         |
-| `DATABASE_URL`                 | All         | Neon connection string                           |
-| `SENTRY_DSN`                   | Production  | Sentry DSN (server)                              |
-| `NEXT_PUBLIC_SENTRY_DSN`       | Production  | Sentry DSN (client)                              |
-| `OTEL_USE_CLOUD`               | All         | Set to `"true"` for Grafana Cloud                |
-| `OTEL_EXPORTER_OTLP_ENDPOINT`  | All         | Grafana Cloud OTLP gateway URL                   |
-| `OTEL_EXPORTER_OTLP_HEADERS`   | All         | `{"Authorization":"Basic base64(instanceId:token)"}` |
+| Variable                      | Environment | Description                                          |
+| ----------------------------- | ----------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_AXIOM_DATASET`   | All         | Axiom dataset name                                   |
+| `NEXT_PUBLIC_AXIOM_TOKEN`     | All         | Axiom ingest token                                   |
+| `AXIOM_TOKEN`                 | All         | Server-side Axiom token                              |
+| `AXIOM_DATASET`               | All         | Server-side dataset name                             |
+| `DATABASE_URL`                | All         | Neon connection string                               |
+| `SENTRY_DSN`                  | Production  | Sentry DSN (server)                                  |
+| `NEXT_PUBLIC_SENTRY_DSN`      | Production  | Sentry DSN (client)                                  |
+| `OTEL_USE_CLOUD`              | All         | Set to `"true"` for Grafana Cloud                    |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | All         | Grafana Cloud OTLP gateway URL                       |
+| `OTEL_EXPORTER_OTLP_HEADERS`  | All         | `{"Authorization":"Basic base64(instanceId:token)"}` |
 
 ### Next.js Configuration
 

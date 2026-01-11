@@ -217,7 +217,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <h2 className="text-navy mb-6 text-2xl font-semibold">Curriculum</h2>
           <div className="border-light-gray divide-light-gray divide-y rounded-xl border">
             {course.modules.map((module, index) => (
-              <div key={module.title} className="flex items-center justify-between p-4">
+              <div
+                key={module.title}
+                className="flex items-center justify-between p-4"
+              >
                 <div className="flex items-center gap-4">
                   <span className="bg-off-white text-slate flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium">
                     {index + 1}

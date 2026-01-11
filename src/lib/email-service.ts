@@ -18,6 +18,7 @@ interface EmailOptions {
   html: string;
   text?: string;
   type?: string;
+  replyTo?: string;
 }
 
 // Resend email provider
@@ -47,6 +48,7 @@ export async function sendEmail(options: EmailOptions): Promise<void> {
       to: options.to,
       subject: options.subject,
       html: options.html,
+      ...(options.replyTo && { replyTo: options.replyTo }),
     });
     console.log(`✅ Email sent to ${options.to}: ${options.subject}`);
     success = true;
@@ -276,9 +278,95 @@ What should you do?
 
   await sendEmail({ to: email, subject, html, text, type: 'failed_login_alert' });
 }
+
 /**
- * Send email change verification link
+ * Send contact form submission email
  */
+export async function sendContactFormEmail(data: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}): Promise<void> {
+  const contactEmail = process.env.RESEND_FROM_EMAIL || 'hello@devmultiplier.com';
+
+  const subject = `Contact Form: ${data.subject}`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #1e3a5f; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+        .content { background: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; }
+        .details { background: white; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .detail-row { margin: 10px 0; }
+        .label { font-weight: bold; color: #4b5563; }
+        .message-box { background: white; padding: 20px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #2563eb; }
+        .footer { color: #6b7280; font-size: 12px; margin-top: 20px; text-align: center; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h2>📬 New Contact Form Submission</h2>
+        </div>
+        <div class="content">
+          <p>You have received a new message from the Dev Academy contact form.</p>
+
+          <div class="details">
+            <div class="detail-row">
+              <span class="label">Name:</span> ${data.name}
+            </div>
+            <div class="detail-row">
+              <span class="label">Email:</span> <a href="mailto:${data.email}">${data.email}</a>
+            </div>
+            <div class="detail-row">
+              <span class="label">Subject:</span> ${data.subject}
+            </div>
+          </div>
+
+          <h3>Message:</h3>
+          <div class="message-box">
+            ${data.message.replace(/\n/g, '<br>')}
+          </div>
+
+          <div class="footer">
+            <p>This message was sent via the Dev Academy contact form.</p>
+            <p>Reply directly to this email to respond to ${data.name}.</p>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const text = `
+New Contact Form Submission - Dev Academy
+
+From: ${data.name}
+Email: ${data.email}
+Subject: ${data.subject}
+
+Message:
+${data.message}
+
+---
+Reply directly to this email to respond to ${data.name}.
+  `;
+
+  await sendEmail({
+    to: contactEmail,
+    subject,
+    html,
+    text,
+    type: 'contact_form',
+    replyTo: data.email,
+  });
+}
+
 export async function sendEmailChangeVerification(
   newEmail: string,
   currentEmail: string,
