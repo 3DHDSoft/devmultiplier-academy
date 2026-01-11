@@ -28,7 +28,7 @@ Pre-configured dashboards for DevAcademy application monitoring on Grafana Cloud
 
 1. **Grafana Cloud account** with OTLP gateway configured
 2. **Application sending metrics** via OpenTelemetry to Grafana Cloud
-3. **Prometheus datasource** named `grafanacloud-prom` (default in Grafana Cloud)
+3. **Prometheus datasource** - dashboards use `grafanacloud-devacademyweb-prom` (update if your UID differs)
 
 ## Import Instructions
 
@@ -82,7 +82,7 @@ curl -X POST "$GRAFANA_URL/api/dashboards/db" \
 
 ## Datasource Configuration
 
-These dashboards use the datasource UID `grafanacloud-prom`. If your Prometheus datasource has a different UID, update the dashboards:
+These dashboards use the datasource UID `grafanacloud-devacademyweb-prom`. If your Prometheus datasource has a different UID, update the dashboards:
 
 ```bash
 # Find your datasource UID
@@ -90,7 +90,7 @@ curl -s "$GRAFANA_URL/api/datasources" \
   -H "Authorization: Bearer $GRAFANA_API_KEY" | jq '.[] | {name, uid}'
 
 # Replace datasource UID in all dashboard files (example)
-sed -i 's/grafanacloud-prom/your-datasource-uid/g' grafana-cloud/dashboards/*.json
+sed -i 's/grafanacloud-devacademyweb-prom/your-datasource-uid/g' grafana-cloud/dashboards/*.json
 ```
 
 ## Dashboard Descriptions
@@ -145,7 +145,7 @@ These dashboards expect the following metrics from your application, filtered by
 
 | Feature | Local (`.devcontainer/grafana/dashboards/`) | Cloud (`grafana-cloud/dashboards/`) |
 |---------|---------------------------------------------|-------------------------------------|
-| Datasource UID | `prometheus` | `grafanacloud-prom` |
+| Datasource UID | `prometheus` | `grafanacloud-devacademyweb-prom` |
 | Dashboard UID suffix | (none) | `-cloud` |
 | Tag | `devacademy` | `devacademy`, `cloud` |
 | Auto-provisioning | Yes (via Grafana provisioning) | No (manual import) |
