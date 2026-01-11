@@ -224,7 +224,7 @@
             "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, rate(db_query_duration_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
+          "expr": "histogram_quantile(0.50, rate(db_query_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p50",
           "range": true,
           "refId": "A"
@@ -235,7 +235,7 @@
             "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(db_query_duration_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
+          "expr": "histogram_quantile(0.95, rate(db_query_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p95",
           "range": true,
           "refId": "B"
@@ -246,7 +246,7 @@
             "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, rate(db_query_duration_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
+          "expr": "histogram_quantile(0.99, rate(db_query_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p99",
           "range": true,
           "refId": "C"
@@ -339,7 +339,7 @@
             "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "rate(db_query_duration_sum{job=\"dev-academy-web\"}[5m]) / rate(db_query_duration_count{job=\"dev-academy-web\"}[5m]) * 1000",
+          "expr": "rate(db_query_duration_seconds_sum{job=\"dev-academy-web\"}[5m]) / rate(db_query_duration_seconds_count{job=\"dev-academy-web\"}[5m]) * 1000",
           "legendFormat": "{{db_operation}} - {{db_table}}",
           "range": true,
           "refId": "A"
@@ -432,7 +432,7 @@
             "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(api_call_duration_bucket{job=\"dev-academy-web\"}[5m]))",
+          "expr": "histogram_quantile(0.95, rate(api_call_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "{{api_service}} - p95",
           "range": true,
           "refId": "A"
