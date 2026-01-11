@@ -90,38 +90,38 @@ export const httpResponseSize = httpServerResponseSize;
 export const httpErrorCounter = httpServerErrorCounter;
 
 // Database metrics
-export const dbQueryCounter = createLazyCounter('db.queries', {
+export const dbQueryCounter = createLazyCounter('db_queries_total', {
   description: 'Total number of database queries',
   unit: '1',
 });
 
-export const dbQueryDuration = createLazyHistogram('db.query.duration', {
-  description: 'Database query duration',
-  unit: 'ms',
+export const dbQueryDuration = createLazyHistogram('db_query_duration_seconds', {
+  description: 'Database query duration in seconds',
+  unit: 's',
 });
 
-export const dbErrorCounter = createLazyCounter('db.errors', {
+export const dbErrorCounter = createLazyCounter('db_errors_total', {
   description: 'Total number of database errors',
   unit: '1',
 });
 
-export const dbConnectionPoolSize = createLazyUpDownCounter('db.connection_pool.size', {
+export const dbConnectionPoolSize = createLazyUpDownCounter('db_connection_pool_size', {
   description: 'Current database connection pool size',
   unit: '1',
 });
 
 // API metrics
-export const apiCallCounter = createLazyCounter('api.calls', {
+export const apiCallCounter = createLazyCounter('api_calls_total', {
   description: 'Total number of external API calls',
   unit: '1',
 });
 
-export const apiCallDuration = createLazyHistogram('api.call.duration', {
-  description: 'External API call duration',
-  unit: 'ms',
+export const apiCallDuration = createLazyHistogram('api_call_duration_seconds', {
+  description: 'External API call duration in seconds',
+  unit: 's',
 });
 
-export const apiErrorCounter = createLazyCounter('api.errors', {
+export const apiErrorCounter = createLazyCounter('api_errors_total', {
   description: 'Total number of external API errors',
   unit: '1',
 });
@@ -131,54 +131,54 @@ export const apiErrorCounter = createLazyCounter('api.errors', {
  */
 
 // User authentication metrics
-export const loginAttemptCounter = createLazyCounter('user.login.attempts', {
+export const loginAttemptCounter = createLazyCounter('user_login_attempts_total', {
   description: 'Total number of login attempts',
   unit: '1',
 });
 
-export const loginSuccessCounter = createLazyCounter('user.login.success', {
+export const loginSuccessCounter = createLazyCounter('user_login_success_total', {
   description: 'Total number of successful logins',
   unit: '1',
 });
 
-export const loginFailureCounter = createLazyCounter('user.login.failures', {
+export const loginFailureCounter = createLazyCounter('user_login_failures_total', {
   description: 'Total number of failed logins',
   unit: '1',
 });
 
-export const logoutCounter = createLazyCounter('user.logout', {
+export const logoutCounter = createLazyCounter('user_logout_total', {
   description: 'Total number of user logouts',
   unit: '1',
 });
 
-export const newLocationLoginCounter = createLazyCounter('user.login.new_location', {
+export const newLocationLoginCounter = createLazyCounter('user_login_new_location_total', {
   description: 'Total number of logins from new locations',
   unit: '1',
 });
 
-export const suspiciousLoginCounter = createLazyCounter('user.login.suspicious', {
+export const suspiciousLoginCounter = createLazyCounter('user_login_suspicious_total', {
   description: 'Total number of suspicious login attempts',
   unit: '1',
 });
 
 // User registration metrics
-export const userRegistrationCounter = createLazyCounter('user.registration', {
+export const userRegistrationCounter = createLazyCounter('user_registration_total', {
   description: 'Total number of user registrations',
   unit: '1',
 });
 
-export const userActivationCounter = createLazyCounter('user.activation', {
+export const userActivationCounter = createLazyCounter('user_activation_total', {
   description: 'Total number of user account activations',
   unit: '1',
 });
 
 // Active users
-export const activeUsersGauge = createLazyUpDownCounter('user.active', {
+export const activeUsersGauge = createLazyUpDownCounter('user_active', {
   description: 'Number of currently active users',
   unit: '1',
 });
 
-export const activeSessionsGauge = createLazyUpDownCounter('user.sessions.active', {
+export const activeSessionsGauge = createLazyUpDownCounter('user_sessions_active', {
   description: 'Number of currently active sessions',
   unit: '1',
 });
@@ -188,54 +188,54 @@ export const activeSessionsGauge = createLazyUpDownCounter('user.sessions.active
  */
 
 // Page views
-export const pageViewCounter = createLazyCounter('page.views', {
+export const pageViewCounter = createLazyCounter('page_views_total', {
   description: 'Total number of page views',
   unit: '1',
 });
 
-export const uniquePageViewCounter = createLazyCounter('page.views.unique', {
+export const uniquePageViewCounter = createLazyCounter('page_views_unique_total', {
   description: 'Total number of unique page views',
   unit: '1',
 });
 
 // Course/content metrics
-export const courseViewCounter = createLazyCounter('course.views', {
+export const courseViewCounter = createLazyCounter('course_views_total', {
   description: 'Total number of course views',
   unit: '1',
 });
 
-export const courseEnrollmentCounter = createLazyCounter('course.enrollments', {
+export const courseEnrollmentCounter = createLazyCounter('course_enrollments_total', {
   description: 'Total number of course enrollments',
   unit: '1',
 });
 
-export const courseCompletionCounter = createLazyCounter('course.completions', {
+export const courseCompletionCounter = createLazyCounter('course_completions_total', {
   description: 'Total number of course completions',
   unit: '1',
 });
 
-export const lessonViewCounter = createLazyCounter('lesson.views', {
+export const lessonViewCounter = createLazyCounter('lesson_views_total', {
   description: 'Total number of lesson views',
   unit: '1',
 });
 
-export const lessonCompletionCounter = createLazyCounter('lesson.completions', {
+export const lessonCompletionCounter = createLazyCounter('lesson_completions_total', {
   description: 'Total number of lesson completions',
   unit: '1',
 });
 
 // Search metrics
-export const searchCounter = createLazyCounter('search.queries', {
+export const searchCounter = createLazyCounter('search_queries_total', {
   description: 'Total number of search queries',
   unit: '1',
 });
 
-export const searchDuration = createLazyHistogram('search.duration', {
-  description: 'Search query duration',
-  unit: 'ms',
+export const searchDuration = createLazyHistogram('search_duration_seconds', {
+  description: 'Search query duration in seconds',
+  unit: 's',
 });
 
-export const searchResultsHistogram = createLazyHistogram('search.results.count', {
+export const searchResultsHistogram = createLazyHistogram('search_results_count', {
   description: 'Number of search results returned',
   unit: '1',
 });
@@ -244,22 +244,22 @@ export const searchResultsHistogram = createLazyHistogram('search.results.count'
  * Business Metrics - Email & Notifications
  */
 
-export const emailSentCounter = createLazyCounter('email.sent', {
+export const emailSentCounter = createLazyCounter('email_sent_total', {
   description: 'Total number of emails sent',
   unit: '1',
 });
 
-export const emailFailureCounter = createLazyCounter('email.failures', {
+export const emailFailureCounter = createLazyCounter('email_failures_total', {
   description: 'Total number of email send failures',
   unit: '1',
 });
 
-export const emailDuration = createLazyHistogram('email.send.duration', {
-  description: 'Email send duration',
-  unit: 'ms',
+export const emailDuration = createLazyHistogram('email_send_duration_seconds', {
+  description: 'Email send duration in seconds',
+  unit: 's',
 });
 
-export const notificationCounter = createLazyCounter('notification.sent', {
+export const notificationCounter = createLazyCounter('notification_sent_total', {
   description: 'Total number of notifications sent',
   unit: '1',
 });
@@ -314,24 +314,25 @@ export function recordHttpRequest(attributes: {
 export function recordDbQuery(attributes: {
   operation: string;
   table?: string;
-  duration: number;
+  duration: number; // Duration in milliseconds
   success: boolean;
   error?: string;
 }) {
   const { operation, table, duration, success, error } = attributes;
 
   const commonAttrs: Attributes = {
-    'db.operation': operation,
-    ...(table && { 'db.table': table }),
+    db_operation: operation,
+    ...(table && { db_table: table }),
   };
 
   dbQueryCounter.add(1, commonAttrs);
-  dbQueryDuration.record(duration, commonAttrs);
+  // Convert milliseconds to seconds
+  dbQueryDuration.record(duration / 1000, commonAttrs);
 
   if (!success) {
     dbErrorCounter.add(1, {
       ...commonAttrs,
-      ...(error && { 'error.type': error }),
+      ...(error && { error_type: error }),
     });
   }
 }
@@ -342,7 +343,7 @@ export function recordDbQuery(attributes: {
 export function recordApiCall(attributes: {
   service: string;
   endpoint: string;
-  duration: number;
+  duration: number; // Duration in milliseconds
   statusCode?: number;
   success: boolean;
   error?: string;
@@ -350,18 +351,19 @@ export function recordApiCall(attributes: {
   const { service, endpoint, duration, statusCode, success, error } = attributes;
 
   const commonAttrs: Attributes = {
-    'api.service': service,
-    'api.endpoint': endpoint,
-    ...(statusCode && { 'api.status_code': statusCode }),
+    api_service: service,
+    api_endpoint: endpoint,
+    ...(statusCode && { api_status_code: statusCode }),
   };
 
   apiCallCounter.add(1, commonAttrs);
-  apiCallDuration.record(duration, commonAttrs);
+  // Convert milliseconds to seconds
+  apiCallDuration.record(duration / 1000, commonAttrs);
 
   if (!success) {
     apiErrorCounter.add(1, {
       ...commonAttrs,
-      ...(error && { 'error.type': error }),
+      ...(error && { error_type: error }),
     });
   }
 }
@@ -382,10 +384,10 @@ export function recordLoginAttempt(attributes: {
   const { success, userId, failureReason, isNewLocation, isSuspicious, country, city } = attributes;
 
   const commonAttrs: Attributes = {
-    'user.success': success,
-    ...(userId && { 'user.id': userId }),
-    ...(country && { 'geo.country': country }),
-    ...(city && { 'geo.city': city }),
+    user_success: success,
+    ...(userId && { user_id: userId }),
+    ...(country && { geo_country: country }),
+    ...(city && { geo_city: city }),
   };
 
   loginAttemptCounter.add(1, commonAttrs);
@@ -399,7 +401,7 @@ export function recordLoginAttempt(attributes: {
   } else {
     loginFailureCounter.add(1, {
       ...commonAttrs,
-      ...(failureReason && { 'failure.reason': failureReason }),
+      ...(failureReason && { failure_reason: failureReason }),
     });
 
     if (isSuspicious) {
@@ -412,21 +414,17 @@ export function recordLoginAttempt(attributes: {
  * Record page view metrics
  */
 export function recordPageView(attributes: { path: string; userId?: string; isUnique?: boolean; duration?: number }) {
-  const { path, userId, isUnique, duration } = attributes;
+  const { path, userId, isUnique } = attributes;
 
   const commonAttrs: Attributes = {
-    'page.path': path,
-    ...(userId && { 'user.id': userId }),
+    page_path: path,
+    ...(userId && { user_id: userId }),
   };
 
   pageViewCounter.add(1, commonAttrs);
 
   if (isUnique) {
     uniquePageViewCounter.add(1, commonAttrs);
-  }
-
-  if (duration !== undefined) {
-    // Could add a page load duration histogram if needed
   }
 }
 
@@ -437,24 +435,25 @@ export function recordEmailSent(attributes: {
   type: string;
   recipient: string;
   success: boolean;
-  duration: number;
+  duration: number; // Duration in milliseconds
   error?: string;
 }) {
   const { type, success, duration, error } = attributes;
 
   const commonAttrs: Attributes = {
-    'email.type': type,
-    'email.success': success,
+    email_type: type,
+    email_success: success,
   };
 
-  emailDuration.record(duration, commonAttrs);
+  // Convert milliseconds to seconds
+  emailDuration.record(duration / 1000, commonAttrs);
 
   if (success) {
     emailSentCounter.add(1, commonAttrs);
   } else {
     emailFailureCounter.add(1, {
       ...commonAttrs,
-      ...(error && { 'error.type': error }),
+      ...(error && { error_type: error }),
     });
   }
 }
