@@ -13,6 +13,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [locale, setLocale] = useState('en');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -102,26 +103,26 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-8">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-6">
       <div className="w-full max-w-md">
-        <div className="rounded-lg bg-white p-6 shadow-xl">
+        <div className="rounded-lg bg-white p-5 shadow-xl">
           {/* Header */}
-          <div className="mb-6 text-center">
-            <h1 className="mb-1 text-2xl font-bold text-gray-900">Dev Academy</h1>
+          <div className="mb-4 text-center">
+            <h1 className="mb-0.5 text-xl font-bold text-gray-900">Dev Academy - XXX</h1>
             <p className="text-sm text-gray-600">Create your account</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="mb-3 rounded-md bg-red-50 p-2.5 text-red-800">
+              <p className="text-sm">{error}</p>
             </div>
           )}
 
           {/* Registration Form */}
           <form
             onSubmit={handleSubmit}
-            className="space-y-4"
+            className="space-y-3"
           >
             {/* Name Field */}
             <div>
@@ -138,7 +139,7 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
                 required
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               />
             </div>
@@ -158,7 +159,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               />
             </div>
@@ -173,12 +174,12 @@ export default function RegisterPage() {
               </label>
               <input
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder=""
                 required
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               />
               <p className="mt-1 text-xs text-gray-500">At least 8 characters</p>
@@ -194,14 +195,29 @@ export default function RegisterPage() {
               </label>
               <input
                 id="confirmPassword"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder=""
                 required
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               />
+              <div className="mt-1.5 flex items-center">
+                <input
+                  type="checkbox"
+                  id="showPassword"
+                  checked={showPassword}
+                  onChange={(e) => setShowPassword(e.target.checked)}
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <label
+                  htmlFor="showPassword"
+                  className="ml-2 text-sm text-gray-600"
+                >
+                  Show password
+                </label>
+              </div>
             </div>
 
             {/* Language Preference */}
@@ -216,7 +232,7 @@ export default function RegisterPage() {
                 id="locale"
                 value={locale}
                 onChange={(e) => setLocale(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={isLoading}
               >
                 {locales.map((loc) => (
@@ -234,14 +250,14 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-md bg-blue-600 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="my-4 flex items-center">
+          <div className="my-3 flex items-center">
             <div className="flex-1 border-t border-gray-300"></div>
             <span className="px-3 text-xs text-gray-500">or</span>
             <div className="flex-1 border-t border-gray-300"></div>
