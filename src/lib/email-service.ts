@@ -288,7 +288,7 @@ export async function sendContactFormEmail(data: {
   subject: string;
   message: string;
 }): Promise<void> {
-  const contactEmail = process.env.RESEND_FROM_EMAIL || 'hello@devmultiplier.com';
+  const contactEmail = process.env.CONTACT_EMAIL || process.env.RESEND_FROM_EMAIL || 'hello@devmultiplier.com';
 
   const subject = `Contact Form: ${data.subject}`;
 
