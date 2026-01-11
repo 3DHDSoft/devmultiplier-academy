@@ -73,7 +73,8 @@
       "Bash(claude:*)",
       "Bash(source .env.local)",
       "Bash(git rev-parse:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(./grafana-cloud/scripts/import-dashboards.sh:*)"
     ]
   }
 }

@@ -33,9 +33,12 @@ exporters:
       insecure: true
 
   # Export metrics to Prometheus
+  # Note: No namespace prefix - metrics will use their original names
+  # Filter by job="dev-academy-web" in dashboards instead
   prometheus:
     endpoint: "0.0.0.0:8889"
-    namespace: devacademy
+    resource_to_telemetry_conversion:
+      enabled: true
 
   # Also export metrics in OTLP format for Prometheus remote write
   otlphttp/prometheus:

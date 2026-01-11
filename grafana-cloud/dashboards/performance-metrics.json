@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -43,9 +43,9 @@
             "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -101,14 +101,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, rate(http_server_request_duration_seconds_bucket{service_name=\"dev-academy-web\"}[5m])) * 1000",
+          "expr": "histogram_quantile(0.50, rate(http_server_request_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p50",
           "range": true,
           "refId": "A"
@@ -116,10 +117,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket{service_name=\"dev-academy-web\"}[5m])) * 1000",
+          "expr": "histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p95",
           "range": true,
           "refId": "B"
@@ -127,10 +128,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, rate(http_server_request_duration_seconds_bucket{service_name=\"dev-academy-web\"}[5m])) * 1000",
+          "expr": "histogram_quantile(0.99, rate(http_server_request_duration_seconds_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p99",
           "range": true,
           "refId": "C"
@@ -142,7 +143,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -161,9 +162,9 @@
             "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -215,14 +216,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, rate(db_query_duration_bucket{service_name=\"dev-academy-web\"}[5m]))",
+          "expr": "histogram_quantile(0.50, rate(db_query_duration_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p50",
           "range": true,
           "refId": "A"
@@ -230,10 +232,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(db_query_duration_bucket{service_name=\"dev-academy-web\"}[5m]))",
+          "expr": "histogram_quantile(0.95, rate(db_query_duration_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p95",
           "range": true,
           "refId": "B"
@@ -241,10 +243,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, rate(db_query_duration_bucket{service_name=\"dev-academy-web\"}[5m]))",
+          "expr": "histogram_quantile(0.99, rate(db_query_duration_bucket{job=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "p99",
           "range": true,
           "refId": "C"
@@ -256,7 +258,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -275,9 +277,9 @@
             "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -329,14 +331,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "rate(db_query_duration_sum{service_name=\"dev-academy-web\"}[5m]) / rate(db_query_duration_count{service_name=\"dev-academy-web\"}[5m])",
+          "expr": "rate(db_query_duration_sum{job=\"dev-academy-web\"}[5m]) / rate(db_query_duration_count{job=\"dev-academy-web\"}[5m]) * 1000",
           "legendFormat": "{{db_operation}} - {{db_table}}",
           "range": true,
           "refId": "A"
@@ -348,7 +351,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -367,9 +370,9 @@
             "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -421,14 +424,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(api_call_duration_bucket{service_name=\"dev-academy-web\"}[5m]))",
+          "expr": "histogram_quantile(0.95, rate(api_call_duration_bucket{job=\"dev-academy-web\"}[5m]))",
           "legendFormat": "{{api_service}} - p95",
           "range": true,
           "refId": "A"
@@ -440,7 +444,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -459,9 +463,9 @@
             "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -513,26 +517,16 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "rate(http_server_request_size_bytes_sum{service_name=\"dev-academy-web\"}[5m]) / rate(http_server_request_size_bytes_count{service_name=\"dev-academy-web\"}[5m])",
-          "legendFormat": "Request Size",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "rate(http_server_response_size_bytes_sum{service_name=\"dev-academy-web\"}[5m]) / rate(http_server_response_size_bytes_count{service_name=\"dev-academy-web\"}[5m])",
-          "legendFormat": "Response Size",
+          "expr": "rate(http_server_request_duration_seconds_count{job=\"dev-academy-web\"}[5m])",
+          "legendFormat": "HTTP Requests",
           "range": true,
           "refId": "B"
         }
@@ -543,7 +537,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -562,9 +556,9 @@
             "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -616,14 +610,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "grafanacloud-prom"
           },
           "editorMode": "code",
-          "expr": "sum by (http_route) (rate(http_server_requests_total{service_name=\"dev-academy-web\"}[5m]))",
+          "expr": "sum by (http_route) (rate(http_server_requests_total{job=\"dev-academy-web\"}[5m]))",
           "legendFormat": "{{http_route}}",
           "range": true,
           "refId": "A"
@@ -633,9 +628,10 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "15s",
-  "schemaVersion": 39,
-  "tags": ["devacademy", "performance"],
+  "schemaVersion": 40,
+  "tags": ["devacademy", "performance", "cloud"],
   "templating": {
     "list": []
   },
@@ -646,7 +642,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "DevAcademy - Performance Metrics",
-  "uid": "devacademy-performance",
+  "uid": "devacademy-performance-cloud",
   "version": 1,
   "weekStart": ""
 }

@@ -1456,6 +1456,71 @@ export function register() {
 }
 ```
 
+### Option 4: Grafana Cloud (Managed OpenTelemetry)
+
+Use Grafana Cloud's OTLP gateway for managed traces and metrics without running your own infrastructure.
+
+#### Grafana Cloud OTLP Authentication
+
+**IMPORTANT**: Grafana Cloud uses Basic authentication with a specific credential format:
+
+```
+Authorization: Basic base64(instanceId:token)
+```
+
+Where:
+- `instanceId` - Your Grafana Cloud instance ID (e.g., `1486847`)
+- `token` - Your Grafana Cloud API token starting with `glc_...`
+
+#### Step-by-Step Credential Setup
+
+1. **Get your Instance ID** from Grafana Cloud console (visible in the OTLP setup page)
+
+2. **Generate an API token** with `MetricsPublisher` and `TracesPublisher` scopes
+
+3. **Create the Base64 credential**:
+
+```bash
+# Format: instanceId:token
+# Example (replace with your actual values):
+echo -n "YOUR_INSTANCE_ID:glc_YOUR_API_TOKEN_HERE" | base64
+
+# Output will be your Base64-encoded credential
+```
+
+4. **Configure environment variables**:
+
+```bash
+# .env.local or .env.vercel.cloud
+OTEL_USE_CLOUD="true"
+OTEL_EXPORTER_OTLP_ENDPOINT="https://otlp-gateway-prod-us-east-3.grafana.net/otlp"
+OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic YOUR_BASE64_ENCODED_CREDENTIAL"}
+```
+
+> **Note**: The JSON value should NOT have outer quotes. Correct: `{"key":"value"}` NOT `"{"key":"value"}"`
+
+#### Verify Credentials
+
+Test your credentials with curl before deploying:
+
+```bash
+curl -v -X POST \
+  "https://otlp-gateway-prod-us-east-3.grafana.net/otlp/v1/traces" \
+  -H "Authorization: Basic YOUR_BASE64_CREDENTIAL" \
+  -H "Content-Type: application/x-protobuf"
+
+# Expected: HTTP 200 (even with empty body)
+# Error: HTTP 401 means invalid credentials
+```
+
+#### Common Issues
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| 401 Unauthorized | Token not Base64 encoded with instanceId | Encode as `base64(instanceId:token)` |
+| 400 Bad Request | Malformed JSON in headers env var | Remove outer quotes from JSON value |
+| Connection timeout | Wrong endpoint region | Check your Grafana Cloud region URL |
+
 ---
 
 ## Environment Configuration
@@ -1495,21 +1560,30 @@ SENTRY_AUTH_TOKEN=sntrys_xxx
 
 # OpenTelemetry (if using self-hosted)
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+
+# Grafana Cloud (managed OpenTelemetry)
+OTEL_USE_CLOUD="true"
+OTEL_EXPORTER_OTLP_ENDPOINT="https://otlp-gateway-prod-us-east-3.grafana.net/otlp"
+# IMPORTANT: Value must be base64(instanceId:token) - see "Grafana Cloud OTLP Authentication" section
+OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic MTQ4Njg0NzpnbGNfZXlK..."}
 ```
 
 ### Vercel Environment Variables Setup
 
 In your Vercel project settings, add:
 
-| Variable                    | Environment | Description              |
-| --------------------------- | ----------- | ------------------------ |
-| `NEXT_PUBLIC_AXIOM_DATASET` | All         | Axiom dataset name       |
-| `NEXT_PUBLIC_AXIOM_TOKEN`   | All         | Axiom ingest token       |
-| `AXIOM_TOKEN`               | All         | Server-side Axiom token  |
-| `AXIOM_DATASET`             | All         | Server-side dataset name |
-| `DATABASE_URL`              | All         | Neon connection string   |
-| `SENTRY_DSN`                | Production  | Sentry DSN (server)      |
-| `NEXT_PUBLIC_SENTRY_DSN`    | Production  | Sentry DSN (client)      |
+| Variable                       | Environment | Description                                      |
+| ------------------------------ | ----------- | ------------------------------------------------ |
+| `NEXT_PUBLIC_AXIOM_DATASET`    | All         | Axiom dataset name                               |
+| `NEXT_PUBLIC_AXIOM_TOKEN`      | All         | Axiom ingest token                               |
+| `AXIOM_TOKEN`                  | All         | Server-side Axiom token                          |
+| `AXIOM_DATASET`                | All         | Server-side dataset name                         |
+| `DATABASE_URL`                 | All         | Neon connection string                           |
+| `SENTRY_DSN`                   | Production  | Sentry DSN (server)                              |
+| `NEXT_PUBLIC_SENTRY_DSN`       | Production  | Sentry DSN (client)                              |
+| `OTEL_USE_CLOUD`               | All         | Set to `"true"` for Grafana Cloud                |
+| `OTEL_EXPORTER_OTLP_ENDPOINT`  | All         | Grafana Cloud OTLP gateway URL                   |
+| `OTEL_EXPORTER_OTLP_HEADERS`   | All         | `{"Authorization":"Basic base64(instanceId:token)"}` |
 
 ### Next.js Configuration
 
