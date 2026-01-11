@@ -108,13 +108,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_http_client_request_duration_seconds_count[5m])",
+          "expr": "rate(http_server_request_duration_seconds_count{service_name=\"dev-academy-web\"}[5m])",
           "legendFormat": "{{http_request_method}} {{http_route}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "HTTP Client Request Rate",
+      "title": "HTTP Request Rate",
       "type": "timeseries"
     },
     {
@@ -179,13 +179,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(devacademy_http_client_request_duration_seconds_sum[5m])) / sum(rate(devacademy_http_client_request_duration_seconds_count[5m])) * 1000",
+          "expr": "sum(rate(http_server_request_duration_seconds_sum{service_name=\"dev-academy-web\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{service_name=\"dev-academy-web\"}[5m])) * 1000",
           "legendFormat": "Avg Latency",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Average HTTP Client Response Time",
+      "title": "Average HTTP Response Time",
       "type": "stat"
     },
     {
@@ -271,7 +271,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_api_errors_total[5m])",
+          "expr": "rate(api_errors_total{service_name=\"dev-academy-web\"}[5m])",
           "legendFormat": "{{error_type}} - {{api_service}}",
           "range": true,
           "refId": "A"
@@ -363,7 +363,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_user_login_attempts_total[5m])",
+          "expr": "rate(user_login_attempts_total{service_name=\"dev-academy-web\"}[5m])",
           "legendFormat": "Attempts",
           "range": true,
           "refId": "A"
@@ -374,7 +374,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_user_login_success_total[5m])",
+          "expr": "rate(user_login_success_total{service_name=\"dev-academy-web\"}[5m])",
           "legendFormat": "Success",
           "range": true,
           "refId": "B"
@@ -385,7 +385,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_user_login_failures_total[5m])",
+          "expr": "rate(user_login_failures_total{service_name=\"dev-academy-web\"}[5m])",
           "legendFormat": "Failures",
           "range": true,
           "refId": "C"
@@ -477,8 +477,8 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(devacademy_db_client_operation_duration_seconds_count[5m])",
-          "legendFormat": "{{db_operation_name}}",
+          "expr": "rate(db_queries_total{service_name=\"dev-academy-web\"}[5m])",
+          "legendFormat": "{{db_operation}}",
           "range": true,
           "refId": "A"
         }
@@ -533,7 +533,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (server_address) (rate(devacademy_http_client_request_duration_seconds_count[5m]))",
+          "expr": "sum by (http_route) (rate(http_server_request_duration_seconds_count{service_name=\"dev-academy-web\"}[5m]))",
           "legendFormat": "{{http_route}}",
           "range": true,
           "refId": "A"
