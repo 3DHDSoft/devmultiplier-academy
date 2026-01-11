@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "grafanacloud-prom"
+        "uid": "grafanacloud-devacademyweb-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -108,7 +108,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "rate(http_server_request_duration_seconds_count{job=\"dev-academy-web\"}[5m])",
@@ -123,7 +123,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "grafanacloud-prom"
+        "uid": "grafanacloud-devacademyweb-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -186,7 +186,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "sum(rate(http_server_request_duration_seconds_sum{job=\"dev-academy-web\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{job=\"dev-academy-web\"}[5m])) * 1000",
@@ -201,7 +201,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "grafanacloud-prom"
+        "uid": "grafanacloud-devacademyweb-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -281,7 +281,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "rate(api_errors_total{job=\"dev-academy-web\"}[5m])",
@@ -296,7 +296,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "grafanacloud-prom"
+        "uid": "grafanacloud-devacademyweb-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -376,7 +376,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "rate(user_login_attempts_total{job=\"dev-academy-web\"}[5m])",
@@ -387,7 +387,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "rate(user_login_success_total{job=\"dev-academy-web\"}[5m])",
@@ -398,7 +398,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "rate(user_login_failures_total{job=\"dev-academy-web\"}[5m])",
@@ -413,7 +413,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "grafanacloud-prom"
+        "uid": "grafanacloud-devacademyweb-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -493,7 +493,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "rate(db_queries_total{job=\"dev-academy-web\"}[5m])",
@@ -508,7 +508,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "grafanacloud-prom"
+        "uid": "grafanacloud-devacademyweb-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -559,7 +559,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "grafanacloud-prom"
+            "uid": "grafanacloud-devacademyweb-prom"
           },
           "editorMode": "code",
           "expr": "sum by (http_route) (rate(http_server_request_duration_seconds_count{job=\"dev-academy-web\"}[5m]))",
