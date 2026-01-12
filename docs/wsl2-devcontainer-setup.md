@@ -1,6 +1,7 @@
 # WSL2 Development Container Setup Guide
 
-This guide covers setting up the DevMultiplier Academy development environment using WSL2 (Windows Subsystem for Linux 2) with VS Code Dev Containers.
+This guide covers setting up the DevMultiplier Academy development environment using WSL2 (Windows Subsystem for
+Linux 2) with VS Code Dev Containers.
 
 ## Prerequisites
 
@@ -20,6 +21,7 @@ wsl --install
 ```
 
 This command will:
+
 - Enable WSL and Virtual Machine Platform features
 - Download and install the Linux kernel
 - Set WSL 2 as the default version
@@ -32,20 +34,24 @@ Restart your computer when prompted.
 If `wsl --install` doesn't work, follow these steps:
 
 1. Enable WSL feature:
+
    ```powershell
    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
    ```
 
 2. Enable Virtual Machine Platform:
+
    ```powershell
    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
    ```
 
 3. Restart your computer.
 
-4. Download and install the [WSL2 Linux kernel update](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
+4. Download and install the
+   [WSL2 Linux kernel update](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
 
 5. Set WSL 2 as default:
+
    ```powershell
    wsl --set-default-version 2
    ```
@@ -78,6 +84,7 @@ localhostForwarding=true
 ```
 
 Restart WSL after changes:
+
 ```powershell
 wsl --shutdown
 ```
@@ -96,6 +103,7 @@ wsl --shutdown
 ### Verify Docker in WSL2
 
 Open Ubuntu terminal and run:
+
 ```bash
 docker --version
 docker compose version
@@ -110,6 +118,7 @@ docker compose version
    - **WSL** (`ms-vscode-remote.remote-wsl`)
 
    Or install from command line:
+
    ```powershell
    code --install-extension ms-vscode-remote.remote-containers
    code --install-extension ms-vscode-remote.remote-wsl
@@ -136,7 +145,8 @@ cd devmultiplier-academy
 
 Clone using Git for Windows, then access from WSL2.
 
-> **Performance Note**: Storing the project inside WSL2's filesystem (`/home/username/`) provides significantly better I/O performance than accessing Windows drives (`/mnt/c/`).
+> **Performance Note**: Storing the project inside WSL2's filesystem (`/home/username/`) provides significantly better
+> I/O performance than accessing Windows drives (`/mnt/c/`).
 
 ## Step 6: Open in Dev Container
 
@@ -185,14 +195,17 @@ pg_isready -h postgres -U admin
 
 **Cause**: The `common-utils` feature's Oh My Zsh installation can break on WSL2.
 
-**Solution**: This project installs Oh My Zsh directly in the Dockerfile (not via features) to avoid this issue. Ensure you have the latest `.devcontainer/Dockerfile`.
+**Solution**: This project installs Oh My Zsh directly in the Dockerfile (not via features) to avoid this issue. Ensure
+you have the latest `.devcontainer/Dockerfile`.
 
 ### Slow File System Performance
 
 **Symptom**: Commands are slow, especially `bun install` or `git status`.
 
 **Solutions**:
+
 1. Move project to WSL2 filesystem:
+
    ```bash
    # From WSL2
    mv /mnt/c/Users/YourName/project ~/project
@@ -209,6 +222,7 @@ pg_isready -h postgres -U admin
 **Symptom**: Cannot access `localhost:3000` from Windows browser.
 
 **Solutions**:
+
 1. Check Docker Desktop settings for WSL integration
 2. In VS Code, check the "Ports" panel (View > Ports)
 3. Manually forward: `Ctrl+Shift+P` > "Forward a Port"
@@ -218,6 +232,7 @@ pg_isready -h postgres -U admin
 **Symptom**: Docker fails to start or shows "Docker Desktop stopped".
 
 **Solutions**:
+
 1. Restart WSL:
    ```powershell
    wsl --shutdown
@@ -230,6 +245,7 @@ pg_isready -h postgres -U admin
 **Symptom**: Docker commands fail with connection errors.
 
 **Solution**: Enable Docker integration in WSL:
+
 1. Docker Desktop > Settings > Resources > WSL Integration
 2. Enable your Ubuntu distribution
 3. Apply & Restart
@@ -239,6 +255,7 @@ pg_isready -h postgres -U admin
 **Symptom**: Plain bash prompt instead of Powerlevel10k.
 
 **Solutions**:
+
 1. Rebuild the container: `Ctrl+Shift+P` > "Dev Containers: Rebuild Container"
 2. Check the default shell:
    ```bash
@@ -250,6 +267,7 @@ pg_isready -h postgres -U admin
 **Symptom**: Broken characters/symbols in the prompt.
 
 **Solution**: Install a Nerd Font:
+
 1. Download [MesloLGS NF](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k)
 2. Install on Windows
 3. Configure VS Code:
@@ -274,6 +292,7 @@ pg_isready -h postgres -U admin
 ### Allocate More Resources
 
 Edit `%USERPROFILE%\.wslconfig`:
+
 ```ini
 [wsl2]
 memory=12GB
@@ -282,7 +301,8 @@ processors=6
 
 ### Exclude from Windows Defender Antivirus
 
-Adding exclusions for Docker and WSL2 paths significantly improves performance by preventing real-time scanning of container operations and Linux filesystem access.
+Adding exclusions for Docker and WSL2 paths significantly improves performance by preventing real-time scanning of
+container operations and Linux filesystem access.
 
 #### Method 1: Using Windows Security GUI
 
@@ -294,36 +314,38 @@ Adding exclusions for Docker and WSL2 paths significantly improves performance b
 
 **Add these folder exclusions:**
 
-| Exclusion Type | Path |
-|----------------|------|
-| Folder | `%USERPROFILE%\AppData\Local\Docker` |
-| Folder | `%LOCALAPPDATA%\Packages\CanonicalGroupLimited.Ubuntu*` |
-| Folder | `%LOCALAPPDATA%\Docker` |
-| Folder | `%PROGRAMDATA%\Docker` |
-| Folder | `C:\Program Files\Docker` |
+| Exclusion Type | Path                                                    |
+| -------------- | ------------------------------------------------------- |
+| Folder         | `%USERPROFILE%\AppData\Local\Docker`                    |
+| Folder         | `%LOCALAPPDATA%\Packages\CanonicalGroupLimited.Ubuntu*` |
+| Folder         | `%LOCALAPPDATA%\Docker`                                 |
+| Folder         | `%PROGRAMDATA%\Docker`                                  |
+| Folder         | `C:\Program Files\Docker`                               |
 
 **Add WSL virtual disk location:**
 
 The WSL2 virtual disk is typically located at:
+
 ```
 %LOCALAPPDATA%\Packages\CanonicalGroupLimited.Ubuntu*\LocalState\ext4.vhdx
 ```
 
 To find the exact path:
+
 1. Open PowerShell
 2. Run: `(Get-ChildItem "$env:LOCALAPPDATA\Packages" -Filter "CanonicalGroupLimited.Ubuntu*").FullName`
 3. Add the returned path as a folder exclusion
 
 **Add process exclusions:**
 
-| Exclusion Type | Process |
-|----------------|---------|
-| Process | `%PROGRAMFILES%\Docker\Docker\Docker Desktop.exe` |
-| Process | `%PROGRAMFILES%\Docker\Docker\resources\com.docker.backend.exe` |
-| Process | `%PROGRAMFILES%\Docker\Docker\resources\vpnkit.exe` |
-| Process | `%PROGRAMFILES%\Docker\Docker\resources\dockerd.exe` |
-| Process | `wsl.exe` |
-| Process | `wslhost.exe` |
+| Exclusion Type | Process                                                         |
+| -------------- | --------------------------------------------------------------- |
+| Process        | `%PROGRAMFILES%\Docker\Docker\Docker Desktop.exe`               |
+| Process        | `%PROGRAMFILES%\Docker\Docker\resources\com.docker.backend.exe` |
+| Process        | `%PROGRAMFILES%\Docker\Docker\resources\vpnkit.exe`             |
+| Process        | `%PROGRAMFILES%\Docker\Docker\resources\dockerd.exe`            |
+| Process        | `wsl.exe`                                                       |
+| Process        | `wslhost.exe`                                                   |
 
 #### Method 2: Using PowerShell (Recommended)
 
@@ -367,7 +389,8 @@ Write-Host "`nCurrent process exclusions:" -ForegroundColor Cyan
 
 A ready-to-use script is available at `scripts/add-wsl-docker-exclusions.ps1`.
 
-> **Important**: Run this script on **Windows PowerShell** (not WSL). The script uses Windows-specific commands to configure Windows Defender.
+> **Important**: Run this script on **Windows PowerShell** (not WSL). The script uses Windows-specific commands to
+> configure Windows Defender.
 
 **How to run:**
 
@@ -466,7 +489,8 @@ Remove-MpPreference -ExclusionProcess "processname.exe"
 
 #### Security Considerations
 
-> **Warning**: Adding antivirus exclusions reduces security scanning coverage. Only exclude paths that are necessary for performance and ensure you trust the software running in these locations.
+> **Warning**: Adding antivirus exclusions reduces security scanning coverage. Only exclude paths that are necessary for
+> performance and ensure you trust the software running in these locations.
 
 - Docker and WSL are trusted Microsoft/Docker Inc. software
 - The exclusions prevent scanning of container layers and Linux filesystem operations

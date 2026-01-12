@@ -101,136 +101,148 @@ export default function ContactPage() {
               </div>
             ) : (
               <>
-                {generalError && (
-                  <div className="mt-6 rounded-lg bg-red-50 p-6 text-red-800">
-                    {generalError}
-                  </div>
-                )}
+                {generalError && <div className="mt-6 rounded-lg bg-red-50 p-6 text-red-800">{generalError}</div>}
                 <form
-                onSubmit={handleSubmit}
-                className="mt-6 space-y-6"
-              >
-                <div className="grid gap-6 sm:grid-cols-2">
+                  onSubmit={handleSubmit}
+                  className="mt-6 space-y-6"
+                >
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="text-navy block text-sm font-medium"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        aria-invalid={!!fieldErrors.name}
+                        aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+                        className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
+                          fieldErrors.name
+                            ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
+                            : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
+                        }`}
+                      />
+                      {fieldErrors.name && (
+                        <p
+                          id="name-error"
+                          role="alert"
+                          className="mt-1 text-sm text-red-600"
+                        >
+                          {fieldErrors.name[0]}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="text-navy block text-sm font-medium"
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        aria-invalid={!!fieldErrors.email}
+                        aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+                        className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
+                          fieldErrors.email
+                            ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
+                            : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
+                        }`}
+                      />
+                      {fieldErrors.email && (
+                        <p
+                          id="email-error"
+                          role="alert"
+                          className="mt-1 text-sm text-red-600"
+                        >
+                          {fieldErrors.email[0]}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
                   <div>
                     <label
-                      htmlFor="name"
+                      htmlFor="subject"
                       className="text-navy block text-sm font-medium"
                     >
-                      Name
+                      Subject
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="subject"
                       required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      aria-invalid={!!fieldErrors.name}
-                      aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      aria-invalid={!!fieldErrors.subject}
+                      aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
                       className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                        fieldErrors.name
+                        fieldErrors.subject
                           ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
                           : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
                       }`}
                     />
-                    {fieldErrors.name && (
-                      <p id="name-error" role="alert" className="mt-1 text-sm text-red-600">
-                        {fieldErrors.name[0]}
+                    {fieldErrors.subject && (
+                      <p
+                        id="subject-error"
+                        role="alert"
+                        className="mt-1 text-sm text-red-600"
+                      >
+                        {fieldErrors.subject[0]}
                       </p>
                     )}
                   </div>
+
                   <div>
                     <label
-                      htmlFor="email"
+                      htmlFor="message"
                       className="text-navy block text-sm font-medium"
                     >
-                      Email
+                      Message
                     </label>
-                    <input
-                      type="email"
-                      id="email"
+                    <textarea
+                      id="message"
+                      rows={5}
                       required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      aria-invalid={!!fieldErrors.email}
-                      aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      aria-invalid={!!fieldErrors.message}
+                      aria-describedby={fieldErrors.message ? 'message-error' : undefined}
                       className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                        fieldErrors.email
+                        fieldErrors.message
                           ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
                           : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
                       }`}
                     />
-                    {fieldErrors.email && (
-                      <p id="email-error" role="alert" className="mt-1 text-sm text-red-600">
-                        {fieldErrors.email[0]}
+                    {fieldErrors.message && (
+                      <p
+                        id="message-error"
+                        role="alert"
+                        className="mt-1 text-sm text-red-600"
+                      >
+                        {fieldErrors.message[0]}
                       </p>
                     )}
                   </div>
-                </div>
 
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="text-navy block text-sm font-medium"
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="bg-navy hover:bg-blue w-full rounded-lg px-6 py-3 font-semibold text-white transition-colors disabled:opacity-50"
                   >
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    required
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    aria-invalid={!!fieldErrors.subject}
-                    aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
-                    className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                      fieldErrors.subject
-                        ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
-                        : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
-                    }`}
-                  />
-                  {fieldErrors.subject && (
-                    <p id="subject-error" role="alert" className="mt-1 text-sm text-red-600">
-                      {fieldErrors.subject[0]}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="text-navy block text-sm font-medium"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    aria-invalid={!!fieldErrors.message}
-                    aria-describedby={fieldErrors.message ? 'message-error' : undefined}
-                    className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                      fieldErrors.message
-                        ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
-                        : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
-                    }`}
-                  />
-                  {fieldErrors.message && (
-                    <p id="message-error" role="alert" className="mt-1 text-sm text-red-600">
-                      {fieldErrors.message[0]}
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="bg-navy hover:bg-blue w-full rounded-lg px-6 py-3 font-semibold text-white transition-colors disabled:opacity-50"
-                >
-                  {status === 'loading' ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
+                    {status === 'loading' ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
               </>
             )}
           </div>
