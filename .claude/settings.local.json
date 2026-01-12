@@ -74,7 +74,12 @@
       "Bash(source .env.local)",
       "Bash(git rev-parse:*)",
       "Bash(git pull:*)",
-      "Bash(./grafana-cloud/scripts/import-dashboards.sh:*)"
+      "Bash(./grafana-cloud/scripts/import-dashboards.sh:*)",
+      "Bash(sudo apt-get update:*)",
+      "Bash(sudo apt-get install:*)",
+      "Bash(ssh:*)",
+      "Bash(export PATH=\"$HOME/.fzf/bin:$PATH\")",
+      "Bash(source ~/.fzf.zsh)"
     ]
   }
 }
