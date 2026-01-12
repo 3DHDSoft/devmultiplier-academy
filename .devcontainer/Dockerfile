@@ -13,6 +13,10 @@ RUN apt-get update && apt-get upgrade -y && export DEBIAN_FRONTEND=noninteractiv
   sudo \
   postgresql-client \
   gnupg2 \
+  # Zsh and dependencies for Oh My Zsh / Powerlevel10k
+  zsh \
+  locales \
+  fontconfig \
   # Playwright core dependencies
   libxcb-shm0 \
   libx11-xcb1 \
@@ -76,14 +80,40 @@ RUN apt-get update && apt-get upgrade -y && export DEBIAN_FRONTEND=noninteractiv
   && apt-get install -y nodejs \
   && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
-RUN useradd -m -s /bin/bash node \
+# Generate locale for Powerlevel10k
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+
+# Create non-root user with Zsh as default shell
+RUN useradd -m -s /bin/zsh node \
   && usermod -aG sudo node \
   && echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/node \
   && chmod 0440 /etc/sudoers.d/node
 
 # Switch to node user
 USER node
+
+# Install Oh My Zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Install Powerlevel10k theme
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# Install useful Oh My Zsh plugins
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+  && git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Configure Zsh with Powerlevel10k and plugins
+RUN sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc \
+  && sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker node npm bun)/' ~/.zshrc
+
+# Add Powerlevel10k instant prompt and basic configuration
+RUN echo '# Enable Powerlevel10k instant prompt' >> ~/.zshrc \
+  && echo 'if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then' >> ~/.zshrc \
+  && echo '  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"' >> ~/.zshrc \
+  && echo 'fi' >> ~/.zshrc \
+  && echo '' >> ~/.zshrc \
+  && echo '# Source Powerlevel10k config if it exists' >> ~/.zshrc \
+  && echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc
 
 # Create Claude Code auth directory (will be volume-mounted, but sets ownership template)
 RUN mkdir -p /home/node/.claude && chmod 700 /home/node/.claude
