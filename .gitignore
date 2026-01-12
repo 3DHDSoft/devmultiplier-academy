@@ -53,3 +53,5 @@ next-env.d.ts
 # Playwright
 /playwright-report
 /test-results
+C:\Users\*
+.claude/plugins/
