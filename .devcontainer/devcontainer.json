@@ -2,6 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
   "name": "TS Node.js",
+  "initializeCommand": "echo 'Starting build...'",
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev-x-academy-web",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
@@ -15,7 +16,6 @@
   // Features to add to the dev container. More info: https://containers.dev/features, https://github.com/devcontainers/features.
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/copilot-cli:1": {},
 
     // CLI
     "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
@@ -32,12 +32,14 @@
     "ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
     "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {},
 
-    // Common Utilities, Oh My Zsh! - https://github.com/devcontainers/features/tree/main/src/common-utils
+    // Common Utilities - https://github.com/devcontainers/features/tree/main/src/common-utils
+    // NOTE: Oh My Zsh and Powerlevel10k are installed directly in Dockerfile for WSL2 compatibility
+    // The common-utils feature's Oh My Zsh installation breaks devcontainer when starting from WSL2
     "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": true,
-      "configureZshAsDefaultShell": true,
-      "installOhMyZsh": true,
-      "installOhMyZshConfig": true,
+      "installZsh": false,
+      "configureZshAsDefaultShell": false,
+      "installOhMyZsh": false,
+      "installOhMyZshConfig": false,
       "upgradePackages": "true"
     }
   },

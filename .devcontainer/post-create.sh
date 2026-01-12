@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Fix node_modules permissions
+sudo mkdir -p /workspaces/devmultiplier-academy/node_modules
+sudo chown -R node:node /workspaces/devmultiplier-academy/node_modules
+
 set -e
 
 echo "🚀 Setting up Dev Web Development Environment..."
@@ -10,6 +14,11 @@ sudo mkdir -p /home/node/.claude
 sudo chown -R node:node /home/node/.claude
 chmod 700 /home/node/.claude
 echo "✅ Claude Code auth directory ready"
+
+# Upgrade npm to latest version
+echo "📦 Upgrading npm to latest version..."
+sudo npm install -g npm@latest
+echo "✅ npm upgraded to $(npm -v)"
 
 # Install global bun packages
 echo "🌍 Installing global bun packages..."
@@ -27,29 +36,6 @@ if [ -f "package.json" ]; then
     bun install
 fi
 
-# Install Playwright browsers
-# echo ""
-# echo "🎭 Installing Playwright browsers..."
-# bunx playwright install 2>&1 | while IFS= read -r line; do
-#     if [[ "$line" =~ ^Downloading ]]; then
-#         # Extract browser name and version
-#         browser_info=$(echo "$line" | sed 's/ from.*//')
-#         # Show what's being downloaded
-#         printf "   ⬇️  %s\n" "$browser_info"
-#         first_progress=1
-#     elif [[ "$line" =~ ^\| ]]; then
-#         # Progress bar line - update in-place
-#         printf "   %s\r" "$line"
-#         first_progress=0
-#     elif [[ "$line" =~ "downloaded to" ]]; then
-#         # Extract version, clear progress bar and replace downloading line
-#         version=$(echo "$line" | sed 's/ downloaded to.*//')
-#         printf "\033[K\033[A\033[K   ✅ %s\n" "$version"
-#     fi
-# done
-# echo "   📁 All browsers cached in ~/.cache/ms-playwright/"
-# echo ""
-
 # Wait for databases to be fully ready
 echo "⏳ Waiting for databases to be ready..."
 
@@ -60,22 +46,30 @@ until pg_isready -h postgres -U admin -d academy > /dev/null 2>&1; do
 done
 echo "✅ PostgreSQL 18 is ready"
 
-# Fix observability configuration file permissions
-echo "🔧 Setting observability configuration permissions..."
-chmod 644 .devcontainer/prometheus/prometheus.yml
-chmod 644 .devcontainer/grafana/provisioning/datasources/prometheus.yml
-chmod 644 .devcontainer/grafana/provisioning/datasources/tempo.yml
-chmod 644 .devcontainer/grafana/provisioning/dashboards/dashboards.yml
-chmod 644 .devcontainer/grafana/dashboards/*.json
-chmod 644 .devcontainer/otel-collector/otel-collector-config.yml
-chmod 644 .devcontainer/tempo/tempo.yml
-echo "✅ Observability configurations are readable"
-
-# # Run initialization scripts if they exist
-# if [ -f ".devcontainer/scripts/init-databases.sh" ]; then
-#     echo "🗄️ Running database initialization..."
-#     bash .devcontainer/scripts/init-databases.sh
-# fi
+# Verify observability configuration file permissions
+echo "🔧 Checking observability configuration permissions..."
+# Files should already have 644 permissions from git
+# Only attempt chmod if we have write access (avoid errors on mounted volumes)
+for file in \
+  .devcontainer/prometheus/prometheus.yml \
+  .devcontainer/grafana/provisioning/datasources/prometheus.yml \
+  .devcontainer/grafana/provisioning/datasources/tempo.yml \
+  .devcontainer/grafana/provisioning/dashboards/dashboards.yml \
+  .devcontainer/otel-collector/otel-collector-config.yml \
+  .devcontainer/tempo/tempo.yml; do
+  if [ -w "$file" ]; then
+    chmod 644 "$file" 2>/dev/null || true
+  fi
+done
+# Also handle dashboard JSON files if they exist
+if ls .devcontainer/grafana/dashboards/*.json &>/dev/null; then
+  for file in .devcontainer/grafana/dashboards/*.json; do
+    if [ -w "$file" ]; then
+      chmod 644 "$file" 2>/dev/null || true
+    fi
+  done
+fi
+echo "✅ Observability configurations verified"
 
 echo ""
 echo "=============================================="
