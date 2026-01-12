@@ -30,18 +30,18 @@
     "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {},
     "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
     "ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
-    "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {},
+    "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {}
 
     // Common Utilities - https://github.com/devcontainers/features/tree/main/src/common-utils
     // NOTE: Oh My Zsh and Powerlevel10k are installed directly in Dockerfile for WSL2 compatibility
     // The common-utils feature's Oh My Zsh installation breaks devcontainer when starting from WSL2
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": false,
-      "configureZshAsDefaultShell": false,
-      "installOhMyZsh": false,
-      "installOhMyZshConfig": false,
-      "upgradePackages": "true"
-    }
+    // "ghcr.io/devcontainers/features/common-utils:2": {
+    //   "installZsh": false,
+    //   "configureZshAsDefaultShell": false,
+    //   "installOhMyZsh": false,
+    //   "installOhMyZshConfig": false,
+    //   "upgradePackages": "true"
+    // }
   },
 
   // ============================================================================
