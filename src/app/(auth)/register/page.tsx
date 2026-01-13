@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,25 +74,15 @@ export default function RegisterPage() {
         }),
       });
 
+      const data = await registerResponse.json();
+
       if (!registerResponse.ok) {
-        const data = await registerResponse.json();
         setError(data.error || 'Registration failed');
         return;
       }
 
-      // Auto sign in after registration
-      const signInResult = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (signInResult?.ok) {
-        router.push('/dashboard');
-      } else {
-        // Registration successful but auto sign-in failed
-        router.push('/login');
-      }
+      // Redirect to verification pending page
+      router.push(`/verify-email-sent?email=${encodeURIComponent(email)}`)
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error('Registration error:', err);
@@ -103,18 +92,18 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-6">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] dark:bg-[#0d1117] px-4 py-6">
       <div className="w-full max-w-md">
-        <div className="rounded-lg bg-white p-5 shadow-xl">
+        <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-5 shadow-xl">
           {/* Header */}
           <div className="mb-4 text-center">
-            <h1 className="mb-0.5 text-xl font-bold text-gray-900">Dev Academy</h1>
-            <p className="text-sm text-gray-600">Create your account</p>
+            <h1 className="mb-0.5 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Dev Academy</h1>
+            <p className="text-sm text-[#656d76] dark:text-[#848d97]">Create your account</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-3 rounded-md bg-red-50 p-2.5 text-red-800">
+            <div className="mb-3 rounded-md bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-2.5 text-[#d1242f] dark:text-[#f85149]">
               <p className="text-sm">{error}</p>
             </div>
           )}
@@ -128,7 +117,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="name"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Full Name
               </label>
@@ -139,7 +128,7 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
                 required
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
             </div>
@@ -148,7 +137,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Email Address
               </label>
@@ -159,7 +148,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
             </div>
@@ -168,7 +157,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Password
               </label>
@@ -179,17 +168,17 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder=""
                 required
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
-              <p className="mt-1 text-xs text-gray-500">At least 8 characters</p>
+              <p className="mt-1 text-xs text-[#656d76] dark:text-[#848d97]">At least 8 characters</p>
             </div>
 
             {/* Confirm Password Field */}
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Confirm Password
               </label>
@@ -200,7 +189,7 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder=""
                 required
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
               <div className="mt-1.5 flex items-center">
@@ -209,11 +198,11 @@ export default function RegisterPage() {
                   id="showPassword"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 />
                 <label
                   htmlFor="showPassword"
-                  className="ml-2 text-sm text-gray-600"
+                  className="ml-2 text-sm text-[#656d76] dark:text-[#848d97]"
                 >
                   Show password
                 </label>
@@ -224,7 +213,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="locale"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Preferred Language
               </label>
@@ -232,7 +221,7 @@ export default function RegisterPage() {
                 id="locale"
                 value={locale}
                 onChange={(e) => setLocale(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               >
                 {locales.map((loc) => (
@@ -250,7 +239,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-md bg-blue-600 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-md bg-[#1f883d] dark:bg-[#238636] py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? 'Creating account...' : 'Create Account'}
             </button>
@@ -258,17 +247,17 @@ export default function RegisterPage() {
 
           {/* Divider */}
           <div className="my-3 flex items-center">
-            <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-3 text-xs text-gray-500">or</span>
-            <div className="flex-1 border-t border-gray-300"></div>
+            <div className="flex-1 border-t border-[#d1d9e0] dark:border-[#30363d]"></div>
+            <span className="px-3 text-xs text-[#656d76] dark:text-[#848d97]">or</span>
+            <div className="flex-1 border-t border-[#d1d9e0] dark:border-[#30363d]"></div>
           </div>
 
           {/* Sign In Link */}
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-[#656d76] dark:text-[#848d97]">
             Already have an account?{' '}
             <Link
               href="/login"
-              className="font-medium text-blue-600 hover:text-blue-700"
+              className="font-medium text-[#0969da] dark:text-[#4493f8] hover:underline"
             >
               Sign in
             </Link>

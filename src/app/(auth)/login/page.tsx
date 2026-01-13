@@ -14,6 +14,9 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [emailNotVerified, setEmailNotVerified] = useState(false);
+  const [isResendingEmail, setIsResendingEmail] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -26,8 +29,8 @@ export default function LoginPage() {
   // Show loading while checking session or redirecting
   if (status === 'loading' || isRedirecting) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-        <div className="text-white">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] dark:bg-[#0d1117]">
+        <div className="text-[#1f2328] dark:text-[#e6edf3]">Loading...</div>
       </div>
     );
   }
@@ -35,6 +38,8 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setEmailNotVerified(false);
+    setResendSuccess(false);
     setIsLoading(true);
 
     try {
@@ -45,7 +50,25 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        // Check if the error is due to unverified email
+        if (result.error === 'CredentialsSignin') {
+          // NextAuth wraps our error - we need to check via a separate call
+          // or handle it differently. Let's check by attempting to get more info
+          const checkResponse = await fetch('/api/auth/check-verification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+          const checkData = await checkResponse.json();
+
+          if (checkData.needsVerification) {
+            setEmailNotVerified(true);
+          } else {
+            setError('Invalid email or password');
+          }
+        } else {
+          setError('Invalid email or password');
+        }
       } else if (result?.ok) {
         // Use window.location for full page navigation to ensure session is picked up
         window.location.href = '/dashboard';
@@ -55,6 +78,33 @@ export default function LoginPage() {
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setIsResendingEmail(true);
+    setError('');
+    setResendSuccess(false);
+
+    try {
+      const response = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResendSuccess(true);
+      } else {
+        setError(data.error || 'Failed to resend verification email');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+      console.error('Resend verification error:', err);
+    } finally {
+      setIsResendingEmail(false);
     }
   };
 
@@ -71,18 +121,61 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-6">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] dark:bg-[#0d1117] px-4 py-6">
       <div className="w-full max-w-md">
-        <div className="rounded-lg bg-white p-5 shadow-xl">
+        <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-5 shadow-xl">
           {/* Header */}
           <div className="mb-4 text-center">
-            <h1 className="mb-0.5 text-xl font-bold text-gray-900">Dev Academy</h1>
-            <p className="text-sm text-gray-600">Sign in to your account</p>
+            <h1 className="mb-0.5 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Dev Academy</h1>
+            <p className="text-sm text-[#656d76] dark:text-[#848d97]">Sign in to your account</p>
           </div>
 
+          {/* Email Not Verified Message */}
+          {emailNotVerified && (
+            <div className="mb-3 rounded-md bg-[#fff8c5] dark:bg-[#674d1a] border border-[#d4a72c66] dark:border-[#d29922] p-3">
+              <div className="flex items-start gap-2">
+                <svg
+                  className="h-5 w-5 flex-shrink-0 text-[#9a6700] dark:text-[#d29922]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-[#9a6700] dark:text-[#d29922]">
+                    Email verification required
+                  </p>
+                  <p className="mt-1 text-sm text-[#6e5600] dark:text-[#c69026]">
+                    Please check your email and click the verification link before signing in.
+                  </p>
+                  {resendSuccess ? (
+                    <p className="mt-2 text-sm text-[#1a7f37] dark:text-[#3fb950]">
+                      ✓ Verification email sent! Check your inbox.
+                    </p>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleResendVerification}
+                      disabled={isResendingEmail}
+                      className="mt-2 text-sm font-medium text-[#0969da] dark:text-[#4493f8] hover:underline disabled:opacity-50"
+                    >
+                      {isResendingEmail ? 'Sending...' : 'Resend verification email'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Error Message */}
-          {error && (
-            <div className="mb-3 rounded-md bg-red-50 p-2.5 text-red-800">
+          {error && !emailNotVerified && (
+            <div className="mb-3 rounded-md bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-2.5 text-[#d1242f] dark:text-[#f85149]">
               <p className="text-sm">{error}</p>
             </div>
           )}
@@ -96,7 +189,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Email Address
               </label>
@@ -107,7 +200,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
             </div>
@@ -116,7 +209,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-1 block text-sm font-medium text-gray-700"
+                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
               >
                 Password
               </label>
@@ -127,7 +220,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder=""
                 required
-                className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
               <div className="mt-1.5 flex items-center">
@@ -136,11 +229,11 @@ export default function LoginPage() {
                   id="showPassword"
                   checked={showPassword}
                   onChange={(e) => setShowPassword(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                 />
                 <label
                   htmlFor="showPassword"
-                  className="ml-2 text-sm text-gray-600"
+                  className="ml-2 text-sm text-[#656d76] dark:text-[#848d97]"
                 >
                   Show password
                 </label>
@@ -151,7 +244,7 @@ export default function LoginPage() {
             <div className="flex justify-end">
               <Link
                 href="/forgot-password"
-                className="text-xs text-blue-600 hover:text-blue-700"
+                className="text-xs text-[#0969da] dark:text-[#4493f8] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -161,7 +254,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-md bg-blue-600 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-md bg-[#1f883d] dark:bg-[#238636] py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -169,9 +262,9 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="my-3 flex items-center">
-            <div className="flex-1 border-t border-gray-300"></div>
-            <span className="px-3 text-xs text-gray-500">or continue with</span>
-            <div className="flex-1 border-t border-gray-300"></div>
+            <div className="flex-1 border-t border-[#d1d9e0] dark:border-[#30363d]"></div>
+            <span className="px-3 text-xs text-[#656d76] dark:text-[#848d97]">or continue with</span>
+            <div className="flex-1 border-t border-[#d1d9e0] dark:border-[#30363d]"></div>
           </div>
 
           {/* OAuth Provider Buttons */}
@@ -181,7 +274,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('github')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 className="h-4 w-4"
@@ -198,7 +291,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('google')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 className="h-4 w-4"
@@ -229,7 +322,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('microsoft-entra-id')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 className="h-4 w-4"
@@ -260,7 +353,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('linkedin')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg
                 className="h-4 w-4"
@@ -274,19 +367,19 @@ export default function LoginPage() {
           </div>
 
           {/* Sign Up Link */}
-          <p className="mt-3 text-center text-sm text-gray-600">
+          <p className="mt-3 text-center text-sm text-[#656d76] dark:text-[#848d97]">
             Don&apos;t have an account?{' '}
             <Link
               href="/register"
-              className="font-medium text-blue-600 hover:text-blue-700"
+              className="font-medium text-[#0969da] dark:text-[#4493f8] hover:underline"
             >
               Sign up
             </Link>
           </p>
 
           {/* Demo Credentials Info */}
-          <div className="mt-3 rounded-md bg-blue-50 p-2.5">
-            <p className="text-xs text-blue-800">
+          <div className="mt-3 rounded-md bg-[#ddf4ff] dark:bg-[#388bfd26] border border-[#54aeff66] dark:border-[#4493f866] p-2.5">
+            <p className="text-xs text-[#0969da] dark:text-[#4493f8]">
               <strong>Demo:</strong> Use any email with password of at least 8 characters during registration.
             </p>
           </div>

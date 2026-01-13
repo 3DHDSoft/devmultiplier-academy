@@ -2,8 +2,11 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { Loader2, MoreVertical } from 'lucide-react';
+import { Loader2, MoreVertical, Camera } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useUserAvatar } from '@/contexts/UserAvatarContext';
 
 export const dynamic = 'force-dynamic';
 
@@ -190,6 +193,8 @@ function getGravatarUrl(email: string): string {
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { setTheme } = useTheme();
+  const { setAvatarUrl, setUserName } = useUserAvatar();
   const [activeTab, setActiveTab] = useState<TabType>('settings');
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -198,6 +203,8 @@ export default function ProfilePage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
   const [terminatingSessionId, setTerminatingSessionId] = useState<string | null>(null);
+  const [showTerminateModal, setShowTerminateModal] = useState(false);
+  const [sessionToTerminate, setSessionToTerminate] = useState<string | null>(null);
 
   // Delete account state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -211,6 +218,11 @@ export default function ProfilePage() {
   const [emailChangePassword, setEmailChangePassword] = useState('');
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [emailChangeSuccess, setEmailChangeSuccess] = useState(false);
+
+  // Avatar upload state
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isRemovingAvatar, setIsRemovingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<UserProfile>({
     id: '',
@@ -346,6 +358,14 @@ export default function ProfilePage() {
         throw new Error(data.error || 'Failed to update profile');
       }
 
+      // Update theme immediately if dashboard appearance changed
+      if (formData.dashboardAppearance) {
+        setTheme(formData.dashboardAppearance as 'light' | 'dark' | 'system');
+      }
+
+      // Update name in context for immediate header update
+      setUserName(formData.name || null);
+
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -408,11 +428,94 @@ export default function ProfilePage() {
     });
   };
 
-  const handleTerminateSession = async (sessionId: string) => {
-    if (!confirm('Are you sure you want to terminate this session?')) {
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setAvatarError('Please select an image file');
       return;
     }
 
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError('Image must be less than 5MB');
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    setAvatarError(null);
+
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('avatar', file);
+
+      const response = await fetch('/api/user/avatar', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to upload avatar');
+      }
+
+      // Update avatar in form data and context (for header to update immediately)
+      setFormData((prev) => ({ ...prev, avatar: data.avatarUrl }));
+      setAvatarUrl(data.avatarUrl);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (err) {
+      console.error('Avatar upload error:', err);
+      setAvatarError(err instanceof Error ? err.message : 'Failed to upload avatar');
+    } finally {
+      setIsUploadingAvatar(false);
+      // Reset the input so the same file can be selected again
+      e.target.value = '';
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    setIsRemovingAvatar(true);
+    setAvatarError(null);
+
+    try {
+      const response = await fetch('/api/user/avatar', {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to remove avatar');
+      }
+
+      // Update avatar in form data and context
+      setFormData((prev) => ({ ...prev, avatar: '' }));
+      setAvatarUrl(null);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (err) {
+      console.error('Avatar removal error:', err);
+      setAvatarError(err instanceof Error ? err.message : 'Failed to remove avatar');
+    } finally {
+      setIsRemovingAvatar(false);
+    }
+  };
+
+  const openTerminateModal = (sessionId: string) => {
+    setSessionToTerminate(sessionId);
+    setShowTerminateModal(true);
+  };
+
+  const closeTerminateModal = () => {
+    setShowTerminateModal(false);
+    setSessionToTerminate(null);
+  };
+
+  const handleTerminateSession = async (sessionId: string) => {
     setTerminatingSessionId(sessionId);
     setError(null);
 
@@ -489,8 +592,8 @@ export default function ProfilePage() {
 
   if (status === 'loading' || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] dark:bg-[#0d1117]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#0969da] dark:text-[#4493f8]" />
       </div>
     );
   }
@@ -500,23 +603,23 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="mx-auto max-w-4xl px-4 py-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
+      <main className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
         {/* Header */}
         <div className="mb-4">
-          <h1 className="mb-1 text-2xl font-bold text-gray-900">{formData.email}</h1>
-          <h2 className="text-3xl font-bold text-gray-900">Profile</h2>
+          <h1 className="mb-1 text-2xl font-bold text-[#1f2328] dark:text-[#e6edf3]">{formData.email}</h1>
+          <h2 className="text-3xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Profile</h2>
         </div>
 
         {/* Tab Navigation */}
-        <div className="mb-4 border-b border-gray-200">
+        <div className="mb-4 border-b border-[#d1d9e0] dark:border-[#30363d]">
           <nav className="flex space-x-6">
             <button
               onClick={() => setActiveTab('settings')}
               className={`border-b-2 pb-2 text-sm font-medium transition ${
                 activeTab === 'settings'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  ? 'border-[#0969da] dark:border-[#4493f8] text-[#0969da] dark:text-[#4493f8]'
+                  : 'border-transparent text-[#656d76] dark:text-[#848d97] hover:border-[#d1d9e0] dark:hover:border-[#30363d] hover:text-[#1f2328] dark:hover:text-[#e6edf3]'
               }`}
             >
               Settings
@@ -525,8 +628,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('notifications')}
               className={`border-b-2 pb-2 text-sm font-medium transition ${
                 activeTab === 'notifications'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  ? 'border-[#0969da] dark:border-[#4493f8] text-[#0969da] dark:text-[#4493f8]'
+                  : 'border-transparent text-[#656d76] dark:text-[#848d97] hover:border-[#d1d9e0] dark:hover:border-[#30363d] hover:text-[#1f2328] dark:hover:text-[#e6edf3]'
               }`}
             >
               Notifications
@@ -536,14 +639,14 @@ export default function ProfilePage() {
 
         {/* Messages */}
         {error && (
-          <div className="mb-3 rounded-md bg-red-50 p-2.5 text-red-800">
+          <div className="mb-3 rounded-md bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-2.5 text-[#d1242f] dark:text-[#f85149]">
             <p className="text-sm font-medium">Error</p>
             <p className="text-sm">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="mb-3 rounded-md bg-green-50 p-2.5 text-green-800">
+          <div className="mb-3 rounded-md bg-[#dafbe1] dark:bg-[#2ea04326] border border-[#1f883d66] dark:border-[#3fb95066] p-2.5 text-[#1a7f37] dark:text-[#3fb950]">
             <p className="text-sm font-medium">Profile updated successfully!</p>
           </div>
         )}
@@ -554,16 +657,103 @@ export default function ProfilePage() {
             onSubmit={handleSubmit}
             className="space-y-4"
           >
+            {/* Profile Photo Section */}
+            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+              <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Profile Photo</h3>
+
+              <div className="flex items-center gap-4">
+                {/* Avatar Display */}
+                <div className="relative">
+                  <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#21262d]">
+                    {formData.avatar ? (
+                      <Image
+                        src={formData.avatar}
+                        alt="Profile avatar"
+                        width={80}
+                        height={80}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-2xl font-semibold text-[#656d76] dark:text-[#848d97]">
+                        {formData.name ? formData.name.charAt(0).toUpperCase() : formData.email.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  {isUploadingAvatar && (
+                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50">
+                      <Loader2 className="h-6 w-6 animate-spin text-white" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Upload Controls */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="avatar-upload"
+                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d]"
+                    >
+                      <Camera className="h-4 w-4" />
+                      Upload photo
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarUpload}
+                      disabled={isUploadingAvatar}
+                      className="hidden"
+                    />
+                    {formData.avatar && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveAvatar}
+                        disabled={isUploadingAvatar || isRemovingAvatar}
+                        className="text-sm text-[#d1242f] dark:text-[#f85149] hover:underline disabled:opacity-50"
+                      >
+                        {isRemovingAvatar ? 'Removing...' : 'Remove'}
+                      </button>
+                    )}
+                  </div>
+                  <p className="mt-1.5 text-xs text-[#656d76] dark:text-[#848d97]">
+                    JPG, PNG or GIF. Max size 5MB.
+                  </p>
+                  {avatarError && (
+                    <p className="mt-1 text-xs text-[#d1242f] dark:text-[#f85149]">{avatarError}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Settings Section */}
-            <div className="rounded-lg bg-white p-4 shadow">
-              <h3 className="mb-3 text-lg font-semibold text-gray-900">Settings</h3>
+            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+              <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Settings</h3>
 
               <div className="space-y-3">
+                {/* Full Name */}
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                  />
+                </div>
+
                 {/* Email (Verified) */}
                 <div>
                   <label
                     htmlFor="email"
-                    className="mb-1 block text-sm font-medium text-gray-700"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Email
                   </label>
@@ -574,13 +764,13 @@ export default function ProfilePage() {
                       name="email"
                       value={formData.email}
                       disabled
-                      className="block flex-1 rounded-md border border-gray-300 bg-gray-50 px-2.5 py-1.5 text-sm text-gray-500"
+                      className="block flex-1 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#656d76] dark:text-[#848d97]"
                     />
-                    <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-800">Verified</span>
+                    <span className="rounded bg-[#dafbe1] dark:bg-[#2ea04326] px-2 py-0.5 text-xs text-[#1a7f37] dark:text-[#3fb950]">Verified</span>
                     <button
                       type="button"
                       onClick={() => setShowEmailChangeModal(true)}
-                      className="rounded-md border border-blue-600 px-2.5 py-1 text-xs font-medium text-blue-600 transition hover:bg-blue-50"
+                      className="rounded-md border border-[#0969da] dark:border-[#4493f8] px-2.5 py-1 text-xs font-medium text-[#0969da] dark:text-[#4493f8] transition hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]"
                     >
                       Update email
                     </button>
@@ -591,7 +781,7 @@ export default function ProfilePage() {
                 <div>
                   <label
                     htmlFor="locale"
-                    className="mb-1 block text-sm font-medium text-gray-700"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Language
                   </label>
@@ -600,7 +790,7 @@ export default function ProfilePage() {
                     name="locale"
                     value={formData.locale}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   >
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -612,11 +802,98 @@ export default function ProfilePage() {
                   </select>
                 </div>
 
+                {/* Time Zone */}
+                <div>
+                  <label
+                    htmlFor="timezone"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
+                  >
+                    Time Zone
+                  </label>
+                  <select
+                    id="timezone"
+                    name="timezone"
+                    value={formData.timezone}
+                    onChange={handleChange}
+                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                  >
+                    <optgroup label="Americas">
+                      <option value="Pacific/Honolulu">Honolulu - Hawaii (GMT-10)</option>
+                      <option value="America/Anchorage">Anchorage - Alaska (GMT-9)</option>
+                      <option value="America/Los_Angeles">Los Angeles - Pacific (GMT-8)</option>
+                      <option value="America/Vancouver">Vancouver - Pacific (GMT-8)</option>
+                      <option value="America/Denver">Denver - Mountain (GMT-7)</option>
+                      <option value="America/Chicago">Chicago - Central (GMT-6)</option>
+                      <option value="America/Mexico_City">Mexico City - Central (GMT-6)</option>
+                      <option value="America/New_York">New York - Eastern (GMT-5)</option>
+                      <option value="America/Toronto">Toronto - Eastern (GMT-5)</option>
+                      <option value="America/Bogota">Bogota - Colombia (GMT-5)</option>
+                      <option value="America/Lima">Lima - Peru (GMT-5)</option>
+                      <option value="America/Buenos_Aires">Buenos Aires - Argentina (GMT-3)</option>
+                      <option value="America/Sao_Paulo">Sao Paulo - Brazil (GMT-3)</option>
+                    </optgroup>
+                    <optgroup label="Europe">
+                      <option value="Europe/London">London - GMT (GMT+0)</option>
+                      <option value="Europe/Dublin">Dublin - Ireland (GMT+0)</option>
+                      <option value="Europe/Paris">Paris - Central European (GMT+1)</option>
+                      <option value="Europe/Berlin">Berlin - Central European (GMT+1)</option>
+                      <option value="Europe/Madrid">Madrid - Central European (GMT+1)</option>
+                      <option value="Europe/Rome">Rome - Central European (GMT+1)</option>
+                      <option value="Europe/Amsterdam">Amsterdam - Central European (GMT+1)</option>
+                      <option value="Europe/Brussels">Brussels - Central European (GMT+1)</option>
+                      <option value="Europe/Vienna">Vienna - Central European (GMT+1)</option>
+                      <option value="Europe/Stockholm">Stockholm - Central European (GMT+1)</option>
+                      <option value="Europe/Oslo">Oslo - Central European (GMT+1)</option>
+                      <option value="Europe/Copenhagen">Copenhagen - Central European (GMT+1)</option>
+                      <option value="Europe/Zurich">Zurich - Central European (GMT+1)</option>
+                      <option value="Europe/Prague">Prague - Central European (GMT+1)</option>
+                      <option value="Europe/Warsaw">Warsaw - Central European (GMT+1)</option>
+                      <option value="Europe/Budapest">Budapest - Central European (GMT+1)</option>
+                      <option value="Europe/Helsinki">Helsinki - Eastern European (GMT+2)</option>
+                      <option value="Europe/Athens">Athens - Eastern European (GMT+2)</option>
+                      <option value="Europe/Bucharest">Bucharest - Eastern European (GMT+2)</option>
+                      <option value="Europe/Istanbul">Istanbul - Turkey (GMT+3)</option>
+                      <option value="Europe/Moscow">Moscow - Russia (GMT+3)</option>
+                    </optgroup>
+                    <optgroup label="Africa & Middle East">
+                      <option value="Africa/Lagos">Lagos - Nigeria (GMT+1)</option>
+                      <option value="Africa/Cairo">Cairo - Egypt (GMT+2)</option>
+                      <option value="Africa/Johannesburg">Johannesburg - South Africa (GMT+2)</option>
+                      <option value="Africa/Nairobi">Nairobi - East Africa (GMT+3)</option>
+                      <option value="Asia/Dubai">Dubai - Gulf (GMT+4)</option>
+                    </optgroup>
+                    <optgroup label="Asia">
+                      <option value="Asia/Kolkata">Mumbai/Delhi - India (GMT+5:30)</option>
+                      <option value="Asia/Bangkok">Bangkok - Indochina (GMT+7)</option>
+                      <option value="Asia/Jakarta">Jakarta - Indonesia (GMT+7)</option>
+                      <option value="Asia/Singapore">Singapore (GMT+8)</option>
+                      <option value="Asia/Kuala_Lumpur">Kuala Lumpur - Malaysia (GMT+8)</option>
+                      <option value="Asia/Hong_Kong">Hong Kong (GMT+8)</option>
+                      <option value="Asia/Shanghai">Shanghai - China (GMT+8)</option>
+                      <option value="Asia/Taipei">Taipei - Taiwan (GMT+8)</option>
+                      <option value="Asia/Manila">Manila - Philippines (GMT+8)</option>
+                      <option value="Asia/Seoul">Seoul - Korea (GMT+9)</option>
+                      <option value="Asia/Tokyo">Tokyo - Japan (GMT+9)</option>
+                    </optgroup>
+                    <optgroup label="Pacific & Australia">
+                      <option value="Australia/Perth">Perth - Western Australia (GMT+8)</option>
+                      <option value="Australia/Brisbane">Brisbane - Queensland (GMT+10)</option>
+                      <option value="Australia/Sydney">Sydney - Eastern Australia (GMT+11)</option>
+                      <option value="Australia/Melbourne">Melbourne - Eastern Australia (GMT+11)</option>
+                      <option value="Pacific/Fiji">Fiji (GMT+12)</option>
+                      <option value="Pacific/Auckland">Auckland - New Zealand (GMT+13)</option>
+                    </optgroup>
+                    <optgroup label="Other">
+                      <option value="UTC">UTC - Coordinated Universal Time (GMT+0)</option>
+                    </optgroup>
+                  </select>
+                </div>
+
                 {/* Dashboard Appearance */}
                 <div>
                   <label
                     htmlFor="dashboardAppearance"
-                    className="mb-1 block text-sm font-medium text-gray-700"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Dashboard appearance
                   </label>
@@ -625,7 +902,7 @@ export default function ProfilePage() {
                     name="dashboardAppearance"
                     value={formData.dashboardAppearance}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   >
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
@@ -637,7 +914,7 @@ export default function ProfilePage() {
                 <div>
                   <label
                     htmlFor="bio"
-                    className="mb-1 block text-sm font-medium text-gray-700"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Bio
                   </label>
@@ -648,7 +925,7 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     rows={3}
                     placeholder="Tell us a little about yourself..."
-                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   />
                 </div>
               </div>
@@ -659,7 +936,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] dark:bg-[#238636] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:opacity-50"
               >
                 {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
@@ -667,24 +944,24 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                className="rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d]"
               >
                 Cancel
               </button>
             </div>
 
             {/* Active Sessions */}
-            <div className="rounded-lg bg-white p-4 shadow">
-              <h3 className="mb-3 text-lg font-semibold text-gray-900">Active sessions</h3>
+            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+              <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Active sessions</h3>
 
               {loadingSessions ? (
                 <div className="flex items-center justify-center py-4">
-                  <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                  <Loader2 className="h-5 w-5 animate-spin text-[#0969da] dark:text-[#4493f8]" />
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="border-b border-gray-200 text-xs text-gray-600">
+                    <thead className="border-b border-[#d1d9e0] dark:border-[#30363d] text-xs text-[#656d76] dark:text-[#848d97]">
                       <tr>
                         <th className="pb-2 font-semibold">Device</th>
                         <th className="pb-2 font-semibold">Location</th>
@@ -699,7 +976,7 @@ export default function ProfilePage() {
                         <tr>
                           <td
                             colSpan={6}
-                            className="py-4 text-center text-sm text-gray-500"
+                            className="py-4 text-center text-sm text-[#656d76] dark:text-[#848d97]"
                           >
                             No active sessions found
                           </td>
@@ -765,34 +1042,35 @@ export default function ProfilePage() {
                             return (
                               <tr
                                 key={key}
-                                className="border-b border-gray-100 last:border-0"
+                                className="border-b border-[#d1d9e0] dark:border-[#30363d] last:border-0"
                               >
                                 <td className="py-2">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-sm text-gray-900">{group.deviceDisplay}</span>
+                                    <span className="text-sm text-[#1f2328] dark:text-[#e6edf3]">{group.deviceDisplay}</span>
                                     {group.hasCurrentSession && (
-                                      <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800">
+                                      <span className="rounded bg-[#ddf4ff] dark:bg-[#388bfd26] px-1.5 py-0.5 text-xs text-[#0969da] dark:text-[#4493f8]">
                                         Current
                                       </span>
                                     )}
                                   </div>
                                 </td>
-                                <td className="py-2 text-sm text-gray-600">{group.location}</td>
-                                <td className="py-2 text-sm font-semibold text-gray-900">{group.sessions.length}</td>
-                                <td className="py-2 text-sm text-gray-600">{formatDate(group.firstCreated)}</td>
-                                <td className="py-2 text-sm text-gray-600">{formatDate(group.lastUpdated)}</td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{group.location}</td>
+                                <td className="py-2 text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">{group.sessions.length}</td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{formatDate(group.firstCreated)}</td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{formatDate(group.lastUpdated)}</td>
                                 <td className="py-2 text-right">
                                   {group.hasCurrentSession ? (
-                                    <span className="text-xs text-gray-400">Current session</span>
+                                    <span className="text-xs text-[#656d76] dark:text-[#848d97]">Current session</span>
                                   ) : (
                                     <button
                                       type="button"
                                       onClick={() => {
-                                        // Terminate all sessions in this group
-                                        group.sessions.forEach((s) => handleTerminateSession(s.id));
+                                        // Open modal to confirm termination of all sessions in this group
+                                        const sessionIds = group.sessions.map((s) => s.id).join(',');
+                                        openTerminateModal(sessionIds);
                                       }}
                                       disabled={isTerminating}
-                                      className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                      className="text-[#d1242f] dark:text-[#f85149] hover:text-[#a40e26] dark:hover:text-[#ff7b72] disabled:opacity-50"
                                       title="Terminate all sessions"
                                     >
                                       {isTerminating ? (
@@ -815,14 +1093,14 @@ export default function ProfilePage() {
             </div>
 
             {/* Danger Zone - Delete Profile Section */}
-            <div className="rounded-lg border-2 border-red-200 bg-white p-4 shadow">
-              <h3 className="mb-2 text-lg font-bold text-red-600">Danger Zone</h3>
-              <h4 className="mb-1 text-base font-semibold text-gray-900">Delete your profile</h4>
-              <p className="mb-3 text-sm text-gray-600">Permanently delete the user {formData.email}</p>
+            <div className="rounded-lg border-2 border-[#ff818266] dark:border-[#f8514966] bg-white dark:bg-[#161b22] p-4 shadow">
+              <h3 className="mb-2 text-lg font-bold text-[#d1242f] dark:text-[#f85149]">Danger Zone</h3>
+              <h4 className="mb-1 text-base font-semibold text-[#1f2328] dark:text-[#e6edf3]">Delete your profile</h4>
+              <p className="mb-3 text-sm text-[#656d76] dark:text-[#848d97]">Permanently delete the user {formData.email}</p>
               <button
                 type="button"
                 onClick={() => setShowDeleteModal(true)}
-                className="rounded-md border border-red-600 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                className="rounded-md border border-[#d1242f] dark:border-[#f85149] px-3 py-1.5 text-sm font-medium text-[#d1242f] dark:text-[#f85149] transition hover:bg-[#ffebe9] dark:hover:bg-[#490202]"
               >
                 Delete User
               </button>
@@ -836,8 +1114,8 @@ export default function ProfilePage() {
             onSubmit={handleSubmit}
             className="space-y-4"
           >
-            <div className="rounded-lg bg-white p-4 shadow">
-              <h3 className="mb-3 text-lg font-semibold text-gray-900">Email Notifications</h3>
+            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+              <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Email Notifications</h3>
 
               <div className="space-y-2.5">
                 {/* Course Updates */}
@@ -848,14 +1126,14 @@ export default function ProfilePage() {
                     name="notifyOnCourseUpdates"
                     checked={formData.notifyOnCourseUpdates}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnCourseUpdates"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-gray-900">Course updates</span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Course updates</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Get notified when courses you&apos;re enrolled in are updated
                     </span>
                   </label>
@@ -869,14 +1147,14 @@ export default function ProfilePage() {
                     name="notifyOnNewCourses"
                     checked={formData.notifyOnNewCourses}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnNewCourses"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-gray-900">New courses</span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">New courses</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Be the first to know when new courses are available
                     </span>
                   </label>
@@ -890,14 +1168,14 @@ export default function ProfilePage() {
                     name="notifyOnCompletionReminders"
                     checked={formData.notifyOnCompletionReminders}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnCompletionReminders"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-gray-900">Completion reminders</span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Completion reminders</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Gentle reminders to help you complete your courses
                     </span>
                   </label>
@@ -911,14 +1189,14 @@ export default function ProfilePage() {
                     name="notifyOnAchievements"
                     checked={formData.notifyOnAchievements}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnAchievements"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-gray-900">Achievements and milestones</span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Achievements and milestones</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Celebrate your learning progress with achievement notifications
                     </span>
                   </label>
@@ -932,14 +1210,14 @@ export default function ProfilePage() {
                     name="notifyOnMessages"
                     checked={formData.notifyOnMessages}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnMessages"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-gray-900">Messages and replies</span>
-                    <span className="block text-sm text-gray-500">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Messages and replies</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Get notified when instructors or students message you
                     </span>
                   </label>
@@ -949,7 +1227,7 @@ export default function ProfilePage() {
                 <div className="pt-2">
                   <label
                     htmlFor="emailDigestFrequency"
-                    className="mb-1 block text-sm font-medium text-gray-900"
+                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Email digest frequency
                   </label>
@@ -958,14 +1236,14 @@ export default function ProfilePage() {
                     name="emailDigestFrequency"
                     value={formData.emailDigestFrequency}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
                   >
                     <option value="none">Never</option>
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
-                  <p className="mt-1 text-sm text-gray-500">Receive a summary of your activity and updates</p>
+                  <p className="mt-1 text-sm text-[#656d76] dark:text-[#848d97]">Receive a summary of your activity and updates</p>
                 </div>
               </div>
             </div>
@@ -975,7 +1253,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] dark:bg-[#238636] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:opacity-50"
               >
                 {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
@@ -983,7 +1261,7 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="rounded-md border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                className="rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d]"
               >
                 Cancel
               </button>
@@ -993,61 +1271,61 @@ export default function ProfilePage() {
 
         {/* Email Change Modal */}
         {showEmailChangeModal && (
-          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
-            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-              <h3 className="mb-4 text-xl font-bold text-gray-900">Update Email Address</h3>
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
+            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow-xl">
+              <h3 className="mb-4 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Update Email Address</h3>
 
               {emailChangeSuccess ? (
-                <div className="rounded-lg bg-green-50 p-4">
-                  <p className="text-green-800">
+                <div className="rounded-lg bg-[#dafbe1] dark:bg-[#2ea04326] border border-[#1f883d66] dark:border-[#3fb95066] p-4">
+                  <p className="text-[#1a7f37] dark:text-[#3fb950]">
                     Verification email sent! Please check your new email inbox and click the verification link to
                     complete the change.
                   </p>
                 </div>
               ) : (
                 <>
-                  <div className="mb-4 rounded-lg bg-blue-50 p-3">
-                    <p className="text-sm text-blue-800">
+                  <div className="mb-4 rounded-lg bg-[#ddf4ff] dark:bg-[#388bfd26] border border-[#54aeff66] dark:border-[#4493f866] p-3">
+                    <p className="text-sm text-[#0969da] dark:text-[#4493f8]">
                       A verification link will be sent to your new email address. You&apos;ll need to click it to
                       complete the change.
                     </p>
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">Current Email</label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Current Email</label>
                     <input
                       type="email"
                       value={formData.email}
                       disabled
-                      className="w-full rounded-lg border border-gray-300 bg-gray-100 px-3 py-2 text-gray-600"
+                      className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#0d1117] px-3 py-2 text-[#656d76] dark:text-[#848d97]"
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">New Email Address</label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">New Email Address</label>
                     <input
                       type="email"
                       value={newEmail}
                       onChange={(e) => setNewEmail(e.target.value)}
                       placeholder="Enter new email address"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+                      className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-2 focus:ring-[#0969da]/20 dark:focus:ring-[#4493f8]/20 focus:outline-none"
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">Password</label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Password</label>
                     <input
                       type="password"
                       value={emailChangePassword}
                       onChange={(e) => setEmailChangePassword(e.target.value)}
                       placeholder="Enter your password to confirm"
-                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+                      className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-2 focus:ring-[#0969da]/20 dark:focus:ring-[#4493f8]/20 focus:outline-none"
                     />
                   </div>
 
                   {error && (
-                    <div className="mb-4 rounded-lg bg-red-50 p-3">
-                      <p className="text-sm text-red-800">{error}</p>
+                    <div className="mb-4 rounded-lg bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-3">
+                      <p className="text-sm text-[#d1242f] dark:text-[#f85149]">{error}</p>
                     </div>
                   )}
 
@@ -1055,7 +1333,7 @@ export default function ProfilePage() {
                     <button
                       onClick={handleEmailChange}
                       disabled={isChangingEmail || !newEmail || !emailChangePassword}
-                      className="flex-1 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+                      className="flex-1 rounded-lg bg-[#1f883d] dark:bg-[#238636] px-4 py-2 font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:opacity-50"
                     >
                       {isChangingEmail ? 'Sending...' : 'Send Verification Email'}
                     </button>
@@ -1067,7 +1345,7 @@ export default function ProfilePage() {
                         setError(null);
                       }}
                       disabled={isChangingEmail}
-                      className="rounded-lg border border-gray-300 px-4 py-2 font-medium text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
+                      className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-2 font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:opacity-50"
                     >
                       Cancel
                     </button>
@@ -1078,14 +1356,57 @@ export default function ProfilePage() {
           </div>
         )}
 
+        {/* Terminate Session Confirmation Modal */}
+        {showTerminateModal && sessionToTerminate && (
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
+            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow-xl">
+              <h3 className="mb-4 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Terminate Session</h3>
+
+              <div className="mb-4 rounded-lg bg-[#fff8c5] dark:bg-[#bb800926] border border-[#d4a72c66] dark:border-[#bb800966] p-3">
+                <p className="text-sm text-[#9a6700] dark:text-[#d29922]">
+                  <strong>Warning:</strong> This will log out the device(s) associated with this session. You may need to sign in again on those devices.
+                </p>
+              </div>
+
+              <p className="mb-6 text-sm text-[#656d76] dark:text-[#848d97]">
+                Are you sure you want to terminate {sessionToTerminate.includes(',') ? 'these sessions' : 'this session'}?
+              </p>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={async () => {
+                    const sessionIds = sessionToTerminate.split(',');
+                    closeTerminateModal();
+                    for (const sessionId of sessionIds) {
+                      await handleTerminateSession(sessionId);
+                    }
+                  }}
+                  disabled={terminatingSessionId !== null}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] dark:bg-[#da3633] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] dark:hover:bg-[#f85149] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {terminatingSessionId !== null && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {terminatingSessionId !== null ? 'Terminating...' : 'Terminate'}
+                </button>
+                <button
+                  onClick={closeTerminateModal}
+                  disabled={terminatingSessionId !== null}
+                  className="flex-1 rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-2 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Delete Account Modal */}
         {showDeleteModal && (
-          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
-            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-              <h3 className="mb-4 text-xl font-bold text-gray-900">Delete Account</h3>
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
+            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow-xl">
+              <h3 className="mb-4 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Delete Account</h3>
 
-              <div className="mb-4 rounded-lg bg-red-50 p-3">
-                <p className="text-sm text-red-800">
+              <div className="mb-4 rounded-lg bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-3">
+                <p className="text-sm text-[#d1242f] dark:text-[#f85149]">
                   <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and
                   enrollments, will be permanently deleted.
                 </p>
@@ -1095,7 +1416,7 @@ export default function ProfilePage() {
                 <div>
                   <label
                     htmlFor="deletePassword"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Password
                   </label>
@@ -1104,7 +1425,7 @@ export default function ProfilePage() {
                     id="deletePassword"
                     value={deletePassword}
                     onChange={(e) => setDeletePassword(e.target.value)}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                    className="mt-1 block w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#d1242f] dark:focus:border-[#f85149] focus:ring-1 focus:ring-[#d1242f] dark:focus:ring-[#f85149]"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -1112,7 +1433,7 @@ export default function ProfilePage() {
                 <div>
                   <label
                     htmlFor="deleteConfirmation"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
                   >
                     Type DELETE to confirm
                   </label>
@@ -1121,7 +1442,7 @@ export default function ProfilePage() {
                     id="deleteConfirmation"
                     value={deleteConfirmation}
                     onChange={(e) => setDeleteConfirmation(e.target.value)}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                    className="mt-1 block w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#d1242f] dark:focus:border-[#f85149] focus:ring-1 focus:ring-[#d1242f] dark:focus:ring-[#f85149]"
                     placeholder="DELETE"
                   />
                 </div>
@@ -1131,7 +1452,7 @@ export default function ProfilePage() {
                 <button
                   onClick={handleDeleteAccount}
                   disabled={isDeleting || deleteConfirmation !== 'DELETE'}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] dark:bg-[#da3633] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] dark:hover:bg-[#f85149] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
                   {isDeleting ? 'Deleting...' : 'Delete Account'}
@@ -1144,7 +1465,7 @@ export default function ProfilePage() {
                     setError(null);
                   }}
                   disabled={isDeleting}
-                  className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex-1 rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-2 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Cancel
                 </button>
