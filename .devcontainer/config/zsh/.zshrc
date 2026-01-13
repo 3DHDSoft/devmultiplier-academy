@@ -1,6 +1,20 @@
-# Enable Powerlevel10k instant prompt (should stay at the top)
+# Exit immediately for non-interactive shells to prevent VS Code probe issues
+# This MUST be at the very top before any other initialization
+if [[ $- != *i* ]]; then
+  return 2>/dev/null || exit 0
+fi
+
+# Skip heavy shell initialization during VSCode environment probe
+if [[ -n "$VSCODE_RESOLVING_ENVIRONMENT" ]]; then
+  return 2>/dev/null || exit 0
+fi
+
+# Enable Powerlevel10k instant prompt (should stay close to the top)
+# Only enable if we have a real TTY
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  if [[ -t 0 && -t 1 ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
 fi
 
 # Path to Oh My Zsh installation

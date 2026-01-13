@@ -15,22 +15,21 @@
 
   // Features to add to the dev container. More info: https://containers.dev/features, https://github.com/devcontainers/features.
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
 
-    // CLI
-    "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
-    "ghcr.io/devcontainers-extra/features/vercel-cli:1": {},
-    "ghcr.io/r3dpoint/devcontainer-features/tailwindcss-standalone-cli:1": {},
-    "ghcr.io/nullcoder/devcontainer-features/stripe-cli:1": {},
+    // // CLI
+    // "ghcr.io/devcontainers-extra/features/vscode-cli:1": {},
+    // "ghcr.io/devcontainers/features/github-cli:1": {},
+    // "ghcr.io/devcontainers-extra/features/gh-cli:1": {},
+    // "ghcr.io/r3dpoint/devcontainer-features/tailwindcss-standalone-cli:1": {},
+    // "ghcr.io/nullcoder/devcontainer-features/stripe-cli:1": {},
 
-    // Utilities
-    "ghcr.io/iterative/features/nvtop:1": {},
-    "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {},
-    "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
-    "ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
-    "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {}
+    // // Utilities
+    // "ghcr.io/iterative/features/nvtop:1": {},
+    // "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {},
+    // "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
+    // "ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:1": {},
+    // "ghcr.io/devcontainers-extra/features/ffmpeg-apt-get:1": {}
 
     // Common Utilities - https://github.com/devcontainers/features/tree/main/src/common-utils
     // NOTE: Oh My Zsh and Powerlevel10k are installed directly in Dockerfile for WSL2 compatibility
@@ -216,5 +215,9 @@
 
   "containerEnv": {
     "NODE_ENV": "development"
-  }
+  },
+
+  // Skip environment probing entirely to avoid WSL2 stream issues
+  // The shell environment will still work normally once connected
+  "userEnvProbe": "none"
 }
