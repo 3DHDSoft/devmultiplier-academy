@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return theme;
   }, [theme, systemPrefersDark]);
 
-  // Get user's theme preference from session
+  // Get user's theme preference from session or localStorage
   useEffect(() => {
     if (session?.user) {
       // Fetch user profile to get dashboardAppearance
@@ -38,6 +38,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           }
         })
         .catch((err) => console.error('Failed to fetch theme preference:', err));
+    } else {
+      // For anonymous users, check localStorage (deferred to avoid sync setState in effect)
+      requestAnimationFrame(() => {
+        const savedTheme = localStorage.getItem('theme') as Theme | null;
+        if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
+          setThemeState(savedTheme);
+        }
+      });
     }
   }, [session]);
 
@@ -76,7 +84,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setTheme = async (newTheme: Theme) => {
     setThemeState(newTheme);
 
-    // Update user preference in database
+    // Update user preference in database or localStorage
     if (session?.user) {
       try {
         await fetch('/api/user/profile', {
@@ -91,6 +99,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       } catch (err) {
         console.error('Failed to save theme preference:', err);
       }
+    } else {
+      // For anonymous users, save to localStorage
+      localStorage.setItem('theme', newTheme);
     }
   };
 

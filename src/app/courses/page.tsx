@@ -65,12 +65,12 @@ const courses = [
 
 export default function CoursesPage() {
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className="bg-white dark:bg-[#0d1117] py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-navy text-4xl font-bold tracking-tight sm:text-5xl">Our Courses</h1>
-          <p className="text-slate mt-4 text-lg">
+          <h1 className="text-[#1f2328] dark:text-[#e6edf3] text-4xl font-bold tracking-tight sm:text-5xl">Our Courses</h1>
+          <p className="text-[#656d76] dark:text-[#848d97] mt-4 text-lg">
             Comprehensive, expert-led courses designed to transform how you architect, build, and ship production
             software.
           </p>
@@ -82,24 +82,24 @@ export default function CoursesPage() {
             <Link
               key={course.id}
               href={`/courses/${course.id}`}
-              className="group border-light-gray hover:border-blue flex flex-col rounded-2xl border bg-white p-6 transition-all hover:shadow-lg sm:flex-row sm:items-start sm:gap-6"
+              className="group border-[#d1d9e0] dark:border-[#30363d] hover:border-[#0969da] dark:hover:border-[#4493f8] flex flex-col rounded-2xl border bg-white dark:bg-[#161b22] p-6 transition-all hover:shadow-lg sm:flex-row sm:items-start sm:gap-6"
             >
               {/* Icon */}
-              <div className="bg-navy group-hover:bg-blue mb-4 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl text-white transition-colors sm:mb-0">
+              <div className="bg-[#1f2328] dark:bg-[#e6edf3] group-hover:bg-[#0969da] dark:group-hover:bg-[#4493f8] mb-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-white dark:text-[#0d1117] transition-colors sm:mb-0">
                 <course.icon className="h-7 w-7" />
               </div>
 
               {/* Content */}
               <div className="flex-grow">
                 <div className="flex items-start justify-between">
-                  <h2 className="text-navy group-hover:text-blue text-xl font-semibold">{course.title}</h2>
-                  <ArrowRight className="text-slate h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <h2 className="text-[#1f2328] dark:text-[#e6edf3] group-hover:text-[#0969da] dark:group-hover:text-[#4493f8] text-xl font-semibold">{course.title}</h2>
+                  <ArrowRight className="text-[#0969da] dark:text-[#4493f8] h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
                 </div>
 
-                <p className="text-slate mt-2">{course.description}</p>
+                <p className="text-[#656d76] dark:text-[#848d97] mt-2">{course.description}</p>
 
                 {/* Meta */}
-                <div className="text-slate mt-4 flex flex-wrap items-center gap-4 text-sm">
+                <div className="text-[#656d76] dark:text-[#848d97] mt-4 flex flex-wrap items-center gap-4 text-sm">
                   <span>{course.duration}</span>
                   <span>•</span>
                   <span>{course.lessons} lessons</span>
@@ -110,7 +110,7 @@ export default function CoursesPage() {
                   {course.topics.map((topic) => (
                     <span
                       key={topic}
-                      className="bg-off-white text-slate inline-block rounded-full px-3 py-1 text-xs font-medium"
+                      className="bg-[#f6f8fa] dark:bg-[#21262d] text-[#1f2328] dark:text-[#e6edf3] border border-[#d1d9e0] dark:border-[#30363d] inline-block rounded-full px-3 py-1 text-xs font-medium"
                     >
                       {topic}
                     </span>

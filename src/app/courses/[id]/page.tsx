@@ -158,12 +158,12 @@ export default async function CourseDetailPage({ params }: PageProps) {
   const Icon = course.icon;
 
   return (
-    <div className="bg-white py-16 sm:py-24">
+    <div className="bg-white dark:bg-[#0d1117] py-16 sm:py-24 min-h-screen">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         {/* Back link */}
         <Link
           href="/courses"
-          className="text-slate hover:text-blue mb-8 inline-flex items-center gap-2 text-sm transition-colors"
+          className="text-[#656d76] dark:text-[#848d97] hover:text-[#0969da] dark:hover:text-[#4493f8] mb-8 inline-flex items-center gap-2 text-sm transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to all courses
@@ -171,30 +171,30 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
         {/* Header */}
         <div className="mb-12">
-          <div className="bg-navy mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl text-white">
+          <div className="bg-[#1f2328] dark:bg-[#e6edf3] mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl text-white dark:text-[#0d1117]">
             <Icon className="h-8 w-8" />
           </div>
-          <h1 className="text-navy mb-4 text-4xl font-bold tracking-tight">{course.title}</h1>
-          <p className="text-slate text-lg">{course.description}</p>
+          <h1 className="text-[#1f2328] dark:text-[#e6edf3] mb-4 text-4xl font-semibold tracking-tight">{course.title}</h1>
+          <p className="text-[#656d76] dark:text-[#848d97] text-lg">{course.description}</p>
 
           {/* Meta */}
           <div className="mt-6 flex flex-wrap items-center gap-6">
-            <div className="text-slate flex items-center gap-2">
+            <div className="text-[#656d76] dark:text-[#848d97] flex items-center gap-2">
               <Clock className="h-5 w-5" />
               <span>{course.duration}</span>
             </div>
-            <div className="text-slate flex items-center gap-2">
+            <div className="text-[#656d76] dark:text-[#848d97] flex items-center gap-2">
               <BookOpen className="h-5 w-5" />
               <span>{course.lessons} lessons</span>
             </div>
           </div>
 
-          {/* Topics */}
+          {/* Topics - GitHub style labels */}
           <div className="mt-6 flex flex-wrap gap-2">
             {course.topics.map((topic) => (
               <span
                 key={topic}
-                className="bg-off-white text-slate inline-block rounded-full px-4 py-1.5 text-sm font-medium"
+                className="bg-[#ddf4ff] dark:bg-[#388bfd26] text-[#0969da] dark:text-[#4493f8] border border-[#54aeff66] dark:border-[#4493f866] inline-block rounded-full px-3 py-1 text-xs font-medium"
               >
                 {topic}
               </span>
@@ -204,43 +204,43 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
         {/* About section */}
         <div className="mb-12">
-          <h2 className="text-navy mb-4 text-2xl font-semibold">About this course</h2>
-          <div className="text-slate prose prose-lg max-w-none">
+          <h2 className="text-[#1f2328] dark:text-[#e6edf3] mb-4 text-2xl font-semibold">About this course</h2>
+          <div className="text-[#1f2328] dark:text-[#e6edf3] prose prose-lg max-w-none dark:prose-invert">
             {course.longDescription.split('\n\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
+              <p key={index} className="text-[#1f2328] dark:text-[#e6edf3] mb-4">{paragraph}</p>
             ))}
           </div>
         </div>
 
-        {/* Curriculum */}
+        {/* Curriculum - GitHub style list */}
         <div className="mb-12">
-          <h2 className="text-navy mb-6 text-2xl font-semibold">Curriculum</h2>
-          <div className="border-light-gray divide-light-gray divide-y rounded-xl border">
+          <h2 className="text-[#1f2328] dark:text-[#e6edf3] mb-6 text-2xl font-semibold">Curriculum</h2>
+          <div className="border-[#d1d9e0] dark:border-[#30363d] divide-[#d1d9e0] dark:divide-[#30363d] divide-y rounded-md border bg-white dark:bg-[#161b22]">
             {course.modules.map((module, index) => (
               <Link
                 key={module.title}
                 href={`/courses/${course.id}/module-${index + 1}/lesson-1`}
-                className="flex items-center justify-between p-4 hover:bg-off-white transition-colors group"
+                className="flex items-center justify-between p-4 hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] transition-colors group"
               >
                 <div className="flex items-center gap-4">
-                  <span className="bg-off-white text-slate flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium group-hover:bg-blue group-hover:text-white transition-colors">
+                  <span className="bg-[#f6f8fa] dark:bg-[#21262d] text-[#656d76] dark:text-[#848d97] flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium group-hover:bg-[#0969da] dark:group-hover:bg-[#4493f8] group-hover:text-white transition-colors">
                     {index + 1}
                   </span>
-                  <span className="text-navy font-medium group-hover:text-blue transition-colors">{module.title}</span>
+                  <span className="text-[#1f2328] dark:text-[#e6edf3] font-medium group-hover:text-[#0969da] dark:group-hover:text-[#4493f8] transition-colors">{module.title}</span>
                 </div>
-                <span className="text-slate text-sm">{module.lessons} lessons</span>
+                <span className="text-[#656d76] dark:text-[#848d97] text-sm">{module.lessons} lessons</span>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="bg-off-white rounded-2xl p-8 text-center">
-          <h2 className="text-navy mb-2 text-2xl font-semibold">Ready to start learning?</h2>
-          <p className="text-slate mb-6">Join thousands of developers mastering modern software architecture.</p>
+        {/* CTA - GitHub style card */}
+        <div className="bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d1d9e0] dark:border-[#30363d] rounded-md p-8 text-center">
+          <h2 className="text-[#1f2328] dark:text-[#e6edf3] mb-2 text-2xl font-semibold">Ready to start learning?</h2>
+          <p className="text-[#656d76] dark:text-[#848d97] mb-6">Join thousands of developers mastering modern software architecture.</p>
           <Link
             href="/login"
-            className="bg-blue hover:bg-blue/90 inline-flex items-center justify-center rounded-lg px-8 py-3 font-semibold text-white transition-colors"
+            className="bg-[#1f883d] dark:bg-[#238636] hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] inline-flex items-center justify-center rounded-md px-8 py-3 font-medium text-white transition-colors"
           >
             Enroll Now
           </Link>
