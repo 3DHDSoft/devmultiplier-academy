@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { EnrolledCourses } from '@/components/ui/enrolled-courses';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,6 +61,20 @@ export default function DashboardPage() {
               <p className="font-medium text-[#1f2328] dark:text-[#e6edf3]">{(session.user as { timezone?: string })?.timezone || 'UTC'}</p>
             </div>
           </div>
+        </div>
+
+        {/* My Courses Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">My Courses</h3>
+            <Link
+              href="/courses"
+              className="text-sm text-[#0969da] dark:text-[#4493f8] hover:underline"
+            >
+              Browse all courses
+            </Link>
+          </div>
+          <EnrolledCourses limit={3} showViewAll />
         </div>
 
         {/* Quick Actions */}

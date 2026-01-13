@@ -1,12 +1,56 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft, ChevronLeft, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
 import fs from 'fs/promises';
 import path from 'path';
 import { remark } from 'remark';
 import html from 'remark-html';
 import './lesson.css';
+import { LessonProgress } from '@/components/ui/lesson-progress';
+import { auth } from '@/auth';
+import { prisma } from '@/lib/prisma';
+
+// Privileged email domains and specific emails that can access all courses
+const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
+const PRIVILEGED_EMAILS = ['3dhdsoft@gmail.com'];
+// Blocked emails that should NOT have access even if on a privileged domain
+const BLOCKED_EMAILS = ['forbid@devmultiplier.com'];
+
+function isBlockedEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const emailLower = email.toLowerCase();
+  return BLOCKED_EMAILS.some(e => e.toLowerCase() === emailLower);
+}
+
+function hasPrivilegedAccess(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const emailLower = email.toLowerCase();
+
+  // Check if email is explicitly blocked
+  if (isBlockedEmail(email)) {
+    return false;
+  }
+
+  // Check specific privileged emails
+  if (PRIVILEGED_EMAILS.some(e => e.toLowerCase() === emailLower)) {
+    return true;
+  }
+
+  // Check privileged domains
+  const domain = emailLower.split('@')[1];
+  if (domain && PRIVILEGED_DOMAINS.some(d => d.toLowerCase() === domain)) {
+    return true;
+  }
+
+  return false;
+}
+
+// Helper to check if a string is a valid UUID
+function isValidUUID(str: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+}
 
 interface PageProps {
   params: Promise<{
@@ -178,6 +222,78 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function LessonPage({ params }: PageProps) {
   const { id, moduleId, lessonId } = await params;
 
+  // Check authentication and authorization
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    // Not authenticated - redirect to login
+    redirect(`/login?callbackUrl=${encodeURIComponent(`/courses/${id}/${moduleId}/${lessonId}`)}`);
+  }
+
+  const userEmail = session.user.email;
+  const userId = session.user.id;
+
+  // Check if user is explicitly blocked
+  if (isBlockedEmail(userEmail)) {
+    return (
+      <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117] flex items-center justify-center">
+        <div className="max-w-md mx-auto px-4 text-center">
+          <div className="bg-white dark:bg-[#161b22] rounded-lg border border-[#d1d9e0] dark:border-[#30363d] p-8">
+            <div className="mb-4">
+              <svg className="w-16 h-16 mx-auto text-[#cf222e] dark:text-[#f85149]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h1 className="text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3] mb-2">
+              Access Denied
+            </h1>
+            <p className="text-[#656d76] dark:text-[#848d97] mb-4">
+              You are not allowed to view this lesson.
+            </p>
+            <p className="text-[#656d76] dark:text-[#848d97]">
+              Please contact support at{' '}
+              <a
+                href="mailto:support@devmultiplier.com"
+                className="text-[#0969da] dark:text-[#4493f8] hover:underline"
+              >
+                support@devmultiplier.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if user has privileged access
+  const isPrivileged = hasPrivilegedAccess(userEmail);
+
+  // If not privileged, check enrollment
+  if (!isPrivileged && userId) {
+    // Get course ID first (could be UUID or slug)
+    const dbCourse = await prisma.course.findFirst({
+      where: isValidUUID(id) ? { id: id } : { slug: id },
+      select: { id: true },
+    });
+
+    if (dbCourse) {
+      const enrollment = await prisma.enrollments.findUnique({
+        where: {
+          userId_courseId: {
+            userId,
+            courseId: dbCourse.id,
+          },
+        },
+      });
+
+      if (!enrollment) {
+        // Not enrolled - redirect to courses list with message
+        redirect(`/courses?error=not_enrolled&course=${id}`);
+      }
+    }
+    // If course not in DB, we allow access (fallback courses for testing)
+  }
+
   const navInfo = getNavigationInfo(id, moduleId, lessonId);
 
   if (!navInfo) {
@@ -217,10 +333,13 @@ export default async function LessonPage({ params }: PageProps) {
                 <Clock className="w-4 h-4" />
                 <span>{lesson.duration}</span>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors font-medium text-sm">
-                <CheckCircle2 className="w-4 h-4" />
-                <span className="hidden sm:inline">Mark Complete</span>
-              </button>
+              <LessonProgress
+                courseSlug={id}
+                moduleId={moduleId}
+                lessonId={lessonId}
+                totalLessons={progress.total}
+                currentLessonNumber={progress.current}
+              />
             </div>
           </div>
 

@@ -3,7 +3,11 @@ import type { NextRequest } from 'next/server';
 import { recordHttpRequest, recordPageView } from '@/lib/metrics';
 
 // Protected routes that require authentication
-const protectedRoutes = ['/dashboard', '/courses', '/profile', '/enrollments'];
+const protectedRoutes = ['/dashboard', '/profile', '/enrollments'];
+
+// Routes that require authentication only for nested paths
+// e.g., /courses is public, but /courses/[id] requires auth
+const protectedNestedRoutes = ['/courses'];
 
 export function middleware(request: NextRequest) {
   const startTime = Date.now();
@@ -17,9 +21,18 @@ export function middleware(request: NextRequest) {
   // Check if the current route is protected
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
 
+  // Check if the route is a nested protected route (e.g., /courses/[id] but not /courses)
+  const isProtectedNestedRoute = protectedNestedRoutes.some((route) => {
+    // Must start with the route AND have additional path segments
+    if (!pathname.startsWith(route)) return false;
+    const remainingPath = pathname.slice(route.length);
+    // Must have content after the base route (not just "/" or empty)
+    return remainingPath.length > 1 && remainingPath.startsWith('/');
+  });
+
   let response: NextResponse;
 
-  if (isProtectedRoute && !sessionCookie) {
+  if ((isProtectedRoute || isProtectedNestedRoute) && !sessionCookie) {
     // Redirect to login if not authenticated
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);

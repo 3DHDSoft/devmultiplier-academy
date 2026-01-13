@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
@@ -33,14 +32,9 @@ export function Header() {
           href="/"
           className="flex items-center"
         >
-          <Image
-            src="/logo.svg"
-            alt="DevMultiplier Academy"
-            width={240}
-            height={60}
-            className="h-10 w-auto dark:brightness-0 dark:invert"
-            priority
-          />
+          <span className="text-[#1f2328] dark:text-[#e6edf3] text-xl font-bold">D</span>
+          <span className="text-[#0969da] dark:text-[#4493f8] text-xl font-light">×</span>
+          <span className="text-[#1f2328] dark:text-[#e6edf3] ml-2 text-lg font-semibold">DevMultiplier</span>
         </Link>
 
         {/* Desktop Navigation */}
