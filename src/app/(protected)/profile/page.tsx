@@ -4,7 +4,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { Loader2, MoreVertical, Camera } from 'lucide-react';
+import { Loader2, MoreVertical, Camera, Eye, EyeOff } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useUserAvatar } from '@/contexts/UserAvatarContext';
 
@@ -218,6 +218,8 @@ export default function ProfilePage() {
   const [emailChangePassword, setEmailChangePassword] = useState('');
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [emailChangeSuccess, setEmailChangeSuccess] = useState(false);
+  const [showEmailPassword, setShowEmailPassword] = useState(false);
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
 
   // Avatar upload state
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -1314,13 +1316,27 @@ export default function ProfilePage() {
 
                   <div className="mb-4">
                     <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Password</label>
-                    <input
-                      type="password"
-                      value={emailChangePassword}
-                      onChange={(e) => setEmailChangePassword(e.target.value)}
-                      placeholder="Enter your password to confirm"
-                      className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-2 focus:ring-[#0969da]/20 dark:focus:ring-[#4493f8]/20 focus:outline-none"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showEmailPassword ? 'text' : 'password'}
+                        value={emailChangePassword}
+                        onChange={(e) => setEmailChangePassword(e.target.value)}
+                        placeholder="Enter your password to confirm"
+                        className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 pr-10 text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-2 focus:ring-[#0969da]/20 dark:focus:ring-[#4493f8]/20 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowEmailPassword(!showEmailPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] transition-colors"
+                        aria-label={showEmailPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showEmailPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   {error && (
@@ -1420,14 +1436,28 @@ export default function ProfilePage() {
                   >
                     Password
                   </label>
-                  <input
-                    type="password"
-                    id="deletePassword"
-                    value={deletePassword}
-                    onChange={(e) => setDeletePassword(e.target.value)}
-                    className="mt-1 block w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#d1242f] dark:focus:border-[#f85149] focus:ring-1 focus:ring-[#d1242f] dark:focus:ring-[#f85149]"
-                    placeholder="Enter your password"
-                  />
+                  <div className="relative mt-1">
+                    <input
+                      type={showDeletePassword ? 'text' : 'password'}
+                      id="deletePassword"
+                      value={deletePassword}
+                      onChange={(e) => setDeletePassword(e.target.value)}
+                      className="block w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 pr-10 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#d1242f] dark:focus:border-[#f85149] focus:ring-1 focus:ring-[#d1242f] dark:focus:ring-[#f85149]"
+                      placeholder="Enter your password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowDeletePassword(!showDeletePassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] transition-colors"
+                      aria-label={showDeletePassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showDeletePassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div>

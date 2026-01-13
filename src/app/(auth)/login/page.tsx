@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -213,30 +214,29 @@ export default function LoginPage() {
               >
                 Password
               </label>
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder=""
-                required
-                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
-                disabled={isLoading}
-              />
-              <div className="mt-1.5 flex items-center">
+              <div className="relative">
                 <input
-                  type="checkbox"
-                  id="showPassword"
-                  checked={showPassword}
-                  onChange={(e) => setShowPassword(e.target.checked)}
-                  className="h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder=""
+                  required
+                  className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 pr-9 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                  disabled={isLoading}
                 />
-                <label
-                  htmlFor="showPassword"
-                  className="ml-2 text-sm text-[#656d76] dark:text-[#848d97]"
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] transition-colors"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  Show password
-                </label>
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
               </div>
             </div>
 
