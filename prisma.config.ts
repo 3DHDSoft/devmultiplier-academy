@@ -13,11 +13,11 @@ dotenv.config({ path: '.env' });
 let datasourceUrl: string;
 try {
   datasourceUrl = env('DATABASE_URL');
-} catch (e) {
+} catch (_e) {
   // Fallback to SQLite in-memory for code generation and local builds
   // This avoids failing the build when a production DB URL isn't present.
   // Consumers deploying to production should ensure `DATABASE_URL` is set.
-  // eslint-disable-next-line no-console
+
   console.warn('DATABASE_URL not set — falling back to SQLite in-memory for prisma generate.');
   datasourceUrl = 'file:./dev.db';
 }
