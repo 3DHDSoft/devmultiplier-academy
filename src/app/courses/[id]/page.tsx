@@ -1,10 +1,63 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft, Clock, BookOpen, Database, Layers, Server, Layout, Bot } from 'lucide-react';
+import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
+import { EnrollmentCTA } from '@/components/ui/enrollment-cta';
 
-// Course data - this should eventually come from the database
-const courses = [
+// Privileged email domains and specific emails that can access all courses
+const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
+const PRIVILEGED_EMAILS = ['3dhdsoft@gmail.com'];
+// Blocked emails that should NOT have access even if on a privileged domain
+const BLOCKED_EMAILS = ['forbid@devmultiplier.com'];
+
+function isBlockedEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const emailLower = email.toLowerCase();
+  return BLOCKED_EMAILS.some(e => e.toLowerCase() === emailLower);
+}
+
+function hasPrivilegedAccess(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const emailLower = email.toLowerCase();
+
+  // Check if email is explicitly blocked
+  if (isBlockedEmail(email)) {
+    return false;
+  }
+
+  // Check specific privileged emails
+  if (PRIVILEGED_EMAILS.some(e => e.toLowerCase() === emailLower)) {
+    return true;
+  }
+
+  // Check privileged domains
+  const domain = emailLower.split('@')[1];
+  if (domain && PRIVILEGED_DOMAINS.some(d => d.toLowerCase() === domain)) {
+    return true;
+  }
+
+  return false;
+}
+
+// Helper to check if a string is a valid UUID
+function isValidUUID(str: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+}
+
+// Icon mapping for courses
+const iconMap: Record<string, typeof Layers> = {
+  'ddd-to-cqrs': Layers,
+  'ddd-to-database': Database,
+  'database-optimization': Server,
+  'data-driven-api': Bot,
+  'ai-ui-design': Layout,
+};
+
+// Fallback course data for courses not yet in database
+const fallbackCourses = [
   {
     id: 'ddd-to-cqrs',
     title: 'From DDD to CQRS with AI Agents',
@@ -125,9 +178,71 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
+// Helper to get course data (from DB or fallback)
+async function getCourseData(slug: string) {
+  // Try to get from database first
+  const dbCourse = await prisma.course.findUnique({
+    where: { slug },
+    include: {
+      course_translations: {
+        where: { locale: 'en' },
+        take: 1,
+      },
+      modules: {
+        orderBy: { order: 'asc' },
+        include: {
+          module_translations: {
+            where: { locale: 'en' },
+            take: 1,
+          },
+          lessons: true,
+        },
+      },
+    },
+  });
+
+  if (dbCourse && dbCourse.course_translations.length > 0) {
+    const translation = dbCourse.course_translations[0];
+    const fallback = fallbackCourses.find((c) => c.id === slug);
+
+    return {
+      id: dbCourse.id,
+      slug: dbCourse.slug,
+      title: translation.title,
+      description: translation.description,
+      longDescription: translation.content || fallback?.longDescription || '',
+      icon: iconMap[slug] || Layers,
+      topics: fallback?.topics || [],
+      duration: fallback?.duration || '6 hours',
+      lessons: dbCourse.modules.reduce((sum, m) => sum + m.lessons.length, 0) || fallback?.lessons || 20,
+      modules: dbCourse.modules.map((m) => ({
+        title: m.module_translations[0]?.title || `Module ${m.order}`,
+        lessons: m.lessons.length,
+      })),
+      price: dbCourse.price,
+      currency: dbCourse.currency,
+      fromDatabase: true,
+    };
+  }
+
+  // Fallback to hardcoded data
+  const fallback = fallbackCourses.find((c) => c.id === slug);
+  if (fallback) {
+    return {
+      ...fallback,
+      slug: fallback.id,
+      price: 7900, // Default price $79
+      currency: 'usd',
+      fromDatabase: false,
+    };
+  }
+
+  return null;
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const course = courses.find((c) => c.id === id);
+  const course = await getCourseData(id);
 
   if (!course) {
     return {
@@ -142,14 +257,85 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  return courses.map((course) => ({
+  return fallbackCourses.map((course) => ({
     id: course.id,
   }));
 }
 
 export default async function CourseDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const course = courses.find((c) => c.id === id);
+
+  // Check authentication and authorization
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    // Not authenticated - redirect to login
+    redirect(`/login?callbackUrl=${encodeURIComponent(`/courses/${id}`)}`);
+  }
+
+  const userEmail = session.user.email;
+  const userId = session.user.id;
+
+  // Check if user is explicitly blocked
+  if (isBlockedEmail(userEmail)) {
+    return (
+      <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117] flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white dark:bg-[#161b22] border border-[#d1d9e0] dark:border-[#30363d] rounded-lg p-8 text-center">
+          <div className="text-red-500 dark:text-red-400 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3] mb-2">
+            Access Denied
+          </h1>
+          <p className="text-[#656d76] dark:text-[#848d97] mb-6">
+            You are not allowed to view this course. Please contact support at{' '}
+            <a href="mailto:support@devmultiplier.com" className="text-[#0969da] dark:text-[#4493f8] hover:underline">
+              support@devmultiplier.com
+            </a>
+          </p>
+          <Link
+            href="/courses"
+            className="inline-block bg-[#1f883d] dark:bg-[#238636] hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] text-white font-medium px-4 py-2 rounded-md transition-colors"
+          >
+            Back to Courses
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if user has privileged access
+  const isPrivileged = hasPrivilegedAccess(userEmail);
+
+  // If not privileged, check enrollment
+  if (!isPrivileged && userId) {
+    // Get course by slug (id param is the slug, not UUID)
+    const dbCourse = await prisma.course.findFirst({
+      where: isValidUUID(id) ? { id: id } : { slug: id },
+      select: { id: true },
+    });
+
+    if (dbCourse) {
+      const enrollment = await prisma.enrollments.findUnique({
+        where: {
+          userId_courseId: {
+            userId,
+            courseId: dbCourse.id,
+          },
+        },
+      });
+
+      if (!enrollment) {
+        // Not enrolled - redirect to courses list with message
+        redirect(`/courses?error=not_enrolled&course=${id}`);
+      }
+    }
+    // If course not in DB, we allow access (fallback courses for testing)
+  }
+
+  const course = await getCourseData(id);
 
   if (!course) {
     notFound();
@@ -234,17 +420,13 @@ export default async function CourseDetailPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* CTA - GitHub style card */}
-        <div className="bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d1d9e0] dark:border-[#30363d] rounded-md p-8 text-center">
-          <h2 className="text-[#1f2328] dark:text-[#e6edf3] mb-2 text-2xl font-semibold">Ready to start learning?</h2>
-          <p className="text-[#656d76] dark:text-[#848d97] mb-6">Join thousands of developers mastering modern software architecture.</p>
-          <Link
-            href="/login"
-            className="bg-[#1f883d] dark:bg-[#238636] hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] inline-flex items-center justify-center rounded-md px-8 py-3 font-medium text-white transition-colors"
-          >
-            Enroll Now
-          </Link>
-        </div>
+        {/* CTA - Enrollment component */}
+        <EnrollmentCTA
+          courseId={course.id}
+          courseSlug={course.slug}
+          price={course.price ?? undefined}
+          currency={course.currency}
+        />
       </div>
     </div>
   );
