@@ -217,18 +217,19 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <h2 className="text-navy mb-6 text-2xl font-semibold">Curriculum</h2>
           <div className="border-light-gray divide-light-gray divide-y rounded-xl border">
             {course.modules.map((module, index) => (
-              <div
+              <Link
                 key={module.title}
-                className="flex items-center justify-between p-4"
+                href={`/courses/${course.id}/module-${index + 1}/lesson-1`}
+                className="flex items-center justify-between p-4 hover:bg-off-white transition-colors group"
               >
                 <div className="flex items-center gap-4">
-                  <span className="bg-off-white text-slate flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium">
+                  <span className="bg-off-white text-slate flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium group-hover:bg-blue group-hover:text-white transition-colors">
                     {index + 1}
                   </span>
-                  <span className="text-navy font-medium">{module.title}</span>
+                  <span className="text-navy font-medium group-hover:text-blue transition-colors">{module.title}</span>
                 </div>
                 <span className="text-slate text-sm">{module.lessons} lessons</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

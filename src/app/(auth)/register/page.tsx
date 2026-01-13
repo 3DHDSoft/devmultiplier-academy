@@ -108,7 +108,7 @@ export default function RegisterPage() {
         <div className="rounded-lg bg-white p-5 shadow-xl">
           {/* Header */}
           <div className="mb-4 text-center">
-            <h1 className="mb-0.5 text-xl font-bold text-gray-900">Dev Academy - XXX</h1>
+            <h1 className="mb-0.5 text-xl font-bold text-gray-900">Dev Academy</h1>
             <p className="text-sm text-gray-600">Create your account</p>
           </div>
 
