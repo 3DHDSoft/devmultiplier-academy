@@ -402,6 +402,11 @@ export const emailLogger = logger.child({ module: 'email' });
  */
 export const externalLogger = logger.child({ module: 'external' });
 
+/**
+ * Stripe payment service logger
+ */
+export const stripeLogger = logger.child({ module: 'stripe' });
+
 // =============================================================================
 // Request-Scoped Logging
 // =============================================================================

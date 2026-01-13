@@ -2,9 +2,11 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import crypto from 'crypto';
 import { withErrorHandling } from '@/lib/api-handler';
 import { ConflictError } from '@/lib/errors';
 import { authLogger } from '@/lib/logger';
+import { sendEmailVerification } from '@/lib/email-service';
 
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -32,7 +34,7 @@ export const POST = withErrorHandling(
     // Hash password
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
 
-    // Create user
+    // Create user with pending status (requires email verification)
     const user = await prisma.users.create({
       data: {
         name: validatedData.name,
@@ -40,7 +42,7 @@ export const POST = withErrorHandling(
         password: hashedPassword,
         locale: validatedData.locale,
         timezone: 'UTC',
-        status: 'active',
+        status: 'pending',
         updatedAt: new Date(),
       },
       select: {
@@ -51,12 +53,30 @@ export const POST = withErrorHandling(
       },
     });
 
-    authLogger.info({ userId: user.id, email: user.email }, 'User registered successfully');
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+    // Store verification token
+    await prisma.email_verification_tokens.create({
+      data: {
+        userId: user.id,
+        email: validatedData.email,
+        token: verificationToken,
+        expires: tokenExpiry,
+      },
+    });
+
+    // Send verification email
+    await sendEmailVerification(validatedData.email, validatedData.name, verificationToken);
+
+    authLogger.info({ userId: user.id, email: user.email }, 'User registered - verification email sent');
 
     return NextResponse.json(
       {
         success: true,
-        user,
+        message: 'Registration successful. Please check your email to verify your account.',
+        requiresVerification: true,
       },
       { status: 201 }
     );

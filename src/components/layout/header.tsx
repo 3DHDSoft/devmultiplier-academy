@@ -8,6 +8,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { LanguageSelector } from '@/components/ui/language-selector';
 import { AppearanceSelector } from '@/components/ui/appearance-selector';
 import { ProfileDropdown } from '@/components/ui/profile-dropdown';
+import { useUserAvatar } from '@/contexts/UserAvatarContext';
 
 const navigation = [
   { name: 'Courses', href: '/courses' },
@@ -19,6 +20,10 @@ const navigation = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
+  const { userName: contextUserName } = useUserAvatar();
+
+  // Get display name - prioritize context (for real-time updates), then session
+  const displayName = contextUserName || session?.user?.name;
 
   return (
     <header className="border-[#d1d9e0] dark:border-[#30363d] sticky top-0 z-50 w-full border-b bg-white dark:bg-[#161b22]">
@@ -109,7 +114,7 @@ export function Header() {
             {status === 'authenticated' && session?.user ? (
               <>
                 <div className="py-2">
-                  <p className="text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">{session.user.name || 'User'}</p>
+                  <p className="text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">{displayName || 'User'}</p>
                   <p className="truncate text-sm text-[#656d76] dark:text-[#848d97]">{session.user.email}</p>
                 </div>
                 <Link

@@ -505,3 +505,131 @@ If you have any questions, please contact our support team.
 
   await sendEmail({ to: newEmail, subject, html, text, type: 'email_change_verification' });
 }
+
+/**
+ * Send email verification for new user registration
+ */
+export async function sendEmailVerification(
+  email: string,
+  name: string | null,
+  token: string
+): Promise<void> {
+  const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
+
+  const subject = 'Verify Your Email Address - Dev Academy';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+          }
+          .container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          }
+          .header {
+            text-align: center;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #f0f0f0;
+          }
+          .content {
+            padding: 24px 0;
+          }
+          .button {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #1f883d;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+          }
+          .button:hover {
+            background-color: #1a7f37;
+          }
+          .welcome-box {
+            background: #dafbe1;
+            border-left: 4px solid #1f883d;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 4px;
+          }
+          .footer {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 2px solid #f0f0f0;
+            color: #666;
+            font-size: 14px;
+          }
+          .note {
+            color: #656d76;
+            font-size: 14px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1 style="color: #1f883d; margin: 0;">Dev Academy</h1>
+            <p style="color: #666; margin: 8px 0 0 0;">Email Verification</p>
+          </div>
+
+          <div class="content">
+            <div class="welcome-box">
+              <h2 style="margin: 0 0 8px 0;">Welcome to Dev Academy${name ? `, ${name}` : ''}!</h2>
+              <p style="margin: 0;">Thank you for creating an account. You're just one step away from getting started.</p>
+            </div>
+
+            <p>Please verify your email address by clicking the button below:</p>
+
+            <div style="text-align: center;">
+              <a href="${verificationUrl}" class="button">Verify Email Address</a>
+            </div>
+
+            <p class="note">
+              Or copy and paste this link into your browser:<br>
+              <a href="${verificationUrl}" style="color: #0969da; word-break: break-all;">${verificationUrl}</a>
+            </p>
+
+            <p class="note">
+              <strong>Note:</strong> This verification link will expire in 24 hours. If you didn't create an account with Dev Academy, you can safely ignore this email.
+            </p>
+          </div>
+
+          <div class="footer">
+            <p>This email was sent to ${email} because an account was created with this email address.</p>
+            <p>&copy; ${new Date().getFullYear()} Dev Academy. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  const text = `
+Welcome to Dev Academy${name ? `, ${name}` : ''}!
+
+Thank you for creating an account. Please verify your email address by visiting the link below:
+
+${verificationUrl}
+
+This verification link will expire in 24 hours.
+
+If you didn't create an account with Dev Academy, you can safely ignore this email.
+
+© ${new Date().getFullYear()} Dev Academy. All rights reserved.
+  `;
+
+  await sendEmail({ to: email, subject, html, text, type: 'email_verification' });
+}

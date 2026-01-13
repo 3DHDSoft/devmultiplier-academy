@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { User, LogOut } from 'lucide-react';
+import { useUserAvatar } from '@/contexts/UserAvatarContext';
 
 interface ProfileDropdownProps {
   user: {
@@ -164,6 +165,7 @@ function getGravatarUrl(email: string): string {
 export function ProfileDropdown({ user }: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { avatarUrl: contextAvatarUrl, userName: contextUserName } = useUserAvatar();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -181,9 +183,12 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
     };
   }, [isOpen]);
 
+  // Get display name - prioritize context (for real-time updates), then session
+  const displayName = contextUserName || user.name;
+
   const getInitials = () => {
-    if (user.name) {
-      return user.name
+    if (displayName) {
+      return displayName
         .split(' ')
         .map((n) => n[0])
         .join('')
@@ -196,8 +201,8 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
     return 'U';
   };
 
-  // Get avatar URL - use Gravatar if no image is set
-  const avatarUrl = user.image || (user.email ? getGravatarUrl(user.email) : null);
+  // Get avatar URL - prioritize context (for real-time updates), then session, then Gravatar
+  const avatarUrl = contextAvatarUrl || user.image || (user.email ? getGravatarUrl(user.email) : null);
 
   return (
     <div
@@ -228,7 +233,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
         <div className="absolute right-0 mt-2 w-56 rounded-lg border border-gray-200 bg-white shadow-lg">
           {/* User Info */}
           <div className="border-b border-gray-200 px-4 py-3">
-            <p className="text-sm font-medium text-gray-900">{user.name || 'User'}</p>
+            <p className="text-sm font-medium text-gray-900">{displayName || 'User'}</p>
             <p className="truncate text-sm text-gray-500">{user.email}</p>
           </div>
 

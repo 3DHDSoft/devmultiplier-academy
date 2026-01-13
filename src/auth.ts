@@ -124,6 +124,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           userId = user.id;
 
           // Check account status
+          if (user.status === 'pending') {
+            // Log failed login attempt - email not verified
+            await logLogin({
+              userId: user.id,
+              email: userEmail,
+              success: false,
+              failureReason: 'Email not verified',
+              userName: user.name,
+            }).catch((err) => console.error('Failed to log login:', err));
+            throw new Error('EMAIL_NOT_VERIFIED');
+          }
+
           if (user.status !== 'active') {
             // Log failed login attempt
             await logLogin({

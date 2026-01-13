@@ -265,6 +265,63 @@ export const notificationCounter = createLazyCounter('notification_sent_total', 
 });
 
 /**
+ * Business Metrics - Payments
+ */
+
+// Payment metrics
+export const paymentCounter = createLazyCounter('payment_total', {
+  description: 'Total number of payments processed',
+  unit: '1',
+});
+
+export const paymentAmountHistogram = createLazyHistogram('payment_amount_cents', {
+  description: 'Payment amounts in cents',
+  unit: 'cents',
+});
+
+export const paymentFailureCounter = createLazyCounter('payment_failures_total', {
+  description: 'Total number of payment failures',
+  unit: '1',
+});
+
+export const paymentRefundCounter = createLazyCounter('payment_refunds_total', {
+  description: 'Total number of payment refunds',
+  unit: '1',
+});
+
+// Subscription metrics
+export const subscriptionCounter = createLazyCounter('subscription_total', {
+  description: 'Total number of subscriptions created',
+  unit: '1',
+});
+
+export const subscriptionCancelCounter = createLazyCounter('subscription_cancellations_total', {
+  description: 'Total number of subscription cancellations',
+  unit: '1',
+});
+
+export const activeSubscriptionsGauge = createLazyUpDownCounter('subscription_active', {
+  description: 'Number of currently active subscriptions',
+  unit: '1',
+});
+
+// Checkout metrics
+export const checkoutSessionCounter = createLazyCounter('checkout_sessions_total', {
+  description: 'Total number of checkout sessions created',
+  unit: '1',
+});
+
+export const checkoutCompletionCounter = createLazyCounter('checkout_completions_total', {
+  description: 'Total number of completed checkouts',
+  unit: '1',
+});
+
+export const checkoutAbandonmentCounter = createLazyCounter('checkout_abandonments_total', {
+  description: 'Total number of abandoned checkouts',
+  unit: '1',
+});
+
+/**
  * Helper Functions
  */
 
@@ -470,6 +527,87 @@ export function updateActiveUsers(change: number, attributes?: Attributes) {
  */
 export function updateActiveSessions(change: number, attributes?: Attributes) {
   activeSessionsGauge.add(change, attributes || {});
+}
+
+/**
+ * Record payment metrics
+ */
+export function recordPayment(attributes: {
+  purchaseType: 'course' | 'bundle' | 'subscription';
+  amount: number; // Amount in cents
+  currency: string;
+  status: 'completed' | 'failed' | 'refunded';
+  userId?: string;
+  courseId?: string;
+  bundleId?: string;
+}) {
+  const { purchaseType, amount, currency, status, userId, courseId, bundleId } = attributes;
+
+  const commonAttrs: Attributes = {
+    payment_type: purchaseType,
+    payment_currency: currency,
+    payment_status: status,
+    ...(userId && { user_id: userId }),
+    ...(courseId && { course_id: courseId }),
+    ...(bundleId && { bundle_id: bundleId }),
+  };
+
+  paymentCounter.add(1, commonAttrs);
+  paymentAmountHistogram.record(amount, commonAttrs);
+
+  if (status === 'failed') {
+    paymentFailureCounter.add(1, commonAttrs);
+  } else if (status === 'refunded') {
+    paymentRefundCounter.add(1, commonAttrs);
+  }
+}
+
+/**
+ * Record checkout session metrics
+ */
+export function recordCheckoutSession(attributes: {
+  purchaseType: 'course' | 'bundle' | 'subscription';
+  status: 'created' | 'completed' | 'abandoned';
+  userId?: string;
+}) {
+  const { purchaseType, status, userId } = attributes;
+
+  const commonAttrs: Attributes = {
+    checkout_type: purchaseType,
+    ...(userId && { user_id: userId }),
+  };
+
+  if (status === 'created') {
+    checkoutSessionCounter.add(1, commonAttrs);
+  } else if (status === 'completed') {
+    checkoutCompletionCounter.add(1, commonAttrs);
+  } else if (status === 'abandoned') {
+    checkoutAbandonmentCounter.add(1, commonAttrs);
+  }
+}
+
+/**
+ * Record subscription metrics
+ */
+export function recordSubscription(attributes: {
+  action: 'created' | 'canceled' | 'updated';
+  planType: string;
+  userId?: string;
+}) {
+  const { action, planType, userId } = attributes;
+
+  const commonAttrs: Attributes = {
+    subscription_plan: planType,
+    ...(userId && { user_id: userId }),
+  };
+
+  if (action === 'created') {
+    subscriptionCounter.add(1, commonAttrs);
+    activeSubscriptionsGauge.add(1, commonAttrs);
+  } else if (action === 'canceled') {
+    subscriptionCancelCounter.add(1, commonAttrs);
+    activeSubscriptionsGauge.add(-1, commonAttrs);
+  }
 }
 
 /**

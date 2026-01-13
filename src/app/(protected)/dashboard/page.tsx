@@ -19,8 +19,8 @@ export default function DashboardPage() {
 
   if (status === 'loading') {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] dark:bg-[#0d1117]">
+        <p className="text-[#1f2328] dark:text-[#e6edf3]">Loading...</p>
       </div>
     );
   }
@@ -30,34 +30,34 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Welcome Section */}
         <div className="mb-12">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900">Welcome, {session.user?.name || 'Student'}!</h2>
-          <p className="text-gray-600">Start learning with our courses or continue where you left off.</p>
+          <h2 className="mb-4 text-3xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Welcome, {session.user?.name || 'Student'}!</h2>
+          <p className="text-[#656d76] dark:text-[#848d97]">Start learning with our courses or continue where you left off.</p>
         </div>
 
         {/* User Info Card */}
-        <div className="mb-8 rounded-lg bg-white p-6 shadow">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Your Profile</h3>
+        <div className="mb-8 rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow">
+          <h3 className="mb-4 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Your Profile</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Email</p>
-              <p className="font-medium text-gray-900">{session.user?.email}</p>
+              <p className="text-sm text-[#656d76] dark:text-[#848d97]">Email</p>
+              <p className="font-medium text-[#1f2328] dark:text-[#e6edf3]">{session.user?.email}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Name</p>
-              <p className="font-medium text-gray-900">{session.user?.name || 'Not set'}</p>
+              <p className="text-sm text-[#656d76] dark:text-[#848d97]">Name</p>
+              <p className="font-medium text-[#1f2328] dark:text-[#e6edf3]">{session.user?.name || 'Not set'}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Language</p>
-              <p className="font-medium text-gray-900">{(session.user as { locale?: string })?.locale || 'English'}</p>
+              <p className="text-sm text-[#656d76] dark:text-[#848d97]">Language</p>
+              <p className="font-medium text-[#1f2328] dark:text-[#e6edf3]">{(session.user as { locale?: string })?.locale || 'English'}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Timezone</p>
-              <p className="font-medium text-gray-900">{(session.user as { timezone?: string })?.timezone || 'UTC'}</p>
+              <p className="text-sm text-[#656d76] dark:text-[#848d97]">Timezone</p>
+              <p className="font-medium text-[#1f2328] dark:text-[#e6edf3]">{(session.user as { timezone?: string })?.timezone || 'UTC'}</p>
             </div>
           </div>
         </div>
@@ -66,29 +66,29 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <Link
             href="/courses"
-            className="cursor-pointer rounded-lg bg-white p-6 shadow transition hover:shadow-lg"
+            className="cursor-pointer rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow transition hover:shadow-lg hover:border-[#0969da] dark:hover:border-[#4493f8]"
           >
             <div className="mb-3 text-3xl">📚</div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">Browse Courses</h3>
-            <p className="text-gray-600">Explore all available courses</p>
+            <h3 className="mb-2 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Browse Courses</h3>
+            <p className="text-[#656d76] dark:text-[#848d97]">Explore all available courses</p>
           </Link>
 
           <Link
             href="/enrollments"
-            className="cursor-pointer rounded-lg bg-white p-6 shadow transition hover:shadow-lg"
+            className="cursor-pointer rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow transition hover:shadow-lg hover:border-[#0969da] dark:hover:border-[#4493f8]"
           >
             <div className="mb-3 text-3xl">📖</div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">My Enrollments</h3>
-            <p className="text-gray-600">View your active courses</p>
+            <h3 className="mb-2 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">My Enrollments</h3>
+            <p className="text-[#656d76] dark:text-[#848d97]">View your active courses</p>
           </Link>
 
           <Link
             href="/profile"
-            className="cursor-pointer rounded-lg bg-white p-6 shadow transition hover:shadow-lg"
+            className="cursor-pointer rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow transition hover:shadow-lg hover:border-[#0969da] dark:hover:border-[#4493f8]"
           >
             <div className="mb-3 text-3xl">👤</div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">Edit Profile</h3>
-            <p className="text-gray-600">Update your information</p>
+            <h3 className="mb-2 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Edit Profile</h3>
+            <p className="text-[#656d76] dark:text-[#848d97]">Update your information</p>
           </Link>
         </div>
       </main>
