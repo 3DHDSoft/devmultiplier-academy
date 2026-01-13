@@ -38,6 +38,14 @@ services:
       - claude_auth_data:/home/node/.claude:cached
     networks:
       - dev-web-net
+    deploy:
+      resources:
+        limits:
+          cpus: ${DEV_CONTAINER_CPU_LIMITS:-4}
+          memory: ${DEV_CONTAINER_MEMORY_LIMITS:-8G}
+        reservations:
+          cpus: ${DEV_CONTAINER_CPU_RESERVATIONS:-1}
+          memory: ${DEV_CONTAINER_MEMORY_RESERVATIONS:-2G}
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     # network_mode: service:db
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
@@ -80,15 +88,15 @@ services:
     security_opt:
       - no-new-privileges:true
     # user: postgres  # Commented out to allow proper volume permissions
-    shm_size: ${POSTGRES_SHM_SIZE:-2.81G} # Increased for better performance with parallel queries
+    shm_size: ${POSTGRES_SHM_SIZE:-256m} # Reasonable default for dev
     deploy:
       resources:
         limits:
-          cpus: ${POSTGRES_CPU_LIMITS:-4}
-          memory: ${POSTGRES_MEMORY_LIMITS:-18G}
+          cpus: ${POSTGRES_CPU_LIMITS:-2}
+          memory: ${POSTGRES_MEMORY_LIMITS:-2G}
         reservations:
-          cpus: ${POSTGRES_CPU_RESERVATIONS:-2}
-          memory: ${POSTGRES_MEMORY_RESERVATIONS:-11G}
+          cpus: ${POSTGRES_CPU_RESERVATIONS:-0.5}
+          memory: ${POSTGRES_MEMORY_RESERVATIONS:-512M}
 
   pgadmin:
     image: dpage/pgadmin4:9.11

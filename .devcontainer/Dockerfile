@@ -13,6 +13,7 @@ RUN apt-get update && apt-get upgrade -y && export DEBIAN_FRONTEND=noninteractiv
   sudo \
   postgresql-client \
   gnupg2 \
+  openssh-client \
   # Zsh and dependencies for Oh My Zsh / Powerlevel10k
   zsh \
   locales \

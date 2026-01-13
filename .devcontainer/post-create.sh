@@ -22,7 +22,7 @@ echo "✅ npm upgraded to $(npm -v)"
 
 # Install global bun packages
 echo "🌍 Installing global bun packages..."
-bun add -g npm-check-updates
+bun add -g npm-check-updates vercel
 echo "✅ Global packages installed"
 
 # Install Claude Code CLI
