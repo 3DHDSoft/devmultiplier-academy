@@ -104,11 +104,11 @@ function getNavigationInfo(courseId: string, moduleId: string, lessonId: string)
   if (!modules) return null;
 
   const moduleIndex = modules.findIndex(m => m.id === moduleId);
-  const module = modules[moduleIndex];
-  if (!module) return null;
+  const currentModule = modules[moduleIndex];
+  if (!currentModule) return null;
 
-  const lessonIndex = module.lessons.findIndex(l => l.id === lessonId);
-  const lesson = module.lessons[lessonIndex];
+  const lessonIndex = currentModule.lessons.findIndex((l: { id: string }) => l.id === lessonId);
+  const lesson = currentModule.lessons[lessonIndex];
   if (!lesson) return null;
 
   // Find previous lesson
@@ -116,8 +116,8 @@ function getNavigationInfo(courseId: string, moduleId: string, lessonId: string)
   if (lessonIndex > 0) {
     prevLesson = {
       moduleId,
-      lessonId: module.lessons[lessonIndex - 1].id,
-      title: module.lessons[lessonIndex - 1].title,
+      lessonId: currentModule.lessons[lessonIndex - 1].id,
+      title: currentModule.lessons[lessonIndex - 1].title,
     };
   } else if (moduleIndex > 0) {
     const prevModule = modules[moduleIndex - 1];
@@ -131,11 +131,11 @@ function getNavigationInfo(courseId: string, moduleId: string, lessonId: string)
 
   // Find next lesson
   let nextLesson = null;
-  if (lessonIndex < module.lessons.length - 1) {
+  if (lessonIndex < currentModule.lessons.length - 1) {
     nextLesson = {
       moduleId,
-      lessonId: module.lessons[lessonIndex + 1].id,
-      title: module.lessons[lessonIndex + 1].title,
+      lessonId: currentModule.lessons[lessonIndex + 1].id,
+      title: currentModule.lessons[lessonIndex + 1].title,
     };
   } else if (moduleIndex < modules.length - 1) {
     const nextModule = modules[moduleIndex + 1];
@@ -148,7 +148,7 @@ function getNavigationInfo(courseId: string, moduleId: string, lessonId: string)
   }
 
   return {
-    module,
+    module: currentModule,
     lesson,
     prevLesson,
     nextLesson,
@@ -193,42 +193,42 @@ export default async function LessonPage({ params }: PageProps) {
   const { module, lesson, prevLesson, nextLesson, progress } = navInfo;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-10">
+    <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
+      {/* Header - GitHub style */}
+      <div className="bg-white dark:bg-[#161b22] border-b border-[#d1d9e0] dark:border-[#30363d] sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link
                 href={`/courses/${id}`}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center gap-2 text-[#656d76] dark:text-[#848d97] hover:text-[#0969da] dark:hover:text-[#4493f8] transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back to Course</span>
               </Link>
-              <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
+              <div className="hidden md:flex items-center gap-2 text-sm text-[#656d76] dark:text-[#848d97]">
                 <span>{module.title}</span>
                 <span>•</span>
                 <span>Lesson {progress.current} of {progress.total}</span>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-[#656d76] dark:text-[#848d97]">
                 <Clock className="w-4 h-4" />
                 <span>{lesson.duration}</span>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors font-medium text-sm">
                 <CheckCircle2 className="w-4 h-4" />
                 <span className="hidden sm:inline">Mark Complete</span>
               </button>
             </div>
           </div>
 
-          {/* Progress bar */}
+          {/* Progress bar - GitHub style */}
           <div className="mt-4">
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-[#d1d9e0] dark:bg-[#30363d] rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-[#1f883d] dark:bg-[#3fb950] h-2 rounded-full transition-all duration-300"
                 style={{ width: `${(progress.current / progress.total) * 100}%` }}
               />
             </div>
@@ -238,10 +238,10 @@ export default async function LessonPage({ params }: PageProps) {
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          {/* Module badge */}
+        <div className="bg-white dark:bg-[#161b22] rounded-md border border-[#d1d9e0] dark:border-[#30363d] p-8">
+          {/* Module badge - GitHub style */}
           <div className="mb-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#ddf4ff] dark:bg-[#388bfd26] text-[#0969da] dark:text-[#4493f8] border border-[#54aeff66] dark:border-[#4493f866]">
               {module.title}
             </span>
           </div>
@@ -253,17 +253,17 @@ export default async function LessonPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Navigation */}
+        {/* Navigation - GitHub style */}
         <div className="mt-8 flex items-center justify-between gap-4">
           {prevLesson ? (
             <Link
               href={`/courses/${id}/${prevLesson.moduleId}/${prevLesson.lessonId}`}
-              className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-[#f6f8fa] dark:bg-[#21262d] border border-[#d1d9e0] dark:border-[#30363d] rounded-md hover:bg-[#f3f4f6] dark:hover:bg-[#30363d] transition-colors"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5 text-[#656d76] dark:text-[#848d97]" />
               <div className="text-left">
-                <div className="text-xs text-gray-500">Previous</div>
-                <div className="font-medium">{prevLesson.title}</div>
+                <div className="text-xs text-[#656d76] dark:text-[#848d97]">Previous</div>
+                <div className="font-medium text-[#1f2328] dark:text-[#e6edf3] text-sm">{prevLesson.title}</div>
               </div>
             </Link>
           ) : (
@@ -273,21 +273,21 @@ export default async function LessonPage({ params }: PageProps) {
           {nextLesson ? (
             <Link
               href={`/courses/${id}/${nextLesson.moduleId}/${nextLesson.lessonId}`}
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ml-auto"
+              className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors ml-auto"
             >
               <div className="text-right">
-                <div className="text-xs text-blue-100">Next</div>
-                <div className="font-medium">{nextLesson.title}</div>
+                <div className="text-xs opacity-80">Next</div>
+                <div className="font-medium text-sm">{nextLesson.title}</div>
               </div>
               <ChevronRight className="w-5 h-5" />
             </Link>
           ) : (
             <Link
               href={`/courses/${id}`}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors ml-auto"
+              className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors ml-auto"
             >
               <CheckCircle2 className="w-5 h-5" />
-              <span>Course Complete!</span>
+              <span className="font-medium text-sm">Course Complete!</span>
             </Link>
           )}
         </div>

@@ -1,43 +1,62 @@
 @import 'tailwindcss';
 
-:root {
-  /* Brand Colors */
-  --navy: #0a1628;
-  --blue: #3b82f6;
-  --cyan: #06b6d4;
-  --slate: #64748b;
-  --light-gray: #e2e8f0;
-  --off-white: #f8fafc;
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
 
-  /* Semantic Colors - Light Mode */
+:root {
+  /* GitHub Light Mode Color Palette */
+  --navy: #1f2328;
+  --blue: #0969da;
+  --cyan: #1b7c83;
+  --slate: #656d76;
+  --light-gray: #d1d9e0;
+  --off-white: #f6f8fa;
+
+  /* Semantic Colors - Light Mode (GitHub Light) */
   --background: #ffffff;
-  --foreground: #0a1628;
-  --muted: #64748b;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --border: #e2e8f0;
+  --foreground: #1f2328;
+  --muted: #656d76;
+  --accent: #0969da;
+  --accent-hover: #0550ae;
+  --border: #d1d9e0;
   --card-bg: #ffffff;
-  --input-bg: #ffffff;
+  --input-bg: #f6f8fa;
+
+  /* Additional GitHub Light Colors */
+  --surface-secondary: #f6f8fa;
+  --success: #1a7f37;
+  --success-emphasis: #1f883d;
+  --danger: #d1242f;
+  --warning: #9a6700;
+  --link: #0969da;
 }
 
-/* Dark Mode */
+/* Dark Mode (GitHub Dark Default) */
 .dark {
-  --navy: #1e293b;
-  --blue: #60a5fa;
-  --cyan: #22d3ee;
-  --slate: #94a3b8;
-  --light-gray: #334155;
-  --off-white: #0f172a;
+  --navy: #e6edf3;
+  --blue: #4493f8;
+  --cyan: #3fb950;
+  --slate: #848d97;
+  --light-gray: #30363d;
+  --off-white: #161b22;
 
-  /* Semantic Colors - Dark Mode */
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --muted: #94a3b8;
-  --accent: #60a5fa;
-  --accent-hover: #3b82f6;
-  --border: #334155;
-  --card-bg: #1e293b;
-  --input-bg: #1e293b;
+  /* Semantic Colors - Dark Mode (GitHub Dark) */
+  --background: #0d1117;
+  --foreground: #e6edf3;
+  --muted: #848d97;
+  --accent: #4493f8;
+  --accent-hover: #58a6ff;
+  --border: #30363d;
+  --card-bg: #161b22;
+  --input-bg: #0d1117;
+
+  /* Additional GitHub Dark Colors */
+  --surface-secondary: #161b22;
+  --success: #3fb950;
+  --success-emphasis: #238636;
+  --danger: #f85149;
+  --warning: #d29922;
+  --link: #4493f8;
 }
 
 @theme inline {

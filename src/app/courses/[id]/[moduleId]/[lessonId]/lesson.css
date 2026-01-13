@@ -1,24 +1,27 @@
+/* GitHub Light Mode Typography */
 .lesson-content {
   line-height: 1.75;
-  color: #1f2937;
+  color: #1f2328;
 }
 
 .lesson-content h1 {
   font-size: 2.25rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 1rem;
   margin-top: 0;
-  color: #111827;
+  color: #1f2328;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #d1d9e0;
 }
 
 .lesson-content h2 {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
-  color: #111827;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 0.5rem;
+  color: #1f2328;
+  border-bottom: 1px solid #d1d9e0;
+  padding-bottom: 0.3em;
 }
 
 .lesson-content h3 {
@@ -26,16 +29,16 @@
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  color: #1f2937;
+  color: #1f2328;
 }
 
 .lesson-content p {
   margin-bottom: 1.25rem;
-  color: #374151;
+  color: #1f2328;
 }
 
 .lesson-content a {
-  color: #2563eb;
+  color: #0969da;
   text-decoration: none;
 }
 
@@ -44,82 +47,183 @@
 }
 
 .lesson-content code {
-  background-color: #f3f4f6;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  color: #dc2626;
+  background-color: rgba(175, 184, 193, 0.2);
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-size: 0.875em;
+  color: #1f2328;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
 .lesson-content pre {
-  background-color: #1f2937;
-  color: #f3f4f6;
+  background-color: #161b22;
+  color: #e6edf3;
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 6px;
   overflow-x: auto;
   margin: 1.5rem 0;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
 .lesson-content pre code {
   background-color: transparent;
   padding: 0;
-  color: #f3f4f6;
+  color: #e6edf3;
   font-size: 0.875rem;
+  border-radius: 0;
 }
 
 .lesson-content ul {
   list-style-type: disc;
-  padding-left: 1.5rem;
+  padding-left: 2em;
   margin-bottom: 1.25rem;
 }
 
 .lesson-content ol {
   list-style-type: decimal;
-  padding-left: 1.5rem;
+  padding-left: 2em;
   margin-bottom: 1.25rem;
 }
 
 .lesson-content li {
-  margin-bottom: 0.5rem;
-  color: #374151;
+  margin-bottom: 0.25rem;
+  color: #1f2328;
+}
+
+.lesson-content li + li {
+  margin-top: 0.25em;
 }
 
 .lesson-content blockquote {
-  border-left: 4px solid #3b82f6;
-  padding-left: 1rem;
+  border-left: 4px solid #d1d9e0;
+  padding: 0 1em;
   margin: 1.5rem 0;
-  font-style: italic;
-  color: #4b5563;
+  color: #656d76;
 }
 
 .lesson-content strong {
   font-weight: 600;
-  color: #111827;
+  color: #1f2328;
 }
 
 .lesson-content table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
+  border: 1px solid #d1d9e0;
 }
 
 .lesson-content th {
-  background-color: #f3f4f6;
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
+  background-color: #f6f8fa;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d9e0;
   text-align: left;
   font-weight: 600;
-  color: #111827;
+  color: #1f2328;
 }
 
 .lesson-content td {
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
-  color: #374151;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d9e0;
+  color: #1f2328;
+}
+
+.lesson-content tr:nth-child(2n) {
+  background-color: #f6f8fa;
 }
 
 .lesson-content hr {
   border: 0;
-  border-top: 1px solid #e5e7eb;
+  height: 0.25em;
+  background-color: #d1d9e0;
   margin: 2rem 0;
+}
+
+.lesson-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid #d1d9e0;
+}
+
+/* GitHub Dark Mode Support */
+.dark .lesson-content {
+  color: #e6edf3;
+}
+
+.dark .lesson-content h1 {
+  color: #e6edf3;
+  border-bottom-color: #30363d;
+}
+
+.dark .lesson-content h2 {
+  color: #e6edf3;
+  border-bottom-color: #30363d;
+}
+
+.dark .lesson-content h3 {
+  color: #e6edf3;
+}
+
+.dark .lesson-content p {
+  color: #e6edf3;
+}
+
+.dark .lesson-content a {
+  color: #4493f8;
+}
+
+.dark .lesson-content code {
+  background-color: rgba(110, 118, 129, 0.4);
+  color: #e6edf3;
+}
+
+.dark .lesson-content pre {
+  background-color: #161b22;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+}
+
+.dark .lesson-content pre code {
+  background-color: transparent;
+  color: #e6edf3;
+}
+
+.dark .lesson-content li {
+  color: #e6edf3;
+}
+
+.dark .lesson-content blockquote {
+  border-left-color: #30363d;
+  color: #848d97;
+}
+
+.dark .lesson-content strong {
+  color: #e6edf3;
+}
+
+.dark .lesson-content table {
+  border-color: #30363d;
+}
+
+.dark .lesson-content th {
+  background-color: #161b22;
+  border-color: #30363d;
+  color: #e6edf3;
+}
+
+.dark .lesson-content td {
+  border-color: #30363d;
+  color: #e6edf3;
+}
+
+.dark .lesson-content tr:nth-child(2n) {
+  background-color: #161b22;
+}
+
+.dark .lesson-content hr {
+  background-color: #30363d;
+}
+
+.dark .lesson-content img {
+  border-color: #30363d;
 }
