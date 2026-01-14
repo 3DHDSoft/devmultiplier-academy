@@ -39,22 +39,50 @@ Building production-ready DDD/CQRS systems requires more than just writing code.
 - May generate outdated or incorrect patterns
 
 **The Workflow:**
-```
-You (Human)                     AI (Assistant)
-────────────────────────────────────────────────────────────
-1. Understand domain           →
-   (talk to experts)
-                               ← 2. Generate initial model
-3. Review & refine             →
-   (check domain accuracy)
-                               ← 4. Generate tests
-5. Review tests                →
-   (verify business rules)
-                               ← 6. Generate implementation
-7. Review code                 →
-   (check patterns & quality)
-                               ← 8. Generate documentation
-9. Final review & deploy       →
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif',
+  'actorBkg': '#c8e6c9',
+  'actorBorder': '#388e3c',
+  'actorTextColor': '#1b5e20',
+  'signalColor': '#475569',
+  'signalTextColor': '#1f2328'
+}}}%%
+sequenceDiagram
+    participant H as 👤 You (Human)
+    participant AI as 🤖 AI (Assistant)
+
+    Note over H: Talk to domain experts
+    H->>AI: 1. Understand domain
+
+    AI-->>H: 2. Generate initial model
+
+    Note over H: Check domain accuracy
+    H->>AI: 3. Review & refine
+
+    AI-->>H: 4. Generate tests
+
+    Note over H: Verify business rules
+    H->>AI: 5. Review tests
+
+    AI-->>H: 6. Generate implementation
+
+    Note over H: Check patterns & quality
+    H->>AI: 7. Review code
+
+    AI-->>H: 8. Generate documentation
+
+    Note over H: Final review & deploy
+    H->>H: 9. Ship it! 🚀
 ```
 
 ### Setting Up AI Context

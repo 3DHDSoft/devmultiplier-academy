@@ -1,7 +1,7 @@
 # AI-Assisted Testing and Validation
 
-**Duration:** 30 minutes
-**Learning Objectives:**
+**Duration:** 30 minutes **Learning Objectives:**
+
 - Generate comprehensive unit tests for domain models with AI
 - Create realistic test data using AI
 - Implement property-based testing with AI assistance
@@ -14,7 +14,9 @@
 
 ## Introduction
 
-Testing DDD/CQRS systems is crucial but time-consuming. You need tests for domain logic, invariants, state transitions, command handlers, query handlers, and event handlers. AI can accelerate test creation while maintaining quality—if you know how to use it effectively.
+Testing DDD/CQRS systems is crucial but time-consuming. You need tests for domain logic, invariants, state transitions,
+command handlers, query handlers, and event handlers. AI can accelerate test creation while maintaining quality—if you
+know how to use it effectively.
 
 This lesson teaches you how to leverage AI for comprehensive testing strategies.
 
@@ -23,6 +25,7 @@ This lesson teaches you how to leverage AI for comprehensive testing strategies.
 ### Testing Aggregates with AI
 
 **Prompt Template:**
+
 ```
 Generate comprehensive unit tests for [AGGREGATE] using [TEST FRAMEWORK].
 Include tests for:
@@ -57,10 +60,7 @@ describe('Order Aggregate', () => {
     it('should create an order with valid items', () => {
       // Arrange
       const customerId = CustomerId.generate();
-      const items = [
-        createOrderItem('product-1', 2, 10.0),
-        createOrderItem('product-2', 1, 20.0),
-      ];
+      const items = [createOrderItem('product-1', 2, 10.0), createOrderItem('product-2', 1, 20.0)];
 
       // Act
       const order = Order.create(customerId, items);
@@ -79,9 +79,7 @@ describe('Order Aggregate', () => {
       const items: OrderItem[] = [];
 
       // Act & Assert
-      expect(() => Order.create(customerId, items)).toThrow(
-        'Order must have at least one item'
-      );
+      expect(() => Order.create(customerId, items)).toThrow('Order must have at least one item');
     });
 
     it('should calculate total correctly with multiple items', () => {
@@ -123,9 +121,7 @@ describe('Order Aggregate', () => {
       const newItem = createOrderItem('product-new', 1, 15.0);
 
       // Act & Assert
-      expect(() => order.addItem(newItem)).toThrow(
-        'Cannot add items to a placed order'
-      );
+      expect(() => order.addItem(newItem)).toThrow('Cannot add items to a placed order');
     });
 
     it('should throw error when adding item to confirmed order', () => {
@@ -136,9 +132,7 @@ describe('Order Aggregate', () => {
       const newItem = createOrderItem('product-new', 1, 15.0);
 
       // Act & Assert
-      expect(() => order.addItem(newItem)).toThrow(
-        'Cannot add items to a placed order'
-      );
+      expect(() => order.addItem(newItem)).toThrow('Cannot add items to a placed order');
     });
 
     it('should recalculate total after adding item', () => {
@@ -219,9 +213,7 @@ describe('Order Aggregate', () => {
       const order = createDraftOrder();
 
       // Act & Assert
-      expect(() => order.confirm()).toThrow(
-        'Only placed orders can be confirmed'
-      );
+      expect(() => order.confirm()).toThrow('Only placed orders can be confirmed');
     });
 
     it('should throw error when confirming already confirmed order', () => {
@@ -231,9 +223,7 @@ describe('Order Aggregate', () => {
       order.confirm();
 
       // Act & Assert
-      expect(() => order.confirm()).toThrow(
-        'Only placed orders can be confirmed'
-      );
+      expect(() => order.confirm()).toThrow('Only placed orders can be confirmed');
     });
 
     it('should raise OrderConfirmed domain event', () => {
@@ -319,11 +309,7 @@ function createDraftOrder(): Order {
   return Order.create(customerId, items);
 }
 
-function createOrderItem(
-  productId: string,
-  quantity: number,
-  price: number
-): OrderItem {
+function createOrderItem(productId: string, quantity: number, price: number): OrderItem {
   return {
     productId,
     productName: `Product ${productId}`,
@@ -334,12 +320,14 @@ function createOrderItem(
 ```
 
 **What AI Did Well:**
+
 - Comprehensive coverage of all methods
 - Proper AAA pattern
 - Descriptive test names
 - Helper functions for test data
 
 **What to Review:**
+
 - Business rule accuracy
 - Edge cases specific to your domain
 - Test helper realism
@@ -349,6 +337,7 @@ function createOrderItem(
 ### Builders Pattern with AI
 
 **Prompt:**
+
 ```
 Generate a test data builder for Order aggregate with:
 - Fluent interface
@@ -446,9 +435,7 @@ describe('Order Tests with Builder', () => {
   });
 
   it('should create order with custom items', () => {
-    const order = new OrderTestBuilder()
-      .withSingleItem('special-product', 5, 25.0)
-      .build();
+    const order = new OrderTestBuilder().withSingleItem('special-product', 5, 25.0).build();
 
     expect(order.getItems()).toHaveLength(1);
     expect(order.getTotal().amount).toBe(125.0);
@@ -475,6 +462,7 @@ describe('Order Tests with Builder', () => {
 ### Realistic Test Data with AI
 
 **Prompt:**
+
 ```
 Generate realistic test data for e-commerce domain including:
 - Customer names, emails, addresses
@@ -587,17 +575,14 @@ describe('Order with realistic data', () => {
     const customer = TestData.customers[0];
     const orderData = TestData.orders.smallOrder;
 
-    const order = Order.create(
-      CustomerId.create(customer.id),
-      [createItemFromTestData(orderData.items[0])]
-    );
+    const order = Order.create(CustomerId.create(customer.id), [createItemFromTestData(orderData.items[0])]);
 
     expect(order.getTotal().amount).toBeCloseTo(orderData.total);
   });
 });
 
 function createItemFromTestData(item: { productId: string; quantity: number }): OrderItem {
-  const product = TestData.products.find(p => p.id === item.productId)!;
+  const product = TestData.products.find((p) => p.id === item.productId)!;
   return {
     productId: product.id,
     productName: product.name,
@@ -610,6 +595,7 @@ function createItemFromTestData(item: { productId: string; quantity: number }): 
 ## Property-Based Testing with AI
 
 **Prompt:**
+
 ```
 Generate property-based tests for Order aggregate using fast-check library.
 Test properties:
@@ -640,7 +626,7 @@ describe('Order - Property-Based Tests', () => {
         (items) => {
           // Arrange
           const customerId = CustomerId.generate();
-          const orderItems = items.map(item => ({
+          const orderItems = items.map((item) => ({
             ...item,
             price: new Money(item.price, 'USD'),
           }));
@@ -649,10 +635,7 @@ describe('Order - Property-Based Tests', () => {
           const order = Order.create(customerId, orderItems);
 
           // Assert
-          const expectedTotal = items.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-          );
+          const expectedTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
           expect(order.getTotal().amount).toBeCloseTo(expectedTotal, 2);
         }
       )
@@ -682,7 +665,7 @@ describe('Order - Property-Based Tests', () => {
         ({ initialItems, newItem }) => {
           // Arrange
           const customerId = CustomerId.generate();
-          const orderItems = initialItems.map(item => ({
+          const orderItems = initialItems.map((item) => ({
             ...item,
             price: new Money(item.price, 'USD'),
           }));
@@ -719,7 +702,7 @@ describe('Order - Property-Based Tests', () => {
         (items) => {
           // Arrange
           const customerId = CustomerId.generate();
-          const orderItems = items.map(item => ({
+          const orderItems = items.map((item) => ({
             ...item,
             price: new Money(item.price, 'USD'),
           }));
@@ -732,9 +715,7 @@ describe('Order - Property-Based Tests', () => {
           expect(order.getCustomerId()).toBeDefined();
           expect(order.getItems().length).toBeGreaterThan(0);
           expect(order.getTotal().amount).toBeGreaterThan(0);
-          expect(['Draft', 'Placed', 'Confirmed', 'Cancelled']).toContain(
-            order.getStatus()
-          );
+          expect(['Draft', 'Placed', 'Confirmed', 'Cancelled']).toContain(order.getStatus());
         }
       )
     );
@@ -755,7 +736,7 @@ describe('Order - Property-Based Tests', () => {
         (items) => {
           // Arrange
           const customerId = CustomerId.generate();
-          const orderItems = items.map(item => ({
+          const orderItems = items.map((item) => ({
             ...item,
             price: new Money(item.price, 'USD'),
           }));
@@ -782,6 +763,7 @@ describe('Order - Property-Based Tests', () => {
 ## Generating Test Scenarios from Business Rules
 
 **Prompt:**
+
 ```
 Generate test scenarios for the business rule:
 "A subscription can be cancelled only if it's active and not within the minimum commitment period (3 months from start date)."
@@ -798,10 +780,7 @@ describe('Subscription Cancellation Business Rule', () => {
       // Arrange
       const startDate = new Date('2024-01-01');
       const currentDate = new Date('2024-04-02'); // 3 months + 1 day
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
       // Act
       subscription.cancel(currentDate);
@@ -817,10 +796,7 @@ describe('Subscription Cancellation Business Rule', () => {
       // Arrange
       const startDate = new Date('2024-01-01');
       const currentDate = new Date('2024-04-01'); // Exactly 3 months
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
       // Act & Assert
       expect(() => subscription.cancel(currentDate)).not.toThrow();
@@ -831,10 +807,7 @@ describe('Subscription Cancellation Business Rule', () => {
       // Arrange
       const startDate = new Date('2024-01-01');
       const currentDate = new Date('2024-03-31'); // 2 months 30 days
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
       // Act & Assert
       expect(() => subscription.cancel(currentDate)).toThrow(
@@ -848,10 +821,7 @@ describe('Subscription Cancellation Business Rule', () => {
       // Arrange
       const startDate = new Date('2024-01-31');
       const currentDate = new Date('2024-04-30'); // ~3 months later
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
       // Act & Assert
       expect(() => subscription.cancel(currentDate)).not.toThrow();
@@ -861,10 +831,7 @@ describe('Subscription Cancellation Business Rule', () => {
       // Arrange
       const startDate = new Date('2024-01-31'); // Leap year
       const currentDate = new Date('2024-04-30');
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
       // Act & Assert
       expect(() => subscription.cancel(currentDate)).not.toThrow();
@@ -876,15 +843,10 @@ describe('Subscription Cancellation Business Rule', () => {
       // Arrange
       const startDate = new Date('2024-01-01');
       const currentDate = new Date('2024-06-01');
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asInactive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asInactive().build();
 
       // Act & Assert
-      expect(() => subscription.cancel(currentDate)).toThrow(
-        'Only active subscriptions can be cancelled'
-      );
+      expect(() => subscription.cancel(currentDate)).toThrow('Only active subscriptions can be cancelled');
     });
 
     it('should reject cancellation of already cancelled subscription', () => {
@@ -892,26 +854,18 @@ describe('Subscription Cancellation Business Rule', () => {
       const startDate = new Date('2024-01-01');
       const cancelDate = new Date('2024-04-01');
       const secondCancelDate = new Date('2024-05-01');
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
       subscription.cancel(cancelDate);
 
       // Act & Assert
-      expect(() => subscription.cancel(secondCancelDate)).toThrow(
-        'Only active subscriptions can be cancelled'
-      );
+      expect(() => subscription.cancel(secondCancelDate)).toThrow('Only active subscriptions can be cancelled');
     });
 
     it('should reject cancellation with past date', () => {
       // Arrange
       const startDate = new Date('2024-01-01');
       const currentDate = new Date('2023-12-01'); // Before start
-      const subscription = new SubscriptionTestBuilder()
-        .withStartDate(startDate)
-        .asActive()
-        .build();
+      const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
       // Act & Assert
       expect(() => subscription.cancel(currentDate)).toThrow(
@@ -935,10 +889,7 @@ describe('Subscription Cancellation Business Rule', () => {
         cancelDate.setMonth(cancelDate.getMonth() + months);
         cancelDate.setDate(cancelDate.getDate() + days);
 
-        const subscription = new SubscriptionTestBuilder()
-          .withStartDate(startDate)
-          .asActive()
-          .build();
+        const subscription = new SubscriptionTestBuilder().withStartDate(startDate).asActive().build();
 
         if (shouldSucceed) {
           expect(() => subscription.cancel(cancelDate)).not.toThrow();
@@ -957,6 +908,7 @@ describe('Subscription Cancellation Business Rule', () => {
 ### Detecting Domain Model Smells
 
 **Prompt:**
+
 ```
 Review this Order class for DDD anti-patterns and code smells.
 Check for: anemic domain model, missing encapsulation, poor invariant protection,
@@ -964,8 +916,9 @@ missing validation, incorrect aggregate boundaries, missing domain events.
 Provide specific issues and fixes.
 ```
 
+**Code to review:**
+
 ```typescript
-// CODE TO REVIEW:
 class Order {
   public id: string;
   public customerId: string;
@@ -982,49 +935,50 @@ class Order {
     return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 }
+```
 
-// AI ANALYSIS:
-/*
-ISSUES FOUND:
+**AI analysis:**
 
-1. ❌ Public Mutable Properties
+**Issues Found:**
+
+1. **Public Mutable Properties**
    - All fields are public and mutable
    - Anyone can break invariants by directly modifying
-   Fix: Make fields private/readonly, use methods for changes
+   - *Fix:* Make fields private/readonly, use methods for changes
 
-2. ❌ Primitive Obsession
-   - Using string for id, customerId, status
-   - Using number for total (no currency)
-   Fix: Use value objects (OrderId, CustomerId, OrderStatus, Money)
+2. **Primitive Obsession**
+   - Using `string` for id, customerId, status
+   - Using `number` for total (no currency)
+   - *Fix:* Use value objects (`OrderId`, `CustomerId`, `OrderStatus`, `Money`)
 
-3. ❌ No Validation
+3. **No Validation**
    - Constructor doesn't validate inputs
    - No business rule enforcement
-   Fix: Add validation in factory method
+   - *Fix:* Add validation in factory method
 
-4. ❌ Anemic Domain Model
-   - calculateTotal() is a query, not behavior
+4. **Anemic Domain Model**
+   - `calculateTotal()` is a query, not behavior
    - No business operations (place, confirm, cancel)
-   Fix: Add domain methods that enforce business rules
+   - *Fix:* Add domain methods that enforce business rules
 
-5. ❌ No Encapsulation
+5. **No Encapsulation**
    - Direct array access allows external modification
    - Total can be set independently of items
-   Fix: Return frozen copies, recalculate total automatically
+   - *Fix:* Return frozen copies, recalculate total automatically
 
-6. ❌ Missing Domain Events
+6. **Missing Domain Events**
    - No events for state changes
    - Can't notify other contexts
-   Fix: Add domain events for key operations
+   - *Fix:* Add domain events for key operations
 
-7. ❌ Weak Status Type
+7. **Weak Status Type**
    - String status allows invalid values
    - No state machine
-   Fix: Use enum and enforce valid transitions
+   - *Fix:* Use enum and enforce valid transitions
 
-REFACTORED VERSION:
-*/
+**Refactored version:**
 
+```typescript
 type OrderStatus = 'Draft' | 'Placed' | 'Confirmed' | 'Cancelled';
 
 class Order {
@@ -1046,14 +1000,7 @@ class Order {
 
     const total = this.calculateTotal(items);
 
-    return new Order(
-      OrderId.generate(),
-      customerId,
-      items,
-      'Draft',
-      total,
-      new Date()
-    );
+    return new Order(OrderId.generate(), customerId, items, 'Draft', total, new Date());
   }
 
   addItem(item: OrderItem): void {
@@ -1075,10 +1022,7 @@ class Order {
   }
 
   private static calculateTotal(items: OrderItem[]): Money {
-    const sum = items.reduce(
-      (total, item) => total + item.price.amount * item.quantity,
-      0
-    );
+    const sum = items.reduce((total, item) => total + item.price.amount * item.quantity, 0);
     return new Money(sum, items[0].price.currency);
   }
 
@@ -1121,7 +1065,8 @@ class Order {
 
 ## Next Steps
 
-In the next lesson, we'll explore **Building Production-Ready Systems with AI**—complete workflows, best practices, and quality considerations for shipping DDD/CQRS systems with AI assistance.
+In the next lesson, we'll explore **Building Production-Ready Systems with AI**—complete workflows, best practices, and
+quality considerations for shipping DDD/CQRS systems with AI assistance.
 
 ## Hands-On Exercise
 
@@ -1149,13 +1094,13 @@ In the next lesson, we'll explore **Building Production-Ready Systems with AI**�
    - Refactor based on suggestions
 
 **Reflection:**
+
 - How much time did AI save?
 - What domain issues did AI miss?
 - What did you learn about your domain from writing tests?
 
 ---
 
-**Time to complete:** 60 minutes
-**Difficulty:** Intermediate
+**Time to complete:** 60 minutes **Difficulty:** Intermediate
 
 Share your test coverage improvements in the course forum!

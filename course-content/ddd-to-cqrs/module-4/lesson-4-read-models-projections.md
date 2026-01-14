@@ -1,7 +1,7 @@
 # Read Models and Projections
 
-**Duration:** 20 minutes
-**Learning Objectives:**
+**Duration:** 20 minutes **Learning Objectives:**
+
 - Design efficient read models optimized for queries
 - Build denormalized views for specific use cases
 - Create projections from domain events
@@ -15,7 +15,9 @@
 
 ## Introduction
 
-In CQRS, the read side is completely separate from the write side. Read models are denormalized, optimized views designed for specific queries. They don't enforce business rules—they exist purely to serve data efficiently to the UI. Understanding how to design, build, and maintain read models is critical for CQRS success.
+In CQRS, the read side is completely separate from the write side. Read models are denormalized, optimized views
+designed for specific queries. They don't enforce business rules—they exist purely to serve data efficiently to the UI.
+Understanding how to design, build, and maintain read models is critical for CQRS success.
 
 ## Read Model Fundamentals
 
@@ -24,6 +26,7 @@ In CQRS, the read side is completely separate from the write side. Read models a
 **Definition:** A denormalized data structure optimized for a specific query or view, updated from write model events.
 
 **Characteristics:**
+
 - Query-optimized (not normalized)
 - No business logic
 - Eventually consistent
@@ -41,9 +44,9 @@ class Order {
   ) {}
 
   // Business logic methods
-  place(): void { }
-  confirm(): void { }
-  cancel(): void { }
+  place(): void {}
+  confirm(): void {}
+  cancel(): void {}
 }
 
 // Read model (denormalized view)
@@ -165,6 +168,28 @@ interface OrderReadModel {
 
 ### Start from UI Requirements
 
+**UI Wireframe: Order List Page**
+
+> **My Orders**
+>
+> ---
+>
+> | **Order #1234**             | 🟢 Shipped |
+> | :-------------------------- | ---------: |
+> | Placed: Jan 15, 2024        |            |
+> | 3 items · **$127.50**       |            |
+> | `[Cancel]` `[View Details]` |            |
+>
+> ---
+>
+> | **Order #1235**             | 🟡 Pending |
+> | :-------------------------- | ---------: |
+> | Placed: Jan 18, 2024        |            |
+> | 1 item · **$49.99**         |            |
+> | `[Cancel]` `[View Details]` |            |
+
+**Or ASCII format**
+
 ```typescript
 // UI wireframe: Order list page
 /*
@@ -182,7 +207,9 @@ interface OrderReadModel {
 │ [Cancel] [View Details]                              │
 └──────────────────────────────────────────────────────┘
 */
+```
 
+```typescript
 // Read model designed from UI needs
 interface OrderListReadModel {
   orderId: string;
@@ -200,7 +227,11 @@ interface OrderListReadModel {
 
 // Query interface
 interface OrderListQuery {
-  getOrders(customerId: string, page: number, limit: number): Promise<{
+  getOrders(
+    customerId: string,
+    page: number,
+    limit: number
+  ): Promise<{
     items: OrderListReadModel[];
     total: number;
     page: number;
@@ -393,8 +424,7 @@ class OrderListProjection {
 ```typescript
 // Event bus with projection handlers
 class EventBus {
-  private handlers: Map<string, Array<(event: any) => Promise<void>>> =
-    new Map();
+  private handlers: Map<string, Array<(event: any) => Promise<void>>> = new Map();
 
   register(eventType: string, handler: (event: any) => Promise<void>): void {
     const handlers = this.handlers.get(eventType) || [];
@@ -473,10 +503,7 @@ class ProductPopularityProjection {
     }
   }
 
-  private async updateRollingPopularity(
-    productId: string,
-    date: Date
-  ): Promise<void> {
+  private async updateRollingPopularity(productId: string, date: Date): Promise<void> {
     const thirtyDaysAgo = new Date(date);
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -807,9 +834,7 @@ class OrderProjectionWithCacheInvalidation {
     }
   }
 
-  private async invalidateCustomerOrdersCache(
-    customerId: string
-  ): Promise<void> {
+  private async invalidateCustomerOrdersCache(customerId: string): Promise<void> {
     // Delete all cache keys for this customer
     const keys = await this.redis.keys(`orders:list:${customerId}:*`);
     if (keys.length > 0) {
@@ -848,9 +873,7 @@ class CachedOrderQueryService {
     return order;
   }
 
-  private async loadOrderFromDatabase(
-    orderId: string
-  ): Promise<OrderDetailsReadModel | null> {
+  private async loadOrderFromDatabase(orderId: string): Promise<OrderDetailsReadModel | null> {
     return this.prisma.orderDetailsView.findUnique({
       where: { orderId },
     });
@@ -1009,7 +1032,8 @@ class OrderListProjection {
 
 ## Next Steps
 
-In Module 5, we'll explore **Event Sourcing**, where the event stream becomes the primary source of truth, and read models are projections from the event store.
+In Module 5, we'll explore **Event Sourcing**, where the event stream becomes the primary source of truth, and read
+models are projections from the event store.
 
 ## Hands-On Exercise
 
@@ -1041,7 +1065,6 @@ Try implementing yourself first!
 
 ---
 
-**Time to complete:** 60 minutes
-**Difficulty:** Advanced
+**Time to complete:** 60 minutes **Difficulty:** Advanced
 
 Share your read model design in the course forum!

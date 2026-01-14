@@ -1,7 +1,7 @@
 # Integration Strategies
 
-**Duration:** 18 minutes
-**Learning Objectives:**
+**Duration:** 18 minutes **Learning Objectives:**
+
 - Compare synchronous vs asynchronous integration approaches
 - Implement REST API integration between contexts
 - Design event-driven integration patterns
@@ -11,31 +11,50 @@
 
 ## Introduction
 
-Once you've defined your bounded contexts and mapped their relationships, you need to decide HOW they'll integrate. This lesson covers the technical mechanisms for cross-context communication, from traditional REST APIs to modern event-driven architectures.
+Once you've defined your bounded contexts and mapped their relationships, you need to decide HOW they'll integrate. This
+lesson covers the technical mechanisms for cross-context communication, from traditional REST APIs to modern
+event-driven architectures.
 
 ## Integration Strategy Overview
 
-```typescript
-/*
-┌─────────────────────────────────────────────────────────────┐
-│ Integration Strategies                                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│ SYNCHRONOUS:                                                │
-│ - REST API (HTTP)                                           │
-│ - gRPC                                                      │
-│ - GraphQL                                                   │
-│                                                             │
-│ ASYNCHRONOUS:                                               │
-│ - Domain Events (Event Bus)                                │
-│ - Message Queues (RabbitMQ, SQS)                          │
-│ - Event Streaming (Kafka)                                  │
-│                                                             │
-│ ANTI-PATTERNS:                                              │
-│ - Shared Database                                           │
-│ - Direct Object References                                  │
-└─────────────────────────────────────────────────────────────┘
-*/
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart LR
+    subgraph SYNC ["✅ SYNCHRONOUS"]
+        S1["REST API"] ~~~ S2["gRPC"] ~~~ S3["GraphQL"]
+    end
+
+    subgraph ASYNC ["✅ ASYNCHRONOUS"]
+        A1["Domain Events"] ~~~ A2["Message Queues"] ~~~ A3["Kafka"]
+    end
+
+    subgraph ANTI ["❌ ANTI-PATTERNS"]
+        X1["Shared Database"] ~~~ X2["Direct References"]
+    end
+
+    SYNC ~~~ ASYNC ~~~ ANTI
+
+    style SYNC fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style ASYNC fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style ANTI fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style S1 fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style S2 fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style S3 fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style A1 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style A2 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style A3 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style X1 fill:#ef9a9a,stroke:#c62828,color:#b71c1c
+    style X2 fill:#ef9a9a,stroke:#c62828,color:#b71c1c
 ```
 
 ## Strategy 1: REST API Integration
@@ -47,14 +66,10 @@ Once you've defined your bounded contexts and mapped their relationships, you ne
 ```typescript
 // UPSTREAM: Catalog Context exposes REST API
 export class CatalogAPI {
-  constructor(
-    private readonly catalogService: CatalogService
-  ) {}
+  constructor(private readonly catalogService: CatalogService) {}
 
   @Get('/api/v1/products/:id')
-  async getProduct(
-    @Param('id') id: string
-  ): Promise<ProductResponse> {
+  async getProduct(@Param('id') id: string): Promise<ProductResponse> {
     const product = await this.catalogService.findById(id);
 
     if (!product) {
@@ -85,7 +100,7 @@ export class CatalogAPI {
     });
 
     return {
-      data: products.map(p => this.toResponse(p)),
+      data: products.map((p) => this.toResponse(p)),
       pagination: {
         page,
         limit,
@@ -100,9 +115,7 @@ export class CatalogClient {
   constructor(private readonly httpClient: HttpClient) {}
 
   async getProduct(productId: string): Promise<ProductDTO> {
-    const response = await this.httpClient.get<ProductResponse>(
-      `/api/v1/products/${productId}`
-    );
+    const response = await this.httpClient.get<ProductResponse>(`/api/v1/products/${productId}`);
 
     return {
       id: response.id,
@@ -113,12 +126,11 @@ export class CatalogClient {
   }
 
   async searchProducts(query: string): Promise<ProductDTO[]> {
-    const response = await this.httpClient.get<ProductListResponse>(
-      '/api/v1/products',
-      { params: { q: query, limit: 50 } }
-    );
+    const response = await this.httpClient.get<ProductListResponse>('/api/v1/products', {
+      params: { q: query, limit: 50 },
+    });
 
-    return response.data.map(p => ({
+    return response.data.map((p) => ({
       id: p.id,
       name: p.name,
       price: Money.of(p.price.amount, p.price.currency),
@@ -131,11 +143,7 @@ export class CatalogClient {
 export class OrderService {
   constructor(private readonly catalogClient: CatalogClient) {}
 
-  async addProductToCart(
-    cartId: string,
-    productId: string,
-    quantity: number
-  ): Promise<void> {
+  async addProductToCart(cartId: string, productId: string, quantity: number): Promise<void> {
     // Synchronous call to Catalog
     const product = await this.catalogClient.getProduct(productId);
 
@@ -228,9 +236,7 @@ export class ResilientCatalogClient {
 
     try {
       // Use circuit breaker to prevent cascading failures
-      const product = await this.circuitBreaker.execute(() =>
-        this.fetchProduct(productId)
-      );
+      const product = await this.circuitBreaker.execute(() => this.fetchProduct(productId));
 
       // Cache successful response
       await this.cache.set(`product:${productId}`, product, { ttl: 300 });
@@ -298,7 +304,7 @@ export namespace Sales {
         new OrderPlaced(
           this.id.value,
           this.customerId.value,
-          this.items.map(item => ({
+          this.items.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: {
@@ -316,9 +322,7 @@ export namespace Sales {
 
 // Event Bus publishes events
 export class EventBus {
-  constructor(
-    private readonly publishers: Map<string, EventPublisher>
-  ) {}
+  constructor(private readonly publishers: Map<string, EventPublisher>) {}
 
   async publish(event: DomainEvent): Promise<void> {
     const publisher = this.publishers.get(event.constructor.name);
@@ -340,14 +344,12 @@ export class EventBus {
 export namespace Fulfillment {
   @EventHandler('Sales.OrderPlaced')
   export class CreateShipmentOnOrderPlaced {
-    constructor(
-      private readonly shipmentRepository: ShipmentRepository
-    ) {}
+    constructor(private readonly shipmentRepository: ShipmentRepository) {}
 
     async handle(event: Sales.OrderPlaced): Promise<void> {
       const shipment = Shipment.createFromOrder({
         orderId: event.orderId,
-        items: event.items.map(item => ({
+        items: event.items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
         })),
@@ -363,9 +365,7 @@ export namespace Fulfillment {
 export namespace Billing {
   @EventHandler('Sales.OrderPlaced')
   export class CreateInvoiceOnOrderPlaced {
-    constructor(
-      private readonly invoiceRepository: InvoiceRepository
-    ) {}
+    constructor(private readonly invoiceRepository: InvoiceRepository) {}
 
     async handle(event: Sales.OrderPlaced): Promise<void> {
       const invoice = Invoice.create({
@@ -576,13 +576,9 @@ export class OrderPlacedHandler {
     const payment = await this.processPayment(event.orderId);
 
     if (payment.isSuccessful()) {
-      await this.eventBus.publish(
-        new PaymentProcessed(event.orderId, payment.id)
-      );
+      await this.eventBus.publish(new PaymentProcessed(event.orderId, payment.id));
     } else {
-      await this.eventBus.publish(
-        new PaymentFailed(event.orderId, payment.error)
-      );
+      await this.eventBus.publish(new PaymentFailed(event.orderId, payment.error));
     }
   }
 }
@@ -593,15 +589,11 @@ export class PaymentProcessedHandler {
     const reservation = await this.reserveInventory(event.orderId);
 
     if (reservation.isSuccessful()) {
-      await this.eventBus.publish(
-        new InventoryReserved(event.orderId, reservation.id)
-      );
+      await this.eventBus.publish(new InventoryReserved(event.orderId, reservation.id));
     } else {
       // Compensate
       await this.refundPayment(event.orderId);
-      await this.eventBus.publish(
-        new InventoryReservationFailed(event.orderId)
-      );
+      await this.eventBus.publish(new InventoryReservationFailed(event.orderId));
     }
   }
 }
@@ -648,28 +640,13 @@ namespace Sales {
 
 ## Choosing the Right Strategy
 
-```typescript
-/*
-┌──────────────────────┬──────────────┬──────────────┬─────────────┐
-│ Strategy             │ Use When     │ Pros         │ Cons        │
-├──────────────────────┼──────────────┼──────────────┼─────────────┤
-│ REST API             │ Need data    │ Simple       │ Coupling    │
-│                      │ immediately  │ Familiar     │ Availability│
-│                      │              │              │             │
-│ Domain Events        │ Notification │ Decoupled    │ Eventual    │
-│                      │ of changes   │ Scalable     │ consistency │
-│                      │              │              │             │
-│ Message Queue        │ Guaranteed   │ Reliable     │ Complexity  │
-│                      │ delivery     │ Async        │             │
-│                      │              │              │             │
-│ Event Streaming      │ Event        │ Replay       │ Operational │
-│                      │ sourcing     │ History      │ overhead    │
-│                      │              │              │             │
-│ Saga                 │ Multi-step   │ Consistency  │ Complexity  │
-│                      │ transactions │              │             │
-└──────────────────────┴──────────────┴──────────────┴─────────────┘
-*/
-```
+| Strategy        | Use When                 | Pros                 | Cons                   |
+| --------------- | ------------------------ | -------------------- | ---------------------- |
+| REST API        | Need data immediately    | Simple, Familiar     | Coupling, Availability |
+| Domain Events   | Notification of changes  | Decoupled, Scalable  | Eventual consistency   |
+| Message Queue   | Guaranteed delivery      | Reliable, Async      | Complexity             |
+| Event Streaming | Event sourcing           | Replay, History      | Operational overhead   |
+| Saga            | Multi-step transactions  | Consistency          | Complexity             |
 
 ## Key Takeaways
 
@@ -682,7 +659,8 @@ namespace Sales {
 
 ## Next Steps
 
-In the next lesson, we'll dive deep into **Anti-Corruption Layers**—how to protect your domain model from poor upstream models.
+In the next lesson, we'll dive deep into **Anti-Corruption Layers**—how to protect your domain model from poor upstream
+models.
 
 ## Hands-On Exercise
 
@@ -691,6 +669,7 @@ In the next lesson, we'll dive deep into **Anti-Corruption Layers**—how to pro
 Choose one integration point in your system:
 
 1. **REST Integration:**
+
    ```typescript
    class UpstreamClient {
      async getData(id: string): Promise<DTO> {
@@ -700,6 +679,7 @@ Choose one integration point in your system:
    ```
 
 2. **Event Integration:**
+
    ```typescript
    class DomainEventHandler {
      @EventHandler('Context.EventName')
@@ -716,5 +696,4 @@ Choose one integration point in your system:
 
 ---
 
-**Time to complete:** 45 minutes
-**Difficulty:** Intermediate
+**Time to complete:** 45 minutes **Difficulty:** Intermediate

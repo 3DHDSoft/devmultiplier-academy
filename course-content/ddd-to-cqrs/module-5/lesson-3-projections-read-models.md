@@ -73,44 +73,43 @@ async function getActiveOrders(): Promise<Order[]> {
 
 ### Conceptual Model
 
-```
-┌─────────────┐
-│ Command     │
-│ (Write)     │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────────┐
-│ Domain Model    │
-│ (Aggregate)     │
-└──────┬──────────┘
-       │
-       │ produces
-       ▼
-┌─────────────────┐
-│ Events          │ ◄──── Source of Truth
-└──────┬──────────┘
-       │
-       │ consumed by
-       ▼
-┌─────────────────┐
-│ Event Handlers  │
-│ (Projectors)    │
-└──────┬──────────┘
-       │
-       │ updates
-       ▼
-┌─────────────────┐
-│ Read Models     │ ◄──── Optimized for Queries
-│ (Projections)   │
-└─────────────────┘
-       │
-       │ queried by
-       ▼
-┌─────────────────┐
-│ Queries         │
-│ (Read)          │
-└─────────────────┘
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart TB
+    CMD["Command<br/>(Write)"]
+    AGG["Domain Model<br/>(Aggregate)"]
+    EVT["Events"]
+    PROJ["Event Handlers<br/>(Projectors)"]
+    READ["Read Models<br/>(Projections)"]
+    QRY["Queries<br/>(Read)"]
+
+    CMD --> AGG
+    AGG -->|produces| EVT
+    EVT -->|consumed by| PROJ
+    PROJ -->|updates| READ
+    READ -->|queried by| QRY
+
+    EVT -.- NOTE1["📌 Source of Truth"]
+    READ -.- NOTE2["📌 Optimized for Queries"]
+
+    style CMD fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style AGG fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style EVT fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style PROJ fill:#e1bee7,stroke:#8e24aa,color:#4a148c
+    style READ fill:#b3e5fc,stroke:#0288d1,color:#01579b
+    style QRY fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style NOTE1 fill:#fef3c7,stroke:#d97706,color:#92400e
+    style NOTE2 fill:#fef3c7,stroke:#d97706,color:#92400e
 ```
 
 ## Building Your First Projection

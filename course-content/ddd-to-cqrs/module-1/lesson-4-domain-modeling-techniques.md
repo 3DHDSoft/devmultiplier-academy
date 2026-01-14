@@ -1,7 +1,7 @@
 # Domain Modeling Techniques
 
-**Duration:** 28 minutes
-**Learning Objectives:**
+**Duration:** 28 minutes **Learning Objectives:**
+
 - Apply Event Storming to discover domain models
 - Extract entities, aggregates, and bounded contexts from business conversations
 - Use Domain Storytelling to validate models with stakeholders
@@ -11,11 +11,14 @@
 
 ## Introduction
 
-Domain modeling is both an art and a science. It requires translating fuzzy business requirements into crisp, executable code without losing the richness of the domain. This lesson covers practical techniques you can use tomorrow to extract better models from your domain experts.
+Domain modeling is both an art and a science. It requires translating fuzzy business requirements into crisp, executable
+code without losing the richness of the domain. This lesson covers practical techniques you can use tomorrow to extract
+better models from your domain experts.
 
 ## Technique 1: Event Storming
 
-**What:** A collaborative workshop technique where domain experts and developers map out business processes using sticky notes.
+**What:** A collaborative workshop technique where domain experts and developers map out business processes using sticky
+notes.
 
 **When:** Beginning of project, when exploring new features, or when existing model feels wrong.
 
@@ -82,41 +85,75 @@ Examples:
 
 ### Event Storming Example: E-Commerce Checkout
 
-```
-Timeline (left to right):
-┌─────────────────────────────────────────────────────────────┐
-│  SALES CONTEXT                                              │
-│                                                             │
-│  [Customer] → AddItemToCart → ItemAddedToCart              │
-│                                                             │
-│  [Customer] → PlaceOrder → OrderPlaced                     │
-│      ↓                                                      │
-│  Business Rule: Must have items in cart                     │
-│  Business Rule: Must have valid payment method              │
-│                                                             │
-│  Aggregate: Order                                           │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart TB
+    subgraph SALES ["SALES CONTEXT"]
+        direction LR
+        S_Actor["👤 Customer"]
+        S_Cmd1["AddItemToCart"]
+        S_Event1["ItemAddedToCart"]
+        S_Cmd2["PlaceOrder"]
+        S_Event2["OrderPlaced"]
+        S_Rules["📋 Rules:<br/>• Items in cart<br/>• Valid payment"]
+        S_Agg["🔷 Order"]
 
-┌─────────────────────────────────────────────────────────────┐
-│  PAYMENT CONTEXT                                            │
-│                                                             │
-│  OrderPlaced → ProcessPayment → PaymentProcessed           │
-│                    ↓                                        │
-│                PaymentFailed                                │
-│                                                             │
-│  Aggregate: Payment                                         │
-│  External System: Payment Gateway (Stripe)                  │
-└─────────────────────────────────────────────────────────────┘
+        S_Actor --> S_Cmd1 --> S_Event1
+        S_Actor --> S_Cmd2 --> S_Event2
+    end
 
-┌─────────────────────────────────────────────────────────────┐
-│  FULFILLMENT CONTEXT                                        │
-│                                                             │
-│  PaymentProcessed → AllocateInventory → InventoryAllocated │
-│                                                             │
-│  InventoryAllocated → ShipOrder → OrderShipped             │
-│                                                             │
-│  Aggregate: Shipment, Inventory                             │
-└─────────────────────────────────────────────────────────────┘
+    subgraph PAYMENT ["PAYMENT CONTEXT"]
+        direction LR
+        P_Cmd["ProcessPayment"]
+        P_Event1["PaymentProcessed"]
+        P_Event2["PaymentFailed"]
+        P_Agg["🔷 Payment"]
+        P_Ext["⚡ Stripe"]
+
+        P_Cmd --> P_Event1
+        P_Cmd -.-> P_Event2
+    end
+
+    subgraph FULFILLMENT ["FULFILLMENT CONTEXT"]
+        direction LR
+        F_Cmd1["AllocateInventory"]
+        F_Event1["InventoryAllocated"]
+        F_Cmd2["ShipOrder"]
+        F_Event2["OrderShipped"]
+        F_Agg["🔷 Shipment, Inventory"]
+
+        F_Cmd1 --> F_Event1
+        F_Event1 --> F_Cmd2 --> F_Event2
+    end
+
+    S_Event2 --> P_Cmd
+    P_Event1 --> F_Cmd1
+
+    style SALES fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style PAYMENT fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style FULFILLMENT fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style S_Actor fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style S_Cmd1 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style S_Cmd2 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style S_Event1 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style S_Event2 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style P_Cmd fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style P_Event1 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style P_Event2 fill:#ffcdd2,stroke:#c62828,color:#b71c1c
+    style F_Cmd1 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style F_Cmd2 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style F_Event1 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style F_Event2 fill:#ffe0b2,stroke:#f57c00,color:#e65100
 ```
 
 ### Translating Event Storm to Code
@@ -160,26 +197,16 @@ export namespace Sales {
         throw new DomainError('Cannot place order with empty cart');
       }
 
-      const items = cart.items.map(item => OrderItem.fromCartItem(item));
-      const order = new Order(
-        OrderId.generate(),
-        customerId,
-        items,
-        OrderStatus.Placed
-      );
+      const items = cart.items.map((item) => OrderItem.fromCartItem(item));
+      const order = new Order(OrderId.generate(), customerId, items, OrderStatus.Placed);
 
-      order.addDomainEvent(
-        new OrderPlaced(order.id, customerId, items, order.calculateTotal())
-      );
+      order.addDomainEvent(new OrderPlaced(order.id, customerId, items, order.calculateTotal()));
 
       return order;
     }
 
     private calculateTotal(): Money {
-      return this.items.reduce(
-        (total, item) => total.add(item.subtotal),
-        Money.zero()
-      );
+      return this.items.reduce((total, item) => total.add(item.subtotal), Money.zero());
     }
   }
 
@@ -197,9 +224,7 @@ export namespace Sales {
     ) {}
 
     async handle(command: PlaceOrderCommand): Promise<OrderId> {
-      const cart = await this.cartRepository.findById(
-        CartId.from(command.cartId)
-      );
+      const cart = await this.cartRepository.findById(CartId.from(command.cartId));
       const order = Order.place(CustomerId.from(command.customerId), cart);
 
       await this.orderRepository.save(order);
@@ -221,10 +246,7 @@ export namespace Payment {
   }
 
   export class Payment {
-    async process(
-      orderId: OrderId,
-      paymentMethod: PaymentMethod
-    ): Promise<Payment> {
+    async process(orderId: OrderId, paymentMethod: PaymentMethod): Promise<Payment> {
       // Payment processing logic
       this.addDomainEvent(new PaymentProcessed(this.id, orderId, this.amount));
       return this;
@@ -265,10 +287,7 @@ Story: Customer places an order
 class OrderProcessingSaga {
   async handle(event: OrderPlaced): Promise<void> {
     // Step 4-5: Process payment and create order
-    const payment = await this.paymentService.process(
-      event.orderId,
-      event.paymentMethod
-    );
+    const payment = await this.paymentService.process(event.orderId, event.paymentMethod);
 
     if (!payment.isSuccessful()) {
       await this.orderService.markAsFailed(event.orderId);
@@ -288,10 +307,7 @@ class OrderProcessingSaga {
 
   async handle(event: OrderShipped): Promise<void> {
     // Step 10: Send tracking info
-    await this.emailService.sendTrackingInfo(
-      event.orderId,
-      event.trackingNumber
-    );
+    await this.emailService.sendTrackingInfo(event.orderId, event.trackingNumber);
   }
 }
 ```
@@ -301,6 +317,7 @@ class OrderProcessingSaga {
 **What:** A structured conversation technique using examples to explore rules and edge cases.
 
 **Format:**
+
 - **Rule (Yellow):** Business rule to explore
 - **Example (Green):** Concrete example
 - **Question (Red):** Unresolved question
@@ -411,6 +428,7 @@ describe('Return Policy', () => {
 **What:** Visualizing relationships between bounded contexts.
 
 **Relationships:**
+
 - **Shared Kernel:** Shared code between contexts (use sparingly)
 - **Customer-Supplier:** Upstream context provides API, downstream consumes
 - **Conformist:** Downstream conforms to upstream's model
@@ -420,32 +438,61 @@ describe('Return Policy', () => {
 
 ### Example: E-Commerce Context Map
 
-```typescript
-/*
-┌──────────────────┐
-│  CATALOG         │
-│                  │──┐
-│  Product         │  │ Open Host Service (REST API)
-│  Category        │  │ Published Language (JSON)
-└──────────────────┘  │
-                      │
-                      ↓
-┌──────────────────┐  │  ┌──────────────────┐
-│  SALES           │←─┘  │  FULFILLMENT     │
-│                  │     │                  │
-│  Order           │────→│  Shipment        │
-│  Cart            │ ACL │  Inventory       │
-└──────────────────┘     └──────────────────┘
-       │                          ↑
-       │ Customer-Supplier        │
-       ↓                          │
-┌──────────────────┐              │
-│  PAYMENT         │──────────────┘
-│                  │   Published Event
-│  Payment         │   (PaymentProcessed)
-└──────────────────┘
-*/
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart TB
+    subgraph CATALOG ["CATALOG"]
+        direction TB
+        CAT_Product["Product"]
+        CAT_Category["Category"]
+    end
 
+    subgraph SALES ["SALES"]
+        direction TB
+        SALES_Order["Order"]
+        SALES_Cart["Cart"]
+    end
+
+    subgraph FULFILLMENT ["FULFILLMENT"]
+        direction TB
+        FULF_Shipment["Shipment"]
+        FULF_Inventory["Inventory"]
+    end
+
+    subgraph PAYMENT ["PAYMENT"]
+        direction TB
+        PAY_Payment["Payment"]
+    end
+
+    CATALOG -->|"Open Host Service<br/>(REST API, JSON)"| SALES
+    SALES -->|"ACL"| FULFILLMENT
+    SALES -->|"Customer-Supplier"| PAYMENT
+    PAYMENT -->|"Published Event<br/>(PaymentProcessed)"| FULFILLMENT
+
+    style CATALOG fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style SALES fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style FULFILLMENT fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style PAYMENT fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style CAT_Product fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style CAT_Category fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style SALES_Order fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style SALES_Cart fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style FULF_Shipment fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style FULF_Inventory fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style PAY_Payment fill:#e1bee7,stroke:#8e24aa,color:#4a148c
+```
+
+```typescript
 // Anti-Corruption Layer between Sales and Fulfillment
 class FulfillmentAdapter {
   // Translates Sales concepts to Fulfillment concepts
@@ -453,7 +500,7 @@ class FulfillmentAdapter {
     // Sales "Order" → Fulfillment "ShipmentRequest"
     const request: Fulfillment.ShipmentRequest = {
       shipmentId: this.generateShipmentId(),
-      items: order.items.map(item => ({
+      items: order.items.map((item) => ({
         sku: item.product.sku, // Fulfillment uses SKU, not ProductId
         quantity: item.quantity,
       })),
@@ -464,9 +511,7 @@ class FulfillmentAdapter {
     await this.fulfillmentService.createShipment(request);
   }
 
-  private translateAddress(
-    salesAddress: Sales.Address
-  ): Fulfillment.ShippingDestination {
+  private translateAddress(salesAddress: Sales.Address): Fulfillment.ShippingDestination {
     // Translate between different address models
     return new Fulfillment.ShippingDestination(
       salesAddress.street,
@@ -636,15 +681,15 @@ class CarReservation {
 
 ## Common Pitfalls
 
-❌ **Skipping domain expert validation** - AI-generated models might be technically sound but domain-wrong
-❌ **Over-reliance on one technique** - Use multiple approaches for better coverage
-❌ **Premature coding** - Model first, code second
-❌ **Perfect modeling paralysis** - Start with good enough, refine as you learn
-❌ **Ignoring context boundaries** - Trying to use one model everywhere
+❌ **Skipping domain expert validation** - AI-generated models might be technically sound but domain-wrong ❌
+**Over-reliance on one technique** - Use multiple approaches for better coverage ❌ **Premature coding** - Model first,
+code second ❌ **Perfect modeling paralysis** - Start with good enough, refine as you learn ❌ **Ignoring context
+boundaries** - Trying to use one model everywhere
 
 ## Next Steps
 
-In the next module, we'll dive deep into **Bounded Contexts and Strategic Design**—how to organize complex systems into manageable contexts.
+In the next module, we'll dive deep into **Bounded Contexts and Strategic Design**—how to organize complex systems into
+manageable contexts.
 
 ## Hands-On Exercise
 
@@ -709,7 +754,6 @@ describe('Order', () => {
 
 ---
 
-**Time to complete:** 90 minutes
-**Difficulty:** Advanced
+**Time to complete:** 90 minutes **Difficulty:** Advanced
 
 Share your event storm diagram and code in the course forum!

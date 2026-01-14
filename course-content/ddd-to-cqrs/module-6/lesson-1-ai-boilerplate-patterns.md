@@ -20,30 +20,15 @@ This lesson teaches you how to leverage AI effectively while avoiding its pitfal
 
 ### Strengths
 
-```typescript
-/*
-┌─────────────────────────────────────────────────────────────┐
-│ AI Excels At:                                               │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ Pattern implementation (entities, VOs, repositories)     │
-│ ✅ Boilerplate generation (constructors, getters, builders) │
-│ ✅ Code structure and organization                          │
-│ ✅ Type definitions and interfaces                          │
-│ ✅ Converting examples to similar patterns                  │
-│ ✅ Test scaffolding and data generation                     │
-│ ✅ Documentation from code                                   │
-│                                                             │
-│ AI Struggles With:                                          │
-├─────────────────────────────────────────────────────────────┤
-│ ❌ Domain modeling decisions                                │
-│ ❌ Business rule validation                                 │
-│ ❌ Aggregate boundary definition                            │
-│ ❌ Choosing event granularity                               │
-│ ❌ Performance optimization strategies                      │
-│ ❌ Understanding business context                           │
-└─────────────────────────────────────────────────────────────┘
-*/
-```
+| ✅ AI Excels At | ❌ AI Struggles With |
+|-----------------|---------------------|
+| Pattern implementation (entities, VOs, repositories) | Domain modeling decisions |
+| Boilerplate generation (constructors, getters, builders) | Business rule validation |
+| Code structure and organization | Aggregate boundary definition |
+| Type definitions and interfaces | Choosing event granularity |
+| Converting examples to similar patterns | Performance optimization strategies |
+| Test scaffolding and data generation | Understanding business context |
+| Documentation from code | |
 
 ## Generating DDD Entities and Value Objects
 
