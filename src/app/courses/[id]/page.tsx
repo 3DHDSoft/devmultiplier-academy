@@ -344,7 +344,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
   const Icon = course.icon;
 
   return (
-    <div className="bg-white dark:bg-[#0d1117] py-16 sm:py-24 min-h-screen">
+    <div className="bg-white dark:bg-[#0d1117] py-8 sm:py-12 min-h-screen">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         {/* Back link */}
         <Link

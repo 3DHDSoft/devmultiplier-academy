@@ -1,4 +1,4 @@
-# Module 1, Lesson 1: What is Domain-Driven Design?
+# What is Domain-Driven Design?
 
 **Duration:** 20 minutes
 **Learning Objectives:**
