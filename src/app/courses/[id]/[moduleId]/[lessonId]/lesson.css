@@ -55,22 +55,35 @@
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
+/* Light mode code blocks */
 .lesson-content pre {
-  background-color: #161b22;
-  color: #e6edf3;
+  background-color: #f6f8fa;
+  color: #1f2328;
   padding: 1rem;
   border-radius: 6px;
   overflow-x: auto;
   margin: 1.5rem 0;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  border: 1px solid #d1d9e0;
 }
 
 .lesson-content pre code {
   background-color: transparent;
   padding: 0;
-  color: #e6edf3;
+  color: #1f2328;
   font-size: 0.875rem;
   border-radius: 0;
+}
+
+/* Dark mode code blocks */
+.dark .lesson-content pre {
+  background-color: #161b22;
+  color: #e6edf3;
+  border-color: #30363d;
+}
+
+.dark .lesson-content pre code {
+  color: #e6edf3;
 }
 
 .lesson-content ul {
@@ -287,7 +300,7 @@
 }
 
 .dark .watermark-text {
-  color: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.015);
 }
 
 /* DevTools detection blur */
@@ -303,4 +316,187 @@
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+}
+
+/* =============================================
+   Syntax Highlighting (rehype-pretty-code)
+   ============================================= */
+
+/* Dual theme support using CSS custom properties from Shiki */
+/* Light mode: use --shiki-light colors */
+.lesson-content [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-light);
+}
+
+/* Dark mode: use --shiki-dark colors */
+.dark .lesson-content [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-dark);
+}
+
+/* Code block container with language label - only for block code (figure elements) */
+.lesson-content figure[data-rehype-pretty-code-figure] {
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+/* Language label at top of code block - only for block code (figure > pre) */
+/* Light mode */
+.lesson-content figure[data-rehype-pretty-code-figure] pre::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  right: 3rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #656d76;
+  background-color: #eaeef2;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Dark mode language label */
+.dark .lesson-content figure[data-rehype-pretty-code-figure] pre::before {
+  color: #848d97;
+  background-color: #21262d;
+}
+
+/* Pre element styling for rehype-pretty-code - only block code (figure > pre) */
+.lesson-content figure[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  padding: 1rem;
+  padding-top: 2.5rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Inline code styling - rehype-pretty-code wraps inline code in span[data-rehype-pretty-code-figure] */
+.lesson-content span[data-rehype-pretty-code-figure] {
+  display: inline;
+}
+
+.lesson-content span[data-rehype-pretty-code-figure] code {
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-size: 0.875em;
+  background-color: rgba(175, 184, 193, 0.2);
+}
+
+.dark .lesson-content span[data-rehype-pretty-code-figure] code {
+  background-color: rgba(110, 118, 129, 0.4);
+}
+
+/* Plain inline code without highlighting (backticks without language) */
+.lesson-content code:not([data-language]):not([data-theme]) {
+  background-color: rgba(175, 184, 193, 0.2);
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-size: 0.875em;
+}
+
+.dark .lesson-content code:not([data-language]):not([data-theme]) {
+  background-color: rgba(110, 118, 129, 0.4);
+}
+
+/* Code inside pre - no background, no padding */
+.lesson-content pre code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Line numbers (if enabled) */
+.lesson-content [data-line-numbers] code {
+  counter-reset: line;
+}
+
+.lesson-content [data-line-numbers] code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1.5rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: #6e7681;
+}
+
+/* Line highlighting */
+.lesson-content [data-highlighted-line] {
+  background-color: rgba(56, 139, 253, 0.15);
+  border-left: 2px solid #4493f8;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-left: calc(1rem - 2px);
+  padding-right: 1rem;
+}
+
+/* Word highlighting */
+.lesson-content [data-highlighted-chars] {
+  background-color: rgba(56, 139, 253, 0.25);
+  padding: 0.125rem 0.25rem;
+  border-radius: 4px;
+}
+
+/* =============================================
+   Copy Button Styles
+   ============================================= */
+
+/* Light mode copy button */
+.copy-code-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background-color: #eaeef2;
+  border: 1px solid #d1d9e0;
+  color: #656d76;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.copy-code-btn:hover {
+  background-color: #d1d9e0;
+  color: #1f2328;
+}
+
+.copy-code-btn.copied {
+  color: #1a7f37;
+}
+
+/* Dark mode copy button */
+.dark .copy-code-btn {
+  background-color: #21262d;
+  border-color: #30363d;
+  color: #848d97;
+}
+
+.dark .copy-code-btn:hover {
+  background-color: #30363d;
+  color: #e6edf3;
+}
+
+.dark .copy-code-btn.copied {
+  color: #3fb950;
+}
+
+/* Show on hover */
+pre:hover .copy-code-btn,
+.group:hover .copy-code-btn {
+  opacity: 1;
+}
+
+/* Always show on touch devices */
+@media (hover: none) {
+  .copy-code-btn {
+    opacity: 1;
+  }
 }

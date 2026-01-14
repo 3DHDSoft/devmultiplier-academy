@@ -4,11 +4,15 @@ import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft, ChevronLeft, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
 import fs from 'fs/promises';
 import path from 'path';
-import { remark } from 'remark';
-import html from 'remark-html';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import rehypePrettyCode from 'rehype-pretty-code';
 import './lesson.css';
 import { LessonProgress } from '@/components/ui/lesson-progress';
 import { ContentProtection } from '@/components/ui/content-protection';
+import { CodeBlockWrapper } from '@/components/ui/code-block-wrapper';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -132,9 +136,20 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
     const contentPath = path.join(process.cwd(), 'course-content', courseId, moduleId, fileName);
     const fileContent = await fs.readFile(contentPath, 'utf8');
 
-    // Convert markdown to HTML
-    const processedContent = await remark()
-      .use(html, { sanitize: false })
+    // Convert markdown to HTML with syntax highlighting
+    // Use dual themes for light/dark mode support
+    const processedContent = await unified()
+      .use(remarkParse)
+      .use(remarkRehype)
+      .use(rehypePrettyCode, {
+        theme: {
+          dark: 'github-dark',
+          light: 'github-light',
+        },
+        keepBackground: false, // We'll handle background in CSS
+        defaultLang: 'typescript',
+      })
+      .use(rehypeStringify)
       .process(fileContent);
 
     return processedContent.toString();
@@ -371,10 +386,12 @@ export default async function LessonPage({ params }: PageProps) {
             </div>
 
             {/* Lesson content */}
-            <article
-              className="lesson-content"
-              dangerouslySetInnerHTML={{ __html: content }}
-            />
+            <CodeBlockWrapper>
+              <article
+                className="lesson-content"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+            </CodeBlockWrapper>
           </div>
 
           {/* Navigation - GitHub style */}
