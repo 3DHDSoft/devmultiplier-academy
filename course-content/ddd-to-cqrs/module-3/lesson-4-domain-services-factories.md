@@ -1,4 +1,4 @@
-# Module 3, Lesson 4: Domain Services and Factories
+# Domain Services and Factories
 
 **Duration:** 17 minutes
 **Learning Objectives:**

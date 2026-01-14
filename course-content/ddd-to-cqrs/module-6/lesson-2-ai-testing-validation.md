@@ -1,4 +1,4 @@
-# Module 6, Lesson 2: AI-Assisted Testing and Validation
+# AI-Assisted Testing and Validation
 
 **Duration:** 30 minutes
 **Learning Objectives:**

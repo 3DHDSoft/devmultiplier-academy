@@ -1,4 +1,4 @@
-# Module 6, Lesson 1: AI for Boilerplate and Pattern Implementation
+# AI for Boilerplate and Pattern Implementation
 
 **Duration:** 30 minutes
 **Learning Objectives:**

@@ -1,4 +1,4 @@
-# Module 2, Lesson 1: Understanding Bounded Contexts
+# Understanding Bounded Contexts
 
 **Duration:** 18 minutes
 **Learning Objectives:**

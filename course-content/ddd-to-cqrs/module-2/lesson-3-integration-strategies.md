@@ -1,4 +1,4 @@
-# Module 2, Lesson 3: Integration Strategies
+# Integration Strategies
 
 **Duration:** 18 minutes
 **Learning Objectives:**

@@ -1,4 +1,4 @@
-# Module 1, Lesson 2: Ubiquitous Language & Domain Modeling
+# Ubiquitous Language & Domain Modeling
 
 **Duration:** 25 minutes
 **Learning Objectives:**

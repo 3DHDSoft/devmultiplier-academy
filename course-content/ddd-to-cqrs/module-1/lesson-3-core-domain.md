@@ -1,4 +1,4 @@
-# Module 1, Lesson 3: Identifying Your Core Domain
+# Identifying Your Core Domain
 
 **Duration:** 22 minutes
 **Learning Objectives:**

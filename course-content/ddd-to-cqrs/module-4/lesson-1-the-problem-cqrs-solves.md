@@ -1,4 +1,4 @@
-# Module 4, Lesson 1: The Problem CQRS Solves
+# The Problem CQRS Solves
 
 **Duration:** 20 minutes
 **Learning Objectives:**

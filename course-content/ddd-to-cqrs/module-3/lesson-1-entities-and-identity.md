@@ -1,4 +1,4 @@
-# Module 3, Lesson 1: Entities and Identity
+# Entities and Identity
 
 **Duration:** 18 minutes
 **Learning Objectives:**

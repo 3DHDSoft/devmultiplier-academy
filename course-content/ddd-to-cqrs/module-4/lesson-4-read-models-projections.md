@@ -1,4 +1,4 @@
-# Module 4, Lesson 4: Read Models and Projections
+# Read Models and Projections
 
 **Duration:** 20 minutes
 **Learning Objectives:**

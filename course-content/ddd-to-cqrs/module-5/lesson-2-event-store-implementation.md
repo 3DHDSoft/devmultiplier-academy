@@ -1,4 +1,4 @@
-# Module 5, Lesson 2: Event Store Implementation
+# Event Store Implementation
 
 **Duration:** 20 minutes
 **Learning Objectives:**
