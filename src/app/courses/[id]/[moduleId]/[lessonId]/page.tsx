@@ -6,6 +6,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
@@ -13,6 +14,7 @@ import './lesson.css';
 import { LessonProgress } from '@/components/ui/lesson-progress';
 import { ContentProtection } from '@/components/ui/content-protection';
 import { CodeBlockWrapper } from '@/components/ui/code-block-wrapper';
+import { MermaidRenderer } from '@/components/ui/mermaid-renderer';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -137,9 +139,11 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
     const fileContent = await fs.readFile(contentPath, 'utf8');
 
     // Convert markdown to HTML with syntax highlighting
+    // Mermaid diagrams are rendered client-side via MermaidRenderer component
     // Use dual themes for light/dark mode support
     const processedContent = await unified()
       .use(remarkParse)
+      .use(remarkGfm) // Enable GitHub Flavored Markdown (tables, strikethrough, etc.)
       .use(remarkRehype)
       .use(rehypePrettyCode, {
         theme: {
@@ -148,6 +152,7 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
         },
         keepBackground: false, // We'll handle background in CSS
         defaultLang: 'typescript',
+        filterMetaString: (meta) => meta.replace(/mermaid/g, ''), // Skip mermaid blocks
       })
       .use(rehypeStringify)
       .process(fileContent);
@@ -386,12 +391,14 @@ export default async function LessonPage({ params }: PageProps) {
             </div>
 
             {/* Lesson content */}
-            <CodeBlockWrapper>
-              <article
-                className="lesson-content"
-                dangerouslySetInnerHTML={{ __html: content }}
-              />
-            </CodeBlockWrapper>
+            <MermaidRenderer>
+              <CodeBlockWrapper>
+                <article
+                  className="lesson-content"
+                  dangerouslySetInnerHTML={{ __html: content }}
+                />
+              </CodeBlockWrapper>
+            </MermaidRenderer>
           </div>
 
           {/* Navigation - GitHub style */}

@@ -317,33 +317,38 @@ namespace Pricing {
 ### Directory Structure
 
 ```
-src/
-├── contexts/
-│   ├── sales/
-│   │   ├── domain/
-│   │   │   ├── Order.ts
-│   │   │   ├── Customer.ts
-│   │   │   └── events/
-│   │   ├── application/
-│   │   │   └── PlaceOrderHandler.ts
-│   │   ├── infrastructure/
-│   │   │   └── OrderRepository.ts
-│   │   └── api/
-│   │       └── routes.ts
-│   │
-│   ├── fulfillment/
-│   │   ├── domain/
-│   │   │   ├── Shipment.ts
-│   │   │   └── Inventory.ts
-│   │   ├── application/
-│   │   └── infrastructure/
-│   │
-│   └── billing/
-│       ├── domain/
-│       │   ├── Invoice.ts
-│       │   └── Payment.ts
-│       └── application/
+📦 src/
+└── 📁 contexts/
+    ├── 📁 sales/                        # Sales bounded context
+    │   ├── 📁 domain/
+    │   │   ├── 📄 Order.ts              # Order aggregate
+    │   │   ├── 📄 Customer.ts           # Customer entity
+    │   │   └── 📁 events/               # Domain events
+    │   ├── 📁 application/
+    │   │   └── 📄 PlaceOrderHandler.ts  # Command handler
+    │   ├── 📁 infrastructure/
+    │   │   └── 📄 OrderRepository.ts    # Persistence
+    │   └── 📁 api/
+    │       └── 📄 routes.ts             # HTTP endpoints
+    │
+    ├── 📁 fulfillment/                  # Fulfillment bounded context
+    │   ├── 📁 domain/
+    │   │   ├── 📄 Shipment.ts           # Shipment aggregate
+    │   │   └── 📄 Inventory.ts          # Inventory aggregate
+    │   ├── 📁 application/
+    │   └── 📁 infrastructure/
+    │
+    └── 📁 billing/                      # Billing bounded context
+        ├── 📁 domain/
+        │   ├── 📄 Invoice.ts            # Invoice aggregate
+        │   └── 📄 Payment.ts            # Payment entity
+        └── 📁 application/
 ```
+
+**Legend:**
+- 📦 Project root
+- 📁 Directory
+- 📄 File
 
 ### Namespace Isolation
 

@@ -1,7 +1,7 @@
 # Strategic Design in Microservices
 
-**Duration:** 17 minutes
-**Learning Objectives:**
+**Duration:** 17 minutes **Learning Objectives:**
+
 - Align bounded contexts with microservice boundaries
 - Design inter-service communication patterns
 - Handle distributed data and transactions
@@ -11,32 +11,47 @@
 
 ## Introduction
 
-Bounded Contexts and microservices are natural allies—each bounded context can become a microservice. However, the relationship isn't always one-to-one, and microservices introduce significant complexity. This lesson shows you how to apply DDD strategic design to microservices architecture.
+Bounded Contexts and microservices are natural allies—each bounded context can become a microservice. However, the
+relationship isn't always one-to-one, and microservices introduce significant complexity. This lesson shows you how to
+apply DDD strategic design to microservices architecture.
 
 ## Bounded Context = Microservice?
 
 ### The Ideal Alignment
 
-```typescript
-/*
-┌──────────────────────────────────────────────────────────┐
-│                   E-Commerce System                      │
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐       │
-│  │  Catalog   │  │   Sales    │  │ Fulfillment│       │
-│  │  Service   │  │  Service   │  │  Service   │       │
-│  │            │  │            │  │            │       │
-│  │ - Products │  │ - Orders   │  │ - Shipments│       │
-│  │ - Categories│  │ - Carts    │  │ - Inventory│       │
-│  └────────────┘  └────────────┘  └────────────┘       │
-│        │               │                │               │
-│        └───────────────┴────────────────┘               │
-│                Event Bus / API Gateway                   │
-└──────────────────────────────────────────────────────────┘
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart TB
+    subgraph SYSTEM ["E-Commerce System"]
+        direction LR
+        CATALOG["Catalog Service<br/>Products, Categories"]
+        SALES["Sales Service<br/>Orders, Carts"]
+        FULFILLMENT["Fulfillment Service<br/>Shipments, Inventory"]
 
-One Bounded Context = One Microservice
-*/
+        CATALOG --- BUS
+        SALES --- BUS
+        FULFILLMENT --- BUS
+        BUS["Event Bus / API Gateway"]
+    end
+
+    NOTE["One Bounded Context = One Microservice"]
+
+    style SYSTEM fill:#f8fafc,stroke:#475569,stroke-width:2px
+    style CATALOG fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style SALES fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style FULFILLMENT fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style BUS fill:#f1f5f9,stroke:#64748b,stroke-width:2px
+    style NOTE fill:#fef3c7,stroke:#d97706,color:#92400e
 ```
 
 ### Implementation
@@ -54,9 +69,7 @@ export namespace CatalogService {
     }
 
     @Get('/products')
-    async searchProducts(
-      @Query('q') query: string
-    ): Promise<ProductDTO[]> {
+    async searchProducts(@Query('q') query: string): Promise<ProductDTO[]> {
       return await this.catalogService.search(query);
     }
   }
@@ -143,12 +156,12 @@ export namespace FulfillmentService {
 // ✅ Good: Each service is self-contained
 namespace CatalogService {
   // Everything Catalog needs is in Catalog
-  class Product { }
-  class Category { }
-  class ProductImage { }
-  class PriceCalculator { } // Catalog-specific pricing logic
-  class ProductRepository { }
-  class CategoryRepository { }
+  class Product {}
+  class Category {}
+  class ProductImage {}
+  class PriceCalculator {} // Catalog-specific pricing logic
+  class ProductRepository {}
+  class CategoryRepository {}
 }
 
 // ❌ Bad: Service depends heavily on others
@@ -175,10 +188,7 @@ namespace GoodOrderService {
 
     calculateTotal(): Money {
       // All data local, no network calls
-      return this.items.reduce(
-        (sum, item) => sum.add(item.subtotal),
-        Money.zero()
-      );
+      return this.items.reduce((sum, item) => sum.add(item.subtotal), Money.zero());
     }
   }
 
@@ -238,9 +248,10 @@ class CatalogDatabase {
 // ❌ ANTI-PATTERN: Shared database
 class SharedDatabase {
   tables: {
-    products: { };  // Both Catalog and Sales access
-    orders: { };    // Tight coupling
-    order_items: {  // Foreign keys across services
+    products: {}; // Both Catalog and Sales access
+    orders: {}; // Tight coupling
+    order_items: {
+      // Foreign keys across services
       product_id: string; // REFERENCES products(id)
     };
   };
@@ -256,27 +267,27 @@ class SharedDatabase {
 // SALES SERVICE - Denormalized product data
 interface OrderItem {
   productId: string;
-  productName: string;        // Duplicated from Catalog
-  priceAtPurchase: number;    // Duplicated from Catalog (snapshot)
+  productName: string; // Duplicated from Catalog
+  priceAtPurchase: number; // Duplicated from Catalog (snapshot)
   quantity: number;
 }
 
 // FULFILLMENT SERVICE - Different view of same product
 interface ShipmentItem {
   productId: string;
-  productSKU: string;         // Different data from Catalog
-  weight: number;             // Fulfillment-specific
-  dimensions: Dimensions;     // Fulfillment-specific
-  warehouseLocation: string;  // Fulfillment-specific
+  productSKU: string; // Different data from Catalog
+  weight: number; // Fulfillment-specific
+  dimensions: Dimensions; // Fulfillment-specific
+  warehouseLocation: string; // Fulfillment-specific
 }
 
 // RECOMMENDATION SERVICE - Another view
 interface ProductAnalytics {
   productId: string;
-  categoryName: string;       // Duplicated from Catalog
-  purchaseCount: number;      // Recommendation-specific
-  averageRating: number;      // Recommendation-specific
-  viewCount: number;          // Recommendation-specific
+  categoryName: string; // Duplicated from Catalog
+  purchaseCount: number; // Recommendation-specific
+  averageRating: number; // Recommendation-specific
+  viewCount: number; // Recommendation-specific
 }
 
 // Each service stores what it needs
@@ -290,9 +301,7 @@ interface ProductAnalytics {
 ```typescript
 // For queries that need immediate response
 export class OrderService {
-  constructor(
-    private readonly catalogClient: CatalogServiceClient
-  ) {}
+  constructor(private readonly catalogClient: CatalogServiceClient) {}
 
   async validateOrder(dto: CreateOrderDTO): Promise<void> {
     // Synchronous call to Catalog
@@ -325,9 +334,7 @@ export class CatalogServiceClient {
 
     try {
       // Call with circuit breaker
-      const product = await this.circuitBreaker.execute(() =>
-        this.httpClient.get(`/api/catalog/products/${id}`)
-      );
+      const product = await this.circuitBreaker.execute(() => this.httpClient.get(`/api/catalog/products/${id}`));
 
       // Cache result
       await this.cache.set(`product:${id}`, product, { ttl: 300 });
@@ -355,15 +362,7 @@ export class Order {
     this.status = OrderStatus.Placed;
 
     // Publish event (async)
-    this.addDomainEvent(
-      new OrderPlaced(
-        this.id,
-        this.customerId,
-        this.items,
-        this.total,
-        this.shippingAddress
-      )
-    );
+    this.addDomainEvent(new OrderPlaced(this.id, this.customerId, this.items, this.total, this.shippingAddress));
   }
 }
 
@@ -527,38 +526,33 @@ export class ECommerceMonolith {
 
 ### Microservices are NOT Free
 
-```typescript
-/*
-Costs of Microservices:
-┌────────────────────────────────────────────────────────┐
-│ 1. Operational Complexity                             │
-│    - Multiple deployments                              │
-│    - Service discovery                                 │
-│    - Load balancing                                    │
-│    - Monitoring distributed systems                    │
-│                                                        │
-│ 2. Data Consistency Challenges                        │
-│    - No ACID transactions across services              │
-│    - Eventual consistency                              │
-│    - Saga pattern complexity                           │
-│                                                        │
-│ 3. Testing Complexity                                  │
-│    - Integration testing across services               │
-│    - Contract testing                                  │
-│    - End-to-end testing                                │
-│                                                        │
-│ 4. Performance Overhead                                │
-│    - Network latency                                   │
-│    - Serialization/deserialization                     │
-│    - Multiple network calls                            │
-│                                                        │
-│ 5. Development Overhead                                │
-│    - Shared libraries                                  │
-│    - API versioning                                    │
-│    - Local development environment                     │
-└────────────────────────────────────────────────────────┘
-*/
-```
+**Costs of Microservices:**
+
+1. **Operational Complexity**
+   - Multiple deployments
+   - Service discovery
+   - Load balancing
+   - Monitoring distributed systems
+
+2. **Data Consistency Challenges**
+   - No ACID transactions across services
+   - Eventual consistency
+   - Saga pattern complexity
+
+3. **Testing Complexity**
+   - Integration testing across services
+   - Contract testing
+   - End-to-end testing
+
+4. **Performance Overhead**
+   - Network latency
+   - Serialization/deserialization
+   - Multiple network calls
+
+5. **Development Overhead**
+   - Shared libraries
+   - API versioning
+   - Local development environment
 
 ## Key Takeaways
 
@@ -571,15 +565,14 @@ Costs of Microservices:
 
 ## Common Mistakes
 
-❌ **Shared database** - Couples services at data layer
-❌ **Too many sync calls** - Network becomes bottleneck
-❌ **Microservices too early** - Premature optimization
-❌ **Wrong boundaries** - Services that need constant coordination
+❌ **Shared database** - Couples services at data layer ❌ **Too many sync calls** - Network becomes bottleneck ❌
+**Microservices too early** - Premature optimization ❌ **Wrong boundaries** - Services that need constant coordination
 ❌ **No clear ownership** - Multiple teams touching same service
 
 ## Next Steps
 
-This concludes Module 2! In Module 3, we'll dive into **Aggregates & Tactical Patterns**—the building blocks of your domain model.
+This concludes Module 2! In Module 3, we'll dive into **Aggregates & Tactical Patterns**—the building blocks of your
+domain model.
 
 ## Hands-On Exercise
 
@@ -595,11 +588,23 @@ For a system you know:
    - How does it integrate with others?
 
 3. **Draw architecture:**
-   ```
-   [Service A] ──REST──> [Service B]
-        │
-        └──Events──> [Service C]
-   ```
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'lineColor': '#475569',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart LR
+    A["Service A"] -->|REST| B["Service B"]
+    A -->|Events| C["Service C"]
+
+    style A fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style B fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style C fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+```
 
 4. **Design one saga:**
    - Multi-step process across services
@@ -611,5 +616,4 @@ For a system you know:
 
 ---
 
-**Time to complete:** 60 minutes
-**Difficulty:** Advanced
+**Time to complete:** 60 minutes **Difficulty:** Advanced

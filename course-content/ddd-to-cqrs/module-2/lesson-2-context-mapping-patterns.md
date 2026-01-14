@@ -20,23 +20,40 @@ A context map is a visual representation showing:
 - Integration patterns used
 - Team ownership
 
-```
-┌─────────────┐
-│   Catalog   │ (Team A)
-└──────┬──────┘
-       │ Open Host Service
-       │ (REST API)
-       │
-       ↓
-┌─────────────┐      Anti-Corruption Layer      ┌─────────────┐
-│    Sales    │◄────────────────────────────────│ Legacy ERP  │
-└──────┬──────┘                                  └─────────────┘
-       │ Published Language
-       │ (Domain Events)
-       ↓
-┌─────────────┐
-│ Fulfillment │ (Team B)
-└─────────────┘
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart TB
+    subgraph TEAM_A ["Team A"]
+        CATALOG["Catalog"]
+    end
+
+    subgraph TEAM_B ["Team B"]
+        FULFILLMENT["Fulfillment"]
+    end
+
+    SALES["Sales"]
+    LEGACY["Legacy ERP"]
+
+    CATALOG -->|"Open Host Service<br/>(REST API)"| SALES
+    LEGACY -->|"Anti-Corruption Layer"| SALES
+    SALES -->|"Published Language<br/>(Domain Events)"| FULFILLMENT
+
+    style TEAM_A fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style TEAM_B fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style CATALOG fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style SALES fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style FULFILLMENT fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style LEGACY fill:#ffcdd2,stroke:#c62828,color:#b71c1c
 ```
 
 ## Pattern 1: Shared Kernel

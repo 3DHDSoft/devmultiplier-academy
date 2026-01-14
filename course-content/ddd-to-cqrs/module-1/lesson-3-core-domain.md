@@ -1,7 +1,7 @@
 # Identifying Your Core Domain
 
-**Duration:** 22 minutes
-**Learning Objectives:**
+**Duration:** 22 minutes **Learning Objectives:**
+
 - Distinguish between core, supporting, and generic subdomains
 - Apply investment strategies based on domain classification
 - Make strategic decisions about build vs buy
@@ -10,14 +10,18 @@
 
 ## Introduction
 
-Not all code is created equal. Some parts of your system are your competitive advantage—the unique value proposition that sets your business apart. Other parts are necessary but generic. DDD helps you make strategic decisions about where to invest your time, talent, and architectural sophistication.
+Not all code is created equal. Some parts of your system are your competitive advantage—the unique value proposition
+that sets your business apart. Other parts are necessary but generic. DDD helps you make strategic decisions about where
+to invest your time, talent, and architectural sophistication.
 
 ## The Three Types of Subdomains
 
 ### Core Domain
+
 **Definition:** The area that provides competitive advantage and differentiates your business.
 
 **Characteristics:**
+
 - Unique to your business
 - Complex business logic
 - Frequently changing
@@ -25,6 +29,7 @@ Not all code is created equal. Some parts of your system are your competitive ad
 - Cannot be bought off-the-shelf
 
 **Investment Strategy:**
+
 - Apply full DDD rigor
 - Assign best developers
 - Deep domain expert collaboration
@@ -32,6 +37,7 @@ Not all code is created equal. Some parts of your system are your competitive ad
 - Extensive testing
 
 **Example - E-Commerce Platform:**
+
 ```typescript
 // Core Domain: Dynamic Pricing Engine
 class PricingEngine {
@@ -43,10 +49,7 @@ class PricingEngine {
     const dynamicPrice = this.getMarketAdjustment(context.market);
     const competitorPrice = this.getCompetitorAdjustment(context.competitors);
 
-    return this.strategy.apply(
-      basePrice,
-      [customerTier, volumeDiscount, dynamicPrice, competitorPrice]
-    );
+    return this.strategy.apply(basePrice, [customerTier, volumeDiscount, dynamicPrice, competitorPrice]);
   }
 
   private getMarketAdjustment(market: MarketConditions): PriceAdjustment {
@@ -80,15 +83,18 @@ class PricingStrategy {
 ```
 
 ### Supporting Domain
+
 **Definition:** Necessary for the business but not a differentiator. Supports the core domain.
 
 **Characteristics:**
+
 - Specific to your business
 - Moderate complexity
 - Less frequently changing
 - Important but not unique
 
 **Investment Strategy:**
+
 - Apply DDD patterns selectively
 - Good developers, not necessarily your best
 - Some domain expert involvement
@@ -96,16 +102,13 @@ class PricingStrategy {
 - Standard testing practices
 
 **Example - E-Commerce Platform:**
+
 ```typescript
 // Supporting Domain: Inventory Management
 class InventoryTracker {
   private reservations = new Map<ProductId, Reservation[]>();
 
-  async reserveStock(
-    productId: ProductId,
-    quantity: number,
-    orderId: OrderId
-  ): Promise<StockReservation> {
+  async reserveStock(productId: ProductId, quantity: number, orderId: OrderId): Promise<StockReservation> {
     const available = await this.getAvailableStock(productId);
 
     if (available < quantity) {
@@ -120,10 +123,7 @@ class InventoryTracker {
       this.getExpirationTime()
     );
 
-    this.reservations.set(productId, [
-      ...(this.reservations.get(productId) || []),
-      reservation
-    ]);
+    this.reservations.set(productId, [...(this.reservations.get(productId) || []), reservation]);
 
     return reservation;
   }
@@ -144,21 +144,25 @@ interface StockReservation {
 ```
 
 ### Generic Domain
+
 **Definition:** Solved problems that every business needs. No competitive advantage.
 
 **Characteristics:**
+
 - Common to many businesses
 - Well-understood solutions exist
 - Rarely changes
 - Low differentiation value
 
 **Investment Strategy:**
+
 - Buy or use open-source
 - Minimal custom code
 - Standard implementations
 - Focus on integration, not innovation
 
 **Example - E-Commerce Platform:**
+
 ```typescript
 // Generic Domain: Authentication
 // DON'T build this yourself - use NextAuth, Auth0, Clerk, etc.
@@ -200,11 +204,7 @@ async function sendOrderConfirmation(order: Order) {
 // CORE DOMAIN: Adaptive Learning Algorithm
 class AdaptiveLearningEngine {
   // Proprietary logic that personalizes content
-  recommendNextLesson(
-    student: Student,
-    progress: LearningProgress,
-    performance: PerformanceMetrics
-  ): Lesson {
+  recommendNextLesson(student: Student, progress: LearningProgress, performance: PerformanceMetrics): Lesson {
     // Complex algorithm based on:
     // - Learning style preferences
     // - Historical performance patterns
@@ -239,7 +239,7 @@ class VideoService {
   async uploadVideo(file: File): Promise<VideoId> {
     const mux = new Mux();
     const upload = await mux.video.uploads.create({
-      new_asset_settings: { playback_policy: 'public' }
+      new_asset_settings: { playback_policy: 'public' },
     });
     // Delegate to specialized service
   }
@@ -270,11 +270,7 @@ class AppointmentScheduler {
 
 // SUPPORTING DOMAIN: Provider Availability
 class AvailabilityManager {
-  getAvailableSlots(
-    provider: Provider,
-    date: Date,
-    duration: Duration
-  ): TimeSlot[] {
+  getAvailableSlots(provider: Provider, date: Date, duration: Duration): TimeSlot[] {
     // Moderate complexity - important but not unique
     const schedule = provider.getSchedule(date);
     const existing = this.getExistingAppointments(provider, date);
@@ -327,47 +323,64 @@ For each subdomain, answer:
 
 ### Step 2: Create a Domain Map
 
-```typescript
-// Visual representation (as code comments)
-/*
-┌─────────────────────────────────────────────────┐
-│                 CORE DOMAIN                     │
-│                                                 │
-│  • Dynamic Pricing Engine                      │
-│  • Product Recommendation Algorithm            │
-│  • Fraud Detection System                      │
-│                                                 │
-│  Investment: 60% of engineering time           │
-│  Team: Senior developers + architects          │
-│  Patterns: Full DDD with event sourcing        │
-└─────────────────────────────────────────────────┘
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#e8f5e9',
+  'primaryTextColor': '#1b5e20',
+  'primaryBorderColor': '#2e7d32',
+  'lineColor': '#475569',
+  'secondaryColor': '#fff3e0',
+  'tertiaryColor': '#e3f2fd',
+  'background': '#ffffff',
+  'textColor': '#1f2328',
+  'fontFamily': 'system-ui, -apple-system, sans-serif'
+}}}%%
+flowchart TB
+    subgraph CORE ["CORE DOMAIN"]
+        direction TB
+        C1["Dynamic Pricing Engine"]
+        C2["Product Recommendation"]
+        C3["Fraud Detection"]
+    end
 
-┌─────────────────────────────────────────────────┐
-│              SUPPORTING DOMAIN                  │
-│                                                 │
-│  • Inventory Management                         │
-│  • Order Fulfillment                            │
-│  • Customer Support Ticketing                   │
-│                                                 │
-│  Investment: 30% of engineering time           │
-│  Team: Mid-level developers                     │
-│  Patterns: Selective DDD patterns               │
-└─────────────────────────────────────────────────┘
+    subgraph SUPPORTING ["SUPPORTING DOMAIN"]
+        direction TB
+        S1["Inventory Management"]
+        S2["Order Fulfillment"]
+        S3["Customer Ticketing"]
+    end
 
-┌─────────────────────────────────────────────────┐
-│              GENERIC DOMAIN                     │
-│                                                 │
-│  • Authentication (Auth0)                       │
-│  • Email (SendGrid)                             │
-│  • Payment Processing (Stripe)                  │
-│  • Analytics (Google Analytics)                 │
-│                                                 │
-│  Investment: 10% of engineering time           │
-│  Team: Any developer                            │
-│  Patterns: Simple integration wrappers          │
-└─────────────────────────────────────────────────┘
-*/
+    subgraph GENERIC ["GENERIC DOMAIN"]
+        direction TB
+        G1["Auth (Auth0)"]
+        G2["Email (SendGrid)"]
+        G3["Payments (Stripe)"]
+        G4["Analytics (GA)"]
+    end
+
+    CORE ~~~ SUPPORTING
+    SUPPORTING ~~~ GENERIC
+
+    style CORE fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style SUPPORTING fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style GENERIC fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style C1 fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style C2 fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style C3 fill:#c8e6c9,stroke:#388e3c,color:#1b5e20
+    style S1 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style S2 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style S3 fill:#ffe0b2,stroke:#f57c00,color:#e65100
+    style G1 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style G2 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style G3 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
+    style G4 fill:#bbdefb,stroke:#1976d2,color:#0d47a1
 ```
+
+**Investment breakdown:**
+
+- **Core Domain (60%):** Senior developers + architects, full DDD with event sourcing
+- **Supporting Domain (30%):** Mid-level developers, selective DDD patterns
+- **Generic Domain (10%):** Any developer, simple integration wrappers
 
 ## Strategic Mistakes to Avoid
 
@@ -515,15 +528,15 @@ For each feature, explain:
 
 ## Common Pitfalls
 
-❌ **Over-engineering generic domains** - Building custom auth when Auth0 exists
-❌ **Under-investing in core** - Treating competitive advantage as CRUD
-❌ **Misclassifying domains** - Letting technical preferences override business needs
-❌ **Static classification** - Not re-evaluating as business evolves
-❌ **Ignoring build vs buy** - Always building when buying would be faster/better
+❌ **Over-engineering generic domains** - Building custom auth when Auth0 exists ❌ **Under-investing in core** -
+Treating competitive advantage as CRUD ❌ **Misclassifying domains** - Letting technical preferences override business
+needs ❌ **Static classification** - Not re-evaluating as business evolves ❌ **Ignoring build vs buy** - Always
+building when buying would be faster/better
 
 ## Next Steps
 
-In the next lesson, we'll cover **Domain Modeling Techniques**—practical exercises for extracting models from business conversations.
+In the next lesson, we'll cover **Domain Modeling Techniques**—practical exercises for extracting models from business
+conversations.
 
 ## Hands-On Exercise
 
@@ -534,6 +547,7 @@ For your current project (or a system you know well):
 1. **List all major features/subsystems** (aim for 8-12)
 
 2. **Classify each** as Core, Supporting, or Generic using the decision framework:
+
    ```
    Feature: _____________
    Uniqueness: 1-5 (1=everyone does it, 5=only we do it)
@@ -581,7 +595,6 @@ RECOMMENDATION:
 
 ---
 
-**Time to complete:** 60 minutes
-**Difficulty:** Intermediate
+**Time to complete:** 60 minutes **Difficulty:** Intermediate
 
 Share your classification and recommendations in the course forum!

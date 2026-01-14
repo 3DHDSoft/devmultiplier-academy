@@ -979,29 +979,32 @@ In the next lesson, we'll explore **Value Objects**—the immutable complements 
 
 Implement a `Subscription` entity for a SaaS application:
 
-```typescript
-// Requirements:
-// 1. Identity: SubscriptionId (UUID)
-// 2. Attributes:
-//    - customerId
-//    - planId
-//    - status (Trial, Active, Cancelled, Expired)
-//    - startDate
-//    - expiryDate
-// 3. Methods:
-//    - create() factory
-//    - activate()
-//    - cancel()
-//    - renew()
-//    - isActive()
-// 4. Business rules:
-//    - Cannot cancel already cancelled subscription
-//    - Cannot activate expired subscription
-//    - Renewal extends expiry date by plan duration
-// 5. Emit domain events for all state changes
+**Requirements:**
 
-// Try implementing it yourself, then check the solution below
-```
+1. **Identity:** SubscriptionId (UUID)
+
+2. **Attributes:**
+   - customerId
+   - planId
+   - status (Trial, Active, Cancelled, Expired)
+   - startDate
+   - expiryDate
+
+3. **Methods:**
+   - `create()` factory
+   - `activate()`
+   - `cancel()`
+   - `renew()`
+   - `isActive()`
+
+4. **Business rules:**
+   - Cannot cancel already cancelled subscription
+   - Cannot activate expired subscription
+   - Renewal extends expiry date by plan duration
+
+5. **Emit domain events** for all state changes
+
+*Try implementing it yourself, then check the solution below.*
 
 **Solution:**
 
