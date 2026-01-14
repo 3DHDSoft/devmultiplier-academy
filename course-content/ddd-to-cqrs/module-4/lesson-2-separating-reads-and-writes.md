@@ -1,4 +1,4 @@
-# Module 4, Lesson 2: Separating Reads and Writes
+# Separating Reads and Writes
 
 **Duration:** 22 minutes
 **Learning Objectives:**

@@ -1,4 +1,4 @@
-# Module 1, Lesson 4: Domain Modeling Techniques
+# Domain Modeling Techniques
 
 **Duration:** 28 minutes
 **Learning Objectives:**

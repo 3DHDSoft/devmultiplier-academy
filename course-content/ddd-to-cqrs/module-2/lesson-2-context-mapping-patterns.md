@@ -1,4 +1,4 @@
-# Module 2, Lesson 2: Context Mapping Patterns
+# Context Mapping Patterns
 
 **Duration:** 20 minutes
 **Learning Objectives:**

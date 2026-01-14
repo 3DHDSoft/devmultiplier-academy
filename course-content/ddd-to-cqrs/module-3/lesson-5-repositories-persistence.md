@@ -1,4 +1,4 @@
-# Module 3, Lesson 5: Repositories and Persistence
+# Repositories and Persistence
 
 **Duration:** 17 minutes
 **Learning Objectives:**

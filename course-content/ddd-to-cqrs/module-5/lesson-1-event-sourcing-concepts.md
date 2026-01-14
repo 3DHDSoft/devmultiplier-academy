@@ -1,4 +1,4 @@
-# Module 5, Lesson 1: Event Sourcing Concepts
+# Event Sourcing Concepts
 
 **Duration:** 20 minutes
 **Learning Objectives:**

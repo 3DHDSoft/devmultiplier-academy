@@ -1,4 +1,4 @@
-# Module 3, Lesson 2: Value Objects
+# Value Objects
 
 **Duration:** 18 minutes
 **Learning Objectives:**

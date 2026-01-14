@@ -1,4 +1,4 @@
-# Module 2, Lesson 5: Strategic Design in Microservices
+# Strategic Design in Microservices
 
 **Duration:** 17 minutes
 **Learning Objectives:**

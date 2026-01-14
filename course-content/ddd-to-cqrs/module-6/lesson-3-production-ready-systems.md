@@ -1,4 +1,4 @@
-# Module 6, Lesson 3: Production-Ready DDD/CQRS Systems with AI
+# Production-Ready DDD/CQRS Systems with AI
 
 **Duration:** 30 minutes
 **Learning Objectives:**

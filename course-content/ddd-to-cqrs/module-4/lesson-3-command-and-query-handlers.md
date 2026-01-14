@@ -1,4 +1,4 @@
-# Module 4, Lesson 3: Command and Query Handlers
+# Command and Query Handlers
 
 **Duration:** 23 minutes
 **Learning Objectives:**

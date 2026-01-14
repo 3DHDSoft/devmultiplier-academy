@@ -1,4 +1,4 @@
-# Module 5, Lesson 3: Projections and Read Models
+# Projections and Read Models
 
 **Duration:** 20 minutes
 **Learning Objectives:**

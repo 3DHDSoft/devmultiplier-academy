@@ -1,4 +1,4 @@
-# Module 3, Lesson 3: Aggregates and Consistency Boundaries
+# Aggregates and Consistency Boundaries
 
 **Duration:** 20 minutes
 **Learning Objectives:**

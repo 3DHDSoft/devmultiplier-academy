@@ -1,4 +1,4 @@
-# Module 2, Lesson 4: Anti-Corruption Layers
+# Anti-Corruption Layers
 
 **Duration:** 17 minutes
 **Learning Objectives:**
