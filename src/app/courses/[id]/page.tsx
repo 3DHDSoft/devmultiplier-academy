@@ -8,14 +8,14 @@ import { EnrollmentCTA } from '@/components/ui/enrollment-cta';
 
 // Privileged email domains and specific emails that can access all courses
 const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
-const PRIVILEGED_EMAILS = ['3dhdsoft@gmail.com'];
+const PRIVILEGED_EMAILS = ['3dhdsoft@gmail.com', 'herb.coder@gmail.com'];
 // Blocked emails that should NOT have access even if on a privileged domain
 const BLOCKED_EMAILS = ['forbid@devmultiplier.com'];
 
 function isBlockedEmail(email: string | null | undefined): boolean {
   if (!email) return false;
   const emailLower = email.toLowerCase();
-  return BLOCKED_EMAILS.some(e => e.toLowerCase() === emailLower);
+  return BLOCKED_EMAILS.some((e) => e.toLowerCase() === emailLower);
 }
 
 function hasPrivilegedAccess(email: string | null | undefined): boolean {
@@ -28,13 +28,13 @@ function hasPrivilegedAccess(email: string | null | undefined): boolean {
   }
 
   // Check specific privileged emails
-  if (PRIVILEGED_EMAILS.some(e => e.toLowerCase() === emailLower)) {
+  if (PRIVILEGED_EMAILS.some((e) => e.toLowerCase() === emailLower)) {
     return true;
   }
 
   // Check privileged domains
   const domain = emailLower.split('@')[1];
-  if (domain && PRIVILEGED_DOMAINS.some(d => d.toLowerCase() === domain)) {
+  if (domain && PRIVILEGED_DOMAINS.some((d) => d.toLowerCase() === domain)) {
     return true;
   }
 
@@ -279,25 +279,36 @@ export default async function CourseDetailPage({ params }: PageProps) {
   // Check if user is explicitly blocked
   if (isBlockedEmail(userEmail)) {
     return (
-      <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117] flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white dark:bg-[#161b22] border border-[#d1d9e0] dark:border-[#30363d] rounded-lg p-8 text-center">
-          <div className="text-red-500 dark:text-red-400 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] px-4 dark:bg-[#0d1117]">
+        <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] bg-white p-8 text-center dark:border-[#30363d] dark:bg-[#161b22]">
+          <div className="mb-4 text-red-500 dark:text-red-400">
+            <svg
+              className="mx-auto h-16 w-16"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3] mb-2">
-            Access Denied
-          </h1>
-          <p className="text-[#656d76] dark:text-[#848d97] mb-6">
+          <h1 className="mb-2 text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Access Denied</h1>
+          <p className="mb-6 text-[#656d76] dark:text-[#848d97]">
             You are not allowed to view this course. Please contact support at{' '}
-            <a href="mailto:support@devmultiplier.com" className="text-[#0969da] dark:text-[#4493f8] hover:underline">
+            <a
+              href="mailto:support@devmultiplier.com"
+              className="text-[#0969da] hover:underline dark:text-[#4493f8]"
+            >
               support@devmultiplier.com
             </a>
           </p>
           <Link
             href="/courses"
-            className="inline-block bg-[#1f883d] dark:bg-[#238636] hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] text-white font-medium px-4 py-2 rounded-md transition-colors"
+            className="inline-block rounded-md bg-[#1f883d] px-4 py-2 font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
           >
             Back to Courses
           </Link>
@@ -344,12 +355,12 @@ export default async function CourseDetailPage({ params }: PageProps) {
   const Icon = course.icon;
 
   return (
-    <div className="bg-white dark:bg-[#0d1117] py-8 sm:py-12 min-h-screen">
+    <div className="min-h-screen bg-white py-8 sm:py-12 dark:bg-[#0d1117]">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         {/* Back link */}
         <Link
           href="/courses"
-          className="text-[#656d76] dark:text-[#848d97] hover:text-[#0969da] dark:hover:text-[#4493f8] mb-8 inline-flex items-center gap-2 text-sm transition-colors"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to all courses
@@ -357,19 +368,21 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
         {/* Header */}
         <div className="mb-12">
-          <div className="bg-[#1f2328] dark:bg-[#e6edf3] mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl text-white dark:text-[#0d1117]">
+          <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-[#1f2328] text-white dark:bg-[#e6edf3] dark:text-[#0d1117]">
             <Icon className="h-8 w-8" />
           </div>
-          <h1 className="text-[#1f2328] dark:text-[#e6edf3] mb-4 text-4xl font-semibold tracking-tight">{course.title}</h1>
-          <p className="text-[#656d76] dark:text-[#848d97] text-lg">{course.description}</p>
+          <h1 className="mb-4 text-4xl font-semibold tracking-tight text-[#1f2328] dark:text-[#e6edf3]">
+            {course.title}
+          </h1>
+          <p className="text-lg text-[#656d76] dark:text-[#848d97]">{course.description}</p>
 
           {/* Meta */}
           <div className="mt-6 flex flex-wrap items-center gap-6">
-            <div className="text-[#656d76] dark:text-[#848d97] flex items-center gap-2">
+            <div className="flex items-center gap-2 text-[#656d76] dark:text-[#848d97]">
               <Clock className="h-5 w-5" />
               <span>{course.duration}</span>
             </div>
-            <div className="text-[#656d76] dark:text-[#848d97] flex items-center gap-2">
+            <div className="flex items-center gap-2 text-[#656d76] dark:text-[#848d97]">
               <BookOpen className="h-5 w-5" />
               <span>{course.lessons} lessons</span>
             </div>
@@ -380,7 +393,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
             {course.topics.map((topic) => (
               <span
                 key={topic}
-                className="bg-[#ddf4ff] dark:bg-[#388bfd26] text-[#0969da] dark:text-[#4493f8] border border-[#54aeff66] dark:border-[#4493f866] inline-block rounded-full px-3 py-1 text-xs font-medium"
+                className="inline-block rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-3 py-1 text-xs font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]"
               >
                 {topic}
               </span>
@@ -390,31 +403,38 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
         {/* About section */}
         <div className="mb-12">
-          <h2 className="text-[#1f2328] dark:text-[#e6edf3] mb-4 text-2xl font-semibold">About this course</h2>
-          <div className="text-[#1f2328] dark:text-[#e6edf3] prose prose-lg max-w-none dark:prose-invert">
+          <h2 className="mb-4 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">About this course</h2>
+          <div className="prose prose-lg dark:prose-invert max-w-none text-[#1f2328] dark:text-[#e6edf3]">
             {course.longDescription.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="text-[#1f2328] dark:text-[#e6edf3] mb-4">{paragraph}</p>
+              <p
+                key={index}
+                className="mb-4 text-[#1f2328] dark:text-[#e6edf3]"
+              >
+                {paragraph}
+              </p>
             ))}
           </div>
         </div>
 
         {/* Curriculum - GitHub style list */}
         <div className="mb-12">
-          <h2 className="text-[#1f2328] dark:text-[#e6edf3] mb-6 text-2xl font-semibold">Curriculum</h2>
-          <div className="border-[#d1d9e0] dark:border-[#30363d] divide-[#d1d9e0] dark:divide-[#30363d] divide-y rounded-md border bg-white dark:bg-[#161b22]">
+          <h2 className="mb-6 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Curriculum</h2>
+          <div className="divide-y divide-[#d1d9e0] rounded-md border border-[#d1d9e0] bg-white dark:divide-[#30363d] dark:border-[#30363d] dark:bg-[#161b22]">
             {course.modules.map((module, index) => (
               <Link
                 key={module.title}
                 href={`/courses/${course.id}/module-${index + 1}/lesson-1`}
-                className="flex items-center justify-between p-4 hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] transition-colors group"
+                className="group flex items-center justify-between p-4 transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]"
               >
                 <div className="flex items-center gap-4">
-                  <span className="bg-[#f6f8fa] dark:bg-[#21262d] text-[#656d76] dark:text-[#848d97] flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium group-hover:bg-[#0969da] dark:group-hover:bg-[#4493f8] group-hover:text-white transition-colors">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f6f8fa] text-sm font-medium text-[#656d76] transition-colors group-hover:bg-[#0969da] group-hover:text-white dark:bg-[#21262d] dark:text-[#848d97] dark:group-hover:bg-[#4493f8]">
                     {index + 1}
                   </span>
-                  <span className="text-[#1f2328] dark:text-[#e6edf3] font-medium group-hover:text-[#0969da] dark:group-hover:text-[#4493f8] transition-colors">{module.title}</span>
+                  <span className="font-medium text-[#1f2328] transition-colors group-hover:text-[#0969da] dark:text-[#e6edf3] dark:group-hover:text-[#4493f8]">
+                    {module.title}
+                  </span>
                 </div>
-                <span className="text-[#656d76] dark:text-[#848d97] text-sm">{module.lessons} lessons</span>
+                <span className="text-sm text-[#656d76] dark:text-[#848d97]">{module.lessons} lessons</span>
               </Link>
             ))}
           </div>
