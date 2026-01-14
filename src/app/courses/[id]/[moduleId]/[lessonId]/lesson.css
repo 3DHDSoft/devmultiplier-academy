@@ -227,3 +227,80 @@
 .dark .lesson-content img {
   border-color: #30363d;
 }
+
+/* =============================================
+   Content Protection Styles (DRM)
+   ============================================= */
+
+/* Disable text selection on protected content */
+.protected-content {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Disable image dragging */
+.protected-content img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+/* Disable printing of protected content */
+@media print {
+  .protected-content {
+    display: none !important;
+  }
+
+  .print-blocked-message {
+    display: block !important;
+  }
+}
+
+.print-blocked-message {
+  display: none;
+}
+
+/* Watermark overlay styles */
+.watermark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.watermark-text {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.03);
+  transform: rotate(-30deg);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.dark .watermark-text {
+  color: rgba(255, 255, 255, 0.03);
+}
+
+/* DevTools detection blur */
+.content-blurred {
+  filter: blur(10px);
+  transition: filter 0.3s ease;
+}
+
+/* Code block protection - slightly more permissive for learning */
+.protected-content pre,
+.protected-content code {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

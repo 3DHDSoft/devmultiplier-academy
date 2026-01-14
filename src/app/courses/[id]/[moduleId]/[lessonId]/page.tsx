@@ -8,6 +8,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 import './lesson.css';
 import { LessonProgress } from '@/components/ui/lesson-progress';
+import { ContentProtection } from '@/components/ui/content-protection';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -309,108 +310,113 @@ export default async function LessonPage({ params }: PageProps) {
   const { module, lesson, prevLesson, nextLesson, progress } = navInfo;
 
   return (
-    <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
-      {/* Header - GitHub style */}
-      <div className="bg-white dark:bg-[#161b22] border-b border-[#d1d9e0] dark:border-[#30363d] sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+    <ContentProtection userEmail={userEmail} enabled={true}>
+      <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
+        {/* Header - GitHub style */}
+        <div className="bg-white dark:bg-[#161b22] border-b border-[#d1d9e0] dark:border-[#30363d] sticky top-0 z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Link
+                  href={`/courses/${id}`}
+                  className="flex items-center gap-2 text-[#656d76] dark:text-[#848d97] hover:text-[#0969da] dark:hover:text-[#4493f8] transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                  <span>Back to Course</span>
+                </Link>
+                <div className="hidden md:flex items-center gap-2 text-sm text-[#656d76] dark:text-[#848d97]">
+                  <span>{module.title}</span>
+                  <span>•</span>
+                  <span>Lesson {progress.current} of {progress.total}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 text-sm text-[#656d76] dark:text-[#848d97]">
+                  <Clock className="w-4 h-4" />
+                  <span>{lesson.duration}</span>
+                </div>
+                <LessonProgress
+                  courseSlug={id}
+                  moduleId={moduleId}
+                  lessonId={lessonId}
+                  totalLessons={progress.total}
+                  currentLessonNumber={progress.current}
+                />
+              </div>
+            </div>
+
+            {/* Progress bar - GitHub style */}
+            <div className="mt-4">
+              <div className="w-full bg-[#d1d9e0] dark:bg-[#30363d] rounded-full h-2">
+                <div
+                  className="bg-[#1f883d] dark:bg-[#3fb950] h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="bg-white dark:bg-[#161b22] rounded-md border border-[#d1d9e0] dark:border-[#30363d] p-8">
+            {/* Module badge - GitHub style */}
+            <div className="mb-4 flex items-center gap-3">
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-base font-medium bg-[#ddf4ff] dark:bg-[#388bfd26] text-[#0969da] dark:text-[#4493f8] border border-[#54aeff66] dark:border-[#4493f866]">
+                {module.title}
+              </span>
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-base font-medium bg-[#ddf4ff] dark:bg-[#388bfd26] text-[#0969da] dark:text-[#4493f8] border border-[#54aeff66] dark:border-[#4493f866]">
+                Module {moduleId.replace('module-', '')} - Lesson {lessonId.replace('lesson-', '')}
+              </span>
+            </div>
+
+            {/* Lesson content */}
+            <article
+              className="lesson-content"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </div>
+
+          {/* Navigation - GitHub style */}
+          <div className="mt-8 flex items-center justify-between gap-4">
+            {prevLesson ? (
+              <Link
+                href={`/courses/${id}/${prevLesson.moduleId}/${prevLesson.lessonId}`}
+                className="flex items-center gap-2 px-4 py-2 bg-[#f6f8fa] dark:bg-[#21262d] border border-[#d1d9e0] dark:border-[#30363d] rounded-md hover:bg-[#f3f4f6] dark:hover:bg-[#30363d] transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5 text-[#656d76] dark:text-[#848d97]" />
+                <div className="text-left">
+                  <div className="text-xs text-[#656d76] dark:text-[#848d97]">Previous</div>
+                  <div className="font-medium text-[#1f2328] dark:text-[#e6edf3] text-sm">{prevLesson.title}</div>
+                </div>
+              </Link>
+            ) : (
+              <div />
+            )}
+
+            {nextLesson ? (
+              <Link
+                href={`/courses/${id}/${nextLesson.moduleId}/${nextLesson.lessonId}`}
+                className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors ml-auto"
+              >
+                <div className="text-right">
+                  <div className="text-xs opacity-80">Next</div>
+                  <div className="font-medium text-sm">{nextLesson.title}</div>
+                </div>
+                <ChevronRight className="w-5 h-5" />
+              </Link>
+            ) : (
               <Link
                 href={`/courses/${id}`}
-                className="flex items-center gap-2 text-[#656d76] dark:text-[#848d97] hover:text-[#0969da] dark:hover:text-[#4493f8] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors ml-auto"
               >
-                <ArrowLeft className="w-5 h-5" />
-                <span>Back to Course</span>
+                <CheckCircle2 className="w-5 h-5" />
+                <span className="font-medium text-sm">Course Complete!</span>
               </Link>
-              <div className="hidden md:flex items-center gap-2 text-sm text-[#656d76] dark:text-[#848d97]">
-                <span>{module.title}</span>
-                <span>•</span>
-                <span>Lesson {progress.current} of {progress.total}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-[#656d76] dark:text-[#848d97]">
-                <Clock className="w-4 h-4" />
-                <span>{lesson.duration}</span>
-              </div>
-              <LessonProgress
-                courseSlug={id}
-                moduleId={moduleId}
-                lessonId={lessonId}
-                totalLessons={progress.total}
-                currentLessonNumber={progress.current}
-              />
-            </div>
-          </div>
-
-          {/* Progress bar - GitHub style */}
-          <div className="mt-4">
-            <div className="w-full bg-[#d1d9e0] dark:bg-[#30363d] rounded-full h-2">
-              <div
-                className="bg-[#1f883d] dark:bg-[#3fb950] h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(progress.current / progress.total) * 100}%` }}
-              />
-            </div>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white dark:bg-[#161b22] rounded-md border border-[#d1d9e0] dark:border-[#30363d] p-8">
-          {/* Module badge - GitHub style */}
-          <div className="mb-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#ddf4ff] dark:bg-[#388bfd26] text-[#0969da] dark:text-[#4493f8] border border-[#54aeff66] dark:border-[#4493f866]">
-              {module.title}
-            </span>
-          </div>
-
-          {/* Lesson content */}
-          <article
-            className="lesson-content"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </div>
-
-        {/* Navigation - GitHub style */}
-        <div className="mt-8 flex items-center justify-between gap-4">
-          {prevLesson ? (
-            <Link
-              href={`/courses/${id}/${prevLesson.moduleId}/${prevLesson.lessonId}`}
-              className="flex items-center gap-2 px-4 py-2 bg-[#f6f8fa] dark:bg-[#21262d] border border-[#d1d9e0] dark:border-[#30363d] rounded-md hover:bg-[#f3f4f6] dark:hover:bg-[#30363d] transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5 text-[#656d76] dark:text-[#848d97]" />
-              <div className="text-left">
-                <div className="text-xs text-[#656d76] dark:text-[#848d97]">Previous</div>
-                <div className="font-medium text-[#1f2328] dark:text-[#e6edf3] text-sm">{prevLesson.title}</div>
-              </div>
-            </Link>
-          ) : (
-            <div />
-          )}
-
-          {nextLesson ? (
-            <Link
-              href={`/courses/${id}/${nextLesson.moduleId}/${nextLesson.lessonId}`}
-              className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors ml-auto"
-            >
-              <div className="text-right">
-                <div className="text-xs opacity-80">Next</div>
-                <div className="font-medium text-sm">{nextLesson.title}</div>
-              </div>
-              <ChevronRight className="w-5 h-5" />
-            </Link>
-          ) : (
-            <Link
-              href={`/courses/${id}`}
-              className="flex items-center gap-2 px-4 py-2 bg-[#1f883d] dark:bg-[#238636] text-white rounded-md hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] transition-colors ml-auto"
-            >
-              <CheckCircle2 className="w-5 h-5" />
-              <span className="font-medium text-sm">Course Complete!</span>
-            </Link>
-          )}
-        </div>
-      </div>
-    </div>
+    </ContentProtection>
   );
 }
