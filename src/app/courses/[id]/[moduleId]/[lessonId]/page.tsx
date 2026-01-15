@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { ArrowLeft, ChevronLeft, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Clock } from 'lucide-react';
 import fs from 'fs/promises';
 import path from 'path';
 import { unified } from 'unified';
@@ -17,6 +17,7 @@ import { LessonProgress } from '@/components/ui/lesson-progress';
 import { ContentProtection } from '@/components/ui/content-protection';
 import { CodeBlockWrapper } from '@/components/ui/code-block-wrapper';
 import { MermaidRenderer } from '@/components/ui/mermaid-renderer';
+import { CourseNavigation } from '@/components/ui/course-navigation';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -544,9 +545,7 @@ export default async function LessonPage({ params }: PageProps) {
                 <div className="hidden items-center gap-2 text-sm text-[#656d76] md:flex dark:text-[#848d97]">
                   <span>{module.title}</span>
                   <span>•</span>
-                  <span>
-                    Lesson {progress.current} of {progress.total}
-                  </span>
+                  <span>Lesson {lessonId.replace('lesson-', '')}</span>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -585,7 +584,7 @@ export default async function LessonPage({ params }: PageProps) {
                 {module.title}
               </span>
               <span className="inline-flex items-center rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-4 py-2 text-base font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]">
-                Module {moduleId.replace('module-', '')} - Lesson {lessonId.replace('lesson-', '')}
+                Lesson {lessonId.replace('lesson-', '')}
               </span>
             </div>
 
@@ -600,44 +599,26 @@ export default async function LessonPage({ params }: PageProps) {
             </MermaidRenderer>
           </div>
 
-          {/* Navigation - GitHub style */}
-          <div className="mt-8 flex items-center justify-between gap-4">
-            {prevLesson ? (
-              <Link
-                href={`/courses/${id}/${prevLesson.moduleId}/${prevLesson.lessonId}`}
-                className="flex items-center gap-2 rounded-md border border-[#d1d9e0] bg-[#f6f8fa] px-4 py-2 transition-colors hover:bg-[#f3f4f6] dark:border-[#30363d] dark:bg-[#21262d] dark:hover:bg-[#30363d]"
-              >
-                <ChevronLeft className="h-5 w-5 text-[#656d76] dark:text-[#848d97]" />
-                <div className="text-left">
-                  <div className="text-xs text-[#656d76] dark:text-[#848d97]">Previous</div>
-                  <div className="text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">{prevLesson.title}</div>
-                </div>
-              </Link>
-            ) : (
-              <div />
-            )}
-
-            {nextLesson ? (
-              <Link
-                href={`/courses/${id}/${nextLesson.moduleId}/${nextLesson.lessonId}`}
-                className="ml-auto flex items-center gap-2 rounded-md bg-[#1f883d] px-4 py-2 text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-              >
-                <div className="text-right">
-                  <div className="text-xs opacity-80">Next</div>
-                  <div className="text-sm font-medium">{nextLesson.title}</div>
-                </div>
-                <ChevronRight className="h-5 w-5" />
-              </Link>
-            ) : (
-              <Link
-                href={`/courses/${id}`}
-                className="ml-auto flex items-center gap-2 rounded-md bg-[#1f883d] px-4 py-2 text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-              >
-                <CheckCircle2 className="h-5 w-5" />
-                <span className="text-sm font-medium">Course Complete!</span>
-              </Link>
-            )}
-          </div>
+          {/* Table Navigation */}
+          <CourseNavigation
+            previous={
+              prevLesson
+                ? {
+                    href: `/courses/${id}/${prevLesson.moduleId}/${prevLesson.lessonId}`,
+                    label: prevLesson.title,
+                  }
+                : null
+            }
+            up={{ href: `/courses/${id}`, label: module.title }}
+            next={
+              nextLesson
+                ? {
+                    href: `/courses/${id}/${nextLesson.moduleId}/${nextLesson.lessonId}`,
+                    label: nextLesson.title,
+                  }
+                : null
+            }
+          />
         </div>
       </div>
     </ContentProtection>

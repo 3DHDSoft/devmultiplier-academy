@@ -5,6 +5,7 @@ import { ArrowLeft, Clock, BookOpen, Database, Layers, Server, Layout, Bot } fro
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/auth';
 import { EnrollmentCTA } from '@/components/ui/enrollment-cta';
+import { CourseNavigation } from '@/components/ui/course-navigation';
 
 // Privileged email domains and specific emails that can access all courses
 const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
@@ -446,6 +447,20 @@ export default async function CourseDetailPage({ params }: PageProps) {
           courseSlug={course.slug}
           price={course.price ?? undefined}
           currency={course.currency}
+        />
+
+        {/* Course Navigation */}
+        <CourseNavigation
+          previous={null}
+          up={{ href: '/courses', label: 'All Courses' }}
+          next={
+            course.modules.length > 0
+              ? {
+                  href: `/courses/${course.slug || course.id}/module-1/lesson-0`,
+                  label: course.modules[0].title,
+                }
+              : null
+          }
         />
       </div>
     </div>
