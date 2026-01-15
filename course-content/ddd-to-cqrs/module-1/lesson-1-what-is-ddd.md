@@ -354,11 +354,3 @@ For a project you're currently working on (or a familiar system):
 **Difficulty:** Beginner
 
 Share your answers in the course forum to get feedback from instructors and peers!
-
----
-
-## Navigation
-
-| Previous | Up | Next |
-|----------|-----|------|
-| [Lesson 0: GenAI Landscape](lesson-0-genai-landscape.md) | [Course Overview](../00-course-overview.md) | [Lesson 2: Ubiquitous Language](lesson-2-ubiquitous-language.md) |
