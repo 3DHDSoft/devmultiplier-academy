@@ -72,7 +72,7 @@ export function LanguageSelector({ currentLocale = 'en', onChange }: LanguageSel
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] flex items-center gap-1 text-sm font-medium transition-colors"
+        className="flex items-center gap-1 text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label="Select language"
@@ -83,7 +83,7 @@ export function LanguageSelector({ currentLocale = 'en', onChange }: LanguageSel
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 z-50 mt-2 min-w-[160px] rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] py-1 shadow-lg">
+        <div className="absolute top-full right-0 z-50 mt-2 min-w-[160px] rounded-md border border-[#d1d9e0] bg-white py-1 shadow-lg dark:border-[#30363d] dark:bg-[#161b22]">
           {LANGUAGES.map((language) => (
             <button
               key={language.code}
@@ -91,7 +91,7 @@ export function LanguageSelector({ currentLocale = 'en', onChange }: LanguageSel
               onClick={() => handleSelect(language.code)}
               className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] ${
                 selected === language.code
-                  ? 'text-[#1f2328] dark:text-[#e6edf3] bg-[#f6f8fa] dark:bg-[#21262d] font-medium'
+                  ? 'bg-[#f6f8fa] font-medium text-[#1f2328] dark:bg-[#21262d] dark:text-[#e6edf3]'
                   : 'text-[#656d76] dark:text-[#848d97]'
               }`}
               role="option"

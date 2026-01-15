@@ -1,11 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
 import { X } from 'lucide-react';
 import mermaid from 'mermaid';
 
 interface MermaidRendererProps {
   children: React.ReactNode;
+}
+
+// Debug logging - just uses console.log
+function logDebug(msg: string) {
+  console.log(`[MermaidRenderer] ${msg}`);
 }
 
 export function MermaidRenderer({ children }: MermaidRendererProps) {
@@ -30,8 +35,11 @@ export function MermaidRenderer({ children }: MermaidRendererProps) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [expandedSvg, closeExpanded]);
 
-  useEffect(() => {
+  // Function to process mermaid blocks
+  const processMermaidBlocks = useCallback(() => {
     if (!containerRef.current || initializedRef.current) return;
+
+    logDebug('Processing mermaid blocks...');
 
     // Initialize mermaid with theme settings
     const isDark = document.documentElement.classList.contains('dark');
@@ -45,11 +53,70 @@ export function MermaidRenderer({ children }: MermaidRendererProps) {
 
     // Find all mermaid code blocks - check multiple selectors since rehype-pretty-code
     // transforms the code blocks and adds data-language attribute
-    const mermaidBlocks = containerRef.current.querySelectorAll(
+    let mermaidBlocks = containerRef.current.querySelectorAll(
       'pre code.language-mermaid, code.language-mermaid, pre[data-language="mermaid"] code, code[data-language="mermaid"]'
     );
 
-    mermaidBlocks.forEach(async (block, index) => {
+    // Debug: log all pre elements
+    const allPres = containerRef.current.querySelectorAll('pre');
+    logDebug(`Found ${mermaidBlocks.length} mermaid blocks, ${allPres.length} total pre elements`);
+
+    // If standard selectors don't work, try finding pre elements with mermaid content
+    if (mermaidBlocks.length === 0 && allPres.length > 0) {
+      logDebug('Standard selectors failed, checking pre content...');
+
+      // Look for pre elements that contain mermaid diagram syntax
+      const mermaidPres: Element[] = [];
+      allPres.forEach((pre, i) => {
+        const dataLang = pre.getAttribute('data-language');
+        const codeEl = pre.querySelector('code');
+        const codeClass = codeEl?.className || '';
+        const textContent = pre.textContent || '';
+
+        // Check various indicators of mermaid content
+        const isMermaid =
+          dataLang === 'mermaid' ||
+          codeClass.includes('language-mermaid') ||
+          textContent.includes('%%{init:') ||
+          (textContent.includes('graph ') && (textContent.includes('-->') || textContent.includes('---'))) ||
+          (textContent.includes('flowchart ') && textContent.includes('-->')) ||
+          textContent.includes('sequenceDiagram') ||
+          textContent.includes('classDiagram') ||
+          textContent.includes('stateDiagram') ||
+          textContent.includes('erDiagram') ||
+          textContent.includes('journey') ||
+          textContent.includes('gantt') ||
+          textContent.includes('pie title');
+
+        if (i < 5) {
+          // Only log first 5 pre elements
+          logDebug(`Pre ${i}: lang="${dataLang}", class="${codeClass.substring(0, 30)}", mermaid=${isMermaid}`);
+        }
+        if (isMermaid && codeEl) {
+          mermaidPres.push(codeEl);
+        }
+      });
+
+      if (mermaidPres.length > 0) {
+        logDebug(`Found ${mermaidPres.length} mermaid blocks via content analysis`);
+        mermaidBlocks = mermaidPres as unknown as NodeListOf<Element>;
+      }
+    }
+
+    if (mermaidBlocks.length === 0) {
+      const containerHTML = containerRef.current.innerHTML;
+      logDebug(`No mermaid found. HTML length: ${containerHTML.length}`);
+      if (containerHTML.length < 100) {
+        logDebug(`Container empty or minimal: "${containerHTML.substring(0, 100)}"`);
+      }
+      return; // Don't mark as initialized if nothing found
+    }
+
+    // Convert to array to ensure consistent iteration
+    const blocksArray = Array.from(mermaidBlocks);
+    logDebug(`Processing ${blocksArray.length} mermaid blocks`);
+
+    blocksArray.forEach(async (block, index) => {
       const code = block.textContent || '';
       if (!code.trim()) return;
 
@@ -58,7 +125,9 @@ export function MermaidRenderer({ children }: MermaidRendererProps) {
       container.className = 'mermaid-diagram';
 
       try {
+        logDebug(`Rendering block ${index}...`);
         const { svg } = await mermaid.render(`mermaid-${index}-${Date.now()}`, code);
+        logDebug(`Block ${index} rendered OK!`);
 
         // Create wrapper with expand button
         const wrapper = document.createElement('div');
@@ -102,7 +171,58 @@ export function MermaidRenderer({ children }: MermaidRendererProps) {
     });
 
     initializedRef.current = true;
-  }, [children]);
+  }, []);
+
+  // Use useLayoutEffect for synchronous DOM processing after render
+  useLayoutEffect(() => {
+    if (!containerRef.current) {
+      return;
+    }
+
+    // Try to process immediately
+    processMermaidBlocks();
+
+    // Also retry after a short delay to handle hydration timing issues
+    const retryTimeout = setTimeout(() => {
+      if (!initializedRef.current) {
+        logDebug('Retry 1 (100ms)...');
+        processMermaidBlocks();
+      }
+    }, 100);
+
+    // And another retry after more time for slow-loading content
+    const secondRetryTimeout = setTimeout(() => {
+      if (!initializedRef.current) {
+        logDebug('Retry 2 (500ms)...');
+        processMermaidBlocks();
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(retryTimeout);
+      clearTimeout(secondRetryTimeout);
+    };
+  }, [processMermaidBlocks]);
+
+  // Also use useEffect as backup with MutationObserver for any async content loading
+  useEffect(() => {
+    if (!containerRef.current || initializedRef.current) return;
+
+    // Set up observer for content changes
+    const observer = new MutationObserver(() => {
+      processMermaidBlocks();
+      if (initializedRef.current) {
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(containerRef.current, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
+  }, [children, processMermaidBlocks]);
 
   // Re-render on theme change
   useEffect(() => {

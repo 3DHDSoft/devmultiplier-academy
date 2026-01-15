@@ -69,10 +69,7 @@ export const POST = withErrorHandling(
     // Send the verification email
     await sendEmailVerification(normalizedEmail, user.name, verificationToken);
 
-    authLogger.info(
-      { userId: user.id, email: normalizedEmail },
-      'Verification email resent'
-    );
+    authLogger.info({ userId: user.id, email: normalizedEmail }, 'Verification email resent');
 
     return NextResponse.json({
       success: true,

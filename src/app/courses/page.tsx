@@ -65,12 +65,14 @@ const courses = [
 
 export default function CoursesPage() {
   return (
-    <div className="bg-white dark:bg-[#0d1117] py-8 sm:py-12">
+    <div className="bg-white py-8 sm:py-12 dark:bg-[#0d1117]">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-[#1f2328] dark:text-[#e6edf3] text-4xl font-bold tracking-tight sm:text-5xl">Our Courses</h1>
-          <p className="text-[#656d76] dark:text-[#848d97] mt-4 text-lg">
+          <h1 className="text-4xl font-bold tracking-tight text-[#1f2328] sm:text-5xl dark:text-[#e6edf3]">
+            Our Courses
+          </h1>
+          <p className="mt-4 text-lg text-[#656d76] dark:text-[#848d97]">
             Comprehensive, expert-led courses designed to transform how you architect, build, and ship production
             software.
           </p>
@@ -82,24 +84,26 @@ export default function CoursesPage() {
             <Link
               key={course.id}
               href={`/courses/${course.id}`}
-              className="group border-[#d1d9e0] dark:border-[#30363d] hover:border-[#0969da] dark:hover:border-[#4493f8] flex flex-col rounded-2xl border bg-white dark:bg-[#161b22] p-6 transition-all hover:shadow-lg sm:flex-row sm:items-start sm:gap-6"
+              className="group flex flex-col rounded-2xl border border-[#d1d9e0] bg-white p-6 transition-all hover:border-[#0969da] hover:shadow-lg sm:flex-row sm:items-start sm:gap-6 dark:border-[#30363d] dark:bg-[#161b22] dark:hover:border-[#4493f8]"
             >
               {/* Icon */}
-              <div className="bg-[#1f2328] dark:bg-[#e6edf3] group-hover:bg-[#0969da] dark:group-hover:bg-[#4493f8] mb-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-white dark:text-[#0d1117] transition-colors sm:mb-0">
+              <div className="mb-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#1f2328] text-white transition-colors group-hover:bg-[#0969da] sm:mb-0 dark:bg-[#e6edf3] dark:text-[#0d1117] dark:group-hover:bg-[#4493f8]">
                 <course.icon className="h-7 w-7" />
               </div>
 
               {/* Content */}
               <div className="flex-grow">
                 <div className="flex items-start justify-between">
-                  <h2 className="text-[#1f2328] dark:text-[#e6edf3] group-hover:text-[#0969da] dark:group-hover:text-[#4493f8] text-xl font-semibold">{course.title}</h2>
-                  <ArrowRight className="text-[#0969da] dark:text-[#4493f8] h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <h2 className="text-xl font-semibold text-[#1f2328] group-hover:text-[#0969da] dark:text-[#e6edf3] dark:group-hover:text-[#4493f8]">
+                    {course.title}
+                  </h2>
+                  <ArrowRight className="h-5 w-5 text-[#0969da] opacity-0 transition-opacity group-hover:opacity-100 dark:text-[#4493f8]" />
                 </div>
 
-                <p className="text-[#656d76] dark:text-[#848d97] mt-2">{course.description}</p>
+                <p className="mt-2 text-[#656d76] dark:text-[#848d97]">{course.description}</p>
 
                 {/* Meta */}
-                <div className="text-[#656d76] dark:text-[#848d97] mt-4 flex flex-wrap items-center gap-4 text-sm">
+                <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#656d76] dark:text-[#848d97]">
                   <span>{course.duration}</span>
                   <span>•</span>
                   <span>{course.lessons} lessons</span>
@@ -110,7 +114,7 @@ export default function CoursesPage() {
                   {course.topics.map((topic) => (
                     <span
                       key={topic}
-                      className="bg-[#f6f8fa] dark:bg-[#21262d] text-[#1f2328] dark:text-[#e6edf3] border border-[#d1d9e0] dark:border-[#30363d] inline-block rounded-full px-3 py-1 text-xs font-medium"
+                      className="inline-block rounded-full border border-[#d1d9e0] bg-[#f6f8fa] px-3 py-1 text-xs font-medium text-[#1f2328] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3]"
                     >
                       {topic}
                     </span>

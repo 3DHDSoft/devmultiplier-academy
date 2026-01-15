@@ -52,7 +52,14 @@
   border-radius: 6px;
   font-size: 0.875em;
   color: #1f2328;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Menlo,
+    Consolas,
+    Liberation Mono,
+    monospace;
 }
 
 /* Light mode code blocks */
@@ -63,7 +70,14 @@
   border-radius: 6px;
   overflow-x: auto;
   margin: 1.5rem 0;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Menlo,
+    Consolas,
+    Liberation Mono,
+    monospace;
   border: 1px solid #d1d9e0;
 }
 
@@ -296,7 +310,10 @@
   font-size: 14px;
   color: rgba(0, 0, 0, 0.03);
   transform: rotate(-30deg);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .dark .watermark-text {
@@ -456,7 +473,9 @@
   color: #656d76;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -567,7 +586,9 @@ pre:hover .copy-code-btn,
   color: #656d76;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -671,7 +692,9 @@ pre:hover .copy-code-btn,
   border: 1px solid #d1d9e0;
   color: #656d76;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -64,13 +64,6 @@ export const Arrow: React.FC<ArrowProps> = ({
   const arrowPoint2X = currentEndX - arrowSize * Math.cos(angle + arrowAngle);
   const arrowPoint2Y = currentEndY - arrowSize * Math.sin(angle + arrowAngle);
 
-  // SVG viewBox to encompass the entire arrow
-  const padding = 20;
-  const minX = Math.min(fromX, toX) - padding;
-  const minY = Math.min(fromY, toY) - padding;
-  const maxX = Math.max(fromX, toX) + padding;
-  const maxY = Math.max(fromY, toY) + padding;
-
   // Label position (middle of arrow)
   const labelX = (fromX + toX) / 2;
   const labelY = (fromY + toY) / 2 - 30;

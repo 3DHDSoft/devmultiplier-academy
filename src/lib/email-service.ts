@@ -509,11 +509,7 @@ If you have any questions, please contact our support team.
 /**
  * Send email verification for new user registration
  */
-export async function sendEmailVerification(
-  email: string,
-  name: string | null,
-  token: string
-): Promise<void> {
+export async function sendEmailVerification(email: string, name: string | null, token: string): Promise<void> {
   const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
 
   const subject = 'Verify Your Email Address - Dev Academy';

@@ -620,8 +620,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('settings')}
               className={`border-b-2 pb-2 text-sm font-medium transition ${
                 activeTab === 'settings'
-                  ? 'border-[#0969da] dark:border-[#4493f8] text-[#0969da] dark:text-[#4493f8]'
-                  : 'border-transparent text-[#656d76] dark:text-[#848d97] hover:border-[#d1d9e0] dark:hover:border-[#30363d] hover:text-[#1f2328] dark:hover:text-[#e6edf3]'
+                  ? 'border-[#0969da] text-[#0969da] dark:border-[#4493f8] dark:text-[#4493f8]'
+                  : 'border-transparent text-[#656d76] hover:border-[#d1d9e0] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:border-[#30363d] dark:hover:text-[#e6edf3]'
               }`}
             >
               Settings
@@ -630,8 +630,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab('notifications')}
               className={`border-b-2 pb-2 text-sm font-medium transition ${
                 activeTab === 'notifications'
-                  ? 'border-[#0969da] dark:border-[#4493f8] text-[#0969da] dark:text-[#4493f8]'
-                  : 'border-transparent text-[#656d76] dark:text-[#848d97] hover:border-[#d1d9e0] dark:hover:border-[#30363d] hover:text-[#1f2328] dark:hover:text-[#e6edf3]'
+                  ? 'border-[#0969da] text-[#0969da] dark:border-[#4493f8] dark:text-[#4493f8]'
+                  : 'border-transparent text-[#656d76] hover:border-[#d1d9e0] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:border-[#30363d] dark:hover:text-[#e6edf3]'
               }`}
             >
               Notifications
@@ -641,14 +641,14 @@ export default function ProfilePage() {
 
         {/* Messages */}
         {error && (
-          <div className="mb-3 rounded-md bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-2.5 text-[#d1242f] dark:text-[#f85149]">
+          <div className="mb-3 rounded-md border border-[#ff818266] bg-[#ffebe9] p-2.5 text-[#d1242f] dark:border-[#f8514966] dark:bg-[#490202] dark:text-[#f85149]">
             <p className="text-sm font-medium">Error</p>
             <p className="text-sm">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="mb-3 rounded-md bg-[#dafbe1] dark:bg-[#2ea04326] border border-[#1f883d66] dark:border-[#3fb95066] p-2.5 text-[#1a7f37] dark:text-[#3fb950]">
+          <div className="mb-3 rounded-md border border-[#1f883d66] bg-[#dafbe1] p-2.5 text-[#1a7f37] dark:border-[#3fb95066] dark:bg-[#2ea04326] dark:text-[#3fb950]">
             <p className="text-sm font-medium">Profile updated successfully!</p>
           </div>
         )}
@@ -660,13 +660,13 @@ export default function ProfilePage() {
             className="space-y-4"
           >
             {/* Profile Photo Section */}
-            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+            <div className="rounded-lg border border-[#d1d9e0] bg-white p-4 shadow dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Profile Photo</h3>
 
               <div className="flex items-center gap-4">
                 {/* Avatar Display */}
                 <div className="relative">
-                  <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#21262d]">
+                  <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#d1d9e0] bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d]">
                     {formData.avatar ? (
                       <Image
                         src={formData.avatar}
@@ -693,7 +693,7 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-2">
                     <label
                       htmlFor="avatar-upload"
-                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d]"
+                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
                     >
                       <Camera className="h-4 w-4" />
                       Upload photo
@@ -711,24 +711,20 @@ export default function ProfilePage() {
                         type="button"
                         onClick={handleRemoveAvatar}
                         disabled={isUploadingAvatar || isRemovingAvatar}
-                        className="text-sm text-[#d1242f] dark:text-[#f85149] hover:underline disabled:opacity-50"
+                        className="text-sm text-[#d1242f] hover:underline disabled:opacity-50 dark:text-[#f85149]"
                       >
                         {isRemovingAvatar ? 'Removing...' : 'Remove'}
                       </button>
                     )}
                   </div>
-                  <p className="mt-1.5 text-xs text-[#656d76] dark:text-[#848d97]">
-                    JPG, PNG or GIF. Max size 5MB.
-                  </p>
-                  {avatarError && (
-                    <p className="mt-1 text-xs text-[#d1242f] dark:text-[#f85149]">{avatarError}</p>
-                  )}
+                  <p className="mt-1.5 text-xs text-[#656d76] dark:text-[#848d97]">JPG, PNG or GIF. Max size 5MB.</p>
+                  {avatarError && <p className="mt-1 text-xs text-[#d1242f] dark:text-[#f85149]">{avatarError}</p>}
                 </div>
               </div>
             </div>
 
             {/* Settings Section */}
-            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+            <div className="rounded-lg border border-[#d1d9e0] bg-white p-4 shadow dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Settings</h3>
 
               <div className="space-y-3">
@@ -747,7 +743,7 @@ export default function ProfilePage() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter your full name"
-                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                 </div>
 
@@ -766,13 +762,15 @@ export default function ProfilePage() {
                       name="email"
                       value={formData.email}
                       disabled
-                      className="block flex-1 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#656d76] dark:text-[#848d97]"
+                      className="block flex-1 rounded-md border border-[#d1d9e0] bg-[#f6f8fa] px-2.5 py-1.5 text-sm text-[#656d76] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#848d97]"
                     />
-                    <span className="rounded bg-[#dafbe1] dark:bg-[#2ea04326] px-2 py-0.5 text-xs text-[#1a7f37] dark:text-[#3fb950]">Verified</span>
+                    <span className="rounded bg-[#dafbe1] px-2 py-0.5 text-xs text-[#1a7f37] dark:bg-[#2ea04326] dark:text-[#3fb950]">
+                      Verified
+                    </span>
                     <button
                       type="button"
                       onClick={() => setShowEmailChangeModal(true)}
-                      className="rounded-md border border-[#0969da] dark:border-[#4493f8] px-2.5 py-1 text-xs font-medium text-[#0969da] dark:text-[#4493f8] transition hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]"
+                      className="rounded-md border border-[#0969da] px-2.5 py-1 text-xs font-medium text-[#0969da] transition hover:bg-[#f6f8fa] dark:border-[#4493f8] dark:text-[#4493f8] dark:hover:bg-[#21262d]"
                     >
                       Update email
                     </button>
@@ -792,7 +790,7 @@ export default function ProfilePage() {
                     name="locale"
                     value={formData.locale}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   >
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -817,7 +815,7 @@ export default function ProfilePage() {
                     name="timezone"
                     value={formData.timezone}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   >
                     <optgroup label="Americas">
                       <option value="Pacific/Honolulu">Honolulu - Hawaii (GMT-10)</option>
@@ -904,7 +902,7 @@ export default function ProfilePage() {
                     name="dashboardAppearance"
                     value={formData.dashboardAppearance}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   >
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
@@ -927,7 +925,7 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     rows={3}
                     placeholder="Tell us a little about yourself..."
-                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                 </div>
               </div>
@@ -938,7 +936,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] dark:bg-[#238636] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
               >
                 {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
@@ -946,14 +944,14 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d]"
+                className="rounded-md border border-[#d1d9e0] bg-white px-4 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
               >
                 Cancel
               </button>
             </div>
 
             {/* Active Sessions */}
-            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+            <div className="rounded-lg border border-[#d1d9e0] bg-white p-4 shadow dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Active sessions</h3>
 
               {loadingSessions ? (
@@ -963,7 +961,7 @@ export default function ProfilePage() {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="border-b border-[#d1d9e0] dark:border-[#30363d] text-xs text-[#656d76] dark:text-[#848d97]">
+                    <thead className="border-b border-[#d1d9e0] text-xs text-[#656d76] dark:border-[#30363d] dark:text-[#848d97]">
                       <tr>
                         <th className="pb-2 font-semibold">Device</th>
                         <th className="pb-2 font-semibold">Location</th>
@@ -1044,22 +1042,30 @@ export default function ProfilePage() {
                             return (
                               <tr
                                 key={key}
-                                className="border-b border-[#d1d9e0] dark:border-[#30363d] last:border-0"
+                                className="border-b border-[#d1d9e0] last:border-0 dark:border-[#30363d]"
                               >
                                 <td className="py-2">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-sm text-[#1f2328] dark:text-[#e6edf3]">{group.deviceDisplay}</span>
+                                    <span className="text-sm text-[#1f2328] dark:text-[#e6edf3]">
+                                      {group.deviceDisplay}
+                                    </span>
                                     {group.hasCurrentSession && (
-                                      <span className="rounded bg-[#ddf4ff] dark:bg-[#388bfd26] px-1.5 py-0.5 text-xs text-[#0969da] dark:text-[#4493f8]">
+                                      <span className="rounded bg-[#ddf4ff] px-1.5 py-0.5 text-xs text-[#0969da] dark:bg-[#388bfd26] dark:text-[#4493f8]">
                                         Current
                                       </span>
                                     )}
                                   </div>
                                 </td>
                                 <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{group.location}</td>
-                                <td className="py-2 text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">{group.sessions.length}</td>
-                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{formatDate(group.firstCreated)}</td>
-                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{formatDate(group.lastUpdated)}</td>
+                                <td className="py-2 text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">
+                                  {group.sessions.length}
+                                </td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">
+                                  {formatDate(group.firstCreated)}
+                                </td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">
+                                  {formatDate(group.lastUpdated)}
+                                </td>
                                 <td className="py-2 text-right">
                                   {group.hasCurrentSession ? (
                                     <span className="text-xs text-[#656d76] dark:text-[#848d97]">Current session</span>
@@ -1072,7 +1078,7 @@ export default function ProfilePage() {
                                         openTerminateModal(sessionIds);
                                       }}
                                       disabled={isTerminating}
-                                      className="text-[#d1242f] dark:text-[#f85149] hover:text-[#a40e26] dark:hover:text-[#ff7b72] disabled:opacity-50"
+                                      className="text-[#d1242f] hover:text-[#a40e26] disabled:opacity-50 dark:text-[#f85149] dark:hover:text-[#ff7b72]"
                                       title="Terminate all sessions"
                                     >
                                       {isTerminating ? (
@@ -1095,14 +1101,16 @@ export default function ProfilePage() {
             </div>
 
             {/* Danger Zone - Delete Profile Section */}
-            <div className="rounded-lg border-2 border-[#ff818266] dark:border-[#f8514966] bg-white dark:bg-[#161b22] p-4 shadow">
+            <div className="rounded-lg border-2 border-[#ff818266] bg-white p-4 shadow dark:border-[#f8514966] dark:bg-[#161b22]">
               <h3 className="mb-2 text-lg font-bold text-[#d1242f] dark:text-[#f85149]">Danger Zone</h3>
               <h4 className="mb-1 text-base font-semibold text-[#1f2328] dark:text-[#e6edf3]">Delete your profile</h4>
-              <p className="mb-3 text-sm text-[#656d76] dark:text-[#848d97]">Permanently delete the user {formData.email}</p>
+              <p className="mb-3 text-sm text-[#656d76] dark:text-[#848d97]">
+                Permanently delete the user {formData.email}
+              </p>
               <button
                 type="button"
                 onClick={() => setShowDeleteModal(true)}
-                className="rounded-md border border-[#d1242f] dark:border-[#f85149] px-3 py-1.5 text-sm font-medium text-[#d1242f] dark:text-[#f85149] transition hover:bg-[#ffebe9] dark:hover:bg-[#490202]"
+                className="rounded-md border border-[#d1242f] px-3 py-1.5 text-sm font-medium text-[#d1242f] transition hover:bg-[#ffebe9] dark:border-[#f85149] dark:text-[#f85149] dark:hover:bg-[#490202]"
               >
                 Delete User
               </button>
@@ -1116,7 +1124,7 @@ export default function ProfilePage() {
             onSubmit={handleSubmit}
             className="space-y-4"
           >
-            <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-4 shadow">
+            <div className="rounded-lg border border-[#d1d9e0] bg-white p-4 shadow dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Email Notifications</h3>
 
               <div className="space-y-2.5">
@@ -1128,7 +1136,7 @@ export default function ProfilePage() {
                     name="notifyOnCourseUpdates"
                     checked={formData.notifyOnCourseUpdates}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnCourseUpdates"
@@ -1149,7 +1157,7 @@ export default function ProfilePage() {
                     name="notifyOnNewCourses"
                     checked={formData.notifyOnNewCourses}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnNewCourses"
@@ -1170,13 +1178,15 @@ export default function ProfilePage() {
                     name="notifyOnCompletionReminders"
                     checked={formData.notifyOnCompletionReminders}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnCompletionReminders"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Completion reminders</span>
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
+                      Completion reminders
+                    </span>
                     <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Gentle reminders to help you complete your courses
                     </span>
@@ -1191,13 +1201,15 @@ export default function ProfilePage() {
                     name="notifyOnAchievements"
                     checked={formData.notifyOnAchievements}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnAchievements"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Achievements and milestones</span>
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
+                      Achievements and milestones
+                    </span>
                     <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Celebrate your learning progress with achievement notifications
                     </span>
@@ -1212,13 +1224,15 @@ export default function ProfilePage() {
                     name="notifyOnMessages"
                     checked={formData.notifyOnMessages}
                     onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] dark:border-[#30363d] text-[#0969da] dark:text-[#4493f8] focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
                   />
                   <label
                     htmlFor="notifyOnMessages"
                     className="flex-1"
                   >
-                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Messages and replies</span>
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
+                      Messages and replies
+                    </span>
                     <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
                       Get notified when instructors or students message you
                     </span>
@@ -1238,14 +1252,16 @@ export default function ProfilePage() {
                     name="emailDigestFrequency"
                     value={formData.emailDigestFrequency}
                     onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   >
                     <option value="none">Never</option>
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
-                  <p className="mt-1 text-sm text-[#656d76] dark:text-[#848d97]">Receive a summary of your activity and updates</p>
+                  <p className="mt-1 text-sm text-[#656d76] dark:text-[#848d97]">
+                    Receive a summary of your activity and updates
+                  </p>
                 </div>
               </div>
             </div>
@@ -1255,7 +1271,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] dark:bg-[#238636] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:opacity-50"
+                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
               >
                 {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
@@ -1263,7 +1279,7 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d]"
+                className="rounded-md border border-[#d1d9e0] bg-white px-4 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
               >
                 Cancel
               </button>
@@ -1273,12 +1289,12 @@ export default function ProfilePage() {
 
         {/* Email Change Modal */}
         {showEmailChangeModal && (
-          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
-            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow-xl">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 dark:bg-black/70">
+            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] bg-white p-6 shadow-xl dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-4 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Update Email Address</h3>
 
               {emailChangeSuccess ? (
-                <div className="rounded-lg bg-[#dafbe1] dark:bg-[#2ea04326] border border-[#1f883d66] dark:border-[#3fb95066] p-4">
+                <div className="rounded-lg border border-[#1f883d66] bg-[#dafbe1] p-4 dark:border-[#3fb95066] dark:bg-[#2ea04326]">
                   <p className="text-[#1a7f37] dark:text-[#3fb950]">
                     Verification email sent! Please check your new email inbox and click the verification link to
                     complete the change.
@@ -1286,7 +1302,7 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <>
-                  <div className="mb-4 rounded-lg bg-[#ddf4ff] dark:bg-[#388bfd26] border border-[#54aeff66] dark:border-[#4493f866] p-3">
+                  <div className="mb-4 rounded-lg border border-[#54aeff66] bg-[#ddf4ff] p-3 dark:border-[#4493f866] dark:bg-[#388bfd26]">
                     <p className="text-sm text-[#0969da] dark:text-[#4493f8]">
                       A verification link will be sent to your new email address. You&apos;ll need to click it to
                       complete the change.
@@ -1294,53 +1310,55 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Current Email</label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
+                      Current Email
+                    </label>
                     <input
                       type="email"
                       value={formData.email}
                       disabled
-                      className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#0d1117] px-3 py-2 text-[#656d76] dark:text-[#848d97]"
+                      className="w-full rounded-lg border border-[#d1d9e0] bg-[#f6f8fa] px-3 py-2 text-[#656d76] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#848d97]"
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">New Email Address</label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
+                      New Email Address
+                    </label>
                     <input
                       type="email"
                       value={newEmail}
                       onChange={(e) => setNewEmail(e.target.value)}
                       placeholder="Enter new email address"
-                      className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-2 focus:ring-[#0969da]/20 dark:focus:ring-[#4493f8]/20 focus:outline-none"
+                      className="w-full rounded-lg border border-[#d1d9e0] bg-white px-3 py-2 text-[#1f2328] placeholder-[#656d76] focus:border-[#0969da] focus:ring-2 focus:ring-[#0969da]/20 focus:outline-none dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]/20"
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Password</label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
+                      Password
+                    </label>
                     <div className="relative">
                       <input
                         type={showEmailPassword ? 'text' : 'password'}
                         value={emailChangePassword}
                         onChange={(e) => setEmailChangePassword(e.target.value)}
                         placeholder="Enter your password to confirm"
-                        className="w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 pr-10 text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-2 focus:ring-[#0969da]/20 dark:focus:ring-[#4493f8]/20 focus:outline-none"
+                        className="w-full rounded-lg border border-[#d1d9e0] bg-white px-3 py-2 pr-10 text-[#1f2328] placeholder-[#656d76] focus:border-[#0969da] focus:ring-2 focus:ring-[#0969da]/20 focus:outline-none dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]/20"
                       />
                       <button
                         type="button"
                         onClick={() => setShowEmailPassword(!showEmailPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] transition-colors"
+                        className="absolute top-1/2 right-3 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                         aria-label={showEmailPassword ? 'Hide password' : 'Show password'}
                       >
-                        {showEmailPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
+                        {showEmailPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
 
                   {error && (
-                    <div className="mb-4 rounded-lg bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-3">
+                    <div className="mb-4 rounded-lg border border-[#ff818266] bg-[#ffebe9] p-3 dark:border-[#f8514966] dark:bg-[#490202]">
                       <p className="text-sm text-[#d1242f] dark:text-[#f85149]">{error}</p>
                     </div>
                   )}
@@ -1349,7 +1367,7 @@ export default function ProfilePage() {
                     <button
                       onClick={handleEmailChange}
                       disabled={isChangingEmail || !newEmail || !emailChangePassword}
-                      className="flex-1 rounded-lg bg-[#1f883d] dark:bg-[#238636] px-4 py-2 font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:opacity-50"
+                      className="flex-1 rounded-lg bg-[#1f883d] px-4 py-2 font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
                     >
                       {isChangingEmail ? 'Sending...' : 'Send Verification Email'}
                     </button>
@@ -1361,7 +1379,7 @@ export default function ProfilePage() {
                         setError(null);
                       }}
                       disabled={isChangingEmail}
-                      className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-2 font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:opacity-50"
+                      className="rounded-lg border border-[#d1d9e0] bg-white px-4 py-2 font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
                     >
                       Cancel
                     </button>
@@ -1374,18 +1392,20 @@ export default function ProfilePage() {
 
         {/* Terminate Session Confirmation Modal */}
         {showTerminateModal && sessionToTerminate && (
-          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
-            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow-xl">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 dark:bg-black/70">
+            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] bg-white p-6 shadow-xl dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-4 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Terminate Session</h3>
 
-              <div className="mb-4 rounded-lg bg-[#fff8c5] dark:bg-[#bb800926] border border-[#d4a72c66] dark:border-[#bb800966] p-3">
+              <div className="mb-4 rounded-lg border border-[#d4a72c66] bg-[#fff8c5] p-3 dark:border-[#bb800966] dark:bg-[#bb800926]">
                 <p className="text-sm text-[#9a6700] dark:text-[#d29922]">
-                  <strong>Warning:</strong> This will log out the device(s) associated with this session. You may need to sign in again on those devices.
+                  <strong>Warning:</strong> This will log out the device(s) associated with this session. You may need
+                  to sign in again on those devices.
                 </p>
               </div>
 
               <p className="mb-6 text-sm text-[#656d76] dark:text-[#848d97]">
-                Are you sure you want to terminate {sessionToTerminate.includes(',') ? 'these sessions' : 'this session'}?
+                Are you sure you want to terminate{' '}
+                {sessionToTerminate.includes(',') ? 'these sessions' : 'this session'}?
               </p>
 
               <div className="flex gap-3">
@@ -1398,7 +1418,7 @@ export default function ProfilePage() {
                     }
                   }}
                   disabled={terminatingSessionId !== null}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] dark:bg-[#da3633] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] dark:hover:bg-[#f85149] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#da3633] dark:hover:bg-[#f85149]"
                 >
                   {terminatingSessionId !== null && <Loader2 className="h-4 w-4 animate-spin" />}
                   {terminatingSessionId !== null ? 'Terminating...' : 'Terminate'}
@@ -1406,7 +1426,7 @@ export default function ProfilePage() {
                 <button
                   onClick={closeTerminateModal}
                   disabled={terminatingSessionId !== null}
-                  className="flex-1 rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-2 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex-1 rounded-lg border border-[#d1d9e0] bg-white px-4 py-2 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
                 >
                   Cancel
                 </button>
@@ -1417,11 +1437,11 @@ export default function ProfilePage() {
 
         {/* Delete Account Modal */}
         {showDeleteModal && (
-          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 p-4">
-            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-6 shadow-xl">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 dark:bg-black/70">
+            <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] bg-white p-6 shadow-xl dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-4 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Delete Account</h3>
 
-              <div className="mb-4 rounded-lg bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-3">
+              <div className="mb-4 rounded-lg border border-[#ff818266] bg-[#ffebe9] p-3 dark:border-[#f8514966] dark:bg-[#490202]">
                 <p className="text-sm text-[#d1242f] dark:text-[#f85149]">
                   <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and
                   enrollments, will be permanently deleted.
@@ -1442,20 +1462,16 @@ export default function ProfilePage() {
                       id="deletePassword"
                       value={deletePassword}
                       onChange={(e) => setDeletePassword(e.target.value)}
-                      className="block w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 pr-10 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#d1242f] dark:focus:border-[#f85149] focus:ring-1 focus:ring-[#d1242f] dark:focus:ring-[#f85149]"
+                      className="block w-full rounded-lg border border-[#d1d9e0] bg-white px-3 py-2 pr-10 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#d1242f] focus:ring-1 focus:ring-[#d1242f] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#f85149] dark:focus:ring-[#f85149]"
                       placeholder="Enter your password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowDeletePassword(!showDeletePassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] transition-colors"
+                      className="absolute top-1/2 right-3 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                       aria-label={showDeletePassword ? 'Hide password' : 'Show password'}
                     >
-                      {showDeletePassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
+                      {showDeletePassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
@@ -1472,7 +1488,7 @@ export default function ProfilePage() {
                     id="deleteConfirmation"
                     value={deleteConfirmation}
                     onChange={(e) => setDeleteConfirmation(e.target.value)}
-                    className="mt-1 block w-full rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-3 py-2 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#d1242f] dark:focus:border-[#f85149] focus:ring-1 focus:ring-[#d1242f] dark:focus:ring-[#f85149]"
+                    className="mt-1 block w-full rounded-lg border border-[#d1d9e0] bg-white px-3 py-2 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#d1242f] focus:ring-1 focus:ring-[#d1242f] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#f85149] dark:focus:ring-[#f85149]"
                     placeholder="DELETE"
                   />
                 </div>
@@ -1482,7 +1498,7 @@ export default function ProfilePage() {
                 <button
                   onClick={handleDeleteAccount}
                   disabled={isDeleting || deleteConfirmation !== 'DELETE'}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] dark:bg-[#da3633] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] dark:hover:bg-[#f85149] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#da3633] dark:hover:bg-[#f85149]"
                 >
                   {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
                   {isDeleting ? 'Deleting...' : 'Delete Account'}
@@ -1495,7 +1511,7 @@ export default function ProfilePage() {
                     setError(null);
                   }}
                   disabled={isDeleting}
-                  className="flex-1 rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-4 py-2 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex-1 rounded-lg border border-[#d1d9e0] bg-white px-4 py-2 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
                 >
                   Cancel
                 </button>

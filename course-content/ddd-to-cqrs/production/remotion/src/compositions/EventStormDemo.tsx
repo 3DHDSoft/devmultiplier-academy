@@ -19,7 +19,6 @@ import { Arrow } from '../components/Arrow';
  */
 export const EventStormDemo: React.FC = () => {
   // Layout constants (2x resolution: 3200x900)
-  const SCALE = 2;
   const CONTEXT_Y = 110;
   const CONTEXT_HEIGHT = 520;
   const CONTEXT_WIDTH = 980;

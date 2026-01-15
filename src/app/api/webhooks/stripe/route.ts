@@ -147,9 +147,7 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
     return;
   }
 
-  const subscriptionId = typeof subscriptionField === 'string'
-    ? subscriptionField
-    : subscriptionField.id;
+  const subscriptionId = typeof subscriptionField === 'string' ? subscriptionField : subscriptionField.id;
 
   // Find the subscription in our database
   const subscription = await prisma.subscriptions.findUnique({
@@ -203,17 +201,14 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   });
 
   // Get period dates from subscription or use current date as fallback
-  const periodStart = sub.current_period_start
-    ? new Date(sub.current_period_start * 1000)
-    : new Date();
+  const periodStart = sub.current_period_start ? new Date(sub.current_period_start * 1000) : new Date();
   const periodEnd = sub.current_period_end
     ? new Date(sub.current_period_end * 1000)
     : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days from now as fallback
 
   if (!existingSubscription) {
     // New subscription - create it
-    const customerId =
-      typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id;
+    const customerId = typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id;
 
     // Find user by Stripe customer ID
     const user = await prisma.users.findFirst({
@@ -230,8 +225,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
         userId: user.id,
         stripeSubscriptionId: subscription.id,
         stripeCustomerId: customerId,
-        stripePriceId:
-          subscription.items.data[0]?.price.id || '',
+        stripePriceId: subscription.items.data[0]?.price.id || '',
         status: subscription.status,
         planType: determinePlanType(subscription),
         seatCount: subscription.items.data[0]?.quantity || 1,
@@ -358,10 +352,7 @@ async function createBundleEnrollments(userId: string, bundleId: string) {
     await createEnrollment(userId, courseId);
   }
 
-  externalLogger.info(
-    { userId, bundleId, courseCount: bundleCourses.length },
-    'Bundle enrollments created'
-  );
+  externalLogger.info({ userId, bundleId, courseCount: bundleCourses.length }, 'Bundle enrollments created');
 }
 
 /**

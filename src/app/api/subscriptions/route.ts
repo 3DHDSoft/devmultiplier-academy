@@ -38,9 +38,7 @@ export const GET = withErrorHandling(
     });
 
     // Get the active subscription if any
-    const activeSubscription = subscriptions.find(
-      (sub) => sub.status === 'active' || sub.status === 'trialing'
-    );
+    const activeSubscription = subscriptions.find((sub) => sub.status === 'active' || sub.status === 'trialing');
 
     return NextResponse.json({
       subscriptions,

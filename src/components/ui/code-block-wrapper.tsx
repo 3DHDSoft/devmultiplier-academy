@@ -52,11 +52,7 @@ export function CodeBlockWrapper({ children }: CodeBlockWrapperProps) {
     });
   }, [children]);
 
-  return (
-    <div ref={containerRef}>
-      {children}
-    </div>
-  );
+  return <div ref={containerRef}>{children}</div>;
 }
 
 function getCopyIcon() {
