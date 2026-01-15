@@ -37,7 +37,7 @@ export default function EnrollmentsPage() {
         {/* Back link */}
         <Link
           href="/dashboard"
-          className="text-[#656d76] dark:text-[#848d97] hover:text-[#0969da] dark:hover:text-[#4493f8] mb-8 inline-flex items-center gap-2 text-sm transition-colors"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Dashboard
@@ -45,12 +45,8 @@ export default function EnrollmentsPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#1f2328] dark:text-[#e6edf3] mb-2">
-            My Enrollments
-          </h1>
-          <p className="text-[#656d76] dark:text-[#848d97]">
-            Track your progress across all enrolled courses.
-          </p>
+          <h1 className="mb-2 text-3xl font-bold text-[#1f2328] dark:text-[#e6edf3]">My Enrollments</h1>
+          <p className="text-[#656d76] dark:text-[#848d97]">Track your progress across all enrolled courses.</p>
         </div>
 
         {/* Enrolled courses list */}

@@ -24,10 +24,7 @@ export function getStripeClient(): Stripe {
   if (!stripeClient) {
     const secretKey = process.env.STRIPE_SECRET_KEY;
     if (!secretKey) {
-      throw new ExternalServiceError(
-        'Stripe',
-        'STRIPE_SECRET_KEY environment variable is not set'
-      );
+      throw new ExternalServiceError('Stripe', 'STRIPE_SECRET_KEY environment variable is not set');
     }
 
     stripeClient = new Stripe(secretKey, {
@@ -58,9 +55,7 @@ export interface CreateCheckoutOptions {
 /**
  * Create a Stripe Checkout session
  */
-export async function createCheckoutSession(
-  options: CreateCheckoutOptions
-): Promise<Stripe.Checkout.Session> {
+export async function createCheckoutSession(options: CreateCheckoutOptions): Promise<Stripe.Checkout.Session> {
   const startTime = Date.now();
   const stripe = getStripeClient();
 
@@ -100,10 +95,7 @@ export async function createCheckoutSession(
 
     return session;
   } catch (error) {
-    externalLogger.error(
-      { err: error, duration: Date.now() - startTime },
-      'Failed to create Stripe checkout session'
-    );
+    externalLogger.error({ err: error, duration: Date.now() - startTime }, 'Failed to create Stripe checkout session');
     throw new ExternalServiceError('Stripe', 'Failed to create checkout session', {
       originalError: error,
     });
@@ -113,9 +105,7 @@ export async function createCheckoutSession(
 /**
  * Retrieve a checkout session by ID
  */
-export async function getCheckoutSession(
-  sessionId: string
-): Promise<Stripe.Checkout.Session> {
+export async function getCheckoutSession(sessionId: string): Promise<Stripe.Checkout.Session> {
   const stripe = getStripeClient();
 
   try {
@@ -137,11 +127,7 @@ export async function getCheckoutSession(
 /**
  * Get or create a Stripe customer for a user
  */
-export async function getOrCreateCustomer(
-  userId: string,
-  email: string,
-  name?: string
-): Promise<Stripe.Customer> {
+export async function getOrCreateCustomer(userId: string, email: string, name?: string): Promise<Stripe.Customer> {
   const stripe = getStripeClient();
   const startTime = Date.now();
 
@@ -161,17 +147,11 @@ export async function getOrCreateCustomer(
       metadata: { userId },
     });
 
-    externalLogger.info(
-      { customerId: customer.id, duration: Date.now() - startTime },
-      'Created new Stripe customer'
-    );
+    externalLogger.info({ customerId: customer.id, duration: Date.now() - startTime }, 'Created new Stripe customer');
 
     return customer;
   } catch (error) {
-    externalLogger.error(
-      { err: error, duration: Date.now() - startTime },
-      'Failed to get or create Stripe customer'
-    );
+    externalLogger.error({ err: error, duration: Date.now() - startTime }, 'Failed to get or create Stripe customer');
     throw new ExternalServiceError('Stripe', 'Failed to get or create customer', {
       originalError: error,
     });
@@ -263,18 +243,12 @@ export async function resumeSubscription(subscriptionId: string): Promise<Stripe
 /**
  * Verify a webhook signature and return the event
  */
-export function verifyWebhookSignature(
-  payload: string | Buffer,
-  signature: string
-): Stripe.Event {
+export function verifyWebhookSignature(payload: string | Buffer, signature: string): Stripe.Event {
   const stripe = getStripeClient();
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   if (!webhookSecret) {
-    throw new ExternalServiceError(
-      'Stripe',
-      'STRIPE_WEBHOOK_SECRET environment variable is not set'
-    );
+    throw new ExternalServiceError('Stripe', 'STRIPE_WEBHOOK_SECRET environment variable is not set');
   }
 
   try {

@@ -25,16 +25,16 @@ export function Header() {
   const displayName = contextUserName || session?.user?.name;
 
   return (
-    <header className="border-[#d1d9e0] dark:border-[#30363d] sticky top-0 z-50 w-full border-b bg-white dark:bg-[#161b22]">
+    <header className="sticky top-0 z-50 w-full border-b border-[#d1d9e0] bg-white dark:border-[#30363d] dark:bg-[#161b22]">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         {/* Logo */}
         <Link
           href="/"
           className="flex items-center"
         >
-          <span className="text-[#1f2328] dark:text-[#e6edf3] text-xl font-bold">D</span>
-          <span className="text-[#0969da] dark:text-[#4493f8] text-xl font-light">×</span>
-          <span className="text-[#1f2328] dark:text-[#e6edf3] ml-2 text-lg font-semibold">DevMultiplier</span>
+          <span className="text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">D</span>
+          <span className="text-xl font-light text-[#0969da] dark:text-[#4493f8]">×</span>
+          <span className="ml-2 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">DevMultiplier</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -43,7 +43,7 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] text-sm font-medium transition-colors"
+              className="text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
             >
               {item.name}
             </Link>
@@ -56,13 +56,13 @@ export function Header() {
             <>
               <Link
                 href="/login"
-                className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] text-sm font-medium transition-colors"
+                className="text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
               >
                 Login
               </Link>
               <Link
                 href="/register"
-                className="bg-[#1f883d] dark:bg-[#238636] hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] rounded-md px-4 py-2 text-sm font-medium text-white transition-colors"
+                className="rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
               >
                 Get Started
               </Link>
@@ -77,19 +77,23 @@ export function Header() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <span className="sr-only">Toggle menu</span>
-          {mobileMenuOpen ? <X className="text-[#1f2328] dark:text-[#e6edf3] h-6 w-6" /> : <Menu className="text-[#1f2328] dark:text-[#e6edf3] h-6 w-6" />}
+          {mobileMenuOpen ? (
+            <X className="h-6 w-6 text-[#1f2328] dark:text-[#e6edf3]" />
+          ) : (
+            <Menu className="h-6 w-6 text-[#1f2328] dark:text-[#e6edf3]" />
+          )}
         </button>
       </nav>
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-[#161b22]">
+        <div className="bg-white md:hidden dark:bg-[#161b22]">
           <div className="space-y-1 px-6 pb-4">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] block py-2 text-base font-medium"
+                className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
@@ -97,11 +101,11 @@ export function Header() {
             ))}
             <hr className="my-2 border-[#d1d9e0] dark:border-[#30363d]" />
             <div className="flex items-center justify-between py-2">
-              <span className="text-[#656d76] dark:text-[#848d97] text-base font-medium">Language</span>
+              <span className="text-base font-medium text-[#656d76] dark:text-[#848d97]">Language</span>
               <LanguageSelector />
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="text-[#656d76] dark:text-[#848d97] text-base font-medium">Appearance</span>
+              <span className="text-base font-medium text-[#656d76] dark:text-[#848d97]">Appearance</span>
               <AppearanceSelector />
             </div>
             <hr className="my-2 border-[#d1d9e0] dark:border-[#30363d]" />
@@ -113,7 +117,7 @@ export function Header() {
                 </div>
                 <Link
                   href="/profile"
-                  className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] block py-2 text-base font-medium"
+                  className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Edit Profile
@@ -123,7 +127,7 @@ export function Header() {
                     setMobileMenuOpen(false);
                     signOut({ redirectTo: '/login' });
                   }}
-                  className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] block w-full py-2 text-left text-base font-medium"
+                  className="block w-full py-2 text-left text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                 >
                   Sign Out
                 </button>
@@ -132,14 +136,14 @@ export function Header() {
               <>
                 <Link
                   href="/login"
-                  className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] block py-2 text-base font-medium"
+                  className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   href="/register"
-                  className="bg-[#1f883d] dark:bg-[#238636] hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] mt-2 block rounded-md px-4 py-2 text-center text-sm font-medium text-white"
+                  className="mt-2 block rounded-md bg-[#1f883d] px-4 py-2 text-center text-sm font-medium text-white hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Get Started

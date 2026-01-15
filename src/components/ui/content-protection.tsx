@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useState, ReactNode } from 'react';
+import { useEffect, useCallback, useState, useSyncExternalStore, ReactNode } from 'react';
 
 interface ContentProtectionProps {
   children: ReactNode;
@@ -20,27 +20,35 @@ interface ContentProtectionProps {
  * Note: These protections deter casual copying but can be bypassed by determined users.
  * The primary goal is to make unauthorized sharing traceable through watermarks.
  */
-export function ContentProtection({
-  children,
-  userEmail,
-  enabled = true,
-}: ContentProtectionProps) {
+export function ContentProtection({ children, userEmail, enabled = true }: ContentProtectionProps) {
   const [isDevToolsOpen, setIsDevToolsOpen] = useState(false);
+
+  // Use useSyncExternalStore to safely read browser state without hydration mismatch
+  const isLocalhost = useSyncExternalStore(
+    // Subscribe function - no-op since hostname doesn't change
+    () => () => {},
+    // Client snapshot
+    () => window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
+    // Server snapshot - always false on server
+    () => false
+  );
+
+  const isProtectionEnabled = enabled && !isLocalhost;
 
   // Block right-click context menu
   const handleContextMenu = useCallback(
     (e: MouseEvent) => {
-      if (!enabled) return;
+      if (!isProtectionEnabled) return;
       e.preventDefault();
       return false;
     },
-    [enabled]
+    [isProtectionEnabled]
   );
 
   // Block keyboard shortcuts for copying/saving
   const handleKeyDown = useCallback(
     (e: KeyboardEvent): void => {
-      if (!enabled) return;
+      if (!isProtectionEnabled) return;
 
       const blockedCombinations = [
         // Ctrl/Cmd + C (Copy)
@@ -75,12 +83,12 @@ export function ContentProtection({
         }
       }
     },
-    [enabled]
+    [isProtectionEnabled]
   );
 
   // Basic DevTools detection
   useEffect(() => {
-    if (!enabled) return;
+    if (!isProtectionEnabled) return;
 
     const checkDevTools = () => {
       const widthThreshold = window.outerWidth - window.innerWidth > 160;
@@ -100,11 +108,11 @@ export function ContentProtection({
     return () => {
       window.removeEventListener('resize', checkDevTools);
     };
-  }, [enabled]);
+  }, [isProtectionEnabled]);
 
   // Attach event listeners
   useEffect(() => {
-    if (!enabled) return;
+    if (!isProtectionEnabled) return;
 
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
@@ -113,11 +121,11 @@ export function ContentProtection({
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [enabled, handleContextMenu, handleKeyDown]);
+  }, [isProtectionEnabled, handleContextMenu, handleKeyDown]);
 
   // Disable drag events on the document
   useEffect(() => {
-    if (!enabled) return;
+    if (!isProtectionEnabled) return;
 
     const handleDragStart = (e: DragEvent) => {
       e.preventDefault();
@@ -129,9 +137,9 @@ export function ContentProtection({
     return () => {
       document.removeEventListener('dragstart', handleDragStart);
     };
-  }, [enabled]);
+  }, [isProtectionEnabled]);
 
-  if (!enabled) {
+  if (!isProtectionEnabled) {
     return <>{children}</>;
   }
 
@@ -145,26 +153,20 @@ export function ContentProtection({
 
       {/* Print blocked message (shown only when printing) */}
       <div className="print-blocked-message p-8 text-center">
-        <h2 className="text-xl font-semibold mb-4">Content Protected</h2>
+        <h2 className="mb-4 text-xl font-semibold">Content Protected</h2>
         <p>This content is protected and cannot be printed.</p>
-        <p className="text-sm text-gray-500 mt-2">
-          Licensed to: {userEmail}
-        </p>
+        <p className="mt-2 text-sm text-gray-500">Licensed to: {userEmail}</p>
       </div>
 
       {/* DevTools warning overlay */}
       {isDevToolsOpen && (
-        <div className="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center">
-          <div className="bg-white dark:bg-[#161b22] p-8 rounded-lg max-w-md text-center">
-            <h2 className="text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3] mb-4">
-              Developer Tools Detected
-            </h2>
-            <p className="text-[#656d76] dark:text-[#848d97] mb-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80">
+          <div className="max-w-md rounded-lg bg-white p-8 text-center dark:bg-[#161b22]">
+            <h2 className="mb-4 text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Developer Tools Detected</h2>
+            <p className="mb-4 text-[#656d76] dark:text-[#848d97]">
               Please close developer tools to continue viewing this content.
             </p>
-            <p className="text-sm text-[#656d76] dark:text-[#848d97]">
-              This content is licensed to: {userEmail}
-            </p>
+            <p className="text-sm text-[#656d76] dark:text-[#848d97]">This content is licensed to: {userEmail}</p>
           </div>
         </div>
       )}
@@ -214,7 +216,10 @@ function WatermarkOverlay({ userEmail }: { userEmail: string }) {
   const watermarkText = `Licensed to ${userEmail} - ${timestamp}`;
 
   return (
-    <div className="watermark-overlay" aria-hidden="true">
+    <div
+      className="watermark-overlay"
+      aria-hidden="true"
+    >
       {watermarks.map((mark) => (
         <span
           key={mark.id}

@@ -10,6 +10,8 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
+import { visit } from 'unist-util-visit';
+import type { Root, Element } from 'hast';
 import './lesson.css';
 import { LessonProgress } from '@/components/ui/lesson-progress';
 import { ContentProtection } from '@/components/ui/content-protection';
@@ -74,6 +76,12 @@ const courseModules = {
       id: 'module-1',
       title: 'Introduction to DDD',
       lessons: [
+        {
+          id: 'lesson-0',
+          title: 'The GenAI Landscape for Software Development',
+          duration: '25 min',
+          file: 'lesson-0-genai-landscape.md',
+        },
         { id: 'lesson-1', title: 'What is Domain-Driven Design?', duration: '20 min', file: 'lesson-1-what-is-ddd.md' },
         {
           id: 'lesson-2',
@@ -243,6 +251,80 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
     const contentPath = path.join(process.cwd(), 'course-content', courseId, moduleId, fileName);
     const fileContent = await fs.readFile(contentPath, 'utf8');
 
+    // Store mermaid blocks to restore after rehype-pretty-code processing
+    const mermaidBlocks: Map<string, string> = new Map();
+    let mermaidCounter = 0;
+
+    // Custom rehype plugin to extract mermaid blocks before syntax highlighting
+    function rehypeExtractMermaid() {
+      return (tree: Root) => {
+        visit(tree, 'element', (node: Element, index, parent) => {
+          // Find pre > code elements with mermaid language
+          if (
+            node.tagName === 'pre' &&
+            node.children.length === 1 &&
+            (node.children[0] as Element).tagName === 'code'
+          ) {
+            const codeElement = node.children[0] as Element;
+            const className = codeElement.properties?.className as string[] | undefined;
+
+            if (className?.some((c) => c === 'language-mermaid')) {
+              // Get the mermaid code content
+              const textNode = codeElement.children[0];
+              const mermaidCode = textNode && 'value' in textNode ? (textNode as { value: string }).value : '';
+
+              // Generate a placeholder ID
+              const placeholderId = `__MERMAID_PLACEHOLDER_${mermaidCounter++}__`;
+              mermaidBlocks.set(placeholderId, mermaidCode);
+
+              // Replace with a div placeholder that won't be processed
+              // Use camelCase property name as that's what hast uses internally
+              if (parent && typeof index === 'number') {
+                (parent.children as Element[])[index] = {
+                  type: 'element',
+                  tagName: 'div',
+                  properties: { dataMermaidPlaceholder: placeholderId },
+                  children: [],
+                };
+              }
+            }
+          }
+        });
+      };
+    }
+
+    // Custom rehype plugin to restore mermaid blocks after syntax highlighting
+    function rehypeRestoreMermaid() {
+      return (tree: Root) => {
+        let restoredCount = 0;
+        visit(tree, 'element', (node: Element, index, parent) => {
+          if (node.tagName === 'div' && node.properties?.['dataMermaidPlaceholder']) {
+            const placeholderId = node.properties['dataMermaidPlaceholder'] as string;
+            const mermaidCode = mermaidBlocks.get(placeholderId);
+
+            if (mermaidCode && parent && typeof index === 'number') {
+              restoredCount++;
+              // Restore the mermaid code block with proper structure for MermaidRenderer
+              (parent.children as Element[])[index] = {
+                type: 'element',
+                tagName: 'pre',
+                properties: { 'data-language': 'mermaid' },
+                children: [
+                  {
+                    type: 'element',
+                    tagName: 'code',
+                    properties: { className: ['language-mermaid'] },
+                    children: [{ type: 'text', value: mermaidCode }],
+                  },
+                ],
+              } as Element;
+            }
+          }
+        });
+        console.log(`[Mermaid] Restored ${restoredCount} mermaid blocks out of ${mermaidBlocks.size} extracted`);
+      };
+    }
+
     // Convert markdown to HTML with syntax highlighting
     // Mermaid diagrams are rendered client-side via MermaidRenderer component
     // Use dual themes for light/dark mode support
@@ -250,6 +332,7 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
       .use(remarkParse)
       .use(remarkGfm) // Enable GitHub Flavored Markdown (tables, strikethrough, etc.)
       .use(remarkRehype)
+      .use(rehypeExtractMermaid) // Extract mermaid blocks before syntax highlighting
       .use(rehypePrettyCode, {
         theme: {
           dark: 'github-dark',
@@ -257,8 +340,8 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
         },
         keepBackground: false, // We'll handle background in CSS
         defaultLang: 'typescript',
-        filterMetaString: (meta) => meta.replace(/mermaid/g, ''), // Skip mermaid blocks
       })
+      .use(rehypeRestoreMermaid) // Restore mermaid blocks after syntax highlighting
       .use(rehypeStringify)
       .process(fileContent);
 

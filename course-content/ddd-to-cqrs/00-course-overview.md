@@ -4,8 +4,8 @@
 
 **Course ID:** ddd-to-cqrs
 **Title:** From DDD to CQRS with AI Agents
-**Duration:** 8 hours
-**Total Lessons:** 24
+**Duration:** 8.5 hours
+**Total Lessons:** 25
 **Level:** Intermediate to Advanced
 **Prerequisites:**
 - Object-oriented programming experience
@@ -65,8 +65,15 @@ This course is designed for:
 
 ## Course Structure
 
-### Module 1: Introduction to DDD (4 lessons, ~1.5 hours)
-Foundation concepts of Domain-Driven Design, ubiquitous language, and domain modeling.
+### Module 1: Introduction to DDD (5 lessons, ~2 hours)
+Foundation concepts starting with the GenAI landscape for AI-assisted development, then Domain-Driven Design, ubiquitous language, and domain modeling.
+
+**Lessons:**
+- **Lesson 0:** The GenAI Landscape for Software Development (25 min)
+- **Lesson 1:** What is Domain-Driven Design? (20 min)
+- **Lesson 2:** Ubiquitous Language (20 min)
+- **Lesson 3:** Core Domain vs Supporting Domains (20 min)
+- **Lesson 4:** Domain Modeling Techniques (25 min)
 
 ### Module 2: Bounded Contexts & Strategic Design (5 lessons, ~1.5 hours)
 Strategic patterns for organizing complex systems into manageable contexts.
@@ -148,4 +155,4 @@ This course is actively maintained with:
 
 ---
 
-**Ready to begin?** Start with Module 1, Lesson 1: What is Domain-Driven Design?
+**Ready to begin?** Start with Module 1, Lesson 0: [The GenAI Landscape for Software Development](module-1/lesson-0-genai-landscape.md)

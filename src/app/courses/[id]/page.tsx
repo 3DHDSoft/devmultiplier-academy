@@ -70,10 +70,10 @@ You'll learn how to identify bounded contexts, design aggregates, and model comp
 Throughout the course, you'll leverage AI agents to accelerate your development, from generating domain models to writing event handlers.`,
     icon: Layers,
     topics: ['Domain-Driven Design', 'CQRS', 'Event Sourcing', 'AI Agents', 'Bounded Contexts'],
-    duration: '8 hours',
-    lessons: 24,
+    duration: '8.5 hours',
+    lessons: 25,
     modules: [
-      { title: 'Introduction to DDD', lessons: 4 },
+      { title: 'Introduction to DDD', lessons: 5 },
       { title: 'Bounded Contexts & Strategic Design', lessons: 5 },
       { title: 'Aggregates & Tactical Patterns', lessons: 5 },
       { title: 'Introduction to CQRS', lessons: 4 },
@@ -423,7 +423,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
             {course.modules.map((module, index) => (
               <Link
                 key={module.title}
-                href={`/courses/${course.id}/module-${index + 1}/lesson-1`}
+                href={`/courses/${course.id}/module-${index + 1}/${index === 0 ? 'lesson-0' : 'lesson-1'}`}
                 className="group flex items-center justify-between p-4 transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]"
               >
                 <div className="flex items-center gap-4">

@@ -122,9 +122,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] dark:bg-[#0d1117] px-4 py-6">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] px-4 py-6 dark:bg-[#0d1117]">
       <div className="w-full max-w-md">
-        <div className="rounded-lg border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#161b22] p-5 shadow-xl">
+        <div className="rounded-lg border border-[#d1d9e0] bg-white p-5 shadow-xl dark:border-[#30363d] dark:bg-[#161b22]">
           {/* Header */}
           <div className="mb-4 text-center">
             <h1 className="mb-0.5 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Dev Academy</h1>
@@ -133,7 +133,7 @@ export default function LoginPage() {
 
           {/* Email Not Verified Message */}
           {emailNotVerified && (
-            <div className="mb-3 rounded-md bg-[#fff8c5] dark:bg-[#674d1a] border border-[#d4a72c66] dark:border-[#d29922] p-3">
+            <div className="mb-3 rounded-md border border-[#d4a72c66] bg-[#fff8c5] p-3 dark:border-[#d29922] dark:bg-[#674d1a]">
               <div className="flex items-start gap-2">
                 <svg
                   className="h-5 w-5 flex-shrink-0 text-[#9a6700] dark:text-[#d29922]"
@@ -149,9 +149,7 @@ export default function LoginPage() {
                   />
                 </svg>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-[#9a6700] dark:text-[#d29922]">
-                    Email verification required
-                  </p>
+                  <p className="text-sm font-medium text-[#9a6700] dark:text-[#d29922]">Email verification required</p>
                   <p className="mt-1 text-sm text-[#6e5600] dark:text-[#c69026]">
                     Please check your email and click the verification link before signing in.
                   </p>
@@ -164,7 +162,7 @@ export default function LoginPage() {
                       type="button"
                       onClick={handleResendVerification}
                       disabled={isResendingEmail}
-                      className="mt-2 text-sm font-medium text-[#0969da] dark:text-[#4493f8] hover:underline disabled:opacity-50"
+                      className="mt-2 text-sm font-medium text-[#0969da] hover:underline disabled:opacity-50 dark:text-[#4493f8]"
                     >
                       {isResendingEmail ? 'Sending...' : 'Resend verification email'}
                     </button>
@@ -176,7 +174,7 @@ export default function LoginPage() {
 
           {/* Error Message */}
           {error && !emailNotVerified && (
-            <div className="mb-3 rounded-md bg-[#ffebe9] dark:bg-[#490202] border border-[#ff818266] dark:border-[#f8514966] p-2.5 text-[#d1242f] dark:text-[#f85149]">
+            <div className="mb-3 rounded-md border border-[#ff818266] bg-[#ffebe9] p-2.5 text-[#d1242f] dark:border-[#f8514966] dark:bg-[#490202] dark:text-[#f85149]">
               <p className="text-sm">{error}</p>
             </div>
           )}
@@ -201,7 +199,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                className="w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                 disabled={isLoading}
               />
             </div>
@@ -222,20 +220,16 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder=""
                   required
-                  className="w-full rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#0d1117] px-2.5 py-1.5 pr-9 text-sm text-[#1f2328] dark:text-[#e6edf3] placeholder-[#656d76] dark:placeholder-[#484f58] outline-none focus:border-[#0969da] dark:focus:border-[#4493f8] focus:ring-1 focus:ring-[#0969da] dark:focus:ring-[#4493f8]"
+                  className="w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 pr-9 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] transition-colors"
+                  className="absolute top-1/2 right-2 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
@@ -244,7 +238,7 @@ export default function LoginPage() {
             <div className="flex justify-end">
               <Link
                 href="/forgot-password"
-                className="text-xs text-[#0969da] dark:text-[#4493f8] hover:underline"
+                className="text-xs text-[#0969da] hover:underline dark:text-[#4493f8]"
               >
                 Forgot password?
               </Link>
@@ -254,7 +248,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-md bg-[#1f883d] dark:bg-[#238636] py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:hover:bg-[#2ea043] disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-md bg-[#1f883d] py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -274,7 +268,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('github')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
             >
               <svg
                 className="h-4 w-4"
@@ -291,7 +285,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('google')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
             >
               <svg
                 className="h-4 w-4"
@@ -322,7 +316,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('microsoft-entra-id')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
             >
               <svg
                 className="h-4 w-4"
@@ -353,7 +347,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleOAuthSignIn('linkedin')}
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] dark:border-[#30363d] bg-white dark:bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#1f2328] dark:text-[#e6edf3] transition hover:bg-[#f6f8fa] dark:hover:bg-[#30363d] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
             >
               <svg
                 className="h-4 w-4"
@@ -371,14 +365,14 @@ export default function LoginPage() {
             Don&apos;t have an account?{' '}
             <Link
               href="/register"
-              className="font-medium text-[#0969da] dark:text-[#4493f8] hover:underline"
+              className="font-medium text-[#0969da] hover:underline dark:text-[#4493f8]"
             >
               Sign up
             </Link>
           </p>
 
           {/* Demo Credentials Info */}
-          <div className="mt-3 rounded-md bg-[#ddf4ff] dark:bg-[#388bfd26] border border-[#54aeff66] dark:border-[#4493f866] p-2.5">
+          <div className="mt-3 rounded-md border border-[#54aeff66] bg-[#ddf4ff] p-2.5 dark:border-[#4493f866] dark:bg-[#388bfd26]">
             <p className="text-xs text-[#0969da] dark:text-[#4493f8]">
               <strong>Demo:</strong> Use any email with password of at least 8 characters during registration.
             </p>

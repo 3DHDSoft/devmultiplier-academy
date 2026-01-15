@@ -21,7 +21,7 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-[#d1d9e0] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#161b22] border-t">
+    <footer className="border-t border-[#d1d9e0] bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#161b22]">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand */}
@@ -30,24 +30,26 @@ export function Footer() {
               href="/"
               className="flex items-center"
             >
-              <span className="text-[#1f2328] dark:text-[#e6edf3] text-xl font-bold">D</span>
-              <span className="text-[#0969da] dark:text-[#4493f8] text-xl font-light">×</span>
-              <span className="text-[#1f2328] dark:text-[#e6edf3] ml-2 text-lg font-semibold">DevMultiplier</span>
+              <span className="text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">D</span>
+              <span className="text-xl font-light text-[#0969da] dark:text-[#4493f8]">×</span>
+              <span className="ml-2 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">DevMultiplier</span>
             </Link>
-            <p className="text-[#656d76] dark:text-[#848d97] mt-4 text-sm">
+            <p className="mt-4 text-sm text-[#656d76] dark:text-[#848d97]">
               Transform your development skills with expert-led courses designed for the AI age.
             </p>
           </div>
 
           {/* Courses */}
           <div>
-            <h3 className="text-[#1f2328] dark:text-[#e6edf3] text-sm font-semibold tracking-wider uppercase">Courses</h3>
+            <h3 className="text-sm font-semibold tracking-wider text-[#1f2328] uppercase dark:text-[#e6edf3]">
+              Courses
+            </h3>
             <ul className="mt-4 space-y-2">
               {footerLinks.courses.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] text-sm transition-colors"
+                    className="text-sm text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                   >
                     {link.name}
                   </Link>
@@ -58,13 +60,15 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-[#1f2328] dark:text-[#e6edf3] text-sm font-semibold tracking-wider uppercase">Company</h3>
+            <h3 className="text-sm font-semibold tracking-wider text-[#1f2328] uppercase dark:text-[#e6edf3]">
+              Company
+            </h3>
             <ul className="mt-4 space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] text-sm transition-colors"
+                    className="text-sm text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                   >
                     {link.name}
                   </Link>
@@ -75,13 +79,13 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-[#1f2328] dark:text-[#e6edf3] text-sm font-semibold tracking-wider uppercase">Legal</h3>
+            <h3 className="text-sm font-semibold tracking-wider text-[#1f2328] uppercase dark:text-[#e6edf3]">Legal</h3>
             <ul className="mt-4 space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-[#656d76] dark:text-[#848d97] hover:text-[#1f2328] dark:hover:text-[#e6edf3] text-sm transition-colors"
+                    className="text-sm text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
                   >
                     {link.name}
                   </Link>
@@ -91,8 +95,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-[#d1d9e0] dark:border-[#30363d] mt-12 border-t pt-8">
-          <p className="text-[#656d76] dark:text-[#848d97] text-center text-sm">
+        <div className="mt-12 border-t border-[#d1d9e0] pt-8 dark:border-[#30363d]">
+          <p className="text-center text-sm text-[#656d76] dark:text-[#848d97]">
             © {new Date().getFullYear()} DevMultiplier Academy. A 3D HD Soft, LLC company. All rights reserved.
           </p>
         </div>

@@ -56,8 +56,7 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps) {
       case 'bundle':
         return {
           title: 'Bundle Purchase Successful!',
-          description:
-            'You now have access to all courses in the bundle. Start your learning journey!',
+          description: 'You now have access to all courses in the bundle. Start your learning journey!',
           cta: 'Go to My Courses',
           href: '/dashboard',
         };
@@ -82,34 +81,33 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps) {
   const message = getMessage();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
-        <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
-          <CheckCircle className="w-10 h-10 text-green-600" />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-lg">
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+          <CheckCircle className="h-10 w-10 text-green-600" />
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{message.title}</h1>
+        <h1 className="mb-2 text-2xl font-bold text-gray-900">{message.title}</h1>
 
-        <p className="text-gray-600 mb-6">{message.description}</p>
+        <p className="mb-6 text-gray-600">{message.description}</p>
 
         {sessionDetails?.customerEmail && (
-          <p className="text-sm text-gray-500 mb-6">
-            A confirmation email has been sent to{' '}
-            <span className="font-medium">{sessionDetails.customerEmail}</span>
+          <p className="mb-6 text-sm text-gray-500">
+            A confirmation email has been sent to <span className="font-medium">{sessionDetails.customerEmail}</span>
           </p>
         )}
 
         <div className="space-y-3">
           <Link
             href={message.href}
-            className="block w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+            className="block w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700"
           >
             {message.cta}
           </Link>
 
           <Link
             href="/"
-            className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+            className="block w-full rounded-lg bg-gray-100 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-200"
           >
             Return to Home
           </Link>
