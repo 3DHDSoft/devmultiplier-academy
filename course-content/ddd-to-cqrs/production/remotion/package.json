@@ -1,0 +1,22 @@
+{
+  "name": "devmultiplier-animations",
+  "version": "1.0.0",
+  "description": "Animated diagrams for DevMultiplier Academy course videos",
+  "scripts": {
+    "start": "bunx remotion studio",
+    "build": "bunx remotion bundle",
+    "render": "bunx remotion render",
+    "render:all": "bash scripts/render-all.sh"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.405",
+    "@remotion/player": "^4.0.405",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "remotion": "^4.0.405"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.8",
+    "typescript": "^5.9.3"
+  }
+}

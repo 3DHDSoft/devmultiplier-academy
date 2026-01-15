@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2048" height="1152" viewBox="0 0 2048 1152" fill="none"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Bright gradient background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc" />
+      <stop offset="50%" style="stop-color:#f1f5f9" />
+      <stop offset="100%" style="stop-color:#e2e8f0" />
+    </linearGradient>
+
+    <!-- Accent gradient for top bar -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6" />
+      <stop offset="50%" style="stop-color:#8b5cf6" />
+      <stop offset="100%" style="stop-color:#ec4899" />
+    </linearGradient>
+
+    <!-- Badge gradient -->
+    <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6" />
+      <stop offset="100%" style="stop-color:#1d4ed8" />
+    </linearGradient>
+
+    <!-- Drop shadow for title -->
+    <filter id="titleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <!-- Clean light background -->
+  <rect width="2048" height="1152" fill="url(#bgGradient)" />
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="2048" height="12" fill="url(#accentGradient)" />
+
+  <!-- Tech stack text - Row 1 -->
+  <g transform="translate(1024, 180)">
+    <text x="-380" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#7c3aed" text-anchor="middle">.NET</text>
+    <text x="-300" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="-240" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#7c3aed" text-anchor="middle">C#</text>
+    <text x="-180" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="-110" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#0891b2" text-anchor="middle">CQRS</text>
+    <text x="-30" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="60" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#0891b2" text-anchor="middle">Full-Stack</text>
+    <text x="160" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="240" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#059669" text-anchor="middle">Next.js</text>
+    <text x="310" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="380" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#059669" text-anchor="middle">React</text>
+  </g>
+
+  <!-- Tech stack text - Row 2 -->
+  <g transform="translate(1024, 240)">
+    <text x="-560" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#2563eb" text-anchor="middle">TypeScript</text>
+    <text x="-440" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="-340" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#db2777" text-anchor="middle">AI Coding</text>
+    <text x="-230" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="-130" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#db2777" text-anchor="middle">Code Gen</text>
+    <text x="-30" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="40" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#db2777" text-anchor="middle">RAG</text>
+    <text x="100" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="220" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#db2777" text-anchor="middle">Claude Code</text>
+    <text x="340" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="460" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#ea580c" text-anchor="middle">PostgreSQL</text>
+    <text x="580" y="10" font-family="system-ui, sans-serif" font-size="32" font-weight="400"
+      fill="#94a3b8" text-anchor="middle">•</text>
+    <text x="660" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="32"
+      font-weight="600" fill="#ea580c" text-anchor="middle">Prisma</text>
+  </g>
+
+  <!-- Company name and branding -->
+  <g transform="translate(1024, 520)" filter="url(#titleShadow)">
+    <text x="0" y="30" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+      font-size="160" font-weight="700" fill="#0f172a" text-anchor="middle" letter-spacing="-0.03em">
+      DevMultiplier</text>
+  </g>
+
+  <!-- D× Logo mark in front of ACADEMY (centered) -->
+  <g transform="translate(1024, 520)">
+    <text x="-300" y="137" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+      font-size="80" font-weight="700" fill="#0f172a" text-anchor="middle">D</text>
+    <text x="-250" y="137" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+      font-size="80" font-weight="300" fill="#3b82f6" text-anchor="middle">×</text>
+    <text x="-200" y="137" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+      font-size="80" font-weight="600" fill="#3b82f6" text-anchor="start" letter-spacing="0.2em">
+      ACADEMY</text>
+  </g>
+
+  <!-- Tagline -->
+  <text x="1024" y="720" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+    font-size="40" font-weight="500" fill="#475569" text-anchor="middle">
+    Multiply Your Team's Developer Productivity
+  </text>
+
+  <!-- Target audience badge -->
+  <g transform="translate(1024, 790)">
+    <rect x="-280" y="-34" width="560" height="68" rx="34" fill="url(#badgeGradient)" />
+    <text x="0" y="12" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="32"
+      font-weight="600" fill="#ffffff" text-anchor="middle">For CTOs &amp; Senior Developers</text>
+  </g>
+
+</svg>
