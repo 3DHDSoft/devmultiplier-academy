@@ -82,10 +82,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         try {
           // Debug: Log that authorize was called (will show in Axiom)
-          authLogger.debug(
-            { hasCredentials: !!credentials, credentialKeys: credentials ? Object.keys(credentials) : [] },
-            'Authorize called'
-          );
+          authLogger.debug({ hasCredentials: !!credentials, credentialKeys: credentials ? Object.keys(credentials) : [] }, 'Authorize called');
 
           // Validate input
           const validatedCredentials = signInSchema.parse(credentials);
@@ -376,10 +373,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error(code, ...message) {
       // CredentialsSignin is expected for failed login attempts - log as warning
       // Check multiple properties as the error object structure varies between dev and production
-      const isCredentialsSignin =
-        code.name === 'CredentialsSignin' ||
-        (code as { type?: string }).type === 'CredentialsSignin' ||
-        code.message?.includes('CredentialsSignin');
+      const isCredentialsSignin = code.name === 'CredentialsSignin' || (code as { type?: string }).type === 'CredentialsSignin' || code.message?.includes('CredentialsSignin');
 
       if (isCredentialsSignin) {
         authLogger.warn({ code: 'CredentialsSignin' }, 'Failed login attempt');

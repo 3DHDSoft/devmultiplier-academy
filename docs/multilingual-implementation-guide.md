@@ -1404,8 +1404,7 @@ describe('Internationalization', () => {
 2. Spanish (largest growth market)
 3. Portuguese (Brazilian market)
 
-**Expand in Tier 2:** 4. Hindi (Indian market) 5. Chinese (Chinese market) 6. German (European market) 7. Hungarian
-(Central/Eastern European market)
+**Expand in Tier 2:** 4. Hindi (Indian market) 5. Chinese (Chinese market) 6. German (European market) 7. Hungarian (Central/Eastern European market)
 
 **Technical stack:**
 
@@ -1422,8 +1421,7 @@ describe('Internationalization', () => {
 - Competitive advantage in developer education
 - Higher conversion rates in native languages
 
-This setup will give you a solid foundation to scale to 10+ languages while maintaining code quality and translation
-accuracy.
+This setup will give you a solid foundation to scale to 10+ languages while maintaining code quality and translation accuracy.
 
 ---
 

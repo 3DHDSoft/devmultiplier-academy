@@ -71,10 +71,7 @@ export async function POST(request: NextRequest) {
         externalLogger.debug({ eventType: event.type }, 'Unhandled Stripe event type');
     }
 
-    externalLogger.info(
-      { eventType: event.type, eventId: event.id, duration: Date.now() - startTime },
-      'Stripe webhook processed successfully'
-    );
+    externalLogger.info({ eventType: event.type, eventId: event.id, duration: Date.now() - startTime }, 'Stripe webhook processed successfully');
 
     return NextResponse.json({ received: true });
   } catch (error) {
@@ -202,9 +199,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 
   // Get period dates from subscription or use current date as fallback
   const periodStart = sub.current_period_start ? new Date(sub.current_period_start * 1000) : new Date();
-  const periodEnd = sub.current_period_end
-    ? new Date(sub.current_period_end * 1000)
-    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days from now as fallback
+  const periodEnd = sub.current_period_end ? new Date(sub.current_period_end * 1000) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days from now as fallback
 
   if (!existingSubscription) {
     // New subscription - create it

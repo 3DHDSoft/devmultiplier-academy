@@ -28,10 +28,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-[#d1d9e0] bg-white dark:border-[#30363d] dark:bg-[#161b22]">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center"
-        >
+        <Link href="/" className="flex items-center">
           <span className="text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">D</span>
           <span className="text-xl font-light text-[#0969da] dark:text-[#4493f8]">×</span>
           <span className="ml-2 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">DevMultiplier</span>
@@ -40,11 +37,7 @@ export function Header() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:gap-x-8">
           {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-            >
+            <Link key={item.name} href={item.href} className="text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]">
               {item.name}
             </Link>
           ))}
@@ -54,16 +47,10 @@ export function Header() {
             <ProfileDropdown user={session.user} />
           ) : (
             <>
-              <Link
-                href="/login"
-                className="text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-              >
+              <Link href="/login" className="text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]">
                 Login
               </Link>
-              <Link
-                href="/register"
-                className="rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-              >
+              <Link href="/register" className="rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]">
                 Get Started
               </Link>
             </>
@@ -71,17 +58,9 @@ export function Header() {
         </div>
 
         {/* Mobile menu button */}
-        <button
-          type="button"
-          className="md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
+        <button type="button" className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           <span className="sr-only">Toggle menu</span>
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6 text-[#1f2328] dark:text-[#e6edf3]" />
-          ) : (
-            <Menu className="h-6 w-6 text-[#1f2328] dark:text-[#e6edf3]" />
-          )}
+          {mobileMenuOpen ? <X className="h-6 w-6 text-[#1f2328] dark:text-[#e6edf3]" /> : <Menu className="h-6 w-6 text-[#1f2328] dark:text-[#e6edf3]" />}
         </button>
       </nav>
 
@@ -90,12 +69,7 @@ export function Header() {
         <div className="bg-white md:hidden dark:bg-[#161b22]">
           <div className="space-y-1 px-6 pb-4">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+              <Link key={item.name} href={item.href} className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" onClick={() => setMobileMenuOpen(false)}>
                 {item.name}
               </Link>
             ))}
@@ -115,11 +89,7 @@ export function Header() {
                   <p className="text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">{displayName || 'User'}</p>
                   <p className="truncate text-sm text-[#656d76] dark:text-[#848d97]">{session.user.email}</p>
                 </div>
-                <Link
-                  href="/profile"
-                  className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/profile" className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" onClick={() => setMobileMenuOpen(false)}>
                   Edit Profile
                 </Link>
                 <button
@@ -134,18 +104,10 @@ export function Header() {
               </>
             ) : (
               <>
-                <Link
-                  href="/login"
-                  className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/login" className="block py-2 text-base font-medium text-[#656d76] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" onClick={() => setMobileMenuOpen(false)}>
                   Login
                 </Link>
-                <Link
-                  href="/register"
-                  className="mt-2 block rounded-md bg-[#1f883d] px-4 py-2 text-center text-sm font-medium text-white hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link href="/register" className="mt-2 block rounded-md bg-[#1f883d] px-4 py-2 text-center text-sm font-medium text-white hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]" onClick={() => setMobileMenuOpen(false)}>
                   Get Started
                 </Link>
               </>

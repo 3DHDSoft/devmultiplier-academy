@@ -428,16 +428,7 @@ export function recordApiCall(attributes: {
 /**
  * Record login attempt metrics
  */
-export function recordLoginAttempt(attributes: {
-  success: boolean;
-  userId?: string;
-  email?: string;
-  failureReason?: string;
-  isNewLocation?: boolean;
-  isSuspicious?: boolean;
-  country?: string;
-  city?: string;
-}) {
+export function recordLoginAttempt(attributes: { success: boolean; userId?: string; email?: string; failureReason?: string; isNewLocation?: boolean; isSuspicious?: boolean; country?: string; city?: string }) {
   const { success, userId, failureReason, isNewLocation, isSuspicious, country, city } = attributes;
 
   const commonAttrs: Attributes = {
@@ -565,11 +556,7 @@ export function recordPayment(attributes: {
 /**
  * Record checkout session metrics
  */
-export function recordCheckoutSession(attributes: {
-  purchaseType: 'course' | 'bundle' | 'subscription';
-  status: 'created' | 'completed' | 'abandoned';
-  userId?: string;
-}) {
+export function recordCheckoutSession(attributes: { purchaseType: 'course' | 'bundle' | 'subscription'; status: 'created' | 'completed' | 'abandoned'; userId?: string }) {
   const { purchaseType, status, userId } = attributes;
 
   const commonAttrs: Attributes = {
@@ -589,11 +576,7 @@ export function recordCheckoutSession(attributes: {
 /**
  * Record subscription metrics
  */
-export function recordSubscription(attributes: {
-  action: 'created' | 'canceled' | 'updated';
-  planType: string;
-  userId?: string;
-}) {
+export function recordSubscription(attributes: { action: 'created' | 'canceled' | 'updated'; planType: string; userId?: string }) {
   const { action, planType, userId } = attributes;
 
   const commonAttrs: Attributes = {

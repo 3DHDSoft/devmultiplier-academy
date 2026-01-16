@@ -326,12 +326,9 @@ function createLoggerInstance(bindings: Record<string, unknown> = {}): Logger {
       delete context.service;
       delete context.version;
 
-      const contextStr =
-        Object.keys(context).length > 0 ? ` ${COLORS.gray}${JSON.stringify(context)}${COLORS.reset}` : '';
+      const contextStr = Object.keys(context).length > 0 ? ` ${COLORS.gray}${JSON.stringify(context)}${COLORS.reset}` : '';
 
-      console.log(
-        `${COLORS.gray}${formatTime()}${COLORS.reset} ${color}${levelStr}${COLORS.reset} ${message}${contextStr}`
-      );
+      console.log(`${COLORS.gray}${formatTime()}${COLORS.reset} ${color}${levelStr}${COLORS.reset} ${message}${contextStr}`);
 
       // Log error stack traces
       if (logObj.err && typeof logObj.err === 'object' && 'stack' in logObj.err) {
@@ -478,12 +475,7 @@ export const LogLevels = {
  * );
  * ```
  */
-export async function measureDuration<T>(
-  fn: () => Promise<T>,
-  log: Logger,
-  message: string,
-  context?: Record<string, unknown>
-): Promise<{ result: T; duration: number }> {
+export async function measureDuration<T>(fn: () => Promise<T>, log: Logger, message: string, context?: Record<string, unknown>): Promise<{ result: T; duration: number }> {
   const start = Date.now();
 
   try {

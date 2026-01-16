@@ -110,16 +110,10 @@ export default function RegisterPage() {
           )}
 
           {/* Registration Form */}
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-3"
-          >
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* Name Field */}
             <div>
-              <label
-                htmlFor="name"
-                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-              >
+              <label htmlFor="name" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                 Full Name
               </label>
               <input
@@ -136,10 +130,7 @@ export default function RegisterPage() {
 
             {/* Email Field */}
             <div>
-              <label
-                htmlFor="email"
-                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-              >
+              <label htmlFor="email" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                 Email Address
               </label>
               <input
@@ -156,10 +147,7 @@ export default function RegisterPage() {
 
             {/* Password Field */}
             <div>
-              <label
-                htmlFor="password"
-                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-              >
+              <label htmlFor="password" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                 Password
               </label>
               <div className="relative">
@@ -173,12 +161,7 @@ export default function RegisterPage() {
                   className="w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 pr-9 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   disabled={isLoading}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 right-2 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute top-1/2 right-2 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" aria-label={showPassword ? 'Hide password' : 'Show password'}>
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
@@ -187,10 +170,7 @@ export default function RegisterPage() {
 
             {/* Confirm Password Field */}
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-              >
+              <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                 Confirm Password
               </label>
               <div className="relative">
@@ -204,12 +184,7 @@ export default function RegisterPage() {
                   className="w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 pr-9 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
                   disabled={isLoading}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 right-2 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute top-1/2 right-2 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" aria-label={showPassword ? 'Hide password' : 'Show password'}>
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
@@ -217,24 +192,12 @@ export default function RegisterPage() {
 
             {/* Language Preference */}
             <div>
-              <label
-                htmlFor="locale"
-                className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-              >
+              <label htmlFor="locale" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                 Preferred Language
               </label>
-              <select
-                id="locale"
-                value={locale}
-                onChange={(e) => setLocale(e.target.value)}
-                className="w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
-                disabled={isLoading}
-              >
+              <select id="locale" value={locale} onChange={(e) => setLocale(e.target.value)} className="w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]" disabled={isLoading}>
                 {locales.map((loc) => (
-                  <option
-                    key={loc.code}
-                    value={loc.code}
-                  >
+                  <option key={loc.code} value={loc.code}>
                     {loc.name}
                   </option>
                 ))}
@@ -242,11 +205,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full rounded-md bg-[#1f883d] py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-            >
+            <button type="submit" disabled={isLoading} className="w-full rounded-md bg-[#1f883d] py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]">
               {isLoading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
@@ -261,10 +220,7 @@ export default function RegisterPage() {
           {/* Sign In Link */}
           <p className="text-center text-sm text-[#656d76] dark:text-[#848d97]">
             Already have an account?{' '}
-            <Link
-              href="/login"
-              className="font-medium text-[#0969da] hover:underline dark:text-[#4493f8]"
-            >
+            <Link href="/login" className="font-medium text-[#0969da] hover:underline dark:text-[#4493f8]">
               Sign in
             </Link>
           </p>

@@ -1,5 +1,5 @@
 {
-  "printWidth": 120,
+  "printWidth": 444,
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
@@ -9,7 +9,7 @@
   "bracketSameLine": false,
   "arrowParens": "always",
   "jsxSingleQuote": false,
-  "singleAttributePerLine": true,
+  "singleAttributePerLine": false,
   "proseWrap": "always",
   "htmlWhitespaceSensitivity": "css",
   "plugins": [ "prettier-plugin-tailwindcss" ],

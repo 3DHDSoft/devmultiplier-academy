@@ -35,10 +35,7 @@ export default function EnrollmentsPage() {
     <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Back link */}
-        <Link
-          href="/dashboard"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]"
-        >
+        <Link href="/dashboard" className="mb-8 inline-flex items-center gap-2 text-sm text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]">
           <ArrowLeft className="h-4 w-4" />
           Back to Dashboard
         </Link>

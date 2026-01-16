@@ -26,11 +26,7 @@ export function parseUserAgent(userAgent: string | null): ParsedUserAgent {
   let device = 'Desktop';
   if (/(tablet|ipad|playbook|silk)|(android(?!.*mobile))/i.test(userAgent)) {
     device = 'Tablet';
-  } else if (
-    /mobile|iphone|ipod|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(
-      userAgent
-    )
-  ) {
+  } else if (/mobile|iphone|ipod|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec/i.test(userAgent)) {
     device = 'Mobile';
   }
 

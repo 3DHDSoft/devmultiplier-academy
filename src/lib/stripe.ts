@@ -165,10 +165,7 @@ export async function getOrCreateCustomer(userId: string, email: string, name?: 
 /**
  * Cancel a subscription (at period end by default)
  */
-export async function cancelSubscription(
-  subscriptionId: string,
-  cancelAtPeriodEnd: boolean = true
-): Promise<Stripe.Subscription> {
+export async function cancelSubscription(subscriptionId: string, cancelAtPeriodEnd: boolean = true): Promise<Stripe.Subscription> {
   const stripe = getStripeClient();
   const startTime = Date.now();
 
@@ -188,10 +185,7 @@ export async function cancelSubscription(
 
     return subscription;
   } catch (error) {
-    externalLogger.error(
-      { err: error, subscriptionId, duration: Date.now() - startTime },
-      'Failed to cancel subscription'
-    );
+    externalLogger.error({ err: error, subscriptionId, duration: Date.now() - startTime }, 'Failed to cancel subscription');
     throw new ExternalServiceError('Stripe', 'Failed to cancel subscription', {
       originalError: error,
     });
@@ -317,11 +311,7 @@ export async function createPrice(options: {
 /**
  * Create a new product in Stripe
  */
-export async function createProduct(options: {
-  name: string;
-  description?: string;
-  metadata?: Record<string, string>;
-}): Promise<Stripe.Product> {
+export async function createProduct(options: { name: string; description?: string; metadata?: Record<string, string> }): Promise<Stripe.Product> {
   const stripe = getStripeClient();
 
   try {

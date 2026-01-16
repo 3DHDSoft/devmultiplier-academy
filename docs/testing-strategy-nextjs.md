@@ -4,8 +4,7 @@ A comprehensive guide to implementing a robust testing strategy for modern Next.
 
 ## The Testing Pyramid
 
-A well-structured test suite follows the testing pyramid principle: many fast unit tests at the base, fewer integration
-tests in the middle, and selective end-to-end tests at the top.
+A well-structured test suite follows the testing pyramid principle: many fast unit tests at the base, fewer integration tests in the middle, and selective end-to-end tests at the top.
 
 ```
                     ┌─────────┐
@@ -988,8 +987,7 @@ A robust testing strategy combines multiple testing approaches:
 2. **Integration tests** verify components work together correctly
 3. **E2E tests** ensure critical user journeys function properly
 
-Start with unit tests for new code, add integration tests for complex features, and reserve E2E tests for critical
-business flows. This balanced approach maximizes confidence while keeping the test suite fast and maintainable.
+Start with unit tests for new code, add integration tests for complex features, and reserve E2E tests for critical business flows. This balanced approach maximizes confidence while keeping the test suite fast and maintainable.
 
 ---
 

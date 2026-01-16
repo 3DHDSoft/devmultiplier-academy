@@ -67,8 +67,7 @@ For projects hosted on **Vercel** with **Neon** database, we recommend:
 
 ## Vercel + Neon + Axiom Stack (Recommended)
 
-This section provides specific setup instructions for the **Vercel + Neon + Axiom** combination—the most cost-effective
-observability stack for your infrastructure.
+This section provides specific setup instructions for the **Vercel + Neon + Axiom** combination—the most cost-effective observability stack for your infrastructure.
 
 ### Why This Stack
 
@@ -87,8 +86,7 @@ observability stack for your infrastructure.
 | **next-axiom library**    | **$0**                     | **$0** (under 500GB)        |
 | Vercel Observability Plus | $10/month base             | $10+                        |
 
-> **Recommendation**: Use the `next-axiom` library instead of Vercel Log Drains to avoid the $0.50/GB drain fees while
-> getting the same logging capabilities.
+> **Recommendation**: Use the `next-axiom` library instead of Vercel Log Drains to avoid the $0.50/GB drain fees while getting the same logging capabilities.
 
 ### Axiom Setup
 
@@ -112,8 +110,7 @@ AXIOM_DATASET=nextjs-logs
 
 ### Next.js Integration with next-axiom
 
-The `next-axiom` library sends logs directly from your application without using Vercel's Log Drains, avoiding
-additional costs.
+The `next-axiom` library sends logs directly from your application without using Vercel's Log Drains, avoiding additional costs.
 
 #### Installation
 
@@ -607,10 +604,7 @@ export function err<E>(error: E): Result<never, E> {
 /**
  * Wrap an async function that might throw into a Result
  */
-export async function tryCatch<T>(
-  fn: () => Promise<T>,
-  errorTransform?: (error: unknown) => AppError
-): Promise<Result<T, AppError>> {
+export async function tryCatch<T>(fn: () => Promise<T>, errorTransform?: (error: unknown) => AppError): Promise<Result<T, AppError>> {
   try {
     const data = await fn();
     return ok(data);
@@ -618,9 +612,7 @@ export async function tryCatch<T>(
     if (isAppError(error)) {
       return err(error);
     }
-    const appError = errorTransform
-      ? errorTransform(error)
-      : new AppError(error instanceof Error ? error.message : 'Unknown error', 'UNKNOWN_ERROR', 500, false);
+    const appError = errorTransform ? errorTransform(error) : new AppError(error instanceof Error ? error.message : 'Unknown error', 'UNKNOWN_ERROR', 500, false);
     return err(appError);
   }
 }
@@ -882,19 +874,7 @@ const baseConfig: LoggerOptions = {
 
   // Redact sensitive information
   redact: {
-    paths: [
-      'req.headers.authorization',
-      'req.headers.cookie',
-      'res.headers["set-cookie"]',
-      'password',
-      'token',
-      'accessToken',
-      'refreshToken',
-      'apiKey',
-      'secret',
-      '*.password',
-      '*.token',
-    ],
+    paths: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]', 'password', 'token', 'accessToken', 'refreshToken', 'apiKey', 'secret', '*.password', '*.token'],
     censor: '[REDACTED]',
   },
 
@@ -1056,10 +1036,7 @@ type ActionResult<T> = { success: true; data: T } | { success: false; error: str
 /**
  * Wrap server actions with logging and error handling
  */
-export function withActionLogging<TInput, TOutput>(
-  name: string,
-  action: (input: TInput) => Promise<TOutput>
-): (input: TInput) => Promise<ActionResult<TOutput>> {
+export function withActionLogging<TInput, TOutput>(name: string, action: (input: TInput) => Promise<TOutput>): (input: TInput) => Promise<ActionResult<TOutput>> {
   return async (input) => {
     const actionId = crypto.randomUUID();
     const log = logger.child({ actionId, action: name });
@@ -1307,11 +1284,7 @@ export function captureError(error: Error | AppError | unknown, context?: ErrorC
 /**
  * Capture a message (non-error) event
  */
-export function captureMessage(
-  message: string,
-  level: 'info' | 'warning' | 'error' = 'info',
-  context?: ErrorContext
-): void {
+export function captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'info', context?: ErrorContext): void {
   logger[level === 'warning' ? 'warn' : level](context, message);
 
   if (process.env.NODE_ENV === 'production') {

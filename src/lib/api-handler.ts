@@ -53,11 +53,7 @@ export type ApiHandler = (request: NextRequest, context?: RouteContext) => Promi
 /**
  * Extended handler with access to request logger
  */
-export type ApiHandlerWithLogger = (
-  request: NextRequest,
-  context: RouteContext | undefined,
-  log: Logger
-) => Promise<NextResponse> | NextResponse;
+export type ApiHandlerWithLogger = (request: NextRequest, context: RouteContext | undefined, log: Logger) => Promise<NextResponse> | NextResponse;
 
 /**
  * Options for the error handling wrapper
@@ -94,10 +90,7 @@ function createErrorResponse(error: AppError, requestId: string, includeRequestI
   }
 
   // Use error's toResponse method if available
-  const body =
-    'toResponse' in error && typeof error.toResponse === 'function'
-      ? error.toResponse()
-      : { error: error.message, code: error.code };
+  const body = 'toResponse' in error && typeof error.toResponse === 'function' ? error.toResponse() : { error: error.message, code: error.code };
 
   return NextResponse.json(body, {
     status: error.statusCode,
@@ -189,10 +182,7 @@ function createInternalErrorResponse(requestId: string, includeRequestId: boolea
  * });
  * ```
  */
-export function withErrorHandling(
-  handler: ApiHandler | ApiHandlerWithLogger,
-  options: ApiHandlerOptions = {}
-): ApiHandler {
+export function withErrorHandling(handler: ApiHandler | ApiHandlerWithLogger, options: ApiHandlerOptions = {}): ApiHandler {
   // Default logSuccess to false to reduce log noise - only log errors/warnings
   const { route, logSuccess = false, logRequestBody = false, transformError, includeRequestId = true } = options;
 
@@ -273,13 +263,7 @@ export function withErrorHandling(
         statusCode = 500;
       }
       // Handle Prisma errors
-      else if (
-        error &&
-        typeof error === 'object' &&
-        'code' in error &&
-        typeof (error as { code: unknown }).code === 'string' &&
-        (error as { code: string }).code.startsWith('P')
-      ) {
+      else if (error && typeof error === 'object' && 'code' in error && typeof (error as { code: unknown }).code === 'string' && (error as { code: string }).code.startsWith('P')) {
         const prismaError = fromPrismaError(error);
 
         if (prismaError.isOperational) {
@@ -339,14 +323,7 @@ export function withErrorHandling(
  * });
  * ```
  */
-export function withAuth(
-  handler: (
-    request: NextRequest,
-    context: RouteContext | undefined,
-    session: { user: { id: string; email: string } }
-  ) => Promise<NextResponse>,
-  options: ApiHandlerOptions = {}
-): ApiHandler {
+export function withAuth(handler: (request: NextRequest, context: RouteContext | undefined, session: { user: { id: string; email: string } }) => Promise<NextResponse>, options: ApiHandlerOptions = {}): ApiHandler {
   return withErrorHandling(async (request: NextRequest, context: RouteContext | undefined) => {
     // Dynamic import to avoid circular dependencies
     const { auth } = await import('@/auth');
@@ -381,10 +358,7 @@ export function withAuth(
  * export { GET, POST };
  * ```
  */
-export function createHandlers<T extends Record<string, ApiHandler>>(
-  handlers: T,
-  options: ApiHandlerOptions = {}
-): { [K in keyof T]: ApiHandler } {
+export function createHandlers<T extends Record<string, ApiHandler>>(handlers: T, options: ApiHandlerOptions = {}): { [K in keyof T]: ApiHandler } {
   const wrapped: Record<string, ApiHandler> = {};
 
   for (const [method, handler] of Object.entries(handlers)) {

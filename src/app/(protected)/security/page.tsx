@@ -130,34 +130,17 @@ export default function SecurityPage() {
             ) : (
               <div className="space-y-3">
                 {loginHistory.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`rounded-lg border p-4 transition hover:shadow-md ${
-                      item.success ? 'border-green-200 bg-green-50/50' : 'border-red-200 bg-red-50/50'
-                    }`}
-                  >
+                  <div key={item.id} className={`rounded-lg border p-4 transition hover:shadow-md ${item.success ? 'border-green-200 bg-green-50/50' : 'border-red-200 bg-red-50/50'}`}>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3">
-                          {item.success ? (
-                            <CheckCircle className="h-5 w-5 text-green-600" />
-                          ) : (
-                            <XCircle className="h-5 w-5 text-red-600" />
-                          )}
+                          {item.success ? <CheckCircle className="h-5 w-5 text-green-600" /> : <XCircle className="h-5 w-5 text-red-600" />}
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="font-medium text-gray-900">
-                                {item.success ? 'Successful login' : 'Failed login attempt'}
-                              </span>
-                              {index === 0 && item.success && (
-                                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
-                                  Current session
-                                </span>
-                              )}
+                              <span className="font-medium text-gray-900">{item.success ? 'Successful login' : 'Failed login attempt'}</span>
+                              {index === 0 && item.success && <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Current session</span>}
                             </div>
-                            {!item.success && item.failureReason && (
-                              <p className="text-sm text-red-700">Reason: {item.failureReason}</p>
-                            )}
+                            {!item.success && item.failureReason && <p className="text-sm text-red-700">Reason: {item.failureReason}</p>}
                           </div>
                         </div>
 

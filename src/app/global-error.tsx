@@ -8,10 +8,7 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
           <div className="text-center">
             <h1 className="mb-4 text-4xl font-bold text-gray-900">Critical Error</h1>
             <p className="mb-6 text-lg text-gray-600">A critical error occurred</p>
-            <button
-              onClick={reset}
-              className="rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700"
-            >
+            <button onClick={reset} className="rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700">
               Try again
             </button>
           </div>

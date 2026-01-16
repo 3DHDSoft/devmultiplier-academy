@@ -24,10 +24,7 @@ export async function POST(request: NextRequest) {
 
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Please upload a JPG, PNG, GIF, or WebP image.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid file type. Please upload a JPG, PNG, GIF, or WebP image.' }, { status: 400 });
     }
 
     // Validate file size

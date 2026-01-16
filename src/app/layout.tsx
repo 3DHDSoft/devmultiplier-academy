@@ -5,20 +5,8 @@ import { AxiomWebVitals } from 'next-axiom';
 
 export const metadata: Metadata = {
   title: 'DevMultiplier Academy | Become a 10x-100x Developer in the Age of AI',
-  description:
-    'Master Domain-Driven Design, CQRS, database optimization, REST APIs, and AI-assisted development. Transform your development skills with expert-led courses designed for CTOs and senior developers.',
-  keywords: [
-    'DDD',
-    'Domain-Driven Design',
-    'CQRS',
-    'SQL Server',
-    'PostgreSQL',
-    'REST API',
-    'Next.js',
-    'AI development',
-    'software architecture',
-    'developer training',
-  ],
+  description: 'Master Domain-Driven Design, CQRS, database optimization, REST APIs, and AI-assisted development. Transform your development skills with expert-led courses designed for CTOs and senior developers.',
+  keywords: ['DDD', 'Domain-Driven Design', 'CQRS', 'SQL Server', 'PostgreSQL', 'REST API', 'Next.js', 'AI development', 'software architecture', 'developer training'],
   authors: [{ name: 'DevMultiplier Academy' }],
   openGraph: {
     title: 'DevMultiplier Academy | Become a 10x-100x Developer',

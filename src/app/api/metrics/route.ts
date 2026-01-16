@@ -20,16 +20,7 @@ export async function GET() {
     // In a production setup, you would integrate with a Prometheus exporter
     // that can serialize metrics in Prometheus text format
 
-    const response = [
-      '# HELP app_info Application information',
-      '# TYPE app_info gauge',
-      `app_info{service="dev-academy-web",environment="${process.env.NODE_ENV || 'development'}"} 1`,
-      '',
-      '# HELP app_uptime_seconds Application uptime in seconds',
-      '# TYPE app_uptime_seconds counter',
-      `app_uptime_seconds ${process.uptime()}`,
-      '',
-    ].join('\n');
+    const response = ['# HELP app_info Application information', '# TYPE app_info gauge', `app_info{service="dev-academy-web",environment="${process.env.NODE_ENV || 'development'}"} 1`, '', '# HELP app_uptime_seconds Application uptime in seconds', '# TYPE app_uptime_seconds counter', `app_uptime_seconds ${process.uptime()}`, ''].join('\n');
 
     return new NextResponse(response, {
       status: 200,

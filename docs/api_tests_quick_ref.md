@@ -1,7 +1,6 @@
 # API Unit Tests - Quick Reference
 
-✅ **Status:** All 117 tests passing 📊 **Coverage:** 6 test files, 993 lines of test code ⏱️ **Runtime:** ~45 seconds
-🎯 **Focus:** Validation, authentication, error handling
+✅ **Status:** All 117 tests passing 📊 **Coverage:** 6 test files, 993 lines of test code ⏱️ **Runtime:** ~45 seconds 🎯 **Focus:** Validation, authentication, error handling
 
 ## Test Coverage Overview
 

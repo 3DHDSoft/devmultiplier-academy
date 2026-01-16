@@ -61,9 +61,7 @@ function VerifyEmailContent() {
                 <Loader2 className="h-8 w-8 animate-spin text-[#0969da] dark:text-[#4493f8]" />
               </div>
               <h1 className="mb-2 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Verifying Your Email</h1>
-              <p className="text-sm text-[#656d76] dark:text-[#848d97]">
-                Please wait while we verify your email address...
-              </p>
+              <p className="text-sm text-[#656d76] dark:text-[#848d97]">Please wait while we verify your email address...</p>
             </>
           )}
 
@@ -77,10 +75,7 @@ function VerifyEmailContent() {
               <div className="mb-4 rounded-md border border-[#1f883d66] bg-[#dafbe1] p-3 dark:border-[#3fb95066] dark:bg-[#2ea04326]">
                 <p className="text-sm text-[#1a7f37] dark:text-[#3fb950]">Redirecting you to sign in...</p>
               </div>
-              <Link
-                href="/login"
-                className="inline-flex items-center gap-2 rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-              >
+              <Link href="/login" className="inline-flex items-center gap-2 rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]">
                 Sign In Now
               </Link>
             </>
@@ -94,21 +89,13 @@ function VerifyEmailContent() {
               <h1 className="mb-2 text-xl font-bold text-[#1f2328] dark:text-[#e6edf3]">Verification Failed</h1>
               <p className="mb-4 text-sm text-[#656d76] dark:text-[#848d97]">{message}</p>
               <div className="mb-4 rounded-md border border-[#ff818266] bg-[#ffebe9] p-3 dark:border-[#f8514966] dark:bg-[#490202]">
-                <p className="text-sm text-[#d1242f] dark:text-[#f85149]">
-                  The verification link may have expired or already been used.
-                </p>
+                <p className="text-sm text-[#d1242f] dark:text-[#f85149]">The verification link may have expired or already been used.</p>
               </div>
               <div className="space-y-2">
-                <Link
-                  href="/register"
-                  className="block w-full rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-                >
+                <Link href="/register" className="block w-full rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]">
                   Register Again
                 </Link>
-                <Link
-                  href="/login"
-                  className="block w-full rounded-md border border-[#d1d9e0] bg-white px-4 py-2 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
-                >
+                <Link href="/login" className="block w-full rounded-md border border-[#d1d9e0] bg-white px-4 py-2 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]">
                   Back to Sign In
                 </Link>
               </div>

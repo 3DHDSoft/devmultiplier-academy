@@ -53,9 +53,7 @@ export function MermaidRenderer({ children }: MermaidRendererProps) {
 
     // Find all mermaid code blocks - check multiple selectors since rehype-pretty-code
     // transforms the code blocks and adds data-language attribute
-    let mermaidBlocks = containerRef.current.querySelectorAll(
-      'pre code.language-mermaid, code.language-mermaid, pre[data-language="mermaid"] code, code[data-language="mermaid"]'
-    );
+    let mermaidBlocks = containerRef.current.querySelectorAll('pre code.language-mermaid, code.language-mermaid, pre[data-language="mermaid"] code, code[data-language="mermaid"]');
 
     // Debug: log all pre elements
     const allPres = containerRef.current.querySelectorAll('pre');
@@ -249,25 +247,12 @@ export function MermaidRenderer({ children }: MermaidRendererProps) {
 
       {/* Expanded modal overlay */}
       {expandedSvg && (
-        <div
-          className="mermaid-modal-overlay"
-          onClick={closeExpanded}
-        >
-          <div
-            className="mermaid-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="mermaid-close-btn"
-              onClick={closeExpanded}
-              aria-label="Close expanded view"
-            >
+        <div className="mermaid-modal-overlay" onClick={closeExpanded}>
+          <div className="mermaid-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="mermaid-close-btn" onClick={closeExpanded} aria-label="Close expanded view">
               <X size={24} />
             </button>
-            <div
-              className="mermaid-modal-diagram"
-              dangerouslySetInnerHTML={{ __html: expandedSvg }}
-            />
+            <div className="mermaid-modal-diagram" dangerouslySetInnerHTML={{ __html: expandedSvg }} />
           </div>
         </div>
       )}

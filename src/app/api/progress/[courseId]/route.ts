@@ -84,10 +84,7 @@ export const GET = withErrorHandling(
 
     // Calculate totals
     const totalModules = course._count.modules;
-    const totalLessons = course.modules.reduce(
-      (sum: number, mod: (typeof course.modules)[number]) => sum + mod._count.lessons,
-      0
-    );
+    const totalLessons = course.modules.reduce((sum: number, mod: (typeof course.modules)[number]) => sum + mod._count.lessons, 0);
 
     const modulesComplete = courseProgress?.modulesComplete || 0;
     const lessonsComplete = courseProgress?.lessonsComplete || 0;

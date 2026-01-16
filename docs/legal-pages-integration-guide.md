@@ -833,8 +833,7 @@ export default function CheckoutPage() {
 - [ ] Verify SEO metadata for each locale
 - [ ] Test mobile responsiveness
 
-This gives you a complete, multilingual legal page implementation that's SEO-friendly and properly integrated throughout
-your site! 🚀
+This gives you a complete, multilingual legal page implementation that's SEO-friendly and properly integrated throughout your site! 🚀
 
 ---
 

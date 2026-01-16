@@ -11,11 +11,7 @@ const tracer = trace.getTracer('dev-academy-web', '1.0.0');
 /**
  * Execute a function within a traced span
  */
-export async function withSpan<T>(
-  name: string,
-  fn: (span: Span) => Promise<T>,
-  attributes?: Record<string, string | number | boolean>
-): Promise<T> {
+export async function withSpan<T>(name: string, fn: (span: Span) => Promise<T>, attributes?: Record<string, string | number | boolean>): Promise<T> {
   return tracer.startActiveSpan(name, async (span) => {
     try {
       // Add custom attributes

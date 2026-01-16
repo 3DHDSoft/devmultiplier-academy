@@ -91,22 +91,7 @@ Legend: 📦 Directory | 📄 File
 ### Import
 
 ```typescript
-import {
-  AppError,
-  ValidationError,
-  NotFoundError,
-  AuthenticationError,
-  AuthorizationError,
-  ConflictError,
-  RateLimitError,
-  DatabaseError,
-  ExternalServiceError,
-  ConfigurationError,
-  BusinessError,
-  isAppError,
-  isOperationalError,
-  fromPrismaError,
-} from '@/lib/errors';
+import { AppError, ValidationError, NotFoundError, AuthenticationError, AuthorizationError, ConflictError, RateLimitError, DatabaseError, ExternalServiceError, ConfigurationError, BusinessError, isAppError, isOperationalError, fromPrismaError } from '@/lib/errors';
 ```
 
 ### Error Hierarchy
@@ -176,20 +161,7 @@ The Result pattern provides type-safe error handling without exceptions.
 ### Import
 
 ```typescript
-import {
-  ok,
-  err,
-  Result,
-  AsyncResult,
-  tryCatch,
-  tryCatchPrisma,
-  unwrap,
-  unwrapOr,
-  map,
-  andThen,
-  all,
-  fromNullable,
-} from '@/lib/result';
+import { ok, err, Result, AsyncResult, tryCatch, tryCatchPrisma, unwrap, unwrapOr, map, andThen, all, fromNullable } from '@/lib/result';
 ```
 
 ### Basic Usage
@@ -266,15 +238,7 @@ const result = fromNullable(user, new NotFoundError('User', id));
 ### Import
 
 ```typescript
-import {
-  logger,
-  dbLogger,
-  apiLogger,
-  authLogger,
-  createRequestLogger,
-  createModuleLogger,
-  measureDuration,
-} from '@/lib/logger';
+import { logger, dbLogger, apiLogger, authLogger, createRequestLogger, createModuleLogger, measureDuration } from '@/lib/logger';
 ```
 
 ### Log Levels

@@ -6,9 +6,7 @@
 
 ## The 60-Second Summary
 
-This devcontainer transforms a complex multi-service Next.js application into a **one-click development environment**,
-reducing setup time from **4 hours to 10 minutes**. It provides enterprise-grade observability, 50+ pre-configured
-tools, and production-parity infrastructure—ideal for educational platforms and team development.
+This devcontainer transforms a complex multi-service Next.js application into a **one-click development environment**, reducing setup time from **4 hours to 10 minutes**. It provides enterprise-grade observability, 50+ pre-configured tools, and production-parity infrastructure—ideal for educational platforms and team development.
 
 **Quick Start**: `git clone → code . → "Reopen in Container" → bun run dev`
 
@@ -51,8 +49,7 @@ code .
 bun run dev
 ```
 
-✅ **All services configured and running** ✅ **All extensions installed** ✅ **Database ready with health checks** ✅
-**Monitoring dashboards live**
+✅ **All services configured and running** ✅ **All extensions installed** ✅ **Database ready with health checks** ✅ **Monitoring dashboards live**
 
 **Time Saved**: ~3.5 hours per developer
 
@@ -243,8 +240,7 @@ Pre-installed and configured:
 
 Everything is pre-configured and tested:
 
-✅ Database credentials set and working ✅ All services networked together ✅ Health checks ensure services are ready ✅
-Extensions installed and configured ✅ Ports automatically forwarded ✅ Volumes persist data across rebuilds
+✅ Database credentials set and working ✅ All services networked together ✅ Health checks ensure services are ready ✅ Extensions installed and configured ✅ Ports automatically forwarded ✅ Volumes persist data across rebuilds
 
 ### 2. Production Parity
 
@@ -653,8 +649,7 @@ This devcontainer is designed as a **pedagogical instrument** that demonstrates 
 
 ### 2. Production-Grade Infrastructure
 
-The observability stack (OTEL → Tempo/Prometheus → Grafana) would typically take **2-3 weeks** for a senior engineer to
-configure. Here it's:
+The observability stack (OTEL → Tempo/Prometheus → Grafana) would typically take **2-3 weeks** for a senior engineer to configure. Here it's:
 
 - ✅ Pre-configured and tested
 - ✅ Integrated with Next.js app
@@ -899,14 +894,11 @@ bun run telemetry:test                       # Generate test data
 
 ## Conclusion
 
-The **Dev-X-Academy-Web devcontainer** is more than a development environment—it's a complete **professional development
-platform** designed for education and team collaboration.
+The **Dev-X-Academy-Web devcontainer** is more than a development environment—it's a complete **professional development platform** designed for education and team collaboration.
 
 ### Key Takeaways
 
-✅ **10-minute setup** instead of 4+ hours ✅ **Enterprise observability** that typically takes weeks ✅ **50+ tools**
-pre-configured and tested ✅ **Production parity** for realistic development ✅ **Zero configuration** required ✅
-**Perfect for teaching** professional practices
+✅ **10-minute setup** instead of 4+ hours ✅ **Enterprise observability** that typically takes weeks ✅ **50+ tools** pre-configured and tested ✅ **Production parity** for realistic development ✅ **Zero configuration** required ✅ **Perfect for teaching** professional practices
 
 ### Ideal For
 

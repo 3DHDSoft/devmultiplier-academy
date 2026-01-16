@@ -54,30 +54,30 @@ export const platformCEO = platformCreator;
 export const courseFocus: Record<string, { tagline: string; focus: string }> = {
   'ddd-to-cqrs': {
     tagline: 'From Domain Models to Event-Driven Architecture',
-    focus: 'In this course, I share patterns I\'ve used to decompose complex domains and implement CQRS in production systems. Claude helped me articulate these patterns and generate comprehensive code examples.',
+    focus: "In this course, I share patterns I've used to decompose complex domains and implement CQRS in production systems. Claude helped me articulate these patterns and generate comprehensive code examples.",
   },
   'ddd-to-database': {
     tagline: 'Bridging Domain Design and Data Persistence',
-    focus: 'Database schema design is where theory meets reality. I\'ll show you the mapping strategies I\'ve refined over decades, with AI-assisted examples that demonstrate multiple approaches.',
+    focus: "Database schema design is where theory meets reality. I'll show you the mapping strategies I've refined over decades, with AI-assisted examples that demonstrate multiple approaches.",
   },
   'database-optimization': {
     tagline: 'Performance Tuning with AI Assistance',
-    focus: 'Query optimization used to require deep expertise and hours of analysis. Now, with AI tools, we can identify bottlenecks faster. I\'ll show you how I combine experience with AI insights.',
+    focus: "Query optimization used to require deep expertise and hours of analysis. Now, with AI tools, we can identify bottlenecks faster. I'll show you how I combine experience with AI insights.",
   },
   'data-driven-api': {
     tagline: 'Designing APIs That Scale',
-    focus: 'Good API design is about understanding your data and your consumers. I\'ve designed APIs used by thousands of developers, and I\'ll show you how AI accelerates the design process.',
+    focus: "Good API design is about understanding your data and your consumers. I've designed APIs used by thousands of developers, and I'll show you how AI accelerates the design process.",
   },
   'ai-ui-design': {
     tagline: 'Building UIs at AI Speed',
-    focus: 'This platform you\'re using right now? Built with AI assistance. I\'ll teach you the exact workflows I use to go from idea to production UI in a fraction of the traditional time.',
+    focus: "This platform you're using right now? Built with AI assistance. I'll teach you the exact workflows I use to go from idea to production UI in a fraction of the traditional time.",
   },
 };
 
 // Default course focus
 export const defaultCourseFocus = {
   tagline: 'Expert-Led, AI-Assisted Learning',
-  focus: 'Every course combines my decades of real-world experience with AI-powered content development. You\'re learning from someone who practices what they preach.',
+  focus: "Every course combines my decades of real-world experience with AI-powered content development. You're learning from someone who practices what they preach.",
 };
 
 // Get instructor for a specific course (always Ivan)

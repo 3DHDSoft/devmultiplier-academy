@@ -65,18 +65,8 @@ export function LanguageSelector({ currentLocale = 'en', onChange }: LanguageSel
   };
 
   return (
-    <div
-      className="relative"
-      ref={dropdownRef}
-    >
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-        aria-label="Select language"
-      >
+    <div className="relative" ref={dropdownRef}>
+      <button type="button" onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-1 text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" aria-expanded={isOpen} aria-haspopup="listbox" aria-label="Select language">
         <Globe className="h-4 w-4" />
         <span className="hidden sm:inline">{currentLanguage.flag}</span>
         <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -85,18 +75,7 @@ export function LanguageSelector({ currentLocale = 'en', onChange }: LanguageSel
       {isOpen && (
         <div className="absolute top-full right-0 z-50 mt-2 min-w-[160px] rounded-md border border-[#d1d9e0] bg-white py-1 shadow-lg dark:border-[#30363d] dark:bg-[#161b22]">
           {LANGUAGES.map((language) => (
-            <button
-              key={language.code}
-              type="button"
-              onClick={() => handleSelect(language.code)}
-              className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] ${
-                selected === language.code
-                  ? 'bg-[#f6f8fa] font-medium text-[#1f2328] dark:bg-[#21262d] dark:text-[#e6edf3]'
-                  : 'text-[#656d76] dark:text-[#848d97]'
-              }`}
-              role="option"
-              aria-selected={selected === language.code}
-            >
+            <button key={language.code} type="button" onClick={() => handleSelect(language.code)} className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] ${selected === language.code ? 'bg-[#f6f8fa] font-medium text-[#1f2328] dark:bg-[#21262d] dark:text-[#e6edf3]' : 'text-[#656d76] dark:text-[#848d97]'}`} role="option" aria-selected={selected === language.code}>
               <span>{language.flag}</span>
               <span>{language.name}</span>
             </button>

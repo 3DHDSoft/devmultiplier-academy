@@ -58,10 +58,7 @@ export const POST = withErrorHandling(
       }),
     ]);
 
-    apiLogger.info(
-      { userId: emailChangeToken.userId, oldEmail: emailChangeToken.currentEmail, newEmail: emailChangeToken.newEmail },
-      'Email changed successfully'
-    );
+    apiLogger.info({ userId: emailChangeToken.userId, oldEmail: emailChangeToken.currentEmail, newEmail: emailChangeToken.newEmail }, 'Email changed successfully');
 
     return NextResponse.json({
       success: true,

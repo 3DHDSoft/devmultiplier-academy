@@ -87,10 +87,7 @@ export const POST = withErrorHandling(
       await sendEmailChangeVerification(validatedData.newEmail, user.email, token);
       emailLogger.info({ userId: user.id, newEmail: validatedData.newEmail }, 'Email change verification sent');
     } catch (emailError) {
-      emailLogger.error(
-        { err: emailError, userId: user.id, newEmail: validatedData.newEmail },
-        'Failed to send email change verification'
-      );
+      emailLogger.error({ err: emailError, userId: user.id, newEmail: validatedData.newEmail }, 'Failed to send email change verification');
       throw emailError;
     }
 

@@ -2,8 +2,7 @@
 
 ## Overview
 
-This application is instrumented with OpenTelemetry for distributed tracing and observability. The implementation
-includes:
+This application is instrumented with OpenTelemetry for distributed tracing and observability. The implementation includes:
 
 - **Auto-instrumentation** for HTTP, Prisma, and Undici
 - **Custom spans** for security features (login logging, location checks, failed attempts)
@@ -72,8 +71,7 @@ Tracks the entire login logging process with:
 
 Monitors new login locations with:
 
-- Attributes: `check.user_id`, `check.location.city`, `check.location.country`, `check.previous_logins_count`,
-  `check.is_new_location`
+- Attributes: `check.user_id`, `check.location.city`, `check.location.country`, `check.previous_logins_count`, `check.is_new_location`
 - Events: `new_location_detected`, `new_location_email_sent`
 
 #### Failed Attempts Monitoring (`login.check_failed_attempts`)
@@ -81,8 +79,7 @@ Monitors new login locations with:
 Tracks failed login attempts with:
 
 - Attributes: `check.email`, `check.failed_attempts_count`, `check.time_window_minutes`
-- Events: `failed_attempts_threshold_reached`, `sending_failed_attempts_alert`, `failed_attempts_email_sent`,
-  `skipped_alert_to_avoid_spam`
+- Events: `failed_attempts_threshold_reached`, `sending_failed_attempts_alert`, `failed_attempts_email_sent`, `skipped_alert_to_avoid_spam`
 
 ## Environment-Based Configuration
 
@@ -210,8 +207,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp
 OTEL_EXPORTER_OTLP_HEADERS={"Authorization":"Basic <base64_encoded_credentials>"}
 ```
 
-**Note**: When `NODE_ENV=production`, the app automatically uses Grafana Cloud even without setting
-`OTEL_USE_CLOUD=true`.
+**Note**: When `NODE_ENV=production`, the app automatically uses Grafana Cloud even without setting `OTEL_USE_CLOUD=true`.
 
 **Note:** For the `Authorization` header, you need to base64 encode `<instance-id>:<token>`:
 
@@ -429,8 +425,7 @@ Create a new dashboard in Grafana and import this JSON:
 
 ## Prometheus Metrics Endpoint
 
-The application exposes a `/api/metrics` endpoint that provides metrics in Prometheus text format. This endpoint can be
-scraped by Prometheus or other monitoring tools.
+The application exposes a `/api/metrics` endpoint that provides metrics in Prometheus text format. This endpoint can be scraped by Prometheus or other monitoring tools.
 
 ### Endpoint Details
 

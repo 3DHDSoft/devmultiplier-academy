@@ -205,24 +205,12 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   const avatarUrl = contextAvatarUrl || user.image || (user.email ? getGravatarUrl(user.email) : null);
 
   return (
-    <div
-      className="relative"
-      ref={dropdownRef}
-    >
+    <div className="relative" ref={dropdownRef}>
       {/* Avatar Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-navy hover:bg-blue focus:ring-navy flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className="bg-navy hover:bg-blue focus:ring-navy flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none" aria-expanded={isOpen} aria-haspopup="true">
         {avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element -- User-provided avatar URL, not part of app bundle
-          <img
-            src={avatarUrl}
-            alt={user.name || 'Profile'}
-            className="h-full w-full rounded-full object-cover"
-          />
+          <img src={avatarUrl} alt={user.name || 'Profile'} className="h-full w-full rounded-full object-cover" />
         ) : (
           <span>{getInitials()}</span>
         )}
@@ -239,11 +227,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
 
           {/* Menu Items */}
           <div className="py-1">
-            <Link
-              href="/profile"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50"
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50" onClick={() => setIsOpen(false)}>
               <User className="h-4 w-4" />
               Edit Profile
             </Link>

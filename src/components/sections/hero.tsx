@@ -21,32 +21,21 @@ export function Hero() {
           </h1>
 
           {/* Subheadline */}
-          <p className="mt-6 text-lg leading-8 text-[#656d76] sm:text-xl dark:text-[#848d97]">
-            Master Domain-Driven Design, CQRS, database optimization, and AI-assisted development. Expert-led courses
-            designed for professionals who ship production systems.
-          </p>
+          <p className="mt-6 text-lg leading-8 text-[#656d76] sm:text-xl dark:text-[#848d97]">Master Domain-Driven Design, CQRS, database optimization, and AI-assisted development. Expert-led courses designed for professionals who ship production systems.</p>
 
           {/* CTAs - GitHub style buttons */}
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-            <Link
-              href="/courses"
-              className="inline-flex items-center rounded-md bg-[#1f883d] px-6 py-3 text-base font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-            >
+            <Link href="/courses" className="inline-flex items-center rounded-md bg-[#1f883d] px-6 py-3 text-base font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]">
               Explore Courses
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center rounded-md border border-[#d1d9e0] bg-white px-6 py-3 text-base font-medium text-[#1f2328] transition-colors hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3] dark:hover:bg-[#21262d]"
-            >
+            <Link href="/pricing" className="inline-flex items-center rounded-md border border-[#d1d9e0] bg-white px-6 py-3 text-base font-medium text-[#1f2328] transition-colors hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#161b22] dark:text-[#e6edf3] dark:hover:bg-[#21262d]">
               View Pricing
             </Link>
           </div>
 
           {/* Social proof */}
-          <p className="mt-12 text-sm text-[#656d76] dark:text-[#848d97]">
-            Trusted by developers at Fortune 500 companies and innovative startups
-          </p>
+          <p className="mt-12 text-sm text-[#656d76] dark:text-[#848d97]">Trusted by developers at Fortune 500 companies and innovative startups</p>
         </div>
       </div>
     </section>

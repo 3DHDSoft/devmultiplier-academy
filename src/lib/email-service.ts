@@ -82,8 +82,7 @@ export async function sendNewLocationAlert(
   },
   timestamp: Date
 ): Promise<void> {
-  const locationStr =
-    [location.city, location.region, location.country].filter(Boolean).join(', ') || 'Unknown location';
+  const locationStr = [location.city, location.region, location.country].filter(Boolean).join(', ') || 'Unknown location';
 
   const subject = 'New login from a new location';
 
@@ -186,8 +185,7 @@ export async function sendFailedLoginAlert(
   },
   timestamp: Date
 ): Promise<void> {
-  const locationStr =
-    [location.city, location.region, location.country].filter(Boolean).join(', ') || 'Unknown location';
+  const locationStr = [location.city, location.region, location.country].filter(Boolean).join(', ') || 'Unknown location';
 
   const subject = `🚨 Security Alert: ${failedAttempts} failed login attempts`;
 
@@ -282,12 +280,7 @@ What should you do?
 /**
  * Send contact form submission email
  */
-export async function sendContactFormEmail(data: {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}): Promise<void> {
+export async function sendContactFormEmail(data: { name: string; email: string; subject: string; message: string }): Promise<void> {
   const contactEmail = process.env.CONTACT_EMAIL || process.env.RESEND_FROM_EMAIL || 'hello@devmultiplier.com';
 
   const subject = `Contact Form: ${data.subject}`;
@@ -367,11 +360,7 @@ Reply directly to this email to respond to ${data.name}.
   });
 }
 
-export async function sendEmailChangeVerification(
-  newEmail: string,
-  currentEmail: string,
-  token: string
-): Promise<void> {
+export async function sendEmailChangeVerification(newEmail: string, currentEmail: string, token: string): Promise<void> {
   const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email-change?token=${token}`;
 
   const subject = 'Verify Your New Email Address - Dev Academy';
