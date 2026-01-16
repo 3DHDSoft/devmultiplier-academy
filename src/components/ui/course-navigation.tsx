@@ -28,15 +28,9 @@ export function CourseNavigation({ previous, up, next }: CourseNavigationProps) 
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#d1d9e0] bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#161b22]">
-              <th className="px-4 py-3 text-left text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">
-                Previous
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">
-                Up
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">
-                Next
-              </th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">Previous</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">Up</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">Next</th>
             </tr>
           </thead>
           <tbody>
