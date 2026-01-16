@@ -55,8 +55,8 @@ export const Arrow: React.FC<ArrowProps> = ({
   const currentEndX = fromX + Math.cos(angle) * currentLength;
   const currentEndY = fromY + Math.sin(angle) * currentLength;
 
-  // Arrowhead points (scaled for 2x resolution)
-  const arrowSize = 24;
+  // Arrowhead points (scaled for 1920x1080)
+  const arrowSize = 16;
   const arrowAngle = Math.PI / 6; // 30 degrees
 
   const arrowPoint1X = currentEndX - arrowSize * Math.cos(angle - arrowAngle);
@@ -66,18 +66,18 @@ export const Arrow: React.FC<ArrowProps> = ({
 
   // Label position (middle of arrow)
   const labelX = (fromX + toX) / 2;
-  const labelY = (fromY + toY) / 2 - 30;
+  const labelY = (fromY + toY) / 2 - 24;
 
   const containerStyle = { position: 'absolute' as const, left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none' as const, opacity };
   const svgStyle = { position: 'absolute' as const, left: 0, top: 0, width: '100%', height: '100%', overflow: 'visible' as const };
   const arrowheadStyle = { opacity: interpolate(progress, [0.8, 1], [0, 1]) };
-  const labelStyle = { position: 'absolute' as const, left: labelX, top: labelY, transform: 'translateX(-50%)', fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28, fontWeight: 500, color: color, backgroundColor: 'rgba(255,255,255,0.9)', padding: '8px 16px', borderRadius: '8px', opacity: interpolate(progress, [0.5, 0.8], [0, 1]), whiteSpace: 'nowrap' as const };
+  const labelStyle = { position: 'absolute' as const, left: labelX, top: labelY, transform: 'translateX(-50%)', fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 27, fontWeight: 600, color: color, backgroundColor: 'rgba(255,255,255,0.9)', padding: '6px 12px', borderRadius: '6px', opacity: interpolate(progress, [0.5, 0.8], [0, 1]), whiteSpace: 'nowrap' as const };
 
   return (
     <div style={containerStyle}>
       <svg style={svgStyle}>
         {/* Arrow line */}
-        <line x1={fromX} y1={fromY} x2={currentEndX} y2={currentEndY} stroke={color} strokeWidth={5} strokeDasharray={dashed ? '16,8' : 'none'} />
+        <line x1={fromX} y1={fromY} x2={currentEndX} y2={currentEndY} stroke={color} strokeWidth={3} strokeDasharray={dashed ? '10,5' : 'none'} />
 
         {/* Arrowhead (only show when mostly drawn) */}
         {progress > 0.8 && (
