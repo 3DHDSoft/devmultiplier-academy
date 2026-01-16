@@ -82,7 +82,7 @@ export const tools: Tool[] = [
     howIUseIt:
       "ElevenLabs powers the voiceovers in my course videos. The voice cloning feature lets me maintain a consistent voice across all content. I've also used it to create audio versions of written lessons for students who prefer listening.",
     category: 'voice',
-    affiliateUrl: 'https://elevenlabs.io/?ref=PLACEHOLDER', // Replace with your affiliate link
+    affiliateUrl: 'https://try.elevenlabs.io/fqta2rsfzcn8',
     websiteUrl: 'https://elevenlabs.io',
     discount: 'Free tier available',
     featured: true,
