@@ -12,16 +12,7 @@ interface ArrowProps {
   dashed?: boolean;
 }
 
-export const Arrow: React.FC<ArrowProps> = ({
-  fromX,
-  fromY,
-  toX,
-  toY,
-  delay = 0,
-  color = '#475569',
-  label,
-  dashed = false,
-}) => {
+export const Arrow: React.FC<ArrowProps> = ({ fromX, fromY, toX, toY, delay = 0, color = '#475569', label, dashed = false }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -80,9 +71,7 @@ export const Arrow: React.FC<ArrowProps> = ({
         <line x1={fromX} y1={fromY} x2={currentEndX} y2={currentEndY} stroke={color} strokeWidth={3} strokeDasharray={dashed ? '10,5' : 'none'} />
 
         {/* Arrowhead (only show when mostly drawn) */}
-        {progress > 0.8 && (
-          <polygon points={`${currentEndX},${currentEndY} ${arrowPoint1X},${arrowPoint1Y} ${arrowPoint2X},${arrowPoint2Y}`} fill={color} style={arrowheadStyle} />
-        )}
+        {progress > 0.8 && <polygon points={`${currentEndX},${currentEndY} ${arrowPoint1X},${arrowPoint1Y} ${arrowPoint2X},${arrowPoint2Y}`} fill={color} style={arrowheadStyle} />}
       </svg>
 
       {/* Label */}

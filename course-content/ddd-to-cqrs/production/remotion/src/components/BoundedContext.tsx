@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { interpolate, useCurrentFrame, spring, useVideoConfig } from 'remotion';
+import { loadFonts, fontFamily } from '../fonts';
 
 export type ContextColor = 'green' | 'orange' | 'blue' | 'purple';
 
@@ -37,18 +38,13 @@ const colorMap: Record<ContextColor, { bg: string; border: string; text: string 
   },
 };
 
-export const BoundedContext: React.FC<BoundedContextProps> = ({
-  name,
-  color,
-  x,
-  y,
-  width,
-  height,
-  delay = 0,
-  children,
-}) => {
+export const BoundedContext: React.FC<BoundedContextProps> = ({ name, color, x, y, width, height, delay = 0, children }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+
+  useEffect(() => {
+    loadFonts();
+  }, []);
 
   const colors = colorMap[color];
 
@@ -84,7 +80,7 @@ export const BoundedContext: React.FC<BoundedContextProps> = ({
   const containerStyle = { position: 'absolute' as const, left: x, top: y, width, height, opacity, transform: `scale(${scale})`, transformOrigin: 'center center' };
   const backgroundStyle = { position: 'absolute' as const, inset: 0, backgroundColor: colors.bg, borderRadius: '10px', opacity: borderProgress };
   const svgStyle = { position: 'absolute' as const, top: 0, left: 0 };
-  const labelStyle = { position: 'absolute' as const, top: 18, left: 24, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28, fontWeight: 700, color: colors.text, textTransform: 'uppercase' as const, letterSpacing: '0.02em', opacity: borderProgress };
+  const labelStyle = { position: 'absolute' as const, top: 18, left: 24, fontFamily, fontSize: 28, fontWeight: 700, color: colors.text, textTransform: 'uppercase' as const, letterSpacing: '0.02em', opacity: borderProgress };
   const childrenStyle = { position: 'relative' as const, paddingTop: 50 };
 
   return (

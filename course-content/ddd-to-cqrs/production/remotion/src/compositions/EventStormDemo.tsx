@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AbsoluteFill, Sequence } from 'remotion';
 import { StickyNote } from '../components/StickyNote';
 import { BoundedContext } from '../components/BoundedContext';
 import { Arrow } from '../components/Arrow';
+import { loadFonts, fontFamily } from '../fonts';
 
 /**
  * Event Storm Demo Animation
@@ -35,6 +36,10 @@ import { Arrow } from '../components/Arrow';
  */
 
 export const EventStormDemo: React.FC = () => {
+  useEffect(() => {
+    loadFonts();
+  }, []);
+
   // Layout constants for 1920x1080
   const CONTEXT_Y = 130;
   const CONTEXT_HEIGHT = 560;
@@ -53,8 +58,8 @@ export const EventStormDemo: React.FC = () => {
 
   // Style constants
   const containerStyle = { backgroundColor: '#f8fafc', padding: 20 };
-  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 36, fontWeight: 700, color: '#0f172a' };
-  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28 };
+  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily, fontSize: 36, fontWeight: 700, color: '#0f172a' };
+  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily, fontSize: 28 };
   const legendItemStyle = { display: 'flex', alignItems: 'center', gap: 10 };
   const legendSwatchBase = { width: 28, height: 28, borderRadius: 4 };
   const eventSwatchStyle = { ...legendSwatchBase, backgroundColor: '#fed7aa', border: '2px solid #f97316' };
@@ -94,7 +99,7 @@ export const EventStormDemo: React.FC = () => {
       {/* User */}
       <Sequence from={30} durationInFrames={420}>
         <div style={{ position: 'absolute', left: SALES_X + 30, top: ROW1_Y, fontSize: 40, width: 40, textAlign: 'center' }}>👤</div>
-        <div style={{ position: 'absolute', left: SALES_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily: 'system-ui', fontSize: 21, color: '#1b5e20' }}>User</div>
+        <div style={{ position: 'absolute', left: SALES_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily, fontSize: 21, color: '#1b5e20' }}>User</div>
       </Sequence>
 
       {/* Sales Commands */}
@@ -117,7 +122,7 @@ export const EventStormDemo: React.FC = () => {
 
       {/* Sales Aggregate */}
       <Sequence from={105} durationInFrames={345}>
-        <StickyNote text="Order" color="yellow" x={SALES_X + 340} y={ROW3_Y} delay={0} width={120} fontSize={18} />
+        <StickyNote text="Order" color="yellow" x={SALES_X + 340} y={ROW3_Y} delay={0} width={120} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* ============ PAYMENT CONTEXT ============ */}
@@ -127,7 +132,7 @@ export const EventStormDemo: React.FC = () => {
 
       {/* Payment Command */}
       <Sequence from={150} durationInFrames={300}>
-        <StickyNote text="ProcessPayment" color="blue" x={PAYMENT_X + 40} y={ROW1_Y + 10} delay={0} width={210} fontSize={CARD_FONT} />
+        <StickyNote text="ProcessPayment" color="blue" x={PAYMENT_X + 40} y={ROW1_Y} delay={0} width={210} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Payment Events */}
@@ -141,13 +146,13 @@ export const EventStormDemo: React.FC = () => {
 
       {/* External System */}
       <Sequence from={210} durationInFrames={240}>
-        <div style={{ position: 'absolute', left: PAYMENT_X + 70, top: ROW2_Y + 40, fontFamily: 'system-ui', fontSize: 28 }}>⚡</div>
-        <div style={{ position: 'absolute', left: PAYMENT_X + 45, top: ROW2_Y + 75, fontFamily: 'system-ui', fontSize: 28, color: '#bf360c' }}>Stripe</div>
+        <div style={{ position: 'absolute', left: PAYMENT_X + 70, top: ROW2_Y + 70, fontFamily, fontSize: 28 }}>⚡</div>
+        <div style={{ position: 'absolute', left: PAYMENT_X + 45, top: ROW2_Y + 105, fontFamily, fontSize: 28, color: '#bf360c' }}>Stripe</div>
       </Sequence>
 
       {/* Payment Aggregate */}
       <Sequence from={225} durationInFrames={225}>
-        <StickyNote text="Payment" color="yellow" x={PAYMENT_X + 340} y={ROW3_Y} delay={0} width={130} fontSize={18} />
+        <StickyNote text="Payment" color="yellow" x={PAYMENT_X + 340} y={ROW3_Y} delay={0} width={130} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* ============ FULFILLMENT CONTEXT ============ */}
@@ -157,11 +162,11 @@ export const EventStormDemo: React.FC = () => {
 
       {/* Fulfillment Commands */}
       <Sequence from={270} durationInFrames={180}>
-        <StickyNote text="AllocateInventory" color="blue" x={FULFILLMENT_X + 40} y={ROW1_Y + 10} delay={0} width={230} fontSize={CARD_FONT} />
+        <StickyNote text="AllocateInventory" color="blue" x={FULFILLMENT_X + 100} y={ROW1_Y} delay={0} width={230} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={300} durationInFrames={150}>
-        <StickyNote text="ShipOrder" color="blue" x={FULFILLMENT_X + 300} y={ROW1_Y + 10} delay={0} width={160} fontSize={CARD_FONT} />
+        <StickyNote text="ShipOrder" color="blue" x={FULFILLMENT_X + 360} y={ROW1_Y} delay={0} width={160} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Fulfillment Events */}
@@ -175,8 +180,8 @@ export const EventStormDemo: React.FC = () => {
 
       {/* Fulfillment Aggregates */}
       <Sequence from={330} durationInFrames={120}>
-        <StickyNote text="Shipment" color="yellow" x={FULFILLMENT_X + 100} y={ROW3_Y} delay={0} width={130} fontSize={16} />
-        <StickyNote text="Inventory" color="yellow" x={FULFILLMENT_X + 280} y={ROW3_Y} delay={0} width={130} fontSize={16} />
+        <StickyNote text="Shipment" color="yellow" x={FULFILLMENT_X + 100} y={ROW3_Y} delay={0} width={130} fontSize={CARD_FONT} />
+        <StickyNote text="Inventory" color="yellow" x={FULFILLMENT_X + 280} y={ROW3_Y} delay={0} width={130} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* ============ FLOW ARROWS ============ */}
@@ -188,7 +193,7 @@ export const EventStormDemo: React.FC = () => {
 
       {/* PaymentProcessed → AllocateInventory */}
       <Sequence from={390} durationInFrames={60}>
-        <Arrow fromX={PAYMENT_X + 280 + 240} fromY={ROW1_Y + 35} toX={FULFILLMENT_X + 40} toY={ROW1_Y + 35} delay={0} color="#e65100" label="triggers" />
+        <Arrow fromX={PAYMENT_X + 280 + 240} fromY={ROW1_Y + 35} toX={FULFILLMENT_X + 100} toY={ROW1_Y + 35} delay={0} color="#e65100" label="triggers" />
       </Sequence>
 
       {/* PaymentFailed → dashed back */}

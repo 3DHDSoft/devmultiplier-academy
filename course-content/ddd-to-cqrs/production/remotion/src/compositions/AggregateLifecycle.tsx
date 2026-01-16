@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AbsoluteFill, Sequence, interpolate, useCurrentFrame, spring, useVideoConfig } from 'remotion';
 import { BoundedContext } from '../components/BoundedContext';
 import { StickyNote } from '../components/StickyNote';
 import { Arrow } from '../components/Arrow';
+import { loadFonts, fontFamily } from '../fonts';
 
 /**
 Aggregate Lifecycle Animation
@@ -37,6 +38,10 @@ export const AggregateLifecycle: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  useEffect(() => {
+    loadFonts();
+  }, []);
+
   // Layout constants for 1920x1080
   const CONTEXT_WIDTH = 580;
   const CONTEXT_HEIGHT = 560;
@@ -55,8 +60,8 @@ export const AggregateLifecycle: React.FC = () => {
   const CARD_FONT = 20;
 
   const containerStyle = { backgroundColor: '#f8fafc', padding: 20 };
-  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 36, fontWeight: 700, color: '#0f172a' };
-  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28 };
+  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily, fontSize: 36, fontWeight: 700, color: '#0f172a' };
+  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily, fontSize: 28 };
   const legendItemStyle = { display: 'flex', alignItems: 'center', gap: 10 };
   const legendSwatchBase = { width: 28, height: 28, borderRadius: 4 };
   const commandSwatchStyle = { ...legendSwatchBase, backgroundColor: '#bfdbfe', border: '2px solid #3b82f6' };
@@ -104,11 +109,11 @@ export const AggregateLifecycle: React.FC = () => {
 
       {/* Aggregate Created */}
       <Sequence from={90} durationInFrames={510}>
-        <StickyNote text="Order (v1)" color="yellow" x={PHASE1_X + 50} y={ROW2_Y} delay={0} width={120} fontSize={CARD_FONT} />
+        <StickyNote text="Order (v1)" color="yellow" x={PHASE1_X + 50} y={ROW2_Y} delay={0} width={140} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={120} durationInFrames={480}>
-        <StickyNote text="Status: PENDING" color="orange" x={PHASE1_X + 200} y={ROW2_Y} delay={0} width={CARD_WIDTH + 30} fontSize={CARD_FONT} />
+        <StickyNote text="Status: PENDING" color="orange" x={PHASE1_X + 220} y={ROW2_Y} delay={0} width={CARD_WIDTH + 30} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Event */}
@@ -136,11 +141,11 @@ export const AggregateLifecycle: React.FC = () => {
 
       {/* Aggregate Updated */}
       <Sequence from={290} durationInFrames={310}>
-        <StickyNote text="Order (v2)" color="yellow" x={PHASE2_X + 50} y={ROW2_Y} delay={0} width={120} fontSize={CARD_FONT} />
+        <StickyNote text="Order (v2)" color="yellow" x={PHASE2_X + 50} y={ROW2_Y} delay={0} width={140} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={320} durationInFrames={280}>
-        <StickyNote text="Status: CONFIRMED" color="green" x={PHASE2_X + 200} y={ROW2_Y} delay={0} width={230} fontSize={CARD_FONT} />
+        <StickyNote text="Status: CONFIRMED" color="green" x={PHASE2_X + 220} y={ROW2_Y} delay={0} width={230} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Event */}
@@ -168,15 +173,15 @@ export const AggregateLifecycle: React.FC = () => {
 
       {/* Aggregate Protected */}
       <Sequence from={490} durationInFrames={110}>
-        <StickyNote text="Order (v2)" color="yellow" x={PHASE3_X + 50} y={ROW2_Y} delay={0} width={120} fontSize={CARD_FONT} />
+        <StickyNote text="Order (v2)" color="yellow" x={PHASE3_X + 20} y={ROW2_Y} delay={0} width={140} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={520} durationInFrames={80}>
-        <StickyNote text="❌ REJECTED" color="pink" x={PHASE3_X + 200} y={ROW2_Y} delay={0} width={150} fontSize={CARD_FONT} />
+        <StickyNote text="✗ REJECTED" color="pink" x={PHASE3_X + 180} y={ROW2_Y} delay={0} width={165} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={550} durationInFrames={50}>
-        <PhaseLabel x={PHASE3_X + 370} y={ROW2_Y + 20} text="Invariant violated!" delay={0} frame={frame} fps={fps} color="#dc2626" />
+        <PhaseLabel x={PHASE3_X + 348} y={ROW2_Y + 20} text="Invariant violated!" delay={0} frame={frame} fps={fps} color="#dc2626" />
       </Sequence>
 
       {/* No Event */}

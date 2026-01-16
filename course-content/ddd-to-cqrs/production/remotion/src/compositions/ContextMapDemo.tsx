@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AbsoluteFill, Sequence, interpolate, useCurrentFrame, spring, useVideoConfig } from 'remotion';
 import { BoundedContext } from '../components/BoundedContext';
 import { Arrow } from '../components/Arrow';
 import { StickyNote } from '../components/StickyNote';
+import { loadFonts, fontFamily } from '../fonts';
 
 /**
 Context Map Demo Animation
@@ -43,6 +44,10 @@ export const ContextMapDemo: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  useEffect(() => {
+    loadFonts();
+  }, []);
+
   // Layout constants for 1920x1080
   const CONTEXT_WIDTH = 580;
   const CONTEXT_HEIGHT = 560;
@@ -60,8 +65,8 @@ export const ContextMapDemo: React.FC = () => {
   const CARD_FONT = 20;
 
   const containerStyle = { backgroundColor: '#f8fafc', padding: 20 };
-  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 36, fontWeight: 700, color: '#0f172a' };
-  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28 };
+  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily, fontSize: 36, fontWeight: 700, color: '#0f172a' };
+  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily, fontSize: 28 };
   const legendItemStyle = { display: 'flex', alignItems: 'center', gap: 10 };
   const legendSwatchBase = { width: 28, height: 28, borderRadius: 4 };
   const upstreamSwatchStyle = { ...legendSwatchBase, backgroundColor: '#dcfce7', border: '2px solid #22c55e' };
@@ -220,7 +225,7 @@ const RoleLabel: React.FC<RoleLabelProps> = ({ x, y, text, color, delay, frame, 
 
   if (frame < delay) return null;
 
-  const labelStyle = { position: 'absolute' as const, left: x, top: y, transform: `translateX(-50%) scale(${scale})`, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 18, fontWeight: 700, color, backgroundColor: 'rgba(255,255,255,0.9)', padding: '6px 14px', borderRadius: 6, border: `2px solid ${color}`, opacity, letterSpacing: 1 };
+  const labelStyle = { position: 'absolute' as const, left: x, top: y, transform: `translateX(-50%) scale(${scale})`, fontFamily, fontSize: 18, fontWeight: 700, color, backgroundColor: 'rgba(255,255,255,0.9)', padding: '6px 14px', borderRadius: 6, border: `2px solid ${color}`, opacity, letterSpacing: 1 };
 
   return <div style={labelStyle}>{text}</div>;
 };

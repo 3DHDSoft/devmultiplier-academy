@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AbsoluteFill, Sequence } from 'remotion';
 import { BoundedContext } from '../components/BoundedContext';
 import { StickyNote } from '../components/StickyNote';
 import { Arrow } from '../components/Arrow';
+import { loadFonts, fontFamily } from '../fonts';
 
 /**
 Command Query Flow Animation
@@ -33,6 +34,10 @@ Duration: 18 seconds (540 frames at 30fps)
 Canvas: 1920x1080
 */
 export const CommandQueryFlow: React.FC = () => {
+  useEffect(() => {
+    loadFonts();
+  }, []);
+
   // Layout constants for 1920x1080
   const CONTEXT_WIDTH = 580;
   const CONTEXT_HEIGHT = 560;
@@ -51,8 +56,8 @@ export const CommandQueryFlow: React.FC = () => {
   const CARD_FONT = 20;
 
   const containerStyle = { backgroundColor: '#f8fafc', padding: 20 };
-  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 36, fontWeight: 700, color: '#0f172a' };
-  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28 };
+  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily, fontSize: 36, fontWeight: 700, color: '#0f172a' };
+  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily, fontSize: 28 };
   const legendItemStyle = { display: 'flex', alignItems: 'center', gap: 10 };
   const legendSwatchBase = { width: 28, height: 28, borderRadius: 4 };
   const commandSwatchStyle = { ...legendSwatchBase, backgroundColor: '#bfdbfe', border: '2px solid #3b82f6' };
@@ -92,7 +97,7 @@ export const CommandQueryFlow: React.FC = () => {
       {/* User Action */}
       <Sequence from={30} durationInFrames={510}>
         <div style={{ position: 'absolute', left: COMMAND_X + 30, top: ROW1_Y, fontSize: 40, width: 40, textAlign: 'center' }}>👤</div>
-        <div style={{ position: 'absolute', left: COMMAND_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily: 'system-ui', fontSize: 21, color: '#9a3412' }}>User</div>
+        <div style={{ position: 'absolute', left: COMMAND_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily, fontSize: 21, color: '#9a3412' }}>User</div>
       </Sequence>
 
       {/* Commands */}
@@ -106,20 +111,20 @@ export const CommandQueryFlow: React.FC = () => {
 
       {/* Domain */}
       <Sequence from={120} durationInFrames={420}>
-        <StickyNote text="Order Aggregate" color="yellow" x={COMMAND_X + 120} y={ROW2_Y} delay={0} width={CARD_WIDTH + 20} fontSize={CARD_FONT} />
+        <StickyNote text="Order Aggregate" color="yellow" x={COMMAND_X + 100} y={ROW2_Y} delay={0} width={200} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={150} durationInFrames={390}>
-        <StickyNote text="Validate & Apply" color="orange" x={COMMAND_X + 330} y={ROW2_Y} delay={0} width={CARD_WIDTH + 20} fontSize={CARD_FONT} />
+        <StickyNote text="Validate & Apply" color="orange" x={COMMAND_X + 320} y={ROW2_Y} delay={0} width={200} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Events & Store */}
       <Sequence from={180} durationInFrames={360}>
-        <StickyNote text="OrderPlacedEvent" color="orange" x={COMMAND_X + 120} y={ROW3_Y} delay={0} width={CARD_WIDTH + 30} fontSize={CARD_FONT} />
+        <StickyNote text="OrderPlacedEvent" color="orange" x={COMMAND_X + 100} y={ROW3_Y} delay={0} width={220} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={210} durationInFrames={330}>
-        <StickyNote text="Event Store" color="pink" x={COMMAND_X + 350} y={ROW3_Y} delay={0} width={130} fontSize={CARD_FONT} />
+        <StickyNote text="Event Store" color="pink" x={COMMAND_X + 340} y={ROW3_Y} delay={0} width={160} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* ============ SYNCHRONIZATION ============ */}
@@ -137,7 +142,7 @@ export const CommandQueryFlow: React.FC = () => {
       </Sequence>
 
       <Sequence from={330} durationInFrames={210}>
-        <StickyNote text="Event Handler" color="orange" x={SYNC_X + 210} y={ROW2_Y} delay={0} width={CARD_WIDTH} fontSize={CARD_FONT} />
+        <StickyNote text="Event Handler" color="orange" x={SYNC_X + 200} y={ROW2_Y} delay={0} width={180} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={360} durationInFrames={180}>
@@ -146,7 +151,7 @@ export const CommandQueryFlow: React.FC = () => {
 
       {/* Update Read Model */}
       <Sequence from={390} durationInFrames={150}>
-        <StickyNote text="Update Projection" color="green" x={SYNC_X + 180} y={ROW3_Y} delay={0} width={210} fontSize={CARD_FONT} />
+        <StickyNote text="Update Projection" color="green" x={SYNC_X + 170} y={ROW3_Y} delay={0} width={230} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* ============ QUERY FLOW ============ */}
@@ -157,7 +162,7 @@ export const CommandQueryFlow: React.FC = () => {
       {/* User Request */}
       <Sequence from={450} durationInFrames={90}>
         <div style={{ position: 'absolute', left: QUERY_X + 30, top: ROW1_Y, fontSize: 40, width: 40, textAlign: 'center' }}>👤</div>
-        <div style={{ position: 'absolute', left: QUERY_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily: 'system-ui', fontSize: 21, color: '#166534' }}>User</div>
+        <div style={{ position: 'absolute', left: QUERY_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily, fontSize: 21, color: '#166534' }}>User</div>
       </Sequence>
 
       <Sequence from={465} durationInFrames={75}>
@@ -174,7 +179,7 @@ export const CommandQueryFlow: React.FC = () => {
       </Sequence>
 
       <Sequence from={510} durationInFrames={30}>
-        <StickyNote text="OrderStatusView" color="green" x={QUERY_X + 290} y={ROW2_Y} delay={0} width={CARD_WIDTH + 20} fontSize={CARD_FONT} />
+        <StickyNote text="OrderStatusView" color="green" x={QUERY_X + 290} y={ROW2_Y} delay={0} width={200} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Response */}
