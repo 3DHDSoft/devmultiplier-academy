@@ -223,139 +223,20 @@ bun install
 **Project Structure:**
 
 ```
-📦 devmultiplier-animations/
+📦 remotion/
 ├── 📁 src/
 │   ├── 📁 components/
-│   │   ├── 🧩 StickyNote.tsx
-│   │   ├── 🧩 EventStormDiagram.tsx
-│   │   ├── 🧩 ContextMap.tsx
-│   │   └── 🧩 CodeHighlight.tsx
+│   │   ├── 🧩 Arrow.tsx
+│   │   ├── 🧩 BoundedContext.tsx
+│   │   └── 🧩 StickyNote.tsx
 │   ├── 📁 compositions/
-│   │   ├── 🧩 Lesson4Segment2.tsx
-│   │   ├── 🧩 Lesson4Segment3.tsx
-│   │   └── ...
+│   │   └── 🧩 EventStormDemo.tsx
+│   ├── 📄 index.tsx
 │   └── 📄 Root.tsx
-├── 📁 public/
-│   └── 📁 assets/
-└── 📄 package.json
-```
-
-**Example: Sticky Note Component**
-
-```tsx
-// src/components/StickyNote.tsx
-import { interpolate, useCurrentFrame } from 'remotion';
-
-interface StickyNoteProps {
-  text: string;
-  color: 'orange' | 'blue' | 'yellow';
-  delay: number;
-  x: number;
-  y: number;
-}
-
-const colors = {
-  orange: '#fed7aa', // Domain Events
-  blue: '#bfdbfe', // Commands
-  yellow: '#fef08a', // Aggregates
-};
-
-export const StickyNote: React.FC<StickyNoteProps> = ({ text, color, delay, x, y }) => {
-  const frame = useCurrentFrame();
-
-  const opacity = interpolate(frame - delay, [0, 15], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-
-  const scale = interpolate(frame - delay, [0, 15], [0.5, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        opacity,
-        transform: `scale(${scale})`,
-        backgroundColor: colors[color],
-        padding: '20px',
-        borderRadius: '4px',
-        boxShadow: '4px 4px 8px rgba(0,0,0,0.1)',
-        fontFamily: 'system-ui',
-        fontSize: '24px',
-        fontWeight: 600,
-        minWidth: '150px',
-        textAlign: 'center',
-      }}
-    >
-      {text}
-    </div>
-  );
-};
-```
-
-**Example: Event Storm Composition**
-
-```tsx
-// src/compositions/Lesson4Segment3.tsx
-import { AbsoluteFill, Sequence } from 'remotion';
-import { StickyNote } from '../components/StickyNote';
-
-export const EventStormDemo: React.FC = () => {
-  return (
-    <AbsoluteFill style={{ backgroundColor: '#f8fafc' }}>
-      {/* Sales Context Box */}
-      <Sequence from={0}>
-        <div
-          style={{
-            position: 'absolute',
-            left: 100,
-            top: 100,
-            width: 500,
-            height: 400,
-            border: '3px solid #2e7d32',
-            borderRadius: '12px',
-            backgroundColor: '#e8f5e9',
-          }}
-        >
-          <span style={{ padding: 10, fontWeight: 700 }}>SALES CONTEXT</span>
-        </div>
-      </Sequence>
-
-      {/* Domain Events appear sequentially */}
-      <Sequence from={30}>
-        <StickyNote
-          text="ItemAddedToCart"
-          color="orange"
-          delay={0}
-          x={150}
-          y={200}
-        />
-      </Sequence>
-
-      <Sequence from={60}>
-        <StickyNote
-          text="OrderPlaced"
-          color="orange"
-          delay={0}
-          x={350}
-          y={200}
-        />
-      </Sequence>
-
-      {/* Commands */}
-      <Sequence from={90}>
-        <StickyNote
-          text="AddItemToCart"
-          color="blue"
-          delay={0}
-          x={150}
-          y={350}
-        />
-      </Sequence>
-
-      {/* ... more elements */}
-    </AbsoluteFill>
-  );
-};
+├── 📄 bun.lock
+├── 📄 package.json
+├── 📄 README.md
+└── 📄 tsconfig.json
 ```
 
 **Render Animation:**
