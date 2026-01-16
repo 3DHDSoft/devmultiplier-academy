@@ -7,6 +7,8 @@ import { auth } from '@/auth';
 import { EnrollmentCTA } from '@/components/ui/enrollment-cta';
 import { CourseNavigation } from '@/components/ui/course-navigation';
 import { FAQSection, type FAQItem } from '@/components/ui/faq-accordion';
+import { InstructorSection } from '@/components/ui/instructor-card';
+import { getInstructorForCourse, getCourseFocus } from '@/lib/instructors';
 
 // Privileged email domains and specific emails that can access all courses
 const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
@@ -535,6 +537,13 @@ export default async function CourseDetailPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        {/* Instructor Section */}
+        <InstructorSection
+          instructor={getInstructorForCourse(id)}
+          courseFocus={getCourseFocus(id)}
+          className="mb-12"
+        />
 
         {/* Curriculum - GitHub style list */}
         <div className="mb-12">
