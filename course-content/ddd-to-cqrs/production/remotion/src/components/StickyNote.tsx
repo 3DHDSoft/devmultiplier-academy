@@ -81,40 +81,12 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
     return null;
   }
 
+  const containerStyle = { position: 'absolute' as const, left: x, top: y, width, opacity, transform: `scale(${scale}) rotate(${rotation}deg)`, transformOrigin: 'top left' };
+  const noteStyle = { backgroundColor: colors.bg, border: `4px solid ${colors.border}`, borderRadius: '8px', padding: '16px 12px', width: '100%', boxSizing: 'border-box' as const, boxShadow: '4px 4px 16px rgba(0,0,0,0.15)', fontFamily: 'system-ui, -apple-system, sans-serif', fontSize, fontWeight: 600, color: colors.text, textAlign: 'center' as const, lineHeight: 1.2, overflow: 'hidden' as const, whiteSpace: 'nowrap' as const, textOverflow: 'ellipsis' as const };
+
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        width,
-        opacity,
-        transform: `scale(${scale}) rotate(${rotation}deg)`,
-        transformOrigin: 'top left',
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: colors.bg,
-          border: `4px solid ${colors.border}`,
-          borderRadius: '8px',
-          padding: '16px 12px',
-          width: '100%',
-          boxSizing: 'border-box',
-          boxShadow: '4px 4px 16px rgba(0,0,0,0.15)',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-          fontSize,
-          fontWeight: 600,
-          color: colors.text,
-          textAlign: 'center',
-          lineHeight: 1.2,
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-        }}
-      >
-        {text}
-      </div>
+    <div style={containerStyle}>
+      <div style={noteStyle}>{text}</div>
     </div>
   );
 };

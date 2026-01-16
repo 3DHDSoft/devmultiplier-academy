@@ -68,73 +68,25 @@ export const Arrow: React.FC<ArrowProps> = ({
   const labelX = (fromX + toX) / 2;
   const labelY = (fromY + toY) / 2 - 30;
 
+  const containerStyle = { position: 'absolute' as const, left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none' as const, opacity };
+  const svgStyle = { position: 'absolute' as const, left: 0, top: 0, width: '100%', height: '100%', overflow: 'visible' as const };
+  const arrowheadStyle = { opacity: interpolate(progress, [0.8, 1], [0, 1]) };
+  const labelStyle = { position: 'absolute' as const, left: labelX, top: labelY, transform: 'translateX(-50%)', fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28, fontWeight: 500, color: color, backgroundColor: 'rgba(255,255,255,0.9)', padding: '8px 16px', borderRadius: '8px', opacity: interpolate(progress, [0.5, 0.8], [0, 1]), whiteSpace: 'nowrap' as const };
+
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        opacity,
-      }}
-    >
-      <svg
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: '100%',
-          height: '100%',
-          overflow: 'visible',
-        }}
-      >
+    <div style={containerStyle}>
+      <svg style={svgStyle}>
         {/* Arrow line */}
-        <line
-          x1={fromX}
-          y1={fromY}
-          x2={currentEndX}
-          y2={currentEndY}
-          stroke={color}
-          strokeWidth={5}
-          strokeDasharray={dashed ? '16,8' : 'none'}
-        />
+        <line x1={fromX} y1={fromY} x2={currentEndX} y2={currentEndY} stroke={color} strokeWidth={5} strokeDasharray={dashed ? '16,8' : 'none'} />
 
         {/* Arrowhead (only show when mostly drawn) */}
         {progress > 0.8 && (
-          <polygon
-            points={`${currentEndX},${currentEndY} ${arrowPoint1X},${arrowPoint1Y} ${arrowPoint2X},${arrowPoint2Y}`}
-            fill={color}
-            style={{
-              opacity: interpolate(progress, [0.8, 1], [0, 1]),
-            }}
-          />
+          <polygon points={`${currentEndX},${currentEndY} ${arrowPoint1X},${arrowPoint1Y} ${arrowPoint2X},${arrowPoint2Y}`} fill={color} style={arrowheadStyle} />
         )}
       </svg>
 
       {/* Label */}
-      {label && progress > 0.5 && (
-        <div
-          style={{
-            position: 'absolute',
-            left: labelX,
-            top: labelY,
-            transform: 'translateX(-50%)',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-            fontSize: 28,
-            fontWeight: 500,
-            color: color,
-            backgroundColor: 'rgba(255,255,255,0.9)',
-            padding: '8px 16px',
-            borderRadius: '8px',
-            opacity: interpolate(progress, [0.5, 0.8], [0, 1]),
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {label}
-        </div>
-      )}
+      {label && progress > 0.5 && <div style={labelStyle}>{label}</div>}
     </div>
   );
 };
