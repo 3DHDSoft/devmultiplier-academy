@@ -50,10 +50,7 @@ export const POST = withErrorHandling(
       data: { used: true },
     });
 
-    authLogger.info(
-      { userId: verificationToken.userId, email: verificationToken.email },
-      'Email verified successfully'
-    );
+    authLogger.info({ userId: verificationToken.userId, email: verificationToken.email }, 'Email verified successfully');
 
     return NextResponse.json({
       success: true,

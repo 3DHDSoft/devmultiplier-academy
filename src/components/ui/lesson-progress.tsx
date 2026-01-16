@@ -108,10 +108,7 @@ export function LessonProgress({ courseSlug, moduleId, lessonId, onComplete }: L
   // Not logged in - show login prompt
   if (status !== 'authenticated') {
     return (
-      <button
-        disabled
-        className="flex cursor-not-allowed items-center gap-2 rounded-md bg-[#f6f8fa] px-4 py-2 text-sm font-medium text-[#656d76] dark:bg-[#21262d] dark:text-[#848d97]"
-      >
+      <button disabled className="flex cursor-not-allowed items-center gap-2 rounded-md bg-[#f6f8fa] px-4 py-2 text-sm font-medium text-[#656d76] dark:bg-[#21262d] dark:text-[#848d97]">
         <Circle className="h-4 w-4" />
         <span className="hidden sm:inline">Sign in to track progress</span>
       </button>
@@ -120,10 +117,7 @@ export function LessonProgress({ courseSlug, moduleId, lessonId, onComplete }: L
 
   if (isCompleted) {
     return (
-      <button
-        onClick={handleMarkIncomplete}
-        className="group flex items-center gap-2 rounded-md bg-[#dafbe1] px-4 py-2 text-sm font-medium text-[#1a7f37] transition-colors hover:bg-[#aceebb] dark:bg-[#238636] dark:text-white dark:hover:bg-[#2ea043]"
-      >
+      <button onClick={handleMarkIncomplete} className="group flex items-center gap-2 rounded-md bg-[#dafbe1] px-4 py-2 text-sm font-medium text-[#1a7f37] transition-colors hover:bg-[#aceebb] dark:bg-[#238636] dark:text-white dark:hover:bg-[#2ea043]">
         <CheckCircle2 className="h-4 w-4" />
         <span className="hidden sm:inline">Completed</span>
         <span className="ml-1 hidden text-xs opacity-75 sm:group-hover:inline">(click to undo)</span>
@@ -132,11 +126,7 @@ export function LessonProgress({ courseSlug, moduleId, lessonId, onComplete }: L
   }
 
   return (
-    <button
-      onClick={handleMarkComplete}
-      disabled={isLoading}
-      className="flex items-center gap-2 rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-    >
+    <button onClick={handleMarkComplete} disabled={isLoading} className="flex items-center gap-2 rounded-md bg-[#1f883d] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#238636] dark:hover:bg-[#2ea043]">
       {isLoading ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />

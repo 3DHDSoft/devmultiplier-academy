@@ -58,8 +58,7 @@ graph TD
 
 ## Authentication
 
-All endpoints except `/api/courses` require authentication via Auth.js session. Include authentication headers in
-requests.
+All endpoints except `/api/courses` require authentication via Auth.js session. Include authentication headers in requests.
 
 **Session Requirement:**
 

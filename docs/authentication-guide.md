@@ -688,23 +688,19 @@ console.log(session?.user);
 
 ### Password Validation
 
-✅ Enforce minimum 8 characters ✅ Hash with bcrypt (10+ rounds) ✅ Validate on server, not just client ✅ No password
-hints or recovery hints
+✅ Enforce minimum 8 characters ✅ Hash with bcrypt (10+ rounds) ✅ Validate on server, not just client ✅ No password hints or recovery hints
 
 ### Session Security
 
-✅ Use JWT strategy (stateless) ✅ 30-day expiration for security ✅ HttpOnly cookies (can't be accessed by JS) ✅
-Secure flag for HTTPS only
+✅ Use JWT strategy (stateless) ✅ 30-day expiration for security ✅ HttpOnly cookies (can't be accessed by JS) ✅ Secure flag for HTTPS only
 
 ### Route Protection
 
-✅ Middleware checks on every request ✅ Redirect unauthenticated users to /login ✅ Don't expose sensitive data in URLs
-✅ Validate ownership before returning data
+✅ Middleware checks on every request ✅ Redirect unauthenticated users to /login ✅ Don't expose sensitive data in URLs ✅ Validate ownership before returning data
 
 ### Common Pitfalls
 
-❌ Don't log passwords or plain credentials ❌ Don't store sessions in localStorage (use cookies) ❌ Don't skip
-server-side session validation ❌ Don't expose user IDs without permission checks
+❌ Don't log passwords or plain credentials ❌ Don't store sessions in localStorage (use cookies) ❌ Don't skip server-side session validation ❌ Don't expose user IDs without permission checks
 
 ---
 

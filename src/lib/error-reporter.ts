@@ -437,10 +437,7 @@ export function createScope(name: string) {
  * const data = await safeFetch('/api/data');
  * ```
  */
-export function withErrorCapture<TArgs extends unknown[], TReturn>(
-  fn: (...args: TArgs) => Promise<TReturn>,
-  context?: ErrorContext
-): (...args: TArgs) => Promise<TReturn> {
+export function withErrorCapture<TArgs extends unknown[], TReturn>(fn: (...args: TArgs) => Promise<TReturn>, context?: ErrorContext): (...args: TArgs) => Promise<TReturn> {
   return async (...args: TArgs): Promise<TReturn> => {
     try {
       return await fn(...args);
@@ -486,12 +483,7 @@ function shouldReport(error: Error): boolean {
  *
  * This is a placeholder that can be implemented with Sentry, Axiom, etc.
  */
-function reportToService(
-  type: 'error' | Severity,
-  eventId: string,
-  _payload: Error | string,
-  context: ErrorContext
-): void {
+function reportToService(type: 'error' | Severity, eventId: string, _payload: Error | string, context: ErrorContext): void {
   // If Sentry is available, use it
   // This is a placeholder - actual implementation would use:
   // import * as Sentry from '@sentry/nextjs';

@@ -111,10 +111,7 @@ export function EnrollmentCTA({ courseId, courseSlug, price, currency = 'usd' }:
       <div className="rounded-md border border-[#d1d9e0] bg-[#f6f8fa] p-8 text-center dark:border-[#30363d] dark:bg-[#161b22]">
         <h2 className="mb-2 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Continue Learning</h2>
         <p className="mb-6 text-[#656d76] dark:text-[#848d97]">Pick up where you left off.</p>
-        <Link
-          href={`/courses/${courseSlug}/module-1/lesson-1`}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1f883d] px-8 py-3 font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-        >
+        <Link href={`/courses/${courseSlug}/module-1/lesson-1`} className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1f883d] px-8 py-3 font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]">
           <Play className="h-5 w-5" />
           Continue Course
         </Link>
@@ -126,15 +123,9 @@ export function EnrollmentCTA({ courseId, courseSlug, price, currency = 'usd' }:
   return (
     <div className="rounded-md border border-[#d1d9e0] bg-[#f6f8fa] p-8 text-center dark:border-[#30363d] dark:bg-[#161b22]">
       <h2 className="mb-2 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Ready to start learning?</h2>
-      <p className="mb-6 text-[#656d76] dark:text-[#848d97]">
-        Join thousands of developers mastering modern software architecture.
-      </p>
+      <p className="mb-6 text-[#656d76] dark:text-[#848d97]">Join thousands of developers mastering modern software architecture.</p>
 
-      {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
-          {error}
-        </div>
-      )}
+      {error && <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">{error}</div>}
 
       {price && price > 0 ? (
         <div className="mb-6">
@@ -143,11 +134,7 @@ export function EnrollmentCTA({ courseId, courseSlug, price, currency = 'usd' }:
         </div>
       ) : null}
 
-      <button
-        onClick={handlePurchase}
-        disabled={isPurchasing}
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1f883d] px-8 py-3 font-medium text-white transition-colors hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-      >
+      <button onClick={handlePurchase} disabled={isPurchasing} className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1f883d] px-8 py-3 font-medium text-white transition-colors hover:bg-[#1a7f37] disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#238636] dark:hover:bg-[#2ea043]">
         {isPurchasing ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin" />
@@ -168,10 +155,7 @@ export function EnrollmentCTA({ courseId, courseSlug, price, currency = 'usd' }:
       {status !== 'authenticated' && (
         <p className="mt-4 text-sm text-[#656d76] dark:text-[#848d97]">
           Already have an account?{' '}
-          <Link
-            href={`/login?callbackUrl=${encodeURIComponent(`/courses/${courseSlug}`)}`}
-            className="text-[#0969da] hover:underline dark:text-[#4493f8]"
-          >
+          <Link href={`/login?callbackUrl=${encodeURIComponent(`/courses/${courseSlug}`)}`} className="text-[#0969da] hover:underline dark:text-[#4493f8]">
             Sign in
           </Link>
         </p>

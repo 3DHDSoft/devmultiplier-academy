@@ -163,9 +163,7 @@ export function ContentProtection({ children, userEmail, enabled = true }: Conte
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80">
           <div className="max-w-md rounded-lg bg-white p-8 text-center dark:bg-[#161b22]">
             <h2 className="mb-4 text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Developer Tools Detected</h2>
-            <p className="mb-4 text-[#656d76] dark:text-[#848d97]">
-              Please close developer tools to continue viewing this content.
-            </p>
+            <p className="mb-4 text-[#656d76] dark:text-[#848d97]">Please close developer tools to continue viewing this content.</p>
             <p className="text-sm text-[#656d76] dark:text-[#848d97]">This content is licensed to: {userEmail}</p>
           </div>
         </div>
@@ -216,10 +214,7 @@ function WatermarkOverlay({ userEmail }: { userEmail: string }) {
   const watermarkText = `Licensed to ${userEmail} - ${timestamp}`;
 
   return (
-    <div
-      className="watermark-overlay"
-      aria-hidden="true"
-    >
+    <div className="watermark-overlay" aria-hidden="true">
       {watermarks.map((mark) => (
         <span
           key={mark.id}

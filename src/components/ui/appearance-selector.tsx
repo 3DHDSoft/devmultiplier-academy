@@ -36,18 +36,8 @@ export function AppearanceSelector() {
   };
 
   return (
-    <div
-      className="relative"
-      ref={dropdownRef}
-    >
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-        aria-label="Select appearance"
-      >
+    <div className="relative" ref={dropdownRef}>
+      <button type="button" onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-1 text-sm font-medium text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" aria-expanded={isOpen} aria-haspopup="listbox" aria-label="Select appearance">
         <CurrentIcon className="h-4 w-4" />
         <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
@@ -61,11 +51,7 @@ export function AppearanceSelector() {
                 key={appearance.value}
                 type="button"
                 onClick={() => handleSelect(appearance.value)}
-                className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] ${
-                  theme === appearance.value
-                    ? 'bg-[#f6f8fa] font-medium text-[#1f2328] dark:bg-[#21262d] dark:text-[#e6edf3]'
-                    : 'text-[#656d76] dark:text-[#848d97]'
-                }`}
+                className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d] ${theme === appearance.value ? 'bg-[#f6f8fa] font-medium text-[#1f2328] dark:bg-[#21262d] dark:text-[#e6edf3]' : 'text-[#656d76] dark:text-[#848d97]'}`}
                 role="option"
                 aria-selected={theme === appearance.value}
               >

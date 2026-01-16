@@ -4,8 +4,7 @@ This document describes the comprehensive API unit tests created for all major e
 
 ## Overview
 
-**Total API Tests:** 117 tests across 6 test files **Status:** ✅ All passing **Coverage:** Validation, authentication,
-error cases, response formatting
+**Total API Tests:** 117 tests across 6 test files **Status:** ✅ All passing **Coverage:** Validation, authentication, error cases, response formatting
 
 ## Test Execution Pipeline
 

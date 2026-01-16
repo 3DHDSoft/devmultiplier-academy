@@ -2,8 +2,7 @@
 
 ## Overview
 
-This project uses **Vitest 4.x** as the testing framework with TypeScript support. Tests are organized by feature and
-include unit tests for utilities, API handlers, authentication, and component logic.
+This project uses **Vitest 4.x** as the testing framework with TypeScript support. Tests are organized by feature and include unit tests for utilities, API handlers, authentication, and component logic.
 
 ## Running Tests
 

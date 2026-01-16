@@ -2,8 +2,7 @@
 
 ## Dev-X-Academy-Web
 
-This guide helps you diagnose and fix issues in the telemetry pipeline: **Next.js App → OTEL Collector → Prometheus →
-Grafana**.
+This guide helps you diagnose and fix issues in the telemetry pipeline: **Next.js App → OTEL Collector → Prometheus → Grafana**.
 
 ---
 

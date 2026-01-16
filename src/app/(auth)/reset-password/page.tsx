@@ -143,36 +143,15 @@ export default function ResetPasswordPage() {
 
           {/* Form - Only show if token is valid and not validating */}
           {!isValidating && tokenValid && !success && (
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-4"
-            >
+            <form onSubmit={handleSubmit} className="space-y-4">
               {/* Password Field */}
               <div>
-                <label
-                  htmlFor="password"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
                   New Password
                 </label>
                 <div className="relative">
-                  <input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    minLength={8}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
+                  <input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={8} className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500" disabled={isLoading} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700" aria-label={showPassword ? 'Hide password' : 'Show password'}>
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
@@ -181,41 +160,19 @@ export default function ResetPasswordPage() {
 
               {/* Confirm Password Field */}
               <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-gray-700">
                   Confirm New Password
                 </label>
                 <div className="relative">
-                  <input
-                    id="confirmPassword"
-                    type={showPassword ? 'text' : 'password'}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    minLength={8}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500"
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
+                  <input id="confirmPassword" type={showPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={8} className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm transition outline-none focus:border-transparent focus:ring-1 focus:ring-blue-500" disabled={isLoading} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700" aria-label={showPassword ? 'Hide password' : 'Show password'}>
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
 
               {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-              >
+              <button type="submit" disabled={isLoading} className="w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">
                 {isLoading ? 'Resetting...' : 'Reset Password'}
               </button>
             </form>
@@ -224,10 +181,7 @@ export default function ResetPasswordPage() {
           {/* Invalid Token - Show link to request new reset */}
           {!isValidating && !tokenValid && (
             <div className="mt-4">
-              <Link
-                href="/forgot-password"
-                className="block w-full rounded-lg bg-blue-600 py-2 text-center text-sm font-medium text-white transition hover:bg-blue-700"
-              >
+              <Link href="/forgot-password" className="block w-full rounded-lg bg-blue-600 py-2 text-center text-sm font-medium text-white transition hover:bg-blue-700">
                 Request New Reset Link
               </Link>
             </div>
@@ -235,10 +189,7 @@ export default function ResetPasswordPage() {
 
           {/* Back to Login */}
           <div className="mt-6 text-center">
-            <Link
-              href="/login"
-              className="text-sm text-blue-600 hover:text-blue-700"
-            >
+            <Link href="/login" className="text-sm text-blue-600 hover:text-blue-700">
               ← Back to login
             </Link>
           </div>

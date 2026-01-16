@@ -63,8 +63,7 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps) {
       case 'subscription':
         return {
           title: 'Subscription Activated!',
-          description:
-            'Your team subscription is now active. You can manage your subscription from your account settings.',
+          description: 'Your team subscription is now active. You can manage your subscription from your account settings.',
           cta: 'Go to Dashboard',
           href: '/dashboard',
         };
@@ -98,17 +97,11 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps) {
         )}
 
         <div className="space-y-3">
-          <Link
-            href={message.href}
-            className="block w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700"
-          >
+          <Link href={message.href} className="block w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700">
             {message.cta}
           </Link>
 
-          <Link
-            href="/"
-            className="block w-full rounded-lg bg-gray-100 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-200"
-          >
+          <Link href="/" className="block w-full rounded-lg bg-gray-100 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-200">
             Return to Home
           </Link>
         </div>

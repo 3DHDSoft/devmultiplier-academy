@@ -37,10 +37,7 @@ export function CourseNavigation({ previous, up, next }: CourseNavigationProps) 
             <tr className="bg-white dark:bg-[#0d1117]">
               <td className="px-4 py-4 align-top">
                 {previous ? (
-                  <Link
-                    href={previous.href}
-                    className="text-[#0969da] hover:underline dark:text-[#4493f8]"
-                  >
+                  <Link href={previous.href} className="text-[#0969da] hover:underline dark:text-[#4493f8]">
                     {previous.label}
                   </Link>
                 ) : (
@@ -49,10 +46,7 @@ export function CourseNavigation({ previous, up, next }: CourseNavigationProps) 
               </td>
               <td className="px-4 py-4 align-top">
                 {up ? (
-                  <Link
-                    href={up.href}
-                    className="text-[#0969da] hover:underline dark:text-[#4493f8]"
-                  >
+                  <Link href={up.href} className="text-[#0969da] hover:underline dark:text-[#4493f8]">
                     {up.label}
                   </Link>
                 ) : (
@@ -61,10 +55,7 @@ export function CourseNavigation({ previous, up, next }: CourseNavigationProps) 
               </td>
               <td className="px-4 py-4 align-top">
                 {next ? (
-                  <Link
-                    href={next.href}
-                    className="text-[#0969da] hover:underline dark:text-[#4493f8]"
-                  >
+                  <Link href={next.href} className="text-[#0969da] hover:underline dark:text-[#4493f8]">
                     {next.label}
                   </Link>
                 ) : (

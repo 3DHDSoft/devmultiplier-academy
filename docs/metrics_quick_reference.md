@@ -165,8 +165,7 @@ courseEnrollmentCounter.add(1, {
 - `devacademy_v8js_gc_duration_seconds` - Garbage collection duration (Histogram)
 - `devacademy_v8js_memory_heap_*` - V8 heap memory metrics (Gauge)
 
-**Note:** Metric names with `devacademy_` prefix are exported to Prometheus via OTLP collector. Internal OpenTelemetry
-metric names use dot notation (e.g., `http.client.request.duration`).
+**Note:** Metric names with `devacademy_` prefix are exported to Prometheus via OTLP collector. Internal OpenTelemetry metric names use dot notation (e.g., `http.client.request.duration`).
 
 ## 🔍 Common Grafana Queries
 

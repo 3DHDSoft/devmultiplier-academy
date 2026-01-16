@@ -1,7 +1,6 @@
 # Prisma Introduction
 
-Prisma is a next-generation ORM (Object-Relational Mapping) tool that makes working with databases easier and more
-type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
+Prisma is a next-generation ORM (Object-Relational Mapping) tool that makes working with databases easier and more type-safe. This project uses **Prisma 7+** with PostgreSQL 18.
 
 ## Database Architecture
 

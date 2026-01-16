@@ -261,11 +261,7 @@ async function getLessonContent(courseId: string, moduleId: string, fileName: st
       return (tree: Root) => {
         visit(tree, 'element', (node: Element, index, parent) => {
           // Find pre > code elements with mermaid language
-          if (
-            node.tagName === 'pre' &&
-            node.children.length === 1 &&
-            (node.children[0] as Element).tagName === 'code'
-          ) {
+          if (node.tagName === 'pre' && node.children.length === 1 && (node.children[0] as Element).tagName === 'code') {
             const codeElement = node.children[0] as Element;
             const className = codeElement.properties?.className as string[] | undefined;
 
@@ -450,28 +446,15 @@ export default async function LessonPage({ params }: PageProps) {
         <div className="mx-auto max-w-md px-4 text-center">
           <div className="rounded-lg border border-[#d1d9e0] bg-white p-8 dark:border-[#30363d] dark:bg-[#161b22]">
             <div className="mb-4">
-              <svg
-                className="mx-auto h-16 w-16 text-[#cf222e] dark:text-[#f85149]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
+              <svg className="mx-auto h-16 w-16 text-[#cf222e] dark:text-[#f85149]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
             <h1 className="mb-2 text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Access Denied</h1>
             <p className="mb-4 text-[#656d76] dark:text-[#848d97]">You are not allowed to view this lesson.</p>
             <p className="text-[#656d76] dark:text-[#848d97]">
               Please contact support at{' '}
-              <a
-                href="mailto:support@devmultiplier.com"
-                className="text-[#0969da] hover:underline dark:text-[#4493f8]"
-              >
+              <a href="mailto:support@devmultiplier.com" className="text-[#0969da] hover:underline dark:text-[#4493f8]">
                 support@devmultiplier.com
               </a>
             </p>
@@ -525,20 +508,14 @@ export default async function LessonPage({ params }: PageProps) {
   const { module, lesson, prevLesson, nextLesson, progress } = navInfo;
 
   return (
-    <ContentProtection
-      userEmail={userEmail}
-      enabled={true}
-    >
+    <ContentProtection userEmail={userEmail} enabled={true}>
       <div className="min-h-screen bg-[#f6f8fa] dark:bg-[#0d1117]">
         {/* Header - GitHub style */}
         <div className="sticky top-0 z-10 border-b border-[#d1d9e0] bg-white dark:border-[#30363d] dark:bg-[#161b22]">
           <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Link
-                  href={`/courses/${id}`}
-                  className="flex items-center gap-2 text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]"
-                >
+                <Link href={`/courses/${id}`} className="flex items-center gap-2 text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]">
                   <ArrowLeft className="h-5 w-5" />
                   <span>Back to Course</span>
                 </Link>
@@ -553,23 +530,14 @@ export default async function LessonPage({ params }: PageProps) {
                   <Clock className="h-4 w-4" />
                   <span>{lesson.duration}</span>
                 </div>
-                <LessonProgress
-                  courseSlug={id}
-                  moduleId={moduleId}
-                  lessonId={lessonId}
-                  totalLessons={progress.total}
-                  currentLessonNumber={progress.current}
-                />
+                <LessonProgress courseSlug={id} moduleId={moduleId} lessonId={lessonId} totalLessons={progress.total} currentLessonNumber={progress.current} />
               </div>
             </div>
 
             {/* Progress bar - GitHub style */}
             <div className="mt-4">
               <div className="h-2 w-full rounded-full bg-[#d1d9e0] dark:bg-[#30363d]">
-                <div
-                  className="h-2 rounded-full bg-[#1f883d] transition-all duration-300 dark:bg-[#3fb950]"
-                  style={{ width: `${(progress.current / progress.total) * 100}%` }}
-                />
+                <div className="h-2 rounded-full bg-[#1f883d] transition-all duration-300 dark:bg-[#3fb950]" style={{ width: `${(progress.current / progress.total) * 100}%` }} />
               </div>
             </div>
           </div>
@@ -580,21 +548,14 @@ export default async function LessonPage({ params }: PageProps) {
           <div className="rounded-md border border-[#d1d9e0] bg-white p-8 dark:border-[#30363d] dark:bg-[#161b22]">
             {/* Module badge - GitHub style */}
             <div className="mb-4 flex items-center gap-3">
-              <span className="inline-flex items-center rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-4 py-2 text-base font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]">
-                {module.title}
-              </span>
-              <span className="inline-flex items-center rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-4 py-2 text-base font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]">
-                Lesson {lessonId.replace('lesson-', '')}
-              </span>
+              <span className="inline-flex items-center rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-4 py-2 text-base font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]">{module.title}</span>
+              <span className="inline-flex items-center rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-4 py-2 text-base font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]">Lesson {lessonId.replace('lesson-', '')}</span>
             </div>
 
             {/* Lesson content */}
             <MermaidRenderer>
               <CodeBlockWrapper>
-                <article
-                  className="lesson-content"
-                  dangerouslySetInnerHTML={{ __html: content }}
-                />
+                <article className="lesson-content" dangerouslySetInnerHTML={{ __html: content }} />
               </CodeBlockWrapper>
             </MermaidRenderer>
           </div>

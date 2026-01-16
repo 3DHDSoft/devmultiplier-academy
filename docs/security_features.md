@@ -256,8 +256,7 @@ const fifteenMinutesAgo = new Date(timestamp.getTime() - 15 * 60 * 1000); // Cha
 
 Currently checks for matching city + country combination.
 
-To make it stricter (country only) or looser (IP-based), modify `checkAndNotifyNewLocation()` in
-`src/lib/login-logger.ts`.
+To make it stricter (country only) or looser (IP-based), modify `checkAndNotifyNewLocation()` in `src/lib/login-logger.ts`.
 
 ## Email Integration
 

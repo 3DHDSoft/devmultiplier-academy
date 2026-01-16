@@ -1,7 +1,6 @@
 # OpenTelemetry Metrics Implementation
 
-This document describes the comprehensive metrics collection system implemented in the Dev Academy web application using
-OpenTelemetry.
+This document describes the comprehensive metrics collection system implemented in the Dev Academy web application using OpenTelemetry.
 
 ## Overview
 
@@ -286,8 +285,7 @@ OTEL_EXPORTER_OTLP_HEADERS=Authorization=Basic <YOUR_BASE64_CREDENTIALS>
 
 ### Export Interval
 
-Metrics are exported every **60 seconds** by default. This can be adjusted in
-[instrumentation.node.ts](../instrumentation.node.ts):
+Metrics are exported every **60 seconds** by default. This can be adjusted in [instrumentation.node.ts](../instrumentation.node.ts):
 
 ```typescript
 const metricReader = new PeriodicExportingMetricReader({

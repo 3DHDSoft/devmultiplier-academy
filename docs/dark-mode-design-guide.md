@@ -6,9 +6,7 @@ Format all responses using professional technical documentation standards with v
 
 ## What is Dark Mode?
 
-Dark mode is a color scheme that uses light-colored text, icons, and UI elements on a dark background. It reduces eye
-strain in low-light environments, saves battery on OLED screens, and provides an alternative aesthetic that many users
-prefer.
+Dark mode is a color scheme that uses light-colored text, icons, and UI elements on a dark background. It reduces eye strain in low-light environments, saves battery on OLED screens, and provides an alternative aesthetic that many users prefer.
 
 ---
 
@@ -16,8 +14,7 @@ prefer.
 
 ### 1. Avoid Pure Black (#000000)
 
-Pure black backgrounds create harsh contrast with white text, causing eye strain. Instead, use dark grays that are
-easier on the eyes.
+Pure black backgrounds create harsh contrast with white text, causing eye strain. Instead, use dark grays that are easier on the eyes.
 
 | Avoid     | Prefer    | Name          |
 | --------- | --------- | ------------- |

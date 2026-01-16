@@ -17,9 +17,7 @@ Complete technical documentation of the OpenTelemetry observability stack for de
 
 ## Overview
 
-The dev-academy-web application uses OpenTelemetry for distributed tracing, sending telemetry data to Grafana Cloud
-Tempo for storage and analysis. This setup provides end-to-end visibility into application performance, request flows,
-and error tracking.
+The dev-academy-web application uses OpenTelemetry for distributed tracing, sending telemetry data to Grafana Cloud Tempo for storage and analysis. This setup provides end-to-end visibility into application performance, request flows, and error tracking.
 
 ### Key Capabilities
 
@@ -132,8 +130,7 @@ graph TB
 
 **File**: [`instrumentation.node.ts`](../instrumentation.node.ts)
 
-This file initializes the OpenTelemetry SDK and runs in the Node.js server process. It's automatically loaded by Next.js
-16+ at startup.
+This file initializes the OpenTelemetry SDK and runs in the Node.js server process. It's automatically loaded by Next.js 16+ at startup.
 
 ```typescript
 // Key responsibilities:
@@ -521,8 +518,7 @@ TypeError: Header name must be a valid HTTP token ["{"Authorization":"Basic ..."
 
 **Cause**: Environment variable being used directly as header name instead of being parsed
 
-**Solution**: The `instrumentation.node.ts` file includes special parsing logic that deletes the env var after parsing
-to prevent this issue.
+**Solution**: The `instrumentation.node.ts` file includes special parsing logic that deletes the env var after parsing to prevent this issue.
 
 #### 3. No Traces Appearing in Grafana
 
@@ -704,8 +700,7 @@ graph LR
 
 ### Overview
 
-The application exposes Prometheus-compatible metrics via a `/api/metrics` endpoint. This allows monitoring tools to
-scrape application metrics in the standard Prometheus text format.
+The application exposes Prometheus-compatible metrics via a `/api/metrics` endpoint. This allows monitoring tools to scrape application metrics in the standard Prometheus text format.
 
 ### Implementation
 

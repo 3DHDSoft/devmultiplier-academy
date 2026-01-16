@@ -71,10 +71,7 @@ export const POST = withErrorHandling(
       },
     });
 
-    apiLogger.info(
-      { subscriptionId, cancelImmediately, userId: session.user.id },
-      'Subscription cancellation requested'
-    );
+    apiLogger.info({ subscriptionId, cancelImmediately, userId: session.user.id }, 'Subscription cancellation requested');
 
     return NextResponse.json({
       success: true,
@@ -84,9 +81,7 @@ export const POST = withErrorHandling(
         cancelAtPeriodEnd: updatedSubscription.cancelAtPeriodEnd,
         currentPeriodEnd: updatedSubscription.currentPeriodEnd,
       },
-      message: cancelImmediately
-        ? 'Subscription has been canceled immediately.'
-        : `Subscription will be canceled at the end of the billing period (${updatedSubscription.currentPeriodEnd.toISOString()}).`,
+      message: cancelImmediately ? 'Subscription has been canceled immediately.' : `Subscription will be canceled at the end of the billing period (${updatedSubscription.currentPeriodEnd.toISOString()}).`,
     });
   },
   { route: '/api/subscriptions/cancel' }

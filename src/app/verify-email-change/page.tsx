@@ -76,10 +76,7 @@ function VerifyEmailChangeContent() {
               </div>
             )}
             <p className="mt-4 text-sm text-gray-500">Redirecting to login page in 3 seconds...</p>
-            <button
-              onClick={() => router.push('/login')}
-              className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700"
-            >
+            <button onClick={() => router.push('/login')} className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700">
               Go to Login Now
             </button>
           </div>
@@ -91,16 +88,10 @@ function VerifyEmailChangeContent() {
             <h2 className="mt-4 text-xl font-semibold text-gray-900">Verification Failed</h2>
             <p className="mt-2 text-gray-600">{message}</p>
             <div className="mt-6 space-y-2">
-              <button
-                onClick={() => router.push('/profile')}
-                className="w-full rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700"
-              >
+              <button onClick={() => router.push('/profile')} className="w-full rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700">
                 Go to Profile
               </button>
-              <button
-                onClick={() => router.push('/login')}
-                className="w-full rounded-lg border border-gray-300 px-6 py-2 text-gray-700 transition hover:bg-gray-50"
-              >
+              <button onClick={() => router.push('/login')} className="w-full rounded-lg border border-gray-300 px-6 py-2 text-gray-700 transition hover:bg-gray-50">
                 Go to Login
               </button>
             </div>

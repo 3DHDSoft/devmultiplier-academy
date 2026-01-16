@@ -616,24 +616,10 @@ export default function ProfilePage() {
         {/* Tab Navigation */}
         <div className="mb-4 border-b border-[#d1d9e0] dark:border-[#30363d]">
           <nav className="flex space-x-6">
-            <button
-              onClick={() => setActiveTab('settings')}
-              className={`border-b-2 pb-2 text-sm font-medium transition ${
-                activeTab === 'settings'
-                  ? 'border-[#0969da] text-[#0969da] dark:border-[#4493f8] dark:text-[#4493f8]'
-                  : 'border-transparent text-[#656d76] hover:border-[#d1d9e0] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:border-[#30363d] dark:hover:text-[#e6edf3]'
-              }`}
-            >
+            <button onClick={() => setActiveTab('settings')} className={`border-b-2 pb-2 text-sm font-medium transition ${activeTab === 'settings' ? 'border-[#0969da] text-[#0969da] dark:border-[#4493f8] dark:text-[#4493f8]' : 'border-transparent text-[#656d76] hover:border-[#d1d9e0] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:border-[#30363d] dark:hover:text-[#e6edf3]'}`}>
               Settings
             </button>
-            <button
-              onClick={() => setActiveTab('notifications')}
-              className={`border-b-2 pb-2 text-sm font-medium transition ${
-                activeTab === 'notifications'
-                  ? 'border-[#0969da] text-[#0969da] dark:border-[#4493f8] dark:text-[#4493f8]'
-                  : 'border-transparent text-[#656d76] hover:border-[#d1d9e0] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:border-[#30363d] dark:hover:text-[#e6edf3]'
-              }`}
-            >
+            <button onClick={() => setActiveTab('notifications')} className={`border-b-2 pb-2 text-sm font-medium transition ${activeTab === 'notifications' ? 'border-[#0969da] text-[#0969da] dark:border-[#4493f8] dark:text-[#4493f8]' : 'border-transparent text-[#656d76] hover:border-[#d1d9e0] hover:text-[#1f2328] dark:text-[#848d97] dark:hover:border-[#30363d] dark:hover:text-[#e6edf3]'}`}>
               Notifications
             </button>
           </nav>
@@ -655,10 +641,7 @@ export default function ProfilePage() {
 
         {/* Settings Tab */}
         {activeTab === 'settings' && (
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Profile Photo Section */}
             <div className="rounded-lg border border-[#d1d9e0] bg-white p-4 shadow dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Profile Photo</h3>
@@ -667,19 +650,7 @@ export default function ProfilePage() {
                 {/* Avatar Display */}
                 <div className="relative">
                   <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-[#d1d9e0] bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d]">
-                    {formData.avatar ? (
-                      <Image
-                        src={formData.avatar}
-                        alt="Profile avatar"
-                        width={80}
-                        height={80}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-2xl font-semibold text-[#656d76] dark:text-[#848d97]">
-                        {formData.name ? formData.name.charAt(0).toUpperCase() : formData.email.charAt(0).toUpperCase()}
-                      </div>
-                    )}
+                    {formData.avatar ? <Image src={formData.avatar} alt="Profile avatar" width={80} height={80} className="h-full w-full object-cover" /> : <div className="flex h-full w-full items-center justify-center text-2xl font-semibold text-[#656d76] dark:text-[#848d97]">{formData.name ? formData.name.charAt(0).toUpperCase() : formData.email.charAt(0).toUpperCase()}</div>}
                   </div>
                   {isUploadingAvatar && (
                     <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50">
@@ -691,28 +662,13 @@ export default function ProfilePage() {
                 {/* Upload Controls */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <label
-                      htmlFor="avatar-upload"
-                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
-                    >
+                    <label htmlFor="avatar-upload" className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-[#d1d9e0] bg-white px-3 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]">
                       <Camera className="h-4 w-4" />
                       Upload photo
                     </label>
-                    <input
-                      id="avatar-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleAvatarUpload}
-                      disabled={isUploadingAvatar}
-                      className="hidden"
-                    />
+                    <input id="avatar-upload" type="file" accept="image/*" onChange={handleAvatarUpload} disabled={isUploadingAvatar} className="hidden" />
                     {formData.avatar && (
-                      <button
-                        type="button"
-                        onClick={handleRemoveAvatar}
-                        disabled={isUploadingAvatar || isRemovingAvatar}
-                        className="text-sm text-[#d1242f] hover:underline disabled:opacity-50 dark:text-[#f85149]"
-                      >
+                      <button type="button" onClick={handleRemoveAvatar} disabled={isUploadingAvatar || isRemovingAvatar} className="text-sm text-[#d1242f] hover:underline disabled:opacity-50 dark:text-[#f85149]">
                         {isRemovingAvatar ? 'Removing...' : 'Remove'}
                       </button>
                     )}
@@ -730,10 +686,7 @@ export default function ProfilePage() {
               <div className="space-y-3">
                 {/* Full Name */}
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="name" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Full Name
                   </label>
                   <input
@@ -749,29 +702,13 @@ export default function ProfilePage() {
 
                 {/* Email (Verified) */}
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="email" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Email
                   </label>
                   <div className="flex items-center gap-2">
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      disabled
-                      className="block flex-1 rounded-md border border-[#d1d9e0] bg-[#f6f8fa] px-2.5 py-1.5 text-sm text-[#656d76] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#848d97]"
-                    />
-                    <span className="rounded bg-[#dafbe1] px-2 py-0.5 text-xs text-[#1a7f37] dark:bg-[#2ea04326] dark:text-[#3fb950]">
-                      Verified
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setShowEmailChangeModal(true)}
-                      className="rounded-md border border-[#0969da] px-2.5 py-1 text-xs font-medium text-[#0969da] transition hover:bg-[#f6f8fa] dark:border-[#4493f8] dark:text-[#4493f8] dark:hover:bg-[#21262d]"
-                    >
+                    <input type="email" id="email" name="email" value={formData.email} disabled className="block flex-1 rounded-md border border-[#d1d9e0] bg-[#f6f8fa] px-2.5 py-1.5 text-sm text-[#656d76] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#848d97]" />
+                    <span className="rounded bg-[#dafbe1] px-2 py-0.5 text-xs text-[#1a7f37] dark:bg-[#2ea04326] dark:text-[#3fb950]">Verified</span>
+                    <button type="button" onClick={() => setShowEmailChangeModal(true)} className="rounded-md border border-[#0969da] px-2.5 py-1 text-xs font-medium text-[#0969da] transition hover:bg-[#f6f8fa] dark:border-[#4493f8] dark:text-[#4493f8] dark:hover:bg-[#21262d]">
                       Update email
                     </button>
                   </div>
@@ -779,19 +716,10 @@ export default function ProfilePage() {
 
                 {/* Language */}
                 <div>
-                  <label
-                    htmlFor="locale"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="locale" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Language
                   </label>
-                  <select
-                    id="locale"
-                    name="locale"
-                    value={formData.locale}
-                    onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
-                  >
+                  <select id="locale" name="locale" value={formData.locale} onChange={handleChange} className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="pt">Portuguese</option>
@@ -804,19 +732,10 @@ export default function ProfilePage() {
 
                 {/* Time Zone */}
                 <div>
-                  <label
-                    htmlFor="timezone"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="timezone" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Time Zone
                   </label>
-                  <select
-                    id="timezone"
-                    name="timezone"
-                    value={formData.timezone}
-                    onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
-                  >
+                  <select id="timezone" name="timezone" value={formData.timezone} onChange={handleChange} className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]">
                     <optgroup label="Americas">
                       <option value="Pacific/Honolulu">Honolulu - Hawaii (GMT-10)</option>
                       <option value="America/Anchorage">Anchorage - Alaska (GMT-9)</option>
@@ -891,19 +810,10 @@ export default function ProfilePage() {
 
                 {/* Dashboard Appearance */}
                 <div>
-                  <label
-                    htmlFor="dashboardAppearance"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="dashboardAppearance" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Dashboard appearance
                   </label>
-                  <select
-                    id="dashboardAppearance"
-                    name="dashboardAppearance"
-                    value={formData.dashboardAppearance}
-                    onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
-                  >
+                  <select id="dashboardAppearance" name="dashboardAppearance" value={formData.dashboardAppearance} onChange={handleChange} className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]">
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
                     <option value="system">System</option>
@@ -912,10 +822,7 @@ export default function ProfilePage() {
 
                 {/* Bio */}
                 <div>
-                  <label
-                    htmlFor="bio"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="bio" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Bio
                   </label>
                   <textarea
@@ -933,19 +840,11 @@ export default function ProfilePage() {
 
             {/* Action Buttons */}
             <div className="flex gap-2">
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-              >
+              <button type="submit" disabled={isSaving} className="flex items-center gap-1.5 rounded-md bg-[#1f883d] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]">
                 {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
-              <button
-                type="button"
-                onClick={() => router.push('/dashboard')}
-                className="rounded-md border border-[#d1d9e0] bg-white px-4 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
-              >
+              <button type="button" onClick={() => router.push('/dashboard')} className="rounded-md border border-[#d1d9e0] bg-white px-4 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]">
                 Cancel
               </button>
             </div>
@@ -974,10 +873,7 @@ export default function ProfilePage() {
                     <tbody>
                       {sessions.length === 0 ? (
                         <tr>
-                          <td
-                            colSpan={6}
-                            className="py-4 text-center text-sm text-[#656d76] dark:text-[#848d97]"
-                          >
+                          <td colSpan={6} className="py-4 text-center text-sm text-[#656d76] dark:text-[#848d97]">
                             No active sessions found
                           </td>
                         </tr>
@@ -1000,8 +896,7 @@ export default function ProfilePage() {
                             const browserDisplay = sess.browser || 'Unknown Browser';
                             const osDisplay = sess.os || 'Unknown OS';
                             const deviceDisplay = `${browserDisplay} (${osDisplay})`;
-                            const location =
-                              [sess.city, sess.region, sess.country].filter(Boolean).join(', ') || 'Unknown Location';
+                            const location = [sess.city, sess.region, sess.country].filter(Boolean).join(', ') || 'Unknown Location';
                             const key = `${deviceDisplay}|${location}`;
                             const isCurrentSession = session?.user?.sessionId === sess.id;
 
@@ -1040,32 +935,17 @@ export default function ProfilePage() {
                             const isTerminating = group.sessions.some((s) => terminatingSessionId === s.id);
 
                             return (
-                              <tr
-                                key={key}
-                                className="border-b border-[#d1d9e0] last:border-0 dark:border-[#30363d]"
-                              >
+                              <tr key={key} className="border-b border-[#d1d9e0] last:border-0 dark:border-[#30363d]">
                                 <td className="py-2">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-sm text-[#1f2328] dark:text-[#e6edf3]">
-                                      {group.deviceDisplay}
-                                    </span>
-                                    {group.hasCurrentSession && (
-                                      <span className="rounded bg-[#ddf4ff] px-1.5 py-0.5 text-xs text-[#0969da] dark:bg-[#388bfd26] dark:text-[#4493f8]">
-                                        Current
-                                      </span>
-                                    )}
+                                    <span className="text-sm text-[#1f2328] dark:text-[#e6edf3]">{group.deviceDisplay}</span>
+                                    {group.hasCurrentSession && <span className="rounded bg-[#ddf4ff] px-1.5 py-0.5 text-xs text-[#0969da] dark:bg-[#388bfd26] dark:text-[#4493f8]">Current</span>}
                                   </div>
                                 </td>
                                 <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{group.location}</td>
-                                <td className="py-2 text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">
-                                  {group.sessions.length}
-                                </td>
-                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">
-                                  {formatDate(group.firstCreated)}
-                                </td>
-                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">
-                                  {formatDate(group.lastUpdated)}
-                                </td>
+                                <td className="py-2 text-sm font-semibold text-[#1f2328] dark:text-[#e6edf3]">{group.sessions.length}</td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{formatDate(group.firstCreated)}</td>
+                                <td className="py-2 text-sm text-[#656d76] dark:text-[#848d97]">{formatDate(group.lastUpdated)}</td>
                                 <td className="py-2 text-right">
                                   {group.hasCurrentSession ? (
                                     <span className="text-xs text-[#656d76] dark:text-[#848d97]">Current session</span>
@@ -1081,11 +961,7 @@ export default function ProfilePage() {
                                       className="text-[#d1242f] hover:text-[#a40e26] disabled:opacity-50 dark:text-[#f85149] dark:hover:text-[#ff7b72]"
                                       title="Terminate all sessions"
                                     >
-                                      {isTerminating ? (
-                                        <Loader2 className="h-4 w-4 animate-spin" />
-                                      ) : (
-                                        <MoreVertical className="h-4 w-4" />
-                                      )}
+                                      {isTerminating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MoreVertical className="h-4 w-4" />}
                                     </button>
                                   )}
                                 </td>
@@ -1104,14 +980,8 @@ export default function ProfilePage() {
             <div className="rounded-lg border-2 border-[#ff818266] bg-white p-4 shadow dark:border-[#f8514966] dark:bg-[#161b22]">
               <h3 className="mb-2 text-lg font-bold text-[#d1242f] dark:text-[#f85149]">Danger Zone</h3>
               <h4 className="mb-1 text-base font-semibold text-[#1f2328] dark:text-[#e6edf3]">Delete your profile</h4>
-              <p className="mb-3 text-sm text-[#656d76] dark:text-[#848d97]">
-                Permanently delete the user {formData.email}
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowDeleteModal(true)}
-                className="rounded-md border border-[#d1242f] px-3 py-1.5 text-sm font-medium text-[#d1242f] transition hover:bg-[#ffebe9] dark:border-[#f85149] dark:text-[#f85149] dark:hover:bg-[#490202]"
-              >
+              <p className="mb-3 text-sm text-[#656d76] dark:text-[#848d97]">Permanently delete the user {formData.email}</p>
+              <button type="button" onClick={() => setShowDeleteModal(true)} className="rounded-md border border-[#d1242f] px-3 py-1.5 text-sm font-medium text-[#d1242f] transition hover:bg-[#ffebe9] dark:border-[#f85149] dark:text-[#f85149] dark:hover:bg-[#490202]">
                 Delete User
               </button>
             </div>
@@ -1120,167 +990,79 @@ export default function ProfilePage() {
 
         {/* Notifications Tab */}
         {activeTab === 'notifications' && (
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="rounded-lg border border-[#d1d9e0] bg-white p-4 shadow dark:border-[#30363d] dark:bg-[#161b22]">
               <h3 className="mb-3 text-lg font-semibold text-[#1f2328] dark:text-[#e6edf3]">Email Notifications</h3>
 
               <div className="space-y-2.5">
                 {/* Course Updates */}
                 <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="notifyOnCourseUpdates"
-                    name="notifyOnCourseUpdates"
-                    checked={formData.notifyOnCourseUpdates}
-                    onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
-                  />
-                  <label
-                    htmlFor="notifyOnCourseUpdates"
-                    className="flex-1"
-                  >
+                  <input type="checkbox" id="notifyOnCourseUpdates" name="notifyOnCourseUpdates" checked={formData.notifyOnCourseUpdates} onChange={handleChange} className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]" />
+                  <label htmlFor="notifyOnCourseUpdates" className="flex-1">
                     <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Course updates</span>
-                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
-                      Get notified when courses you&apos;re enrolled in are updated
-                    </span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">Get notified when courses you&apos;re enrolled in are updated</span>
                   </label>
                 </div>
 
                 {/* New Courses */}
                 <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="notifyOnNewCourses"
-                    name="notifyOnNewCourses"
-                    checked={formData.notifyOnNewCourses}
-                    onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
-                  />
-                  <label
-                    htmlFor="notifyOnNewCourses"
-                    className="flex-1"
-                  >
+                  <input type="checkbox" id="notifyOnNewCourses" name="notifyOnNewCourses" checked={formData.notifyOnNewCourses} onChange={handleChange} className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]" />
+                  <label htmlFor="notifyOnNewCourses" className="flex-1">
                     <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">New courses</span>
-                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
-                      Be the first to know when new courses are available
-                    </span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">Be the first to know when new courses are available</span>
                   </label>
                 </div>
 
                 {/* Completion Reminders */}
                 <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="notifyOnCompletionReminders"
-                    name="notifyOnCompletionReminders"
-                    checked={formData.notifyOnCompletionReminders}
-                    onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
-                  />
-                  <label
-                    htmlFor="notifyOnCompletionReminders"
-                    className="flex-1"
-                  >
-                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
-                      Completion reminders
-                    </span>
-                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
-                      Gentle reminders to help you complete your courses
-                    </span>
+                  <input type="checkbox" id="notifyOnCompletionReminders" name="notifyOnCompletionReminders" checked={formData.notifyOnCompletionReminders} onChange={handleChange} className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]" />
+                  <label htmlFor="notifyOnCompletionReminders" className="flex-1">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Completion reminders</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">Gentle reminders to help you complete your courses</span>
                   </label>
                 </div>
 
                 {/* Achievements */}
                 <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="notifyOnAchievements"
-                    name="notifyOnAchievements"
-                    checked={formData.notifyOnAchievements}
-                    onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
-                  />
-                  <label
-                    htmlFor="notifyOnAchievements"
-                    className="flex-1"
-                  >
-                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
-                      Achievements and milestones
-                    </span>
-                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
-                      Celebrate your learning progress with achievement notifications
-                    </span>
+                  <input type="checkbox" id="notifyOnAchievements" name="notifyOnAchievements" checked={formData.notifyOnAchievements} onChange={handleChange} className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]" />
+                  <label htmlFor="notifyOnAchievements" className="flex-1">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Achievements and milestones</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">Celebrate your learning progress with achievement notifications</span>
                   </label>
                 </div>
 
                 {/* Messages */}
                 <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="notifyOnMessages"
-                    name="notifyOnMessages"
-                    checked={formData.notifyOnMessages}
-                    onChange={handleChange}
-                    className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]"
-                  />
-                  <label
-                    htmlFor="notifyOnMessages"
-                    className="flex-1"
-                  >
-                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
-                      Messages and replies
-                    </span>
-                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">
-                      Get notified when instructors or students message you
-                    </span>
+                  <input type="checkbox" id="notifyOnMessages" name="notifyOnMessages" checked={formData.notifyOnMessages} onChange={handleChange} className="mt-0.5 h-4 w-4 rounded border-[#d1d9e0] text-[#0969da] focus:ring-[#0969da] dark:border-[#30363d] dark:text-[#4493f8] dark:focus:ring-[#4493f8]" />
+                  <label htmlFor="notifyOnMessages" className="flex-1">
+                    <span className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Messages and replies</span>
+                    <span className="block text-sm text-[#656d76] dark:text-[#848d97]">Get notified when instructors or students message you</span>
                   </label>
                 </div>
 
                 {/* Email Digest Frequency */}
                 <div className="pt-2">
-                  <label
-                    htmlFor="emailDigestFrequency"
-                    className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="emailDigestFrequency" className="mb-1 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Email digest frequency
                   </label>
-                  <select
-                    id="emailDigestFrequency"
-                    name="emailDigestFrequency"
-                    value={formData.emailDigestFrequency}
-                    onChange={handleChange}
-                    className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]"
-                  >
+                  <select id="emailDigestFrequency" name="emailDigestFrequency" value={formData.emailDigestFrequency} onChange={handleChange} className="block w-full rounded-md border border-[#d1d9e0] bg-white px-2.5 py-1.5 text-sm text-[#1f2328] outline-none focus:border-[#0969da] focus:ring-1 focus:ring-[#0969da] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]">
                     <option value="none">Never</option>
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
-                  <p className="mt-1 text-sm text-[#656d76] dark:text-[#848d97]">
-                    Receive a summary of your activity and updates
-                  </p>
+                  <p className="mt-1 text-sm text-[#656d76] dark:text-[#848d97]">Receive a summary of your activity and updates</p>
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="flex gap-2">
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-md bg-[#1f883d] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-              >
+              <button type="submit" disabled={isSaving} className="flex items-center gap-1.5 rounded-md bg-[#1f883d] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]">
                 {isSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
-              <button
-                type="button"
-                onClick={() => router.push('/dashboard')}
-                className="rounded-md border border-[#d1d9e0] bg-white px-4 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
-              >
+              <button type="button" onClick={() => router.push('/dashboard')} className="rounded-md border border-[#d1d9e0] bg-white px-4 py-1.5 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]">
                 Cancel
               </button>
             </div>
@@ -1295,36 +1077,21 @@ export default function ProfilePage() {
 
               {emailChangeSuccess ? (
                 <div className="rounded-lg border border-[#1f883d66] bg-[#dafbe1] p-4 dark:border-[#3fb95066] dark:bg-[#2ea04326]">
-                  <p className="text-[#1a7f37] dark:text-[#3fb950]">
-                    Verification email sent! Please check your new email inbox and click the verification link to
-                    complete the change.
-                  </p>
+                  <p className="text-[#1a7f37] dark:text-[#3fb950]">Verification email sent! Please check your new email inbox and click the verification link to complete the change.</p>
                 </div>
               ) : (
                 <>
                   <div className="mb-4 rounded-lg border border-[#54aeff66] bg-[#ddf4ff] p-3 dark:border-[#4493f866] dark:bg-[#388bfd26]">
-                    <p className="text-sm text-[#0969da] dark:text-[#4493f8]">
-                      A verification link will be sent to your new email address. You&apos;ll need to click it to
-                      complete the change.
-                    </p>
+                    <p className="text-sm text-[#0969da] dark:text-[#4493f8]">A verification link will be sent to your new email address. You&apos;ll need to click it to complete the change.</p>
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
-                      Current Email
-                    </label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      disabled
-                      className="w-full rounded-lg border border-[#d1d9e0] bg-[#f6f8fa] px-3 py-2 text-[#656d76] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#848d97]"
-                    />
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Current Email</label>
+                    <input type="email" value={formData.email} disabled className="w-full rounded-lg border border-[#d1d9e0] bg-[#f6f8fa] px-3 py-2 text-[#656d76] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#848d97]" />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
-                      New Email Address
-                    </label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">New Email Address</label>
                     <input
                       type="email"
                       value={newEmail}
@@ -1335,9 +1102,7 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
-                      Password
-                    </label>
+                    <label className="mb-2 block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">Password</label>
                     <div className="relative">
                       <input
                         type={showEmailPassword ? 'text' : 'password'}
@@ -1346,12 +1111,7 @@ export default function ProfilePage() {
                         placeholder="Enter your password to confirm"
                         className="w-full rounded-lg border border-[#d1d9e0] bg-white px-3 py-2 pr-10 text-[#1f2328] placeholder-[#656d76] focus:border-[#0969da] focus:ring-2 focus:ring-[#0969da]/20 focus:outline-none dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#4493f8] dark:focus:ring-[#4493f8]/20"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowEmailPassword(!showEmailPassword)}
-                        className="absolute top-1/2 right-3 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                        aria-label={showEmailPassword ? 'Hide password' : 'Show password'}
-                      >
+                      <button type="button" onClick={() => setShowEmailPassword(!showEmailPassword)} className="absolute top-1/2 right-3 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" aria-label={showEmailPassword ? 'Hide password' : 'Show password'}>
                         {showEmailPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
@@ -1364,11 +1124,7 @@ export default function ProfilePage() {
                   )}
 
                   <div className="flex gap-3">
-                    <button
-                      onClick={handleEmailChange}
-                      disabled={isChangingEmail || !newEmail || !emailChangePassword}
-                      className="flex-1 rounded-lg bg-[#1f883d] px-4 py-2 font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-                    >
+                    <button onClick={handleEmailChange} disabled={isChangingEmail || !newEmail || !emailChangePassword} className="flex-1 rounded-lg bg-[#1f883d] px-4 py-2 font-medium text-white transition hover:bg-[#1a7f37] disabled:opacity-50 dark:bg-[#238636] dark:hover:bg-[#2ea043]">
                       {isChangingEmail ? 'Sending...' : 'Send Verification Email'}
                     </button>
                     <button
@@ -1398,15 +1154,11 @@ export default function ProfilePage() {
 
               <div className="mb-4 rounded-lg border border-[#d4a72c66] bg-[#fff8c5] p-3 dark:border-[#bb800966] dark:bg-[#bb800926]">
                 <p className="text-sm text-[#9a6700] dark:text-[#d29922]">
-                  <strong>Warning:</strong> This will log out the device(s) associated with this session. You may need
-                  to sign in again on those devices.
+                  <strong>Warning:</strong> This will log out the device(s) associated with this session. You may need to sign in again on those devices.
                 </p>
               </div>
 
-              <p className="mb-6 text-sm text-[#656d76] dark:text-[#848d97]">
-                Are you sure you want to terminate{' '}
-                {sessionToTerminate.includes(',') ? 'these sessions' : 'this session'}?
-              </p>
+              <p className="mb-6 text-sm text-[#656d76] dark:text-[#848d97]">Are you sure you want to terminate {sessionToTerminate.includes(',') ? 'these sessions' : 'this session'}?</p>
 
               <div className="flex gap-3">
                 <button
@@ -1423,11 +1175,7 @@ export default function ProfilePage() {
                   {terminatingSessionId !== null && <Loader2 className="h-4 w-4 animate-spin" />}
                   {terminatingSessionId !== null ? 'Terminating...' : 'Terminate'}
                 </button>
-                <button
-                  onClick={closeTerminateModal}
-                  disabled={terminatingSessionId !== null}
-                  className="flex-1 rounded-lg border border-[#d1d9e0] bg-white px-4 py-2 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]"
-                >
+                <button onClick={closeTerminateModal} disabled={terminatingSessionId !== null} className="flex-1 rounded-lg border border-[#d1d9e0] bg-white px-4 py-2 text-sm font-medium text-[#1f2328] transition hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]">
                   Cancel
                 </button>
               </div>
@@ -1443,17 +1191,13 @@ export default function ProfilePage() {
 
               <div className="mb-4 rounded-lg border border-[#ff818266] bg-[#ffebe9] p-3 dark:border-[#f8514966] dark:bg-[#490202]">
                 <p className="text-sm text-[#d1242f] dark:text-[#f85149]">
-                  <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and
-                  enrollments, will be permanently deleted.
+                  <strong>Warning:</strong> This action cannot be undone. All your data, including course progress and enrollments, will be permanently deleted.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="deletePassword"
-                    className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="deletePassword" className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Password
                   </label>
                   <div className="relative mt-1">
@@ -1465,22 +1209,14 @@ export default function ProfilePage() {
                       className="block w-full rounded-lg border border-[#d1d9e0] bg-white px-3 py-2 pr-10 text-sm text-[#1f2328] placeholder-[#656d76] outline-none focus:border-[#d1242f] focus:ring-1 focus:ring-[#d1242f] dark:border-[#30363d] dark:bg-[#0d1117] dark:text-[#e6edf3] dark:placeholder-[#484f58] dark:focus:border-[#f85149] dark:focus:ring-[#f85149]"
                       placeholder="Enter your password"
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowDeletePassword(!showDeletePassword)}
-                      className="absolute top-1/2 right-3 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]"
-                      aria-label={showDeletePassword ? 'Hide password' : 'Show password'}
-                    >
+                    <button type="button" onClick={() => setShowDeletePassword(!showDeletePassword)} className="absolute top-1/2 right-3 -translate-y-1/2 text-[#656d76] transition-colors hover:text-[#1f2328] dark:text-[#848d97] dark:hover:text-[#e6edf3]" aria-label={showDeletePassword ? 'Hide password' : 'Show password'}>
                       {showDeletePassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="deleteConfirmation"
-                    className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]"
-                  >
+                  <label htmlFor="deleteConfirmation" className="block text-sm font-medium text-[#1f2328] dark:text-[#e6edf3]">
                     Type DELETE to confirm
                   </label>
                   <input
@@ -1495,11 +1231,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="mt-6 flex gap-3">
-                <button
-                  onClick={handleDeleteAccount}
-                  disabled={isDeleting || deleteConfirmation !== 'DELETE'}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#da3633] dark:hover:bg-[#f85149]"
-                >
+                <button onClick={handleDeleteAccount} disabled={isDeleting || deleteConfirmation !== 'DELETE'} className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#d1242f] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#a40e26] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#da3633] dark:hover:bg-[#f85149]">
                   {isDeleting && <Loader2 className="h-4 w-4 animate-spin" />}
                   {isDeleting ? 'Deleting...' : 'Delete Account'}
                 </button>

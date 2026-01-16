@@ -86,9 +86,7 @@ export async function logLogin(data: LoginLogData): Promise<void> {
           'log.id': loginLog.id,
         });
 
-        console.log(
-          `Login logged for user ${data.email} from ${ipAddress || 'Unknown'} (${geoLocation.city}, ${geoLocation.country})`
-        );
+        console.log(`Login logged for user ${data.email} from ${ipAddress || 'Unknown'} (${geoLocation.city}, ${geoLocation.country})`);
 
         // Record login attempt metrics
         recordLoginAttempt({
@@ -104,14 +102,7 @@ export async function logLogin(data: LoginLogData): Promise<void> {
         if (data.userId !== 'unknown') {
           // Check for successful login from new location
           if (data.success) {
-            await checkAndNotifyNewLocation(
-              data.userId,
-              data.email,
-              data.userName,
-              geoLocation,
-              ipAddress,
-              loginLog.createdAt
-            );
+            await checkAndNotifyNewLocation(data.userId, data.email, data.userName, geoLocation, ipAddress, loginLog.createdAt);
           }
 
           // Check for failed login attempts
@@ -133,14 +124,7 @@ export async function logLogin(data: LoginLogData): Promise<void> {
 /**
  * Check if this is a new location and send notification
  */
-async function checkAndNotifyNewLocation(
-  userId: string,
-  email: string,
-  userName: string | null | undefined,
-  geoLocation: { city?: string; region?: string; country?: string },
-  ipAddress: string | null,
-  timestamp: Date
-): Promise<void> {
+async function checkAndNotifyNewLocation(userId: string, email: string, userName: string | null | undefined, geoLocation: { city?: string; region?: string; country?: string }, ipAddress: string | null, timestamp: Date): Promise<void> {
   return withSpan(
     'login.check_new_location',
     async (_span) => {
@@ -210,13 +194,7 @@ async function checkAndNotifyNewLocation(
 /**
  * Check for multiple failed attempts and send notification
  */
-async function checkAndNotifyFailedAttempts(
-  email: string,
-  userName: string | null | undefined,
-  geoLocation: { city?: string; region?: string; country?: string },
-  ipAddress: string | null,
-  timestamp: Date
-): Promise<void> {
+async function checkAndNotifyFailedAttempts(email: string, userName: string | null | undefined, geoLocation: { city?: string; region?: string; country?: string }, ipAddress: string | null, timestamp: Date): Promise<void> {
   return withSpan(
     'login.check_failed_attempts',
     async (_span) => {

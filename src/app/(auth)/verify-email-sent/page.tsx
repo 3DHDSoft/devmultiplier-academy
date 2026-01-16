@@ -27,10 +27,7 @@ function VerifyEmailSentContent() {
 
           {/* Instructions */}
           <div className="mb-6 rounded-md border border-[#54aeff66] bg-[#ddf4ff] p-4 text-left dark:border-[#4493f866] dark:bg-[#388bfd26]">
-            <p className="text-sm text-[#0969da] dark:text-[#4493f8]">
-              Click the link in the email to verify your account and complete your registration. The link will expire in
-              24 hours.
-            </p>
+            <p className="text-sm text-[#0969da] dark:text-[#4493f8]">Click the link in the email to verify your account and complete your registration. The link will expire in 24 hours.</p>
           </div>
 
           {/* Didn't receive email */}
@@ -44,10 +41,7 @@ function VerifyEmailSentContent() {
           </div>
 
           {/* Back to Login */}
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 text-sm font-medium text-[#0969da] hover:underline dark:text-[#4493f8]"
-          >
+          <Link href="/login" className="inline-flex items-center gap-2 text-sm font-medium text-[#0969da] hover:underline dark:text-[#4493f8]">
             <ArrowLeft className="h-4 w-4" />
             Back to Sign In
           </Link>

@@ -128,11 +128,7 @@ export interface ActionOptions {
  * );
  * ```
  */
-export function withActionLogging<TInput, TOutput>(
-  name: string,
-  action: (input: TInput) => Promise<TOutput>,
-  options: { transformError?: (error: unknown) => AppError } = {}
-): (input: TInput) => Promise<ActionResult<TOutput>> {
+export function withActionLogging<TInput, TOutput>(name: string, action: (input: TInput) => Promise<TOutput>, options: { transformError?: (error: unknown) => AppError } = {}): (input: TInput) => Promise<ActionResult<TOutput>> {
   return async (input: TInput): Promise<ActionResult<TOutput>> => {
     const actionId = crypto.randomUUID();
     const log = logger.child({ actionId, action: name });
@@ -254,12 +250,7 @@ export function withActionLogging<TInput, TOutput>(
  * );
  * ```
  */
-export function createAction<TSchema extends ZodSchema, TOutput>(
-  name: string,
-  schema: TSchema,
-  handler: ActionHandler<z.infer<TSchema>, TOutput>,
-  options: ActionOptions = {}
-): (input: z.infer<TSchema>) => Promise<ActionResult<TOutput>> {
+export function createAction<TSchema extends ZodSchema, TOutput>(name: string, schema: TSchema, handler: ActionHandler<z.infer<TSchema>, TOutput>, options: ActionOptions = {}): (input: z.infer<TSchema>) => Promise<ActionResult<TOutput>> {
   const { requireAuth = true } = options;
 
   return withActionLogging(
@@ -321,12 +312,7 @@ export function createAction<TSchema extends ZodSchema, TOutput>(
  * );
  * ```
  */
-export function createPublicAction<TSchema extends ZodSchema, TOutput>(
-  name: string,
-  schema: TSchema,
-  handler: (input: z.infer<TSchema>, logger: Logger) => Promise<TOutput>,
-  options: Omit<ActionOptions, 'requireAuth'> = {}
-): (input: z.infer<TSchema>) => Promise<ActionResult<TOutput>> {
+export function createPublicAction<TSchema extends ZodSchema, TOutput>(name: string, schema: TSchema, handler: (input: z.infer<TSchema>, logger: Logger) => Promise<TOutput>, options: Omit<ActionOptions, 'requireAuth'> = {}): (input: z.infer<TSchema>) => Promise<ActionResult<TOutput>> {
   return withActionLogging(
     name,
     async (input: z.infer<TSchema>): Promise<TOutput> => {
@@ -370,12 +356,7 @@ export function createPublicAction<TSchema extends ZodSchema, TOutput>(
  * </form>
  * ```
  */
-export function createFormAction<TSchema extends ZodSchema, TOutput>(
-  name: string,
-  schema: TSchema,
-  handler: ActionHandler<z.infer<TSchema>, TOutput>,
-  options: ActionOptions = {}
-): (formData: FormData) => Promise<ActionResult<TOutput>> {
+export function createFormAction<TSchema extends ZodSchema, TOutput>(name: string, schema: TSchema, handler: ActionHandler<z.infer<TSchema>, TOutput>, options: ActionOptions = {}): (formData: FormData) => Promise<ActionResult<TOutput>> {
   const action = createAction(name, schema, handler, options);
 
   return async (formData: FormData): Promise<ActionResult<TOutput>> => {

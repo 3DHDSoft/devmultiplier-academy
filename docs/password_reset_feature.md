@@ -4,8 +4,7 @@ This document describes the password reset functionality implemented in the Dev 
 
 ## Overview
 
-The password reset feature allows users to securely reset their passwords via email verification. The implementation
-follows security best practices including:
+The password reset feature allows users to securely reset their passwords via email verification. The implementation follows security best practices including:
 
 - Secure random token generation
 - Token expiration (1 hour)

@@ -37,14 +37,7 @@ const tiers: PricingTier[] = [
     name: 'Complete Bundle',
     price: '$299',
     description: 'All five courses at a significant discount.',
-    features: [
-      'All 5 courses included',
-      'Downloadable resources',
-      'Certificates of completion',
-      'Lifetime updates',
-      'Priority support',
-      'Bonus: Architecture templates',
-    ],
+    features: ['All 5 courses included', 'Downloadable resources', 'Certificates of completion', 'Lifetime updates', 'Priority support', 'Bonus: Architecture templates'],
     cta: 'Get the Bundle',
     purchaseType: 'bundle',
     featured: true,
@@ -55,14 +48,7 @@ const tiers: PricingTier[] = [
     price: '$49',
     period: '/seat/month',
     description: 'For teams who want continuous learning.',
-    features: [
-      'All current & future courses',
-      'Team progress dashboard',
-      'Admin controls',
-      'Priority support',
-      'Custom invoicing',
-      'Onboarding session',
-    ],
+    features: ['All current & future courses', 'Team progress dashboard', 'Admin controls', 'Priority support', 'Custom invoicing', 'Onboarding session'],
     cta: 'Start Free Trial',
     purchaseType: 'subscription',
     featured: false,
@@ -123,98 +109,43 @@ export function Pricing() {
   };
 
   return (
-    <section
-      id="pricing"
-      className="bg-white py-24 sm:py-32 dark:bg-[#0d1117]"
-    >
+    <section id="pricing" className="bg-white py-24 sm:py-32 dark:bg-[#0d1117]">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-sm font-semibold tracking-wider text-[#0969da] uppercase dark:text-[#4493f8]">Pricing</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-[#1f2328] sm:text-4xl dark:text-[#e6edf3]">
-            Invest in Your Career
-          </p>
-          <p className="mt-4 text-lg text-[#656d76] dark:text-[#848d97]">
-            Choose the plan that fits your learning goals. All plans include lifetime access to purchased content.
-          </p>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-[#1f2328] sm:text-4xl dark:text-[#e6edf3]">Invest in Your Career</p>
+          <p className="mt-4 text-lg text-[#656d76] dark:text-[#848d97]">Choose the plan that fits your learning goals. All plans include lifetime access to purchased content.</p>
         </div>
 
         {/* Error message */}
-        {error && (
-          <div className="mx-auto mt-8 max-w-md rounded-lg bg-red-50 p-4 text-center text-red-600 dark:bg-red-900/20 dark:text-red-400">
-            {error}
-          </div>
-        )}
+        {error && <div className="mx-auto mt-8 max-w-md rounded-lg bg-red-50 p-4 text-center text-red-600 dark:bg-red-900/20 dark:text-red-400">{error}</div>}
 
         {/* Pricing cards */}
         <div className="mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-3">
           {tiers.map((tier) => (
-            <div
-              key={tier.id}
-              className={`relative flex flex-col rounded-2xl p-8 ${
-                tier.featured
-                  ? 'border-2 border-[#0969da] bg-[#1f2328] text-white shadow-xl dark:border-[#4493f8] dark:bg-[#161b22]'
-                  : 'border border-[#d1d9e0] bg-white dark:border-[#30363d] dark:bg-[#161b22]'
-              }`}
-            >
-              {tier.featured && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#0969da] px-4 py-1 text-xs font-semibold text-white dark:bg-[#4493f8]">
-                  Most Popular
-                </div>
-              )}
+            <div key={tier.id} className={`relative flex flex-col rounded-2xl p-8 ${tier.featured ? 'border-2 border-[#0969da] bg-[#1f2328] text-white shadow-xl dark:border-[#4493f8] dark:bg-[#161b22]' : 'border border-[#d1d9e0] bg-white dark:border-[#30363d] dark:bg-[#161b22]'}`}>
+              {tier.featured && <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#0969da] px-4 py-1 text-xs font-semibold text-white dark:bg-[#4493f8]">Most Popular</div>}
 
-              <h3
-                className={`text-lg font-semibold ${tier.featured ? 'text-white' : 'text-[#1f2328] dark:text-[#e6edf3]'}`}
-              >
-                {tier.name}
-              </h3>
+              <h3 className={`text-lg font-semibold ${tier.featured ? 'text-white' : 'text-[#1f2328] dark:text-[#e6edf3]'}`}>{tier.name}</h3>
 
               <div className="mt-4 flex items-baseline">
-                <span
-                  className={`text-4xl font-bold ${tier.featured ? 'text-white' : 'text-[#1f2328] dark:text-[#e6edf3]'}`}
-                >
-                  {tier.price}
-                </span>
-                {tier.period && (
-                  <span
-                    className={`ml-1 text-sm ${tier.featured ? 'text-[#848d97]' : 'text-[#656d76] dark:text-[#848d97]'}`}
-                  >
-                    {tier.period}
-                  </span>
-                )}
+                <span className={`text-4xl font-bold ${tier.featured ? 'text-white' : 'text-[#1f2328] dark:text-[#e6edf3]'}`}>{tier.price}</span>
+                {tier.period && <span className={`ml-1 text-sm ${tier.featured ? 'text-[#848d97]' : 'text-[#656d76] dark:text-[#848d97]'}`}>{tier.period}</span>}
               </div>
 
-              <p className={`mt-4 text-sm ${tier.featured ? 'text-[#848d97]' : 'text-[#656d76] dark:text-[#848d97]'}`}>
-                {tier.description}
-              </p>
+              <p className={`mt-4 text-sm ${tier.featured ? 'text-[#848d97]' : 'text-[#656d76] dark:text-[#848d97]'}`}>{tier.description}</p>
 
               <ul className="mt-6 flex-grow space-y-3">
                 {tier.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start"
-                  >
-                    <Check
-                      className={`mr-2 h-5 w-5 shrink-0 ${tier.featured ? 'text-[#3fb950]' : 'text-[#0969da] dark:text-[#4493f8]'}`}
-                    />
-                    <span
-                      className={`text-sm ${tier.featured ? 'text-[#848d97]' : 'text-[#656d76] dark:text-[#848d97]'}`}
-                    >
-                      {feature}
-                    </span>
+                  <li key={feature} className="flex items-start">
+                    <Check className={`mr-2 h-5 w-5 shrink-0 ${tier.featured ? 'text-[#3fb950]' : 'text-[#0969da] dark:text-[#4493f8]'}`} />
+                    <span className={`text-sm ${tier.featured ? 'text-[#848d97]' : 'text-[#656d76] dark:text-[#848d97]'}`}>{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <button
-                onClick={() => handlePurchase(tier)}
-                disabled={loadingTier === tier.id}
-                className={`mt-8 flex items-center justify-center rounded-lg px-4 py-3 text-center text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${
-                  tier.featured
-                    ? 'bg-white text-[#1f2328] hover:bg-[#f6f8fa]'
-                    : 'bg-[#1f883d] text-white hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]'
-                }`}
-              >
+              <button onClick={() => handlePurchase(tier)} disabled={loadingTier === tier.id} className={`mt-8 flex items-center justify-center rounded-lg px-4 py-3 text-center text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${tier.featured ? 'bg-white text-[#1f2328] hover:bg-[#f6f8fa]' : 'bg-[#1f883d] text-white hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]'}`}>
                 {loadingTier === tier.id ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -229,9 +160,7 @@ export function Pricing() {
         </div>
 
         {/* Note about subscriptions */}
-        <p className="mx-auto mt-12 max-w-2xl text-center text-sm text-[#656d76] dark:text-[#848d97]">
-          Team subscriptions include a 14-day free trial. Cancel anytime. Prices shown exclude applicable taxes.
-        </p>
+        <p className="mx-auto mt-12 max-w-2xl text-center text-sm text-[#656d76] dark:text-[#848d97]">Team subscriptions include a 14-day free trial. Cancel anytime. Prices shown exclude applicable taxes.</p>
       </div>
     </section>
   );

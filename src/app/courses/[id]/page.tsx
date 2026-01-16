@@ -65,8 +65,7 @@ const fallbackCourses = [
   {
     id: 'ddd-to-cqrs',
     title: 'From DDD to CQRS with AI Agents',
-    description:
-      'Learn to design complex domains and implement CQRS patterns with AI-assisted tooling. From bounded contexts to event sourcing, master the architecture patterns that scale.',
+    description: 'Learn to design complex domains and implement CQRS patterns with AI-assisted tooling. From bounded contexts to event sourcing, master the architecture patterns that scale.',
     longDescription: `This comprehensive course takes you on a journey from Domain-Driven Design fundamentals to implementing Command Query Responsibility Segregation (CQRS) patterns with modern AI assistance.
 
 You'll learn how to identify bounded contexts, design aggregates, and model complex business domains. Then we'll bridge the gap to CQRS and event sourcing, showing you how to separate read and write concerns for maximum scalability.
@@ -88,8 +87,7 @@ Throughout the course, you'll leverage AI agents to accelerate your development,
   {
     id: 'ddd-to-database',
     title: 'DDD to Database Schema',
-    description:
-      'Transform your domain models into optimized database schemas. Bridge the gap between business logic and data persistence with proven patterns.',
+    description: 'Transform your domain models into optimized database schemas. Bridge the gap between business logic and data persistence with proven patterns.',
     longDescription: `Master the art of translating your domain models into efficient, maintainable database schemas. This course bridges the gap between object-oriented domain design and relational data persistence.
 
 Learn proven patterns for mapping aggregates to tables, handling relationships, and managing schema evolution. You'll understand when to denormalize for performance and how to maintain data integrity while respecting your domain boundaries.
@@ -110,8 +108,7 @@ By the end, you'll be able to design database schemas that faithfully represent 
   {
     id: 'database-optimization',
     title: 'AI-Assisted Database Optimization',
-    description:
-      'SQL Server 2025 vs PostgreSQL 18 deep dive. Learn to optimize queries, indexes, and architecture with AI assistance for maximum performance.',
+    description: 'SQL Server 2025 vs PostgreSQL 18 deep dive. Learn to optimize queries, indexes, and architecture with AI assistance for maximum performance.',
     longDescription: `Dive deep into database performance optimization with the latest versions of SQL Server and PostgreSQL. This hands-on course teaches you to identify bottlenecks, optimize queries, and design high-performance database architectures.
 
 Compare and contrast SQL Server 2025 and PostgreSQL 18 features, understanding when to use each. Learn to leverage AI tools for query analysis, index recommendations, and performance tuning.
@@ -133,8 +130,7 @@ You'll work through real-world optimization scenarios, from slow query diagnosis
   {
     id: 'data-driven-api',
     title: 'Data-Driven REST API Development',
-    description:
-      'Build scalable, maintainable REST APIs driven by your data models. From design to deployment with modern best practices and documentation.',
+    description: 'Build scalable, maintainable REST APIs driven by your data models. From design to deployment with modern best practices and documentation.',
     longDescription: `Build production-ready REST APIs that scale with your business. This course covers everything from API design principles to deployment and documentation.
 
 Learn to design intuitive endpoints, implement proper validation, handle errors gracefully, and version your APIs without breaking changes. You'll generate comprehensive OpenAPI documentation and implement security best practices.
@@ -156,8 +152,7 @@ By course end, you'll be able to ship APIs that developers love to use and that 
   {
     id: 'ai-ui-design',
     title: 'AI-Assisted UI Design & Implementation',
-    description:
-      'Design and build modern interfaces with Next.js and AI tools. From wireframes to production-ready components with Tailwind CSS.',
+    description: 'Design and build modern interfaces with Next.js and AI tools. From wireframes to production-ready components with Tailwind CSS.',
     longDescription: `Transform your UI development workflow with AI-assisted design and implementation. This course teaches you to rapidly prototype, design, and build production-quality interfaces using modern tools.
 
 Learn to leverage AI for generating component ideas, writing Tailwind CSS, and iterating on designs. Master Next.js App Router patterns, React Server Components, and component architecture for scalable frontends.
@@ -183,91 +178,75 @@ const courseFAQs: Record<string, FAQItem[]> = {
   'ddd-to-cqrs': [
     {
       question: 'Do I need prior experience with Domain-Driven Design?',
-      answer:
-        'No prior DDD experience is required. This course starts with fundamentals and progressively builds to advanced CQRS patterns. However, you should have 3+ years of professional development experience.',
+      answer: 'No prior DDD experience is required. This course starts with fundamentals and progressively builds to advanced CQRS patterns. However, you should have 3+ years of professional development experience.',
     },
     {
       question: 'What programming language is used in the examples?',
-      answer:
-        'Examples are primarily in TypeScript, but the concepts apply to any language. We focus on the patterns and principles, not language-specific implementations.',
+      answer: 'Examples are primarily in TypeScript, but the concepts apply to any language. We focus on the patterns and principles, not language-specific implementations.',
     },
     {
       question: 'Will I learn to use AI tools for implementing DDD/CQRS?',
-      answer:
-        'Yes! The final module covers AI-assisted implementation, including how to use tools like Claude and GitHub Copilot to accelerate your DDD and CQRS development workflow.',
+      answer: 'Yes! The final module covers AI-assisted implementation, including how to use tools like Claude and GitHub Copilot to accelerate your DDD and CQRS development workflow.',
     },
     {
       question: 'Is this course suitable for microservices architecture?',
-      answer:
-        'Absolutely. DDD and CQRS are particularly powerful in microservices. We cover bounded contexts, context mapping, and how these patterns help define service boundaries.',
+      answer: 'Absolutely. DDD and CQRS are particularly powerful in microservices. We cover bounded contexts, context mapping, and how these patterns help define service boundaries.',
     },
   ],
   'ddd-to-database': [
     {
       question: 'Which databases are covered in this course?',
-      answer:
-        "We focus on relational databases (PostgreSQL and SQL Server) as they're most common for DDD implementations. The principles also apply to document databases.",
+      answer: "We focus on relational databases (PostgreSQL and SQL Server) as they're most common for DDD implementations. The principles also apply to document databases.",
     },
     {
       question: 'Do I need to know SQL to take this course?',
-      answer:
-        "Basic SQL knowledge is helpful but not required. We explain concepts as we go and provide all the SQL examples you'll need.",
+      answer: "Basic SQL knowledge is helpful but not required. We explain concepts as we go and provide all the SQL examples you'll need.",
     },
     {
       question: 'Will this help me with existing database migrations?',
-      answer:
-        'Yes! We cover migration strategies and how to evolve your schema alongside your domain model without breaking existing functionality.',
+      answer: 'Yes! We cover migration strategies and how to evolve your schema alongside your domain model without breaking existing functionality.',
     },
   ],
   'database-optimization': [
     {
       question: 'Do I need access to SQL Server and PostgreSQL?',
-      answer:
-        'Having access to both is ideal for the comparison sections, but you can complete the course with just one. We provide Docker setup instructions for both.',
+      answer: 'Having access to both is ideal for the comparison sections, but you can complete the course with just one. We provide Docker setup instructions for both.',
     },
     {
       question: 'How technical is the course content?',
-      answer:
-        'This is an advanced course covering query execution plans, indexing internals, and performance tuning. You should be comfortable with SQL and database concepts.',
+      answer: 'This is an advanced course covering query execution plans, indexing internals, and performance tuning. You should be comfortable with SQL and database concepts.',
     },
     {
       question: 'Will AI really help with database optimization?',
-      answer:
-        'Yes! We show how to use AI tools for query analysis, index recommendations, and generating test data. AI can significantly accelerate the optimization process.',
+      answer: 'Yes! We show how to use AI tools for query analysis, index recommendations, and generating test data. AI can significantly accelerate the optimization process.',
     },
   ],
   'data-driven-api': [
     {
       question: 'What API framework is used?',
-      answer:
-        'Examples use Node.js/Express and .NET, but the REST design principles apply to any framework. Focus is on design patterns, not framework specifics.',
+      answer: 'Examples use Node.js/Express and .NET, but the REST design principles apply to any framework. Focus is on design patterns, not framework specifics.',
     },
     {
       question: 'Does this course cover GraphQL?',
-      answer:
-        'This course focuses on REST API design. We briefly compare REST vs GraphQL trade-offs, but the main content is REST-focused.',
+      answer: 'This course focuses on REST API design. We briefly compare REST vs GraphQL trade-offs, but the main content is REST-focused.',
     },
     {
       question: 'Will I learn about API documentation?',
-      answer:
-        'Yes! We have a full module on OpenAPI/Swagger documentation, including auto-generation and keeping docs in sync with your code.',
+      answer: 'Yes! We have a full module on OpenAPI/Swagger documentation, including auto-generation and keeping docs in sync with your code.',
     },
   ],
   'ai-ui-design': [
     {
       question: 'What AI design tools are covered?',
-      answer:
-        'We cover Claude, v0, and Cursor for code generation, plus general principles for prompting AI effectively for UI development.',
+      answer: 'We cover Claude, v0, and Cursor for code generation, plus general principles for prompting AI effectively for UI development.',
     },
     {
       question: 'Do I need design experience?',
-      answer:
-        "No design background needed. We teach you how to use AI tools to go from rough ideas to polished interfaces, even if you're not a designer.",
+      answer: "No design background needed. We teach you how to use AI tools to go from rough ideas to polished interfaces, even if you're not a designer.",
     },
     {
       question: 'Is Next.js experience required?',
-      answer:
-        "Basic React knowledge is helpful. We cover Next.js App Router patterns from the ground up, so you'll learn as you go.",
+      answer: "Basic React knowledge is helpful. We cover Next.js App Router patterns from the ground up, so you'll learn as you go.",
     },
   ],
 };
@@ -276,23 +255,19 @@ const courseFAQs: Record<string, FAQItem[]> = {
 const defaultCourseFAQs: FAQItem[] = [
   {
     question: 'What are the prerequisites for this course?',
-    answer:
-      'This course is designed for experienced developers with 3+ years of professional experience. Specific technical prerequisites are listed in the course description.',
+    answer: 'This course is designed for experienced developers with 3+ years of professional experience. Specific technical prerequisites are listed in the course description.',
   },
   {
     question: 'How long will I have access to the course?',
-    answer:
-      'You have lifetime access to all course content, including any future updates. Learn at your own pace without worrying about expiration.',
+    answer: 'You have lifetime access to all course content, including any future updates. Learn at your own pace without worrying about expiration.',
   },
   {
     question: 'Is there a money-back guarantee?',
-    answer:
-      "Yes! We offer a 30-day money-back guarantee. If the course doesn't meet your expectations, contact us for a full refund.",
+    answer: "Yes! We offer a 30-day money-back guarantee. If the course doesn't meet your expectations, contact us for a full refund.",
   },
   {
     question: 'Can I get help if I get stuck?',
-    answer:
-      'Yes! You can reach out to our support team at support@devmultiplier.com. We also have a community forum where you can connect with other learners.',
+    answer: 'Yes! You can reach out to our support team at support@devmultiplier.com. We also have a community forum where you can connect with other learners.',
   },
 ];
 
@@ -404,34 +379,18 @@ export default async function CourseDetailPage({ params }: PageProps) {
       <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] px-4 dark:bg-[#0d1117]">
         <div className="w-full max-w-md rounded-lg border border-[#d1d9e0] bg-white p-8 text-center dark:border-[#30363d] dark:bg-[#161b22]">
           <div className="mb-4 text-red-500 dark:text-red-400">
-            <svg
-              className="mx-auto h-16 w-16"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
+            <svg className="mx-auto h-16 w-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
           <h1 className="mb-2 text-xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Access Denied</h1>
           <p className="mb-6 text-[#656d76] dark:text-[#848d97]">
             You are not allowed to view this course. Please contact support at{' '}
-            <a
-              href="mailto:support@devmultiplier.com"
-              className="text-[#0969da] hover:underline dark:text-[#4493f8]"
-            >
+            <a href="mailto:support@devmultiplier.com" className="text-[#0969da] hover:underline dark:text-[#4493f8]">
               support@devmultiplier.com
             </a>
           </p>
-          <Link
-            href="/courses"
-            className="inline-block rounded-md bg-[#1f883d] px-4 py-2 font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]"
-          >
+          <Link href="/courses" className="inline-block rounded-md bg-[#1f883d] px-4 py-2 font-medium text-white transition-colors hover:bg-[#1a7f37] dark:bg-[#238636] dark:hover:bg-[#2ea043]">
             Back to Courses
           </Link>
         </div>
@@ -480,10 +439,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
     <div className="min-h-screen bg-white py-8 sm:py-12 dark:bg-[#0d1117]">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         {/* Back link */}
-        <Link
-          href="/courses"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]"
-        >
+        <Link href="/courses" className="mb-8 inline-flex items-center gap-2 text-sm text-[#656d76] transition-colors hover:text-[#0969da] dark:text-[#848d97] dark:hover:text-[#4493f8]">
           <ArrowLeft className="h-4 w-4" />
           Back to all courses
         </Link>
@@ -493,9 +449,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-[#1f2328] text-white dark:bg-[#e6edf3] dark:text-[#0d1117]">
             <Icon className="h-8 w-8" />
           </div>
-          <h1 className="mb-4 text-4xl font-semibold tracking-tight text-[#1f2328] dark:text-[#e6edf3]">
-            {course.title}
-          </h1>
+          <h1 className="mb-4 text-4xl font-semibold tracking-tight text-[#1f2328] dark:text-[#e6edf3]">{course.title}</h1>
           <p className="text-lg text-[#656d76] dark:text-[#848d97]">{course.description}</p>
 
           {/* Meta */}
@@ -513,10 +467,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
           {/* Topics - GitHub style labels */}
           <div className="mt-6 flex flex-wrap gap-2">
             {course.topics.map((topic) => (
-              <span
-                key={topic}
-                className="inline-block rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-3 py-1 text-xs font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]"
-              >
+              <span key={topic} className="inline-block rounded-full border border-[#54aeff66] bg-[#ddf4ff] px-3 py-1 text-xs font-medium text-[#0969da] dark:border-[#4493f866] dark:bg-[#388bfd26] dark:text-[#4493f8]">
                 {topic}
               </span>
             ))}
@@ -528,10 +479,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <h2 className="mb-4 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">About this course</h2>
           <div className="prose prose-lg dark:prose-invert max-w-none text-[#1f2328] dark:text-[#e6edf3]">
             {course.longDescription.split('\n\n').map((paragraph, index) => (
-              <p
-                key={index}
-                className="mb-4 text-[#1f2328] dark:text-[#e6edf3]"
-              >
+              <p key={index} className="mb-4 text-[#1f2328] dark:text-[#e6edf3]">
                 {paragraph}
               </p>
             ))}
@@ -539,29 +487,17 @@ export default async function CourseDetailPage({ params }: PageProps) {
         </div>
 
         {/* Instructor Section */}
-        <InstructorSection
-          instructor={getInstructorForCourse(id)}
-          courseFocus={getCourseFocus(id)}
-          className="mb-12"
-        />
+        <InstructorSection instructor={getInstructorForCourse(id)} courseFocus={getCourseFocus(id)} className="mb-12" />
 
         {/* Curriculum - GitHub style list */}
         <div className="mb-12">
           <h2 className="mb-6 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Curriculum</h2>
           <div className="divide-y divide-[#d1d9e0] rounded-md border border-[#d1d9e0] bg-white dark:divide-[#30363d] dark:border-[#30363d] dark:bg-[#161b22]">
             {course.modules.map((module, index) => (
-              <Link
-                key={module.title}
-                href={`/courses/${course.id}/module-${index + 1}/${index === 0 ? 'lesson-0' : 'lesson-1'}`}
-                className="group flex items-center justify-between p-4 transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]"
-              >
+              <Link key={module.title} href={`/courses/${course.id}/module-${index + 1}/${index === 0 ? 'lesson-0' : 'lesson-1'}`} className="group flex items-center justify-between p-4 transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]">
                 <div className="flex items-center gap-4">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f6f8fa] text-sm font-medium text-[#656d76] transition-colors group-hover:bg-[#0969da] group-hover:text-white dark:bg-[#21262d] dark:text-[#848d97] dark:group-hover:bg-[#4493f8]">
-                    {index + 1}
-                  </span>
-                  <span className="font-medium text-[#1f2328] transition-colors group-hover:text-[#0969da] dark:text-[#e6edf3] dark:group-hover:text-[#4493f8]">
-                    {module.title}
-                  </span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f6f8fa] text-sm font-medium text-[#656d76] transition-colors group-hover:bg-[#0969da] group-hover:text-white dark:bg-[#21262d] dark:text-[#848d97] dark:group-hover:bg-[#4493f8]">{index + 1}</span>
+                  <span className="font-medium text-[#1f2328] transition-colors group-hover:text-[#0969da] dark:text-[#e6edf3] dark:group-hover:text-[#4493f8]">{module.title}</span>
                 </div>
                 <span className="text-sm text-[#656d76] dark:text-[#848d97]">{module.lessons} lessons</span>
               </Link>
@@ -570,19 +506,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
         </div>
 
         {/* FAQ Section */}
-        <FAQSection
-          title="Frequently Asked Questions"
-          items={courseFAQs[id] || defaultCourseFAQs}
-          className="mb-12"
-        />
+        <FAQSection title="Frequently Asked Questions" items={courseFAQs[id] || defaultCourseFAQs} className="mb-12" />
 
         {/* CTA - Enrollment component */}
-        <EnrollmentCTA
-          courseId={course.id}
-          courseSlug={course.slug}
-          price={course.price ?? undefined}
-          currency={course.currency}
-        />
+        <EnrollmentCTA courseId={course.id} courseSlug={course.slug} price={course.price ?? undefined} currency={course.currency} />
 
         {/* Course Navigation */}
         <CourseNavigation

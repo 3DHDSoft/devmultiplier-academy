@@ -2,9 +2,7 @@
 
 ## Executive Summary
 
-This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring
-hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and
-developing a production-grade Next.js educational platform with enterprise-level observability.
+This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and developing a production-grade Next.js educational platform with enterprise-level observability.
 
 ## Table of Contents
 
@@ -49,8 +47,7 @@ Setting up this project traditionally requires:
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
-- [VS Code](https://code.visualstudio.com/) with
-  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - 4+ CPU cores and 20GB RAM available
 
 ### First Time Setup
@@ -419,8 +416,7 @@ Credentials: admin / admin
 
 **Provisioned Resources**:
 
-- Datasources: [Prometheus](.devcontainer/grafana/provisioning/datasources/prometheus.yml),
-  [Tempo](.devcontainer/grafana/provisioning/datasources/tempo.yml)
+- Datasources: [Prometheus](.devcontainer/grafana/provisioning/datasources/prometheus.yml), [Tempo](.devcontainer/grafana/provisioning/datasources/tempo.yml)
 - Dashboard Config: [dashboards.yml](.devcontainer/grafana/provisioning/dashboards/dashboards.yml)
 - Pre-built Dashboards:
   - [Application Overview](.devcontainer/grafana/dashboards/application-overview.json)

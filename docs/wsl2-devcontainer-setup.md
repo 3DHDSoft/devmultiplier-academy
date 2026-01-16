@@ -1,7 +1,6 @@
 # WSL2 Development Container Setup Guide
 
-This guide covers setting up the DevMultiplier Academy development environment using WSL2 (Windows Subsystem for
-Linux 2) with VS Code Dev Containers.
+This guide covers setting up the DevMultiplier Academy development environment using WSL2 (Windows Subsystem for Linux 2) with VS Code Dev Containers.
 
 ## Prerequisites
 
@@ -47,8 +46,7 @@ If `wsl --install` doesn't work, follow these steps:
 
 3. Restart your computer.
 
-4. Download and install the
-   [WSL2 Linux kernel update](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
+4. Download and install the [WSL2 Linux kernel update](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi).
 
 5. Set WSL 2 as default:
 
@@ -145,8 +143,7 @@ cd devmultiplier-academy
 
 Clone using Git for Windows, then access from WSL2.
 
-> **Performance Note**: Storing the project inside WSL2's filesystem (`/home/username/`) provides significantly better
-> I/O performance than accessing Windows drives (`/mnt/c/`).
+> **Performance Note**: Storing the project inside WSL2's filesystem (`/home/username/`) provides significantly better I/O performance than accessing Windows drives (`/mnt/c/`).
 
 ## Step 6: Open in Dev Container
 
@@ -195,8 +192,7 @@ pg_isready -h postgres -U admin
 
 **Cause**: The `common-utils` feature's Oh My Zsh installation can break on WSL2.
 
-**Solution**: This project installs Oh My Zsh directly in the Dockerfile (not via features) to avoid this issue. Ensure
-you have the latest `.devcontainer/Dockerfile`.
+**Solution**: This project installs Oh My Zsh directly in the Dockerfile (not via features) to avoid this issue. Ensure you have the latest `.devcontainer/Dockerfile`.
 
 ### Slow File System Performance
 
@@ -301,8 +297,7 @@ processors=6
 
 ### Exclude from Windows Defender Antivirus
 
-Adding exclusions for Docker and WSL2 paths significantly improves performance by preventing real-time scanning of
-container operations and Linux filesystem access.
+Adding exclusions for Docker and WSL2 paths significantly improves performance by preventing real-time scanning of container operations and Linux filesystem access.
 
 #### Method 1: Using Windows Security GUI
 
@@ -389,8 +384,7 @@ Write-Host "`nCurrent process exclusions:" -ForegroundColor Cyan
 
 A ready-to-use script is available at `scripts/add-wsl-docker-exclusions.ps1`.
 
-> **Important**: Run this script on **Windows PowerShell** (not WSL). The script uses Windows-specific commands to
-> configure Windows Defender.
+> **Important**: Run this script on **Windows PowerShell** (not WSL). The script uses Windows-specific commands to configure Windows Defender.
 
 **How to run:**
 
@@ -489,8 +483,7 @@ Remove-MpPreference -ExclusionProcess "processname.exe"
 
 #### Security Considerations
 
-> **Warning**: Adding antivirus exclusions reduces security scanning coverage. Only exclude paths that are necessary for
-> performance and ensure you trust the software running in these locations.
+> **Warning**: Adding antivirus exclusions reduces security scanning coverage. Only exclude paths that are necessary for performance and ensure you trust the software running in these locations.
 
 - Docker and WSL are trusted Microsoft/Docker Inc. software
 - The exclusions prevent scanning of container layers and Linux filesystem operations

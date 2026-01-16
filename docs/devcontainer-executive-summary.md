@@ -2,9 +2,7 @@
 
 ## Core Purpose
 
-This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring
-hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and
-developing a production-grade Next.js educational platform with enterprise-level observability.
+This devcontainer transforms the **DevMultiplier Academy website** from a complex multi-service application requiring hours of manual setup into a **one-click development environment**. It's specifically engineered for teaching and developing a production-grade Next.js educational platform with enterprise-level observability.
 
 ---
 
@@ -80,8 +78,7 @@ Complete monitoring stack that mirrors production:
 - Port: 3001
 - Credentials: admin/admin
 
-**What This Means**: You can see exactly how your code performs in real-time, trace slow database queries, and monitor
-security events—just like production systems.
+**What This Means**: You can see exactly how your code performs in real-time, trace slow database queries, and monitor security events—just like production systems.
 
 ### 3. 50+ Pre-installed VS Code Extensions
 
@@ -204,9 +201,7 @@ Two lifecycle scripts ensure everything works:
 
 ## Who Benefits Most
 
-✅ **Educational Institutions**: Students get working environments in minutes ✅ **Development Teams**: 5+ developers
-need consistency ✅ **Open Source Projects**: Contributors avoid setup friction ✅ **Remote Teams**: Works identically
-locally or in GitHub Codespaces
+✅ **Educational Institutions**: Students get working environments in minutes ✅ **Development Teams**: 5+ developers need consistency ✅ **Open Source Projects**: Contributors avoid setup friction ✅ **Remote Teams**: Works identically locally or in GitHub Codespaces
 
 ---
 
@@ -232,8 +227,7 @@ locally or in GitHub Codespaces
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
-- [VS Code](https://code.visualstudio.com/) with
-  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - 4+ CPU cores and 20GB RAM available
 
 ### First Time Setup
@@ -480,8 +474,7 @@ bun run telemetry:test
 
 ## Bottom Line
 
-This is a **production-grade, enterprise-level development environment** that eliminates weeks of setup time and
-provides:
+This is a **production-grade, enterprise-level development environment** that eliminates weeks of setup time and provides:
 
 - ⚡ **10-minute onboarding** vs. 4-hour manual setup
 - 🎯 **Zero version conflicts** across team members
@@ -489,8 +482,7 @@ provides:
 - 🧪 **Complete testing stack** (unit + E2E)
 - 🛡️ **Enterprise security practices** built-in
 
-Perfect for an academy/educational platform that needs to onboard developers quickly while teaching professional-grade
-development practices with real monitoring and tracing tools.
+Perfect for an academy/educational platform that needs to onboard developers quickly while teaching professional-grade development practices with real monitoring and tracing tools.
 
 ---
 

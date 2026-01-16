@@ -86,8 +86,7 @@ GRAFANA_ADMIN_PASSWORD=admin
 
 ### Prometheus Configuration
 
-Prometheus scrape configuration is located at
-[.devcontainer/prometheus/prometheus.yml](.devcontainer/prometheus/prometheus.yml).
+Prometheus scrape configuration is located at [.devcontainer/prometheus/prometheus.yml](.devcontainer/prometheus/prometheus.yml).
 
 **Default scrape targets:**
 

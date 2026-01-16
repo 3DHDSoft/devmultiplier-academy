@@ -2,8 +2,7 @@
 
 ## Overview
 
-Playwright is configured for end-to-end testing across multiple browsers (Chromium, Firefox, WebKit) and devices
-(Desktop and Mobile). Tests automatically start the Next.js dev server before running.
+Playwright is configured for end-to-end testing across multiple browsers (Chromium, Firefox, WebKit) and devices (Desktop and Mobile). Tests automatically start the Next.js dev server before running.
 
 ## E2E Test Architecture
 

@@ -1,7 +1,6 @@
 # Authentication, User Profiles & Internationalization Guide
 
-Complete guide for implementing user authentication, profiles, and language preferences with PostgreSQL, Prisma,
-Auth.js, and next-intl.
+Complete guide for implementing user authentication, profiles, and language preferences with PostgreSQL, Prisma, Auth.js, and next-intl.
 
 ## Table of Contents
 
@@ -1304,10 +1303,7 @@ export const { handlers, auth } = NextAuth({
 
 This setup provides:
 
-✅ **Robust Authentication** with email/password and OAuth ✅ **User Profiles** with customizable preferences ✅
-**Language Selection** stored per user ✅ **Protected Routes** requiring authentication ✅ **i18n Integration**
-respecting user preferences ✅ **Progress Tracking** for course enrollments ✅ **Audit Logging** for compliance ✅
-**Type Safety** with Prisma and TypeScript
+✅ **Robust Authentication** with email/password and OAuth ✅ **User Profiles** with customizable preferences ✅ **Language Selection** stored per user ✅ **Protected Routes** requiring authentication ✅ **i18n Integration** respecting user preferences ✅ **Progress Tracking** for course enrollments ✅ **Audit Logging** for compliance ✅ **Type Safety** with Prisma and TypeScript
 
 All integrated seamlessly with next-intl for a truly personalized experience!
 
@@ -1317,8 +1313,7 @@ All integrated seamlessly with next-intl for a truly personalized experience!
 
 ### Understanding the Components
 
-When building API endpoints, it's important to understand that these aren't separate alternatives - they should **all be
-used together**:
+When building API endpoints, it's important to understand that these aren't separate alternatives - they should **all be used together**:
 
 **What they actually are:**
 
@@ -1331,10 +1326,7 @@ used together**:
 
 The **RIGHT approach combines all of them:**
 
-✅ **REST endpoints** - Standard HTTP verbs (GET /api/courses, POST /api/enrollments, etc.) ✅ **In Next.js App
-Router** - Located in `/app/api/courses/route.ts`, `/app/api/enrollments/route.ts` ✅ **With validation & error
-handling** - Using Zod for input validation and structured error responses ✅ **Type-safe with Prisma** - End-to-end
-TypeScript + Prisma Client for database queries
+✅ **REST endpoints** - Standard HTTP verbs (GET /api/courses, POST /api/enrollments, etc.) ✅ **In Next.js App Router** - Located in `/app/api/courses/route.ts`, `/app/api/enrollments/route.ts` ✅ **With validation & error handling** - Using Zod for input validation and structured error responses ✅ **Type-safe with Prisma** - End-to-end TypeScript + Prisma Client for database queries
 
 ### Pros of Combined Approach
 

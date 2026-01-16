@@ -1,7 +1,6 @@
 # Grafana Tempo TraceQL Query Guide
 
-This guide provides useful TraceQL queries for analyzing traces in Grafana Cloud Tempo for the dev-academy-web
-application.
+This guide provides useful TraceQL queries for analyzing traces in Grafana Cloud Tempo for the dev-academy-web application.
 
 ## Table of Contents
 
@@ -437,8 +436,7 @@ Alert when 5 or more server errors occur.
 
 ### Link to Logs (Loki)
 
-When viewing a trace in Grafana Tempo, click "Logs for this span" to see corresponding application logs from Loki (if
-configured).
+When viewing a trace in Grafana Tempo, click "Logs for this span" to see corresponding application logs from Loki (if configured).
 
 ### Correlation with Metrics (Prometheus/Mimir)
 

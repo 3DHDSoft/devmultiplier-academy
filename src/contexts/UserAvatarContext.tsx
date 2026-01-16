@@ -48,11 +48,7 @@ export function UserAvatarProvider({ children }: { children: React.ReactNode }) 
     }
   }, [status, refreshProfile]);
 
-  return (
-    <UserAvatarContext.Provider value={{ avatarUrl, setAvatarUrl, userName, setUserName, refreshProfile }}>
-      {children}
-    </UserAvatarContext.Provider>
-  );
+  return <UserAvatarContext.Provider value={{ avatarUrl, setAvatarUrl, userName, setUserName, refreshProfile }}>{children}</UserAvatarContext.Provider>;
 }
 
 export function useUserAvatar() {

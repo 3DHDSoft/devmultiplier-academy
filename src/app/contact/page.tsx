@@ -60,9 +60,7 @@ export default function ContactPage() {
           {/* Header */}
           <div className="text-center">
             <h1 className="text-navy text-4xl font-bold tracking-tight sm:text-5xl">Contact Us</h1>
-            <p className="text-slate mt-4 text-lg">
-              Have questions about our courses or need help choosing the right plan? {"We're"} here to help.
-            </p>
+            <p className="text-slate mt-4 text-lg">Have questions about our courses or need help choosing the right plan? {"We're"} here to help.</p>
           </div>
 
           {/* Contact options */}
@@ -71,10 +69,7 @@ export default function ContactPage() {
               <Mail className="text-blue h-8 w-8" />
               <h3 className="text-navy mt-4 font-semibold">Email</h3>
               <p className="text-slate mt-2 text-sm">For general inquiries and support</p>
-              <a
-                href="mailto:hello@devmultiplier.com"
-                className="text-blue mt-4 inline-block hover:underline"
-              >
+              <a href="mailto:hello@devmultiplier.com" className="text-blue mt-4 inline-block hover:underline">
                 hello@devmultiplier.com
               </a>
             </div>
@@ -82,10 +77,7 @@ export default function ContactPage() {
               <MessageSquare className="text-blue h-8 w-8" />
               <h3 className="text-navy mt-4 font-semibold">Sales</h3>
               <p className="text-slate mt-2 text-sm">For team plans and enterprise inquiries</p>
-              <a
-                href="mailto:sales@devmultiplier.com"
-                className="text-blue mt-4 inline-block hover:underline"
-              >
+              <a href="mailto:sales@devmultiplier.com" className="text-blue mt-4 inline-block hover:underline">
                 sales@devmultiplier.com
               </a>
             </div>
@@ -96,22 +88,14 @@ export default function ContactPage() {
             <h2 className="text-navy text-xl font-semibold">Send a Message</h2>
 
             {status === 'success' ? (
-              <div className="mt-6 rounded-lg bg-green-50 p-6 text-green-800">
-                Thanks for your message! {"We'll"} get back to you within 24 hours.
-              </div>
+              <div className="mt-6 rounded-lg bg-green-50 p-6 text-green-800">Thanks for your message! {"We'll"} get back to you within 24 hours.</div>
             ) : (
               <>
                 {generalError && <div className="mt-6 rounded-lg bg-red-50 p-6 text-red-800">{generalError}</div>}
-                <form
-                  onSubmit={handleSubmit}
-                  className="mt-6 space-y-6"
-                >
+                <form onSubmit={handleSubmit} className="mt-6 space-y-6">
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
-                      <label
-                        htmlFor="name"
-                        className="text-navy block text-sm font-medium"
-                      >
+                      <label htmlFor="name" className="text-navy block text-sm font-medium">
                         Name
                       </label>
                       <input
@@ -122,27 +106,16 @@ export default function ContactPage() {
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         aria-invalid={!!fieldErrors.name}
                         aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-                        className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                          fieldErrors.name
-                            ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
-                            : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
-                        }`}
+                        className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${fieldErrors.name ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-light-gray text-navy focus:border-blue focus:ring-blue'}`}
                       />
                       {fieldErrors.name && (
-                        <p
-                          id="name-error"
-                          role="alert"
-                          className="mt-1 text-sm text-red-600"
-                        >
+                        <p id="name-error" role="alert" className="mt-1 text-sm text-red-600">
                           {fieldErrors.name[0]}
                         </p>
                       )}
                     </div>
                     <div>
-                      <label
-                        htmlFor="email"
-                        className="text-navy block text-sm font-medium"
-                      >
+                      <label htmlFor="email" className="text-navy block text-sm font-medium">
                         Email
                       </label>
                       <input
@@ -153,18 +126,10 @@ export default function ContactPage() {
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         aria-invalid={!!fieldErrors.email}
                         aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                        className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                          fieldErrors.email
-                            ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
-                            : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
-                        }`}
+                        className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${fieldErrors.email ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-light-gray text-navy focus:border-blue focus:ring-blue'}`}
                       />
                       {fieldErrors.email && (
-                        <p
-                          id="email-error"
-                          role="alert"
-                          className="mt-1 text-sm text-red-600"
-                        >
+                        <p id="email-error" role="alert" className="mt-1 text-sm text-red-600">
                           {fieldErrors.email[0]}
                         </p>
                       )}
@@ -172,10 +137,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="subject"
-                      className="text-navy block text-sm font-medium"
-                    >
+                    <label htmlFor="subject" className="text-navy block text-sm font-medium">
                       Subject
                     </label>
                     <input
@@ -186,28 +148,17 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       aria-invalid={!!fieldErrors.subject}
                       aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
-                      className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                        fieldErrors.subject
-                          ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
-                          : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
-                      }`}
+                      className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${fieldErrors.subject ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-light-gray text-navy focus:border-blue focus:ring-blue'}`}
                     />
                     {fieldErrors.subject && (
-                      <p
-                        id="subject-error"
-                        role="alert"
-                        className="mt-1 text-sm text-red-600"
-                      >
+                      <p id="subject-error" role="alert" className="mt-1 text-sm text-red-600">
                         {fieldErrors.subject[0]}
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="message"
-                      className="text-navy block text-sm font-medium"
-                    >
+                    <label htmlFor="message" className="text-navy block text-sm font-medium">
                       Message
                     </label>
                     <textarea
@@ -218,28 +169,16 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       aria-invalid={!!fieldErrors.message}
                       aria-describedby={fieldErrors.message ? 'message-error' : undefined}
-                      className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${
-                        fieldErrors.message
-                          ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500'
-                          : 'border-light-gray text-navy focus:border-blue focus:ring-blue'
-                      }`}
+                      className={`mt-2 block w-full rounded-lg border px-4 py-2 focus:ring-1 focus:outline-none ${fieldErrors.message ? 'border-red-500 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-light-gray text-navy focus:border-blue focus:ring-blue'}`}
                     />
                     {fieldErrors.message && (
-                      <p
-                        id="message-error"
-                        role="alert"
-                        className="mt-1 text-sm text-red-600"
-                      >
+                      <p id="message-error" role="alert" className="mt-1 text-sm text-red-600">
                         {fieldErrors.message[0]}
                       </p>
                     )}
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="bg-navy hover:bg-blue w-full rounded-lg px-6 py-3 font-semibold text-white transition-colors disabled:opacity-50"
-                  >
+                  <button type="submit" disabled={status === 'loading'} className="bg-navy hover:bg-blue w-full rounded-lg px-6 py-3 font-semibold text-white transition-colors disabled:opacity-50">
                     {status === 'loading' ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>

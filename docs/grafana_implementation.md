@@ -23,8 +23,7 @@ Three production-ready dashboards automatically provisioned:
 
 #### Application Overview
 
-**File:**
-[.devcontainer/grafana/dashboards/application-overview.json](.devcontainer/grafana/dashboards/application-overview.json)
+**File:** [.devcontainer/grafana/dashboards/application-overview.json](.devcontainer/grafana/dashboards/application-overview.json)
 
 **Metrics Displayed:**
 
@@ -38,8 +37,7 @@ Three production-ready dashboards automatically provisioned:
 
 #### Security Monitoring
 
-**File:**
-[.devcontainer/grafana/dashboards/security-monitoring.json](.devcontainer/grafana/dashboards/security-monitoring.json)
+**File:** [.devcontainer/grafana/dashboards/security-monitoring.json](.devcontainer/grafana/dashboards/security-monitoring.json)
 
 **Metrics Displayed:**
 
@@ -56,8 +54,7 @@ Three production-ready dashboards automatically provisioned:
 
 #### Performance Metrics
 
-**File:**
-[.devcontainer/grafana/dashboards/performance-metrics.json](.devcontainer/grafana/dashboards/performance-metrics.json)
+**File:** [.devcontainer/grafana/dashboards/performance-metrics.json](.devcontainer/grafana/dashboards/performance-metrics.json)
 
 **Metrics Displayed:**
 
@@ -225,8 +222,7 @@ flowchart TD
 3. **Prometheus scrapes local endpoint** - Every 10 seconds (when implemented)
 4. **Grafana queries Prometheus** - Real-time dashboard updates
 
-**Note:** Currently metrics go to Grafana Cloud via OTLP. To enable local Prometheus scraping, you'll need to add a
-`/api/metrics` endpoint that exports metrics in Prometheus format.
+**Note:** Currently metrics go to Grafana Cloud via OTLP. To enable local Prometheus scraping, you'll need to add a `/api/metrics` endpoint that exports metrics in Prometheus format.
 
 ## Key Features
 

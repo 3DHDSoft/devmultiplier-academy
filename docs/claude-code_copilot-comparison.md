@@ -69,8 +69,7 @@ In your `CLAUDE.md`, use the `@path/to/file` syntax to import existing instructi
 
 ### Option 3: Bootstrap with /init
 
-Run the `/init` command in Claude Code to auto-generate a `CLAUDE.md` based on your project structure, then merge in
-your custom instructions.
+Run the `/init` command in Claude Code to auto-generate a `CLAUDE.md` based on your project structure, then merge in your custom instructions.
 
 ```bash
 # In your project directory
@@ -213,8 +212,7 @@ You'll be prompted to select which memory file to store this in.
 
 ## Subagents (Custom Agents)
 
-Subagents are specialized AI assistants that Claude Code can delegate tasks to. Each subagent has its own context
-window, system prompt, and tool access.
+Subagents are specialized AI assistants that Claude Code can delegate tasks to. Each subagent has its own context window, system prompt, and tool access.
 
 ### Location
 

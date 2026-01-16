@@ -88,16 +88,9 @@ export default function AdminLoginsPage() {
   };
 
   const filteredLogs = loginLogs.filter((log) => {
-    const matchesSearch =
-      searchTerm === '' ||
-      log.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.ipAddress.includes(searchTerm);
+    const matchesSearch = searchTerm === '' || log.email.toLowerCase().includes(searchTerm.toLowerCase()) || log.user.name?.toLowerCase().includes(searchTerm.toLowerCase()) || log.ipAddress.includes(searchTerm);
 
-    const matchesFilter =
-      filterStatus === 'all' ||
-      (filterStatus === 'success' && log.success) ||
-      (filterStatus === 'failed' && !log.success);
+    const matchesFilter = filterStatus === 'all' || (filterStatus === 'success' && log.success) || (filterStatus === 'failed' && !log.success);
 
     return matchesSearch && matchesFilter;
   });
@@ -157,38 +150,17 @@ export default function AdminLoginsPage() {
           <div className="flex-1">
             <div className="relative">
               <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search by email, name, or IP address..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              />
+              <input type="text" placeholder="Search by email, name, or IP address..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={() => setFilterStatus('all')}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                filterStatus === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
+            <button onClick={() => setFilterStatus('all')} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${filterStatus === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
               All
             </button>
-            <button
-              onClick={() => setFilterStatus('success')}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                filterStatus === 'success' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
+            <button onClick={() => setFilterStatus('success')} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${filterStatus === 'success' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
               Success
             </button>
-            <button
-              onClick={() => setFilterStatus('failed')}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                filterStatus === 'failed' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
+            <button onClick={() => setFilterStatus('failed')} className={`rounded-lg px-4 py-2 text-sm font-medium transition ${filterStatus === 'failed' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
               Failed
             </button>
           </div>
@@ -209,40 +181,23 @@ export default function AdminLoginsPage() {
             ) : filteredLogs.length === 0 ? (
               <div className="py-12 text-center">
                 <Shield className="mx-auto h-12 w-12 text-gray-400" />
-                <p className="mt-3 text-sm text-gray-600">
-                  {searchTerm || filterStatus !== 'all' ? 'No logs match your filters' : 'No login logs available'}
-                </p>
+                <p className="mt-3 text-sm text-gray-600">{searchTerm || filterStatus !== 'all' ? 'No logs match your filters' : 'No login logs available'}</p>
               </div>
             ) : (
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      User
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      Location
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      IP Address
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      Date/Time
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                      Details
-                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">User</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Location</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">IP Address</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Date/Time</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Details</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {filteredLogs.map((log) => (
-                    <tr
-                      key={log.id}
-                      className={`hover:bg-gray-50 ${!log.success ? 'bg-red-50/30' : ''}`}
-                    >
+                    <tr key={log.id} className={`hover:bg-gray-50 ${!log.success ? 'bg-red-50/30' : ''}`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {log.success ? (
                           <div className="flex items-center gap-2 text-green-600">
@@ -281,14 +236,9 @@ export default function AdminLoginsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        {!log.success && log.failureReason && (
-                          <div className="text-xs text-red-700">{log.failureReason}</div>
-                        )}
+                        {!log.success && log.failureReason && <div className="text-xs text-red-700">{log.failureReason}</div>}
                         {log.userAgent && (
-                          <div
-                            className="text-xs text-gray-500"
-                            title={log.userAgent}
-                          >
+                          <div className="text-xs text-gray-500" title={log.userAgent}>
                             {log.userAgent.substring(0, 50)}...
                           </div>
                         )}

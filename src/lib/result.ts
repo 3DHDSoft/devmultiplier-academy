@@ -94,10 +94,7 @@ export function err<E>(error: E): Result<never, E> {
  * );
  * ```
  */
-export async function tryCatch<T>(
-  fn: () => Promise<T>,
-  errorTransform?: (error: unknown) => AppError
-): AsyncResult<T, AppError> {
+export async function tryCatch<T>(fn: () => Promise<T>, errorTransform?: (error: unknown) => AppError): AsyncResult<T, AppError> {
   try {
     const data = await fn();
     return ok(data);
@@ -248,10 +245,7 @@ export function mapErr<T, E, F>(result: Result<T, E>, fn: (error: E) => F): Resu
  * );
  * ```
  */
-export async function andThen<T, U, E>(
-  result: Result<T, E>,
-  fn: (data: T) => Promise<Result<U, E>>
-): Promise<Result<U, E>> {
+export async function andThen<T, U, E>(result: Result<T, E>, fn: (data: T) => Promise<Result<U, E>>): Promise<Result<U, E>> {
   if (result.success) {
     return fn(result.data);
   }
@@ -287,9 +281,7 @@ export function andThenSync<T, U, E>(result: Result<T, E>, fn: (data: T) => Resu
  * );
  * ```
  */
-export function all<T extends readonly Result<unknown, AppError>[]>(
-  results: T
-): Result<{ [K in keyof T]: T[K] extends Result<infer U, AppError> ? U : never }, AppError> {
+export function all<T extends readonly Result<unknown, AppError>[]>(results: T): Result<{ [K in keyof T]: T[K] extends Result<infer U, AppError> ? U : never }, AppError> {
   const data: unknown[] = [];
 
   for (const result of results) {
@@ -394,11 +386,7 @@ export function fromNullable<T>(value: T | null | undefined, error: AppError): R
  * );
  * ```
  */
-export async function withLogging<T>(
-  resultPromise: AsyncResult<T, AppError>,
-  logger: { warn: (obj: object, msg: string) => void },
-  message: string
-): AsyncResult<T, AppError> {
+export async function withLogging<T>(resultPromise: AsyncResult<T, AppError>, logger: { warn: (obj: object, msg: string) => void }, message: string): AsyncResult<T, AppError> {
   const result = await resultPromise;
 
   if (!result.success) {

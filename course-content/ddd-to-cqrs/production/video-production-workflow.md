@@ -5,6 +5,31 @@
 This document outlines the complete workflow for producing course videos with AI virtual presenters, animated diagrams,
 and code demonstrations.
 
+**Related Documents:**
+- [Video Priorities](video-priorities.md) - Which lessons need videos, phased production plan, and subscriber-based update schedule
+
+---
+
+## Video Production Phases (Quick Reference)
+
+| Phase | Videos | Duration | Coverage | Trigger |
+|-------|--------|----------|----------|---------|
+| **Phase 1: Must Have** | 9 | ~50 min | 33% | Launch |
+| **Phase 2: Beneficial** | 7 | ~45 min | 54% | 50+ subscribers |
+| **Phase 3: Nice to Have** | 15 | ~70 min | 100% | 200+ subscribers |
+
+**Phase 1 Priority Videos:**
+1. Course Introduction
+2. M1-L1: What is DDD?
+3. M1-L2: Ubiquitous Language
+4. M1-L4: Domain Modeling Techniques (Event Storming)
+5. M2-L1: Bounded Contexts
+6. M4-L1: The Problem CQRS Solves
+7. M4-L2: Separating Reads and Writes
+8. M5-L1: Event Sourcing Concepts
+
+See [video-priorities.md](video-priorities.md) for complete breakdown and rationale.
+
 ---
 
 ## Recommended Tool Stack
@@ -143,6 +168,46 @@ lesson-4-segment-2-avatar.mp4
 - Background: Transparent or Green screen
 - Voice speed: 1.0x (adjust in post if needed)
 - Gestures: Auto (or manual if available)
+
+**HeyGen Project Folder Structure:**
+
+Organize your HeyGen projects for easy navigation and consistent production:
+
+```
+📁 DevMultiplier Academy
+├── 📁 DDD to CQRS
+│   ├── 📁 Module 1 - Introduction to DDD (5 lessons)
+│   ├── 📁 Module 2 - Bounded Contexts & Strategic Design (5 lessons)
+│   ├── 📁 Module 3 - Aggregates & Tactical Patterns (5 lessons)
+│   ├── 📁 Module 4 - Introduction to CQRS (4 lessons)
+│   ├── 📁 Module 5 - Event Sourcing Fundamentals (3 lessons)
+│   └── 📁 Module 6 - AI-Assisted Implementation (3 lessons)
+│
+├── 📁 Marketing
+│   ├── 📁 Course Promos
+│   │   ├── 📁 DDD to CQRS Trailer
+│   │   └── 📁 Platform Overview
+│   ├── 📁 Social Media
+│   │   ├── 📁 YouTube Shorts
+│   │   └── 📁 LinkedIn Videos
+│   └── 📁 Testimonials
+│
+├── 📁 Platform Videos
+│   ├── 📁 Welcome & Onboarding
+│   ├── 📁 How-To Guides
+│   └── 📁 Feature Announcements
+│
+└── 📁 Templates & Tests
+    ├── 📁 Avatar Tests
+    ├── 📁 Voice Tests
+    └── 📁 Style Experiments
+```
+
+**Folder Naming Tips:**
+
+- Use numbered prefixes for modules/lessons (e.g., "01 - Introduction") for correct sorting
+- Keep names concise but descriptive
+- Create a "Templates & Tests" folder for experimentation without cluttering course folders
 
 ### 2.2 Remotion Animations
 
