@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { auth } from '@/auth';
 import { EnrollmentCTA } from '@/components/ui/enrollment-cta';
 import { CourseNavigation } from '@/components/ui/course-navigation';
+import { FAQSection, type FAQItem } from '@/components/ui/faq-accordion';
 
 // Privileged email domains and specific emails that can access all courses
 const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
@@ -172,6 +173,124 @@ You'll build real projects from concept to deployed application, developing skil
       { title: 'React Server Components', lessons: 4 },
       { title: 'From Design to Production', lessons: 4 },
     ],
+  },
+];
+
+// Course-specific FAQ data
+const courseFAQs: Record<string, FAQItem[]> = {
+  'ddd-to-cqrs': [
+    {
+      question: 'Do I need prior experience with Domain-Driven Design?',
+      answer:
+        'No prior DDD experience is required. This course starts with fundamentals and progressively builds to advanced CQRS patterns. However, you should have 3+ years of professional development experience.',
+    },
+    {
+      question: 'What programming language is used in the examples?',
+      answer:
+        'Examples are primarily in TypeScript, but the concepts apply to any language. We focus on the patterns and principles, not language-specific implementations.',
+    },
+    {
+      question: 'Will I learn to use AI tools for implementing DDD/CQRS?',
+      answer:
+        'Yes! The final module covers AI-assisted implementation, including how to use tools like Claude and GitHub Copilot to accelerate your DDD and CQRS development workflow.',
+    },
+    {
+      question: 'Is this course suitable for microservices architecture?',
+      answer:
+        'Absolutely. DDD and CQRS are particularly powerful in microservices. We cover bounded contexts, context mapping, and how these patterns help define service boundaries.',
+    },
+  ],
+  'ddd-to-database': [
+    {
+      question: 'Which databases are covered in this course?',
+      answer:
+        "We focus on relational databases (PostgreSQL and SQL Server) as they're most common for DDD implementations. The principles also apply to document databases.",
+    },
+    {
+      question: 'Do I need to know SQL to take this course?',
+      answer:
+        "Basic SQL knowledge is helpful but not required. We explain concepts as we go and provide all the SQL examples you'll need.",
+    },
+    {
+      question: 'Will this help me with existing database migrations?',
+      answer:
+        'Yes! We cover migration strategies and how to evolve your schema alongside your domain model without breaking existing functionality.',
+    },
+  ],
+  'database-optimization': [
+    {
+      question: 'Do I need access to SQL Server and PostgreSQL?',
+      answer:
+        'Having access to both is ideal for the comparison sections, but you can complete the course with just one. We provide Docker setup instructions for both.',
+    },
+    {
+      question: 'How technical is the course content?',
+      answer:
+        'This is an advanced course covering query execution plans, indexing internals, and performance tuning. You should be comfortable with SQL and database concepts.',
+    },
+    {
+      question: 'Will AI really help with database optimization?',
+      answer:
+        'Yes! We show how to use AI tools for query analysis, index recommendations, and generating test data. AI can significantly accelerate the optimization process.',
+    },
+  ],
+  'data-driven-api': [
+    {
+      question: 'What API framework is used?',
+      answer:
+        'Examples use Node.js/Express and .NET, but the REST design principles apply to any framework. Focus is on design patterns, not framework specifics.',
+    },
+    {
+      question: 'Does this course cover GraphQL?',
+      answer:
+        'This course focuses on REST API design. We briefly compare REST vs GraphQL trade-offs, but the main content is REST-focused.',
+    },
+    {
+      question: 'Will I learn about API documentation?',
+      answer:
+        'Yes! We have a full module on OpenAPI/Swagger documentation, including auto-generation and keeping docs in sync with your code.',
+    },
+  ],
+  'ai-ui-design': [
+    {
+      question: 'What AI design tools are covered?',
+      answer:
+        'We cover Claude, v0, and Cursor for code generation, plus general principles for prompting AI effectively for UI development.',
+    },
+    {
+      question: 'Do I need design experience?',
+      answer:
+        "No design background needed. We teach you how to use AI tools to go from rough ideas to polished interfaces, even if you're not a designer.",
+    },
+    {
+      question: 'Is Next.js experience required?',
+      answer:
+        "Basic React knowledge is helpful. We cover Next.js App Router patterns from the ground up, so you'll learn as you go.",
+    },
+  ],
+};
+
+// Default FAQ for courses without specific FAQs
+const defaultCourseFAQs: FAQItem[] = [
+  {
+    question: 'What are the prerequisites for this course?',
+    answer:
+      'This course is designed for experienced developers with 3+ years of professional experience. Specific technical prerequisites are listed in the course description.',
+  },
+  {
+    question: 'How long will I have access to the course?',
+    answer:
+      'You have lifetime access to all course content, including any future updates. Learn at your own pace without worrying about expiration.',
+  },
+  {
+    question: 'Is there a money-back guarantee?',
+    answer:
+      "Yes! We offer a 30-day money-back guarantee. If the course doesn't meet your expectations, contact us for a full refund.",
+  },
+  {
+    question: 'Can I get help if I get stuck?',
+    answer:
+      'Yes! You can reach out to our support team at support@devmultiplier.com. We also have a community forum where you can connect with other learners.',
   },
 ];
 
@@ -440,6 +559,13 @@ export default async function CourseDetailPage({ params }: PageProps) {
             ))}
           </div>
         </div>
+
+        {/* FAQ Section */}
+        <FAQSection
+          title="Frequently Asked Questions"
+          items={courseFAQs[id] || defaultCourseFAQs}
+          className="mb-12"
+        />
 
         {/* CTA - Enrollment component */}
         <EnrollmentCTA
