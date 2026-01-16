@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { interpolate, useCurrentFrame, spring, useVideoConfig } from 'remotion';
+import { loadFonts, fontFamily } from '../fonts';
 
 export type StickyNoteColor = 'orange' | 'blue' | 'yellow' | 'pink' | 'green';
 
@@ -41,17 +42,13 @@ const colorMap: Record<StickyNoteColor, { bg: string; border: string; text: stri
   },
 };
 
-export const StickyNote: React.FC<StickyNoteProps> = ({
-  text,
-  color,
-  delay = 0,
-  x,
-  y,
-  width = 180,
-  fontSize = 20,
-}) => {
+export const StickyNote: React.FC<StickyNoteProps> = ({ text, color, delay = 0, x, y, width = 180, fontSize = 20 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+
+  useEffect(() => {
+    loadFonts();
+  }, []);
 
   const colors = colorMap[color];
 
@@ -82,7 +79,21 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
   }
 
   const containerStyle = { position: 'absolute' as const, left: x, top: y, width, opacity, transform: `scale(${scale}) rotate(${rotation}deg)`, transformOrigin: 'top left' };
-  const noteStyle = { backgroundColor: colors.bg, border: `3px solid ${colors.border}`, borderRadius: '8px', padding: '12px 10px', width: '100%', boxSizing: 'border-box' as const, boxShadow: '3px 3px 10px rgba(0,0,0,0.12)', fontFamily: 'system-ui, -apple-system, sans-serif', fontSize, fontWeight: 600, color: colors.text, textAlign: 'center' as const, lineHeight: 1.3, overflow: 'hidden' as const, whiteSpace: 'nowrap' as const, textOverflow: 'ellipsis' as const };
+  const noteStyle = {
+    backgroundColor: colors.bg,
+    border: `3px solid ${colors.border}`,
+    borderRadius: '8px',
+    padding: '12px 10px',
+    width: '100%',
+    boxSizing: 'border-box' as const,
+    boxShadow: '3px 3px 10px rgba(0,0,0,0.12)',
+    fontFamily,
+    fontSize,
+    fontWeight: 600,
+    color: colors.text,
+    textAlign: 'center' as const,
+    lineHeight: 1.3,
+  };
 
   return (
     <div style={containerStyle}>

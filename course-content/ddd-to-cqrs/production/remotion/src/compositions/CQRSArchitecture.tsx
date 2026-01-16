@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AbsoluteFill, Sequence } from 'remotion';
 import { BoundedContext } from '../components/BoundedContext';
 import { StickyNote } from '../components/StickyNote';
 import { Arrow } from '../components/Arrow';
+import { loadFonts, fontFamily } from '../fonts';
 
 /**
 CQRS Architecture Animation
@@ -34,6 +35,10 @@ Duration: 15 seconds (450 frames at 30fps)
 Canvas: 1920x1080
 */
 export const CQRSArchitecture: React.FC = () => {
+  useEffect(() => {
+    loadFonts();
+  }, []);
+
   // Layout constants for 1920x1080
   const CONTEXT_WIDTH = 580;
   const CONTEXT_HEIGHT = 560;
@@ -52,8 +57,8 @@ export const CQRSArchitecture: React.FC = () => {
   const CARD_FONT = 20;
 
   const containerStyle = { backgroundColor: '#f8fafc', padding: 20 };
-  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 36, fontWeight: 700, color: '#0f172a' };
-  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily: 'system-ui, -apple-system, sans-serif', fontSize: 28 };
+  const titleStyle = { position: 'absolute' as const, top: 20, left: 30, fontFamily, fontSize: 36, fontWeight: 700, color: '#0f172a' };
+  const legendContainerStyle = { position: 'absolute' as const, top: 25, right: 30, display: 'flex', gap: 30, fontFamily, fontSize: 28 };
   const legendItemStyle = { display: 'flex', alignItems: 'center', gap: 10 };
   const legendSwatchBase = { width: 28, height: 28, borderRadius: 4 };
   const commandSwatchStyle = { ...legendSwatchBase, backgroundColor: '#fed7aa', border: '2px solid #f97316' };
@@ -93,25 +98,25 @@ export const CQRSArchitecture: React.FC = () => {
       {/* User */}
       <Sequence from={30} durationInFrames={420}>
         <div style={{ position: 'absolute', left: COMMAND_X + 30, top: ROW1_Y, fontSize: 40, width: 40, textAlign: 'center' }}>👤</div>
-        <div style={{ position: 'absolute', left: COMMAND_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily: 'system-ui', fontSize: 21, color: '#9a3412' }}>User</div>
+        <div style={{ position: 'absolute', left: COMMAND_X + 30, top: ROW1_Y + 48, width: 40, textAlign: 'center', fontFamily, fontSize: 21, color: '#9a3412' }}>User</div>
       </Sequence>
 
       {/* Commands */}
       <Sequence from={45} durationInFrames={405}>
-        <StickyNote text="PlaceOrder" color="blue" x={COMMAND_X + 100} y={ROW1_Y} delay={0} width={140} fontSize={CARD_FONT} />
+        <StickyNote text="PlaceOrder" color="blue" x={COMMAND_X + 90} y={ROW1_Y} delay={0} width={140} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={60} durationInFrames={390}>
-        <StickyNote text="UpdateOrder" color="blue" x={COMMAND_X + 260} y={ROW1_Y} delay={0} width={150} fontSize={CARD_FONT} />
+        <StickyNote text="UpdateOrder" color="blue" x={COMMAND_X + 250} y={ROW1_Y} delay={0} width={150} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={75} durationInFrames={375}>
-        <StickyNote text="CancelOrder" color="blue" x={COMMAND_X + 430} y={ROW1_Y} delay={0} width={140} fontSize={CARD_FONT} />
+        <StickyNote text="CancelOrder" color="blue" x={COMMAND_X + 410} y={ROW1_Y} delay={0} width={150} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Command Handlers */}
       <Sequence from={90} durationInFrames={360}>
-        <StickyNote text="CommandHandler" color="orange" x={COMMAND_X + 120} y={ROW2_Y} delay={0} width={CARD_WIDTH + 50} fontSize={CARD_FONT} />
+        <StickyNote text="CommandHandler" color="orange" x={COMMAND_X + 100} y={ROW2_Y} delay={0} width={220} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={105} durationInFrames={345}>
@@ -142,7 +147,7 @@ export const CQRSArchitecture: React.FC = () => {
       </Sequence>
 
       <Sequence from={210} durationInFrames={240}>
-        <StickyNote text="OrderCancelled" color="orange" x={EVENT_X + 390} y={ROW1_Y} delay={0} width={170} fontSize={CARD_FONT} />
+        <StickyNote text="OrderCancelled" color="orange" x={EVENT_X + 380} y={ROW1_Y} delay={0} width={190} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Event Bus */}
@@ -157,7 +162,7 @@ export const CQRSArchitecture: React.FC = () => {
       {/* Event Storage */}
       <Sequence from={255} durationInFrames={195}>
         <div style={{ position: 'absolute', left: EVENT_X + 240, top: ROW3_Y, fontSize: 32 }}>💾</div>
-        <div style={{ position: 'absolute', left: EVENT_X + 180, top: ROW3_Y + 40, fontFamily: 'system-ui', fontSize: 21, color: '#7e22ce' }}>Append-Only Log</div>
+        <div style={{ position: 'absolute', left: EVENT_X + 180, top: ROW3_Y + 40, fontFamily, fontSize: 21, color: '#7e22ce' }}>Append-Only Log</div>
       </Sequence>
 
       {/* ============ QUERY SIDE ============ */}
@@ -175,16 +180,16 @@ export const CQRSArchitecture: React.FC = () => {
       </Sequence>
 
       <Sequence from={330} durationInFrames={120}>
-        <StickyNote text="SearchOrders" color="blue" x={QUERY_X + 340} y={ROW1_Y} delay={0} width={150} fontSize={CARD_FONT} />
+        <StickyNote text="SearchOrders" color="blue" x={QUERY_X + 340} y={ROW1_Y} delay={0} width={180} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Query Handlers */}
       <Sequence from={345} durationInFrames={105}>
-        <StickyNote text="QueryHandler" color="orange" x={QUERY_X + 120} y={ROW2_Y} delay={0} width={CARD_WIDTH} fontSize={CARD_FONT} />
+        <StickyNote text="QueryHandler" color="orange" x={QUERY_X + 100} y={ROW2_Y} delay={0} width={180} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={360} durationInFrames={90}>
-        <StickyNote text="ReadModel" color="yellow" x={QUERY_X + 310} y={ROW2_Y} delay={0} width={130} fontSize={CARD_FONT} />
+        <StickyNote text="ReadModel" color="yellow" x={QUERY_X + 310} y={ROW2_Y} delay={0} width={150} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* Read Database */}
@@ -193,7 +198,7 @@ export const CQRSArchitecture: React.FC = () => {
       </Sequence>
 
       <Sequence from={390} durationInFrames={60}>
-        <StickyNote text="Optimized Views" color="green" x={QUERY_X + 320} y={ROW3_Y} delay={0} width={CARD_WIDTH + 40} fontSize={CARD_FONT} />
+        <StickyNote text="Optimized Views" color="green" x={QUERY_X + 310} y={ROW3_Y} delay={0} width={220} fontSize={CARD_FONT} />
       </Sequence>
 
       {/* ============ FLOW ARROWS ============ */}
