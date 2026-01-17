@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-3-lesson-2",
+  "lessonId": "lesson-2",
+  "moduleId": "module-3",
+  "title": "Value Objects - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is 'primitive obsession' in the context of DDD?",
+      "options": [
+        { "id": "a", "text": "Using too many primitive types in a codebase" },
+        { "id": "b", "text": "Using primitive types (string, number) instead of domain-specific value objects" },
+        { "id": "c", "text": "Preferring simple solutions over complex ones" },
+        { "id": "d", "text": "Obsessing over performance optimization" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Primitive obsession is an anti-pattern where primitives like string or number are used instead of rich domain value objects like Email, Money, or Address. This leads to scattered validation and lost domain meaning."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "Value objects should be immutable - operations return new instances rather than modifying existing ones.",
+      "correctAnswer": true,
+      "explanation": "Immutability is a key characteristic of value objects. For example, Money.add() returns a new Money instance rather than modifying the existing one. This prevents side effects and makes the code safer."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "How are two value objects compared for equality?",
+      "options": [
+        { "id": "a", "text": "By their memory reference" },
+        { "id": "b", "text": "By their ID field" },
+        { "id": "c", "text": "By comparing all their attributes" },
+        { "id": "d", "text": "By their creation timestamp" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Value objects are equal if all their attributes are equal. Two Address objects with the same street, city, and zipCode are considered equal, regardless of whether they are the same instance in memory."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "What is a key benefit of self-validating value objects?",
+      "options": [
+        { "id": "a", "text": "Faster execution time" },
+        { "id": "b", "text": "Invalid instances cannot exist - validation happens on construction" },
+        { "id": "c", "text": "Reduced memory usage" },
+        { "id": "d", "text": "Easier serialization" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Self-validating value objects validate on construction, so invalid instances cannot exist. Once you have an Email object, you know it's valid - no need to check again."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "Value objects should have setters to allow modifying their attributes after construction.",
+      "correctAnswer": false,
+      "explanation": "Value objects should NOT have setters. They are immutable. To 'change' a value object, you create a new instance with the desired values, often using methods like withStreet() that return new instances."
+    }
+  ]
+}

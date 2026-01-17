@@ -52,7 +52,7 @@ export const tools: Tool[] = [
     description: 'AI video generation platform that creates professional videos with AI avatars. Perfect for course intros, explanations, and promotional content.',
     howIUseIt: 'I use HeyGen to create the virtual presenter videos for each course. It lets me generate consistent, professional video content without expensive equipment or editing skills. The AI avatars deliver my scripts naturally, and I can update videos quickly when content changes.',
     category: 'video',
-    affiliateUrl: 'https://heygen.com/?ref=PLACEHOLDER', // Replace with your affiliate link
+    affiliateUrl: 'https://www.heygen.com/?sid=rewardful&via=DevMultiplier-Academy',
     websiteUrl: 'https://heygen.com',
     discount: 'Get started free',
     featured: true,

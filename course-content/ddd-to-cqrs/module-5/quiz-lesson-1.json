@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-5-lesson-1",
+  "lessonId": "lesson-1",
+  "moduleId": "module-5",
+  "title": "Event Sourcing Concepts - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is event sourcing?",
+      "options": [
+        { "id": "a", "text": "A caching strategy for database queries" },
+        { "id": "b", "text": "Storing all changes to application state as a sequence of events" },
+        { "id": "c", "text": "A way to compress database records" },
+        { "id": "d", "text": "An alternative to using databases" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Event sourcing stores all changes to application state as a sequence of events in an append-only log. The current state is derived by replaying these events, rather than storing just the current state."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "In event sourcing, the current state is derived by replaying all events from the event log.",
+      "correctAnswer": true,
+      "explanation": "In event sourcing, the current state is reconstructed by replaying the sequence of events. The events are the source of truth, and state is derived from them."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "What is a key benefit of event sourcing over traditional CRUD?",
+      "options": [
+        { "id": "a", "text": "Uses less storage space" },
+        { "id": "b", "text": "Complete audit trail and ability to reconstruct state at any point in time" },
+        { "id": "c", "text": "Faster read queries" },
+        { "id": "d", "text": "Simpler code structure" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Event sourcing provides a complete audit trail of all changes (who, what, when, why) and enables time travel - reconstructing state at any historical point by replaying events up to that time."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "When is event sourcing NOT a good fit?",
+      "options": [
+        { "id": "a", "text": "Systems requiring audit trails" },
+        { "id": "b", "text": "Simple CRUD applications with no history requirements" },
+        { "id": "c", "text": "Financial systems" },
+        { "id": "d", "text": "Complex business processes with many steps" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Event sourcing adds complexity that may not be justified for simple CRUD applications without audit requirements. It's overkill for basic blogs, small internal tools, or throwaway prototypes."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "Event sourcing requires event-driven architecture and microservices.",
+      "correctAnswer": false,
+      "explanation": "This is a common misconception. Event sourcing is about persistence (storing events), not integration patterns. It works in monoliths and can be used independently of event-driven architecture or microservices."
+    }
+  ]
+}

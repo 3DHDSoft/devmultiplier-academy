@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-3-lesson-3",
+  "lessonId": "lesson-3",
+  "moduleId": "module-3",
+  "title": "Aggregates and Consistency Boundaries - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is an aggregate in DDD?",
+      "options": [
+        { "id": "a", "text": "A collection of all entities in the system" },
+        { "id": "b", "text": "A cluster of domain objects treated as a single unit with a root entity as the entry point" },
+        { "id": "c", "text": "A database table grouping" },
+        { "id": "d", "text": "A summary report of domain events" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An aggregate is a cluster of domain objects (entities and value objects) that can be treated as a single unit for data changes. Each aggregate has a root entity (aggregate root) that serves as the sole entry point for modifications."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "Multiple aggregates should be modified within the same database transaction for consistency.",
+      "correctAnswer": false,
+      "explanation": "One aggregate per transaction is the rule. Modifying multiple aggregates in one transaction creates large locks and coupling. Use eventual consistency via events to coordinate between aggregates."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "How should one aggregate reference another aggregate?",
+      "options": [
+        { "id": "a", "text": "By embedding the full aggregate object" },
+        { "id": "b", "text": "By reference ID only" },
+        { "id": "c", "text": "Through shared database tables" },
+        { "id": "d", "text": "By copying the aggregate data" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Aggregates should reference other aggregates by ID only, not by embedding the full object. This keeps aggregates small and independent. For example, Order references CustomerId, not the full Customer aggregate."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "What is an aggregate root?",
+      "options": [
+        { "id": "a", "text": "The database table that stores the aggregate" },
+        { "id": "b", "text": "The first entity created in the aggregate" },
+        { "id": "c", "text": "The single entity through which all modifications to the aggregate must pass" },
+        { "id": "d", "text": "The largest entity in the aggregate" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "The aggregate root is the single entity that serves as the entry point for all modifications. External code cannot directly access internal entities; all operations go through the root which enforces invariants."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "Designing aggregates too large (including too many entities) can cause performance and concurrency issues.",
+      "correctAnswer": true,
+      "explanation": "Large aggregates cause problems: loading becomes expensive, transactions lock more data, and concurrent access causes conflicts. The rule is to design small aggregates - only include what must be consistent together."
+    }
+  ]
+}

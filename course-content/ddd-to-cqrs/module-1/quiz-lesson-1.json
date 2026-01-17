@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-1-lesson-1",
+  "lessonId": "lesson-1",
+  "moduleId": "module-1",
+  "title": "What is Domain-Driven Design? - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is the main problem that Domain-Driven Design (DDD) addresses?",
+      "options": [
+        { "id": "a", "text": "Database performance optimization" },
+        { "id": "b", "text": "Complexity in software systems through deep focus on the business domain" },
+        { "id": "c", "text": "User interface design patterns" },
+        { "id": "d", "text": "Network communication protocols" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "DDD is a philosophy for tackling complexity in software systems by focusing deeply on the business domain. It was introduced by Eric Evans in 2003 to help build maintainable, scalable enterprise applications."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "What is a key problem with the traditional 'anemic domain model' approach?",
+      "options": [
+        { "id": "a", "text": "It uses too much memory" },
+        { "id": "b", "text": "Business logic is scattered in service layers, far from the data" },
+        { "id": "c", "text": "It doesn't support object-oriented programming" },
+        { "id": "d", "text": "It requires too many database tables" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "In traditional anemic domain models, business rules live in service layers separate from the data they operate on. This leads to poor encapsulation, domain knowledge being scattered across the codebase, and code that doesn't reflect how business experts think."
+    },
+    {
+      "id": "q3",
+      "type": "true-false",
+      "question": "In DDD, a rich domain model keeps business logic together with the data it operates on.",
+      "correctAnswer": true,
+      "explanation": "A key principle of DDD is that business logic should be encapsulated within domain objects (entities, value objects, aggregates) rather than scattered across service layers. This creates a rich domain model where behavior and data are co-located."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "Who introduced Domain-Driven Design and when?",
+      "options": [
+        { "id": "a", "text": "Martin Fowler in 2000" },
+        { "id": "b", "text": "Eric Evans in 2003" },
+        { "id": "c", "text": "Kent Beck in 1999" },
+        { "id": "d", "text": "Robert Martin in 2005" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Domain-Driven Design was introduced by Eric Evans in his seminal 2003 book 'Domain-Driven Design: Tackling Complexity in the Heart of Software'. This book established the foundational concepts and patterns of DDD."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "DDD is primarily a set of coding patterns and frameworks rather than a philosophy.",
+      "correctAnswer": false,
+      "explanation": "DDD is not just a set of patterns or a framework - it's a philosophy for tackling complexity in software systems. While DDD does include tactical patterns (entities, value objects, aggregates), these are tools in service of the larger goal of deeply understanding and modeling the business domain."
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "quiz-module-2-lesson-2",
+  "lessonId": "lesson-2",
+  "moduleId": "module-2",
+  "title": "Context Mapping Patterns - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is a Context Map in DDD?",
+      "options": [
+        { "id": "a", "text": "A diagram showing database relationships" },
+        { "id": "b", "text": "A visual representation showing bounded contexts, their relationships, integration patterns, and team ownership" },
+        { "id": "c", "text": "A navigation structure for APIs" },
+        { "id": "d", "text": "A deployment topology diagram" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A Context Map is a visual representation showing all bounded contexts in the system, relationships between contexts, integration patterns used, and team ownership."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "What is a Shared Kernel pattern?",
+      "options": [
+        { "id": "a", "text": "A shared operating system component" },
+        { "id": "b", "text": "Two contexts that share a subset of the domain model and code" },
+        { "id": "c", "text": "A common authentication service" },
+        { "id": "d", "text": "A shared message queue" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Shared Kernel is when two contexts share a subset of the domain model and code. It's used when teams need to collaborate closely on stable, well-understood shared concepts."
+    },
+    {
+      "id": "q3",
+      "type": "true-false",
+      "question": "The Shared Kernel pattern has no risks and should be used whenever possible.",
+      "correctAnswer": false,
+      "explanation": "Shared Kernel has significant risks: coupling between teams, changes require coordination, and it can become a bottleneck. It should only be used when teams can coordinate on changes and the shared concepts are stable."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "What is an Open Host Service pattern?",
+      "options": [
+        { "id": "a", "text": "A publicly accessible web server" },
+        { "id": "b", "text": "A context that exposes a well-defined API (like REST) for other contexts to consume" },
+        { "id": "c", "text": "An open-source service library" },
+        { "id": "d", "text": "A serverless function endpoint" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Open Host Service is when a context exposes a well-defined protocol/API (like REST) for other contexts to consume. The Catalog context exposing a REST API for the Sales context is an example."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "question": "When integrating with a Legacy ERP system, which pattern is typically recommended?",
+      "options": [
+        { "id": "a", "text": "Shared Kernel" },
+        { "id": "b", "text": "Open Host Service" },
+        { "id": "c", "text": "Anti-Corruption Layer" },
+        { "id": "d", "text": "Published Language" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Anti-Corruption Layer is used when integrating with legacy systems. It creates a protective barrier between your clean domain model and the legacy system's poor or incompatible model."
+    }
+  ]
+}

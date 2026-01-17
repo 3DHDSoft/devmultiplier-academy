@@ -1,0 +1,68 @@
+{
+  "id": "quiz-module-1-lesson-4",
+  "lessonId": "lesson-4",
+  "moduleId": "module-1",
+  "title": "Domain Modeling Techniques - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is Event Storming?",
+      "options": [
+        { "id": "a", "text": "A technique for handling distributed events in microservices" },
+        { "id": "b", "text": "A collaborative workshop technique where domain experts and developers map out business processes using sticky notes" },
+        { "id": "c", "text": "A method for optimizing event-driven architectures" },
+        { "id": "d", "text": "A testing approach for event handlers" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Event Storming is a collaborative workshop technique where domain experts and developers map out business processes using sticky notes. It's used at the beginning of projects, when exploring new features, or when the existing model feels wrong."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "What color sticky note represents Domain Events in Event Storming?",
+      "options": [
+        { "id": "a", "text": "Blue" },
+        { "id": "b", "text": "Yellow" },
+        { "id": "c", "text": "Orange" },
+        { "id": "d", "text": "Green" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "In Event Storming, orange sticky notes represent Domain Events (things that happened in the past, written in past tense like 'OrderPlaced'). Blue notes are for Commands, and yellow notes are for Aggregates."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "What is a Domain Event?",
+      "options": [
+        { "id": "a", "text": "An intention to do something, usually triggered by a user" },
+        { "id": "b", "text": "Something that happened in the past that domain experts care about" },
+        { "id": "c", "text": "A cluster of related objects treated as a single unit" },
+        { "id": "d", "text": "A boundary within which a model is defined" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A Domain Event is something that happened in the past that domain experts care about. Examples include 'OrderPlaced', 'PaymentReceived', 'OrderShipped'. They are written in past tense."
+    },
+    {
+      "id": "q4",
+      "type": "true-false",
+      "question": "Commands in Event Storming are written in imperative form, like 'PlaceOrder' or 'ProcessPayment'.",
+      "correctAnswer": true,
+      "explanation": "Commands represent an intention to do something and are written in imperative form (PlaceOrder, ProcessPayment, ShipOrder). This contrasts with Domain Events which are past tense (OrderPlaced, PaymentReceived)."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "question": "What is an Aggregate in DDD?",
+      "options": [
+        { "id": "a", "text": "A summary report of domain events" },
+        { "id": "b", "text": "A cluster of related objects that should be treated as a single unit" },
+        { "id": "c", "text": "A collection of all bounded contexts" },
+        { "id": "d", "text": "A database table grouping" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An Aggregate is a cluster of related objects that should be treated as a single unit. Examples include Order, Payment, Inventory, Product. In Event Storming, they are represented by yellow sticky notes."
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-4-lesson-1",
+  "lessonId": "lesson-1",
+  "moduleId": "module-4",
+  "title": "The Problem CQRS Solves - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is the fundamental problem with using one model for both reads and writes?",
+      "options": [
+        { "id": "a", "text": "It requires more database storage" },
+        { "id": "b", "text": "Read and write operations have different optimization needs that conflict" },
+        { "id": "c", "text": "It's not supported by modern databases" },
+        { "id": "d", "text": "It prevents using multiple programming languages" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Reads need denormalized data, fast queries, and can tolerate eventual consistency. Writes need normalized data, transactional integrity, and validation. A single model cannot optimize for both."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "CQRS is always the right choice for any application that handles data.",
+      "correctAnswer": false,
+      "explanation": "CQRS adds complexity and should only be used when justified - typically for high read/write ratios, complex business logic, or diverse read requirements. Simple CRUD applications don't benefit from CQRS."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "What read/write ratio typically justifies considering CQRS?",
+      "options": [
+        { "id": "a", "text": "2:1" },
+        { "id": "b", "text": "5:1" },
+        { "id": "c", "text": "Greater than 10:1" },
+        { "id": "d", "text": "Any ratio works equally well" }
+      ],
+      "correctAnswer": "c",
+      "explanation": "High read/write ratios (>10:1 or higher like 100:1) benefit most from CQRS because reads vastly outnumber writes, justifying the overhead of maintaining separate models."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "Which is a common misconception about CQRS?",
+      "options": [
+        { "id": "a", "text": "CQRS requires event sourcing" },
+        { "id": "b", "text": "CQRS separates read and write responsibilities" },
+        { "id": "c", "text": "CQRS can work in monoliths" },
+        { "id": "d", "text": "CQRS adds complexity" }
+      ],
+      "correctAnswer": "a",
+      "explanation": "CQRS does NOT require event sourcing. They are separate patterns that work well together but can be used independently. CQRS can use a traditional database with separate read/write models."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "CQRS is a poor fit when strong consistency is required everywhere and reads must be immediately up-to-date.",
+      "correctAnswer": true,
+      "explanation": "When reads must be 100% consistent with writes immediately, the eventual consistency typical of CQRS can be problematic. In such cases, traditional approaches may be more appropriate."
+    }
+  ]
+}
