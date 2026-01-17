@@ -80,7 +80,9 @@
       "Bash(ssh:*)",
       "Bash(export PATH=\"$HOME/.fzf/bin:$PATH\")",
       "Bash(source ~/.fzf.zsh)",
-      "Bash(bun test:*)"
+      "Bash(bun test:*)",
+      "Bash(psql:*)",
+      "Bash(PGPASSWORD=academy2026 psql:*)"
     ]
   }
 }
