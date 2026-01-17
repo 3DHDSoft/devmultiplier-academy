@@ -177,7 +177,7 @@ export const AggregateLifecycle: React.FC = () => {
       </Sequence>
 
       <Sequence from={520} durationInFrames={80}>
-        <StickyNote text="✗ REJECTED" color="pink" x={PHASE3_X + 180} y={ROW2_Y} delay={0} width={165} fontSize={CARD_FONT} />
+        <StickyNote text="❌ REJECTED" color="pink" x={PHASE3_X + 180} y={ROW2_Y} delay={0} width={165} fontSize={CARD_FONT} />
       </Sequence>
 
       <Sequence from={550} durationInFrames={50}>

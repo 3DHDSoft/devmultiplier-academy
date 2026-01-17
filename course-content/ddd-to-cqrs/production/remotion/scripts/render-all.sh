@@ -6,10 +6,10 @@ set -e
 # List of compositions to render
 compositions=(
   "AggregateLifecycle"
-  # "CommandQueryFlow"
-  # "ContextMapDemo"
-  # "CQRSArchitecture"
-  # "EventStormDemo"
+  "CommandQueryFlow"
+  "ContextMapDemo"
+  "CQRSArchitecture"
+  "EventStormDemo"
 )
 
 # Create output directory if it doesn't exist

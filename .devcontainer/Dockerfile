@@ -77,6 +77,8 @@ RUN apt-get update && apt-get upgrade -y && export DEBIAN_FRONTEND=noninteractiv
   libflite1 \
   # X11 and display utilities
   xvfb \
+  # Emoji font for Remotion video rendering
+  fonts-noto-color-emoji \
   && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
   && apt-get install -y nodejs \
   && rm -rf /var/lib/apt/lists/*
