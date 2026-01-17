@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-2-lesson-4",
+  "lessonId": "lesson-4",
+  "moduleId": "module-2",
+  "title": "Anti-Corruption Layers - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is an Anti-Corruption Layer (ACL)?",
+      "options": [
+        { "id": "a", "text": "A security layer for preventing data breaches" },
+        { "id": "b", "text": "A protective barrier between your clean domain model and external systems with poor or incompatible models" },
+        { "id": "c", "text": "An encryption layer for sensitive data" },
+        { "id": "d", "text": "A validation layer for user input" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "An Anti-Corruption Layer (ACL) is a protective barrier between your clean domain model and external systems with poor or incompatible models. It acts as a translator, preventing 'corruption' of your domain's ubiquitous language."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "What happens without an ACL when integrating with a legacy system?",
+      "options": [
+        { "id": "a", "text": "Performance improves due to direct access" },
+        { "id": "b", "text": "Legacy model terminology and data formats leak into your domain code" },
+        { "id": "c", "text": "Security is compromised" },
+        { "id": "d", "text": "Database connections are shared" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Without an ACL, legacy model terminology (like 'CUST_ID', 'ACCT_STATUS') and data formats (like 'MM/DD/YYYY') leak into your domain code, forcing your domain logic to deal with awkward legacy transformations everywhere."
+    },
+    {
+      "id": "q3",
+      "type": "true-false",
+      "question": "An ACL translates external models into your domain's ubiquitous language before they reach your domain layer.",
+      "correctAnswer": true,
+      "explanation": "The ACL translates external concepts into your domain language. For example, it converts 'ACCT_STATUS: A' into 'AccountStatus.Active' and 'CUST_TYPE: I' into 'CustomerType.Individual'."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "Which design patterns are typically used to implement an ACL?",
+      "options": [
+        { "id": "a", "text": "Singleton and Factory" },
+        { "id": "b", "text": "Adapter and Facade patterns" },
+        { "id": "c", "text": "Observer and Strategy" },
+        { "id": "d", "text": "Builder and Prototype" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "ACLs are typically implemented using the Adapter pattern (to translate between interfaces) and Facade pattern (to simplify complex external systems). These patterns isolate your domain from external complexity."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "ACLs should translate data in both directions - from external to domain and from domain to external.",
+      "correctAnswer": true,
+      "explanation": "ACLs handle bidirectional translation. When reading, they convert external models to domain objects. When writing, they convert domain objects back to the format expected by external systems."
+    }
+  ]
+}

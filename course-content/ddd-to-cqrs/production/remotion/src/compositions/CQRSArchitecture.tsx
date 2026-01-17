@@ -53,7 +53,6 @@ export const CQRSArchitecture: React.FC = () => {
   const ROW2_Y = 400;
   const ROW3_Y = 560;
 
-  const CARD_WIDTH = 160;
   const CARD_FONT = 20;
 
   const containerStyle = { backgroundColor: '#f8fafc', padding: 20 };

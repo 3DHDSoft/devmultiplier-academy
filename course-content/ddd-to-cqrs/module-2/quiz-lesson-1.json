@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-2-lesson-1",
+  "lessonId": "lesson-1",
+  "moduleId": "module-2",
+  "title": "Understanding Bounded Contexts - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is a Bounded Context in DDD?",
+      "options": [
+        { "id": "a", "text": "A physical server boundary" },
+        { "id": "b", "text": "A linguistic and semantic boundary within which a particular domain model is valid" },
+        { "id": "c", "text": "A security perimeter around applications" },
+        { "id": "d", "text": "A database schema boundary" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Bounded Contexts are the linguistic and semantic boundaries within which a particular domain model is valid. Without bounded contexts, large systems become unmaintainable tangles of conflicting concepts."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "What problem does having one 'Customer' model serve all contexts create?",
+      "options": [
+        { "id": "a", "text": "Performance issues due to model size" },
+        { "id": "b", "text": "Every change affects all contexts, unclear field ownership, teams step on each other" },
+        { "id": "c", "text": "Database storage costs increase" },
+        { "id": "d", "text": "API response times slow down" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "When one model tries to serve all contexts: every change affects all contexts, it's unclear which fields matter where, different teams step on each other, and it's impossible to understand what 'Customer' really means."
+    },
+    {
+      "id": "q3",
+      "type": "true-false",
+      "question": "In bounded contexts, it's acceptable for 'Customer' to mean different things in different contexts (Sales vs Support).",
+      "correctAnswer": true,
+      "explanation": "Each bounded context has its own model with its own definition of concepts. A Sales Customer (with creditLimit) is different from a Support Customer (with ticketCount, satisfactionScore). This is intentional and correct."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "What is the benefit of having separate Customer models in Sales and Support contexts?",
+      "options": [
+        { "id": "a", "text": "Reduced code reuse" },
+        { "id": "b", "text": "Each context can evolve independently with only relevant fields and behaviors" },
+        { "id": "c", "text": "More database tables" },
+        { "id": "d", "text": "Easier unit testing only" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Separate models allow each context to evolve independently, contain only relevant fields (Sales Customer has creditLimit, Support Customer has satisfactionScore), and have behaviors specific to that context."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "Bounded contexts should always share a common database schema to ensure data consistency.",
+      "correctAnswer": false,
+      "explanation": "Bounded contexts typically have their own data storage and models. Sharing database schemas creates tight coupling and defeats the purpose of bounded contexts. Each context owns its data."
+    }
+  ]
+}

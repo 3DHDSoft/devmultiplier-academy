@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-3-lesson-5",
+  "lessonId": "lesson-5",
+  "moduleId": "module-3",
+  "title": "Repositories and Persistence - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is the primary purpose of the repository pattern?",
+      "options": [
+        { "id": "a", "text": "To provide direct database access" },
+        { "id": "b", "text": "To act like an in-memory collection while hiding persistence complexity" },
+        { "id": "c", "text": "To cache frequently accessed data" },
+        { "id": "d", "text": "To generate SQL queries automatically" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A repository mediates between the domain and data layers, acting like an in-memory collection of aggregates. It hides the complexity of database operations while returning domain objects, not database records."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "There should be one repository per aggregate root, not per entity.",
+      "correctAnswer": true,
+      "explanation": "Repositories operate on aggregates, not individual entities. You have an OrderRepository that saves/loads the Order aggregate (including OrderItems), not a separate OrderItemRepository."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "What interface methods characterize a collection-oriented repository?",
+      "options": [
+        { "id": "a", "text": "insert(), update(), select(), delete()" },
+        { "id": "b", "text": "save(), findById(), delete()" },
+        { "id": "c", "text": "create(), read(), update(), destroy()" },
+        { "id": "d", "text": "add(), remove(), get(), set()" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Collection-oriented repositories use methods like save() (handles both insert and update), findById(), and delete(). This differs from DAOs which expose separate insert/update operations."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "What is optimistic locking used for in repositories?",
+      "options": [
+        { "id": "a", "text": "To improve query performance" },
+        { "id": "b", "text": "To prevent concurrent modifications from overwriting each other" },
+        { "id": "c", "text": "To cache aggregate data" },
+        { "id": "d", "text": "To encrypt sensitive data" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Optimistic locking uses a version field to detect concurrent modifications. If two processes try to save the same aggregate, the second one will fail because the version doesn't match, preventing lost updates."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "In-memory repositories are useful for fast, isolated unit tests of domain logic.",
+      "correctAnswer": true,
+      "explanation": "In-memory repositories implement the same interface as database repositories but store data in memory. They enable fast unit tests without database dependencies, while using the same interface ensures consistency."
+    }
+  ]
+}

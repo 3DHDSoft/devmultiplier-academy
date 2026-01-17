@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-4-lesson-3",
+  "lessonId": "lesson-3",
+  "moduleId": "module-4",
+  "title": "Command and Query Handlers - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is a command in CQRS?",
+      "options": [
+        { "id": "a", "text": "A request for data from the database" },
+        { "id": "b", "text": "An imperative instruction that represents user intent to change state" },
+        { "id": "c", "text": "A SQL query statement" },
+        { "id": "d", "text": "A logging message" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A command is an imperative instruction representing user intent (like PlaceOrder, CancelOrder). Commands change state, are immutable, and may produce side effects like domain events."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "Query handlers should only retrieve data and never modify system state.",
+      "correctAnswer": true,
+      "explanation": "Queries are read-only operations with no side effects. They return DTOs optimized for display, can be cached, and do not trigger business logic. State changes belong exclusively in command handlers."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "What is the purpose of the Mediator pattern in CQRS?",
+      "options": [
+        { "id": "a", "text": "To store data in the database" },
+        { "id": "b", "text": "To route commands/queries to their handlers and support middleware" },
+        { "id": "c", "text": "To validate user input" },
+        { "id": "d", "text": "To format API responses" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "The Mediator (or Command/Query Bus) routes commands and queries to their appropriate handlers. It also supports middleware pipelines for cross-cutting concerns like logging and validation."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "What validation approaches should be used for commands?",
+      "options": [
+        { "id": "a", "text": "Only UI validation" },
+        { "id": "b", "text": "Input validation with Zod and business rule validation in the handler" },
+        { "id": "c", "text": "Database constraints only" },
+        { "id": "d", "text": "No validation needed for commands" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Commands should have two layers of validation: input/schema validation (with tools like Zod) to ensure correct format, and business rule validation in the handler to check domain rules."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "Command handlers should publish domain events after successfully persisting changes.",
+      "correctAnswer": true,
+      "explanation": "After a command handler persists changes, it should publish domain events to notify other parts of the system. Events are typically published after the transaction commits to avoid issues if the transaction rolls back."
+    }
+  ]
+}

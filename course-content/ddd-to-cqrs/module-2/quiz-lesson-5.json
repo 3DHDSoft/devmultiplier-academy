@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-2-lesson-5",
+  "lessonId": "lesson-5",
+  "moduleId": "module-2",
+  "title": "Strategic Design in Microservices - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "true-false",
+      "question": "Each bounded context should ideally become one microservice.",
+      "correctAnswer": true,
+      "explanation": "Bounded contexts and microservices are natural allies. The ideal alignment is one bounded context = one microservice. Each service owns its domain model, data, and can be deployed independently."
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "What communication mechanisms are typically used between microservices?",
+      "options": [
+        { "id": "a", "text": "Direct database access" },
+        { "id": "b", "text": "REST APIs and Event Bus" },
+        { "id": "c", "text": "Shared memory" },
+        { "id": "d", "text": "File system sharing" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Microservices communicate via REST APIs for synchronous communication and Event Bus (or message queues) for asynchronous, event-driven communication. Direct database access is an anti-pattern."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "When should you consider NOT using microservices?",
+      "options": [
+        { "id": "a", "text": "When you need independent deployments" },
+        { "id": "b", "text": "When the team is small, domain is unclear, or you're in early stages of development" },
+        { "id": "c", "text": "When you need to scale different parts independently" },
+        { "id": "d", "text": "When different teams own different parts" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Microservices add significant complexity. You should consider NOT using them when: the team is small and can't support the operational overhead, the domain boundaries are unclear, or you're in early development stages."
+    },
+    {
+      "id": "q4",
+      "type": "true-false",
+      "question": "Microservices introduce complexity like distributed transactions and eventual consistency that must be carefully managed.",
+      "correctAnswer": true,
+      "explanation": "Microservices introduce significant distributed systems complexity including: handling distributed transactions, managing eventual consistency, dealing with network failures, and operational overhead of multiple deployments."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "question": "In a microservices architecture, what does each service own?",
+      "options": [
+        { "id": "a", "text": "Only its API endpoints" },
+        { "id": "b", "text": "Its domain model, data storage, and deployment lifecycle" },
+        { "id": "c", "text": "Only its business logic" },
+        { "id": "d", "text": "Shared resources with other services" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Each microservice owns its domain model (Products, Categories for Catalog), its data storage (separate database), and its deployment lifecycle (can be deployed independently of other services)."
+    }
+  ]
+}

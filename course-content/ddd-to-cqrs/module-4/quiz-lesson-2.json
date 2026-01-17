@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-4-lesson-2",
+  "lessonId": "lesson-2",
+  "moduleId": "module-4",
+  "title": "Separating Reads and Writes - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is 'Simple CQRS' (Level 1)?",
+      "options": [
+        { "id": "a", "text": "Using completely separate databases for reads and writes" },
+        { "id": "b", "text": "Logical separation of commands and queries using the same database" },
+        { "id": "c", "text": "Using microservices for each operation" },
+        { "id": "d", "text": "Caching all database queries" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Simple CQRS means separating command and query logic in code (different handlers, possibly different methods) while still using the same database. It provides benefits without infrastructure complexity."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "The command model should focus on business logic and validation, while the query model focuses on optimized data retrieval.",
+      "correctAnswer": true,
+      "explanation": "The command (write) model handles strong consistency, transactional integrity, and business rules. The query (read) model handles denormalized data optimized for display with no business logic."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "What is a key benefit of 'Full CQRS' with separate databases?",
+      "options": [
+        { "id": "a", "text": "Simpler code" },
+        { "id": "b", "text": "Independent scaling of read and write operations" },
+        { "id": "c", "text": "Immediate consistency" },
+        { "id": "d", "text": "Lower operational costs" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Full CQRS allows independent scaling - you can use PostgreSQL for writes, Redis/Elasticsearch for reads, and scale each independently based on load patterns."
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "How can you handle eventual consistency when a user creates data and immediately views it?",
+      "options": [
+        { "id": "a", "text": "Force a database refresh" },
+        { "id": "b", "text": "Return data with the command response for immediate display" },
+        { "id": "c", "text": "Remove eventual consistency" },
+        { "id": "d", "text": "Disable caching" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Returning data with the command response allows the UI to display immediately created data without querying the potentially stale read model. Other strategies include optimistic UI updates or polling with timeout."
+    },
+    {
+      "id": "q5",
+      "type": "true-false",
+      "question": "In full CQRS, read models are typically synchronized with the write model using domain events.",
+      "correctAnswer": true,
+      "explanation": "When using separate databases, domain events are published after writes and consumed by event handlers that update the read models. This creates eventual consistency between the two sides."
+    }
+  ]
+}

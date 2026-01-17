@@ -24,6 +24,7 @@ model Course {
   instructors         instructors[]         @relation("CourseToInstructor")
   bundle_courses      bundle_courses[]
   payments            payments[]
+  quiz_attempts       quiz_attempts[]
 }
 
 model accounts {
@@ -264,6 +265,8 @@ model users {
   sessions                    sessions[]
   subscriptions               subscriptions[]
   payments                    payments[]
+  quiz_attempts               quiz_attempts[]
+  quiz_best_scores            quiz_best_scores[]
 
   @@index([email])
   @@index([locale])
@@ -395,4 +398,46 @@ model pricing_tiers {
 
   @@index([slug])
   @@index([isActive])
+}
+
+// ==========================================
+// Quiz & Knowledge Check Models
+// ==========================================
+
+model quiz_attempts {
+  id              String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId          String   @db.Uuid
+  courseId        String   @db.Uuid
+  moduleId        String   // e.g., "module-1"
+  lessonId        String   // e.g., "lesson-1"
+  quizId          String   // e.g., "quiz-module-1-lesson-1"
+  score           Int      // Percentage 0-100
+  totalQuestions  Int
+  correctAnswers  Int
+  passed          Boolean
+  answers         Json     // [{ questionId, selectedAnswer, isCorrect }]
+  timeTakenMs     Int
+  attemptNumber   Int      @default(1)
+  completedAt     DateTime @default(now())
+  users           users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Course          Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([courseId])
+  @@index([userId, quizId])
+}
+
+model quiz_best_scores {
+  id            String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId        String    @db.Uuid
+  quizId        String    // e.g., "quiz-module-1-lesson-1"
+  bestScore     Int       // Percentage 0-100
+  totalAttempts Int       @default(1)
+  passed        Boolean
+  firstPassedAt DateTime?
+  updatedAt     DateTime
+  users         users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, quizId])
+  @@index([userId])
 }

@@ -1,0 +1,62 @@
+{
+  "id": "quiz-module-5-lesson-3",
+  "lessonId": "lesson-3",
+  "moduleId": "module-5",
+  "title": "Projections and Read Models - Knowledge Check",
+  "passingScore": 70,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "What is a projection in event sourcing?",
+      "options": [
+        { "id": "a", "text": "A backup of the event store" },
+        { "id": "b", "text": "A read model built by processing events into a query-optimized format" },
+        { "id": "c", "text": "A way to compress events" },
+        { "id": "d", "text": "The same as the write model" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A projection (read model) is a derived view built from events, stored in a query-optimized format. It transforms the event stream into denormalized, indexed data structures optimized for specific queries."
+    },
+    {
+      "id": "q2",
+      "type": "true-false",
+      "question": "Projections are eventually consistent with the event store and may briefly lag behind writes.",
+      "correctAnswer": true,
+      "explanation": "Projections are updated asynchronously as events occur, creating eventual consistency. After a write, the read model may briefly show stale data until the projection handler processes the new events."
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "Why should projection event handlers be idempotent?",
+      "options": [
+        { "id": "a", "text": "To improve query performance" },
+        { "id": "b", "text": "To make events safe to replay without corrupting the read model" },
+        { "id": "c", "text": "To reduce storage requirements" },
+        { "id": "d", "text": "To encrypt sensitive data" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Idempotent handlers produce the same result when processing the same event multiple times. This is critical for rebuilding projections from event history and handling event replay without data corruption."
+    },
+    {
+      "id": "q4",
+      "type": "true-false",
+      "question": "You can have multiple different projections built from the same events.",
+      "correctAnswer": true,
+      "explanation": "Multiple projections can subscribe to the same events, each creating a different read model optimized for different queries. For example, order events could feed an order summary projection, a customer history projection, and a sales analytics projection."
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "question": "What is a key benefit of being able to rebuild projections from events?",
+      "options": [
+        { "id": "a", "text": "Reduces the need for backups" },
+        { "id": "b", "text": "Enables fixing bugs in projection logic and adding new features without data migration" },
+        { "id": "c", "text": "Makes writes faster" },
+        { "id": "d", "text": "Eliminates the need for database indexes" }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Since projections are derived from events, you can fix bugs by correcting the projection logic and rebuilding from the event history. You can also add entirely new read models for new features by replaying historical events."
+    }
+  ]
+}

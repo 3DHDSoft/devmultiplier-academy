@@ -79,7 +79,8 @@
       "Bash(sudo apt-get install:*)",
       "Bash(ssh:*)",
       "Bash(export PATH=\"$HOME/.fzf/bin:$PATH\")",
-      "Bash(source ~/.fzf.zsh)"
+      "Bash(source ~/.fzf.zsh)",
+      "Bash(bun test:*)"
     ]
   }
 }

@@ -18,8 +18,10 @@ import { ContentProtection } from '@/components/ui/content-protection';
 import { CodeBlockWrapper } from '@/components/ui/code-block-wrapper';
 import { MermaidRenderer } from '@/components/ui/mermaid-renderer';
 import { CourseNavigation } from '@/components/ui/course-navigation';
+import { QuizSummaryCard } from '@/components/ui/quiz';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
+import { quizExists } from '@/lib/quiz/loader';
 
 // Privileged email domains and specific emails that can access all courses
 const PRIVILEGED_DOMAINS = ['3dhdsoft.com', 'devmultiplier.com'];
@@ -505,6 +507,9 @@ export default async function LessonPage({ params }: PageProps) {
     notFound();
   }
 
+  // Check if this lesson has a quiz
+  const hasQuiz = await quizExists(id, moduleId, lessonId);
+
   const { module, lesson, prevLesson, nextLesson, progress } = navInfo;
 
   return (
@@ -558,6 +563,13 @@ export default async function LessonPage({ params }: PageProps) {
                 <article className="lesson-content" dangerouslySetInnerHTML={{ __html: content }} />
               </CodeBlockWrapper>
             </MermaidRenderer>
+
+            {/* Knowledge Check Quiz */}
+            {hasQuiz && (
+              <div className="mt-8 border-t border-[#d1d9e0] pt-8 dark:border-[#30363d]">
+                <QuizSummaryCard courseId={id} moduleId={moduleId} lessonId={lessonId} />
+              </div>
+            )}
           </div>
 
           {/* Table Navigation */}
