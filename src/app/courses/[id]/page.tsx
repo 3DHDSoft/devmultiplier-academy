@@ -494,7 +494,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <h2 className="mb-6 text-2xl font-semibold text-[#1f2328] dark:text-[#e6edf3]">Curriculum</h2>
           <div className="divide-y divide-[#d1d9e0] rounded-md border border-[#d1d9e0] bg-white dark:divide-[#30363d] dark:border-[#30363d] dark:bg-[#161b22]">
             {course.modules.map((module, index) => (
-              <Link key={module.title} href={`/courses/${course.id}/module-${index + 1}/${index === 0 ? 'lesson-0' : 'lesson-1'}`} className="group flex items-center justify-between p-4 transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]">
+              <Link key={module.title} href={`/courses/${course.slug}/module-${index + 1}/${index === 0 ? 'lesson-0' : 'lesson-1'}`} className="group flex items-center justify-between p-4 transition-colors hover:bg-[#f6f8fa] dark:hover:bg-[#21262d]">
                 <div className="flex items-center gap-4">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f6f8fa] text-sm font-medium text-[#656d76] transition-colors group-hover:bg-[#0969da] group-hover:text-white dark:bg-[#21262d] dark:text-[#848d97] dark:group-hover:bg-[#4493f8]">{index + 1}</span>
                   <span className="font-medium text-[#1f2328] transition-colors group-hover:text-[#0969da] dark:text-[#e6edf3] dark:group-hover:text-[#4493f8]">{module.title}</span>
