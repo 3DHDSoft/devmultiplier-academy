@@ -172,10 +172,6 @@ export const CourseRoadmap: React.FC = () => {
   const titleOpacity = interpolate(frame, [0, 30], [0, 1], { extrapolateRight: 'clamp' });
   const titleY = interpolate(frame, [0, 30], [-20, 0], { extrapolateRight: 'clamp' });
 
-  // Layout - hexagonal pattern for visual interest
-  const centerX = 960;
-  const centerY = 500;
-
   // Module positions in a flowing path layout
   const modules = [
     { x: 180, y: 280, number: 1, title: 'Introduction to DDD', icon: '📚', color: '#3b82f6' },

@@ -2,12 +2,41 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, ArrowLeft } from 'lucide-react';
-import { Suspense } from 'react';
+import { Mail, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Suspense, useState } from 'react';
 
 function VerifyEmailSentContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email');
+  const [isResending, setIsResending] = useState(false);
+  const [resendStatus, setResendStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const handleResendEmail = async () => {
+    if (!email || isResending) return;
+
+    setIsResending(true);
+    setResendStatus(null);
+
+    try {
+      const response = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResendStatus({ type: 'success', message: 'Verification email sent! Check your inbox.' });
+      } else {
+        setResendStatus({ type: 'error', message: data.error || 'Failed to resend email. Please try again.' });
+      }
+    } catch {
+      setResendStatus({ type: 'error', message: 'Something went wrong. Please try again.' });
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f6f8fa] px-4 py-6 dark:bg-[#0d1117]">
@@ -39,6 +68,17 @@ function VerifyEmailSentContent() {
               <li>Wait a few minutes and check again</li>
             </ul>
           </div>
+
+          {/* Resend Status Message */}
+          {resendStatus && <div className={`mb-4 rounded-md p-3 text-sm ${resendStatus.type === 'success' ? 'border border-[#4ade80] bg-[#dcfce7] text-[#166534] dark:border-[#22c55e]/50 dark:bg-[#22c55e]/10 dark:text-[#4ade80]' : 'border border-[#f87171] bg-[#fee2e2] text-[#991b1b] dark:border-[#ef4444]/50 dark:bg-[#ef4444]/10 dark:text-[#f87171]'}`}>{resendStatus.message}</div>}
+
+          {/* Resend Email Button */}
+          {email && (
+            <button onClick={handleResendEmail} disabled={isResending} className="mb-4 inline-flex w-full items-center justify-center gap-2 rounded-md border border-[#d1d9e0] bg-[#f6f8fa] px-4 py-2 text-sm font-medium text-[#1f2328] transition-colors hover:bg-[#eaeef2] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[#30363d] dark:bg-[#21262d] dark:text-[#e6edf3] dark:hover:bg-[#30363d]">
+              <RefreshCw className={`h-4 w-4 ${isResending ? 'animate-spin' : ''}`} />
+              {isResending ? 'Sending...' : 'Resend Verification Email'}
+            </button>
+          )}
 
           {/* Back to Login */}
           <Link href="/login" className="inline-flex items-center gap-2 text-sm font-medium text-[#0969da] hover:underline dark:text-[#4493f8]">
