@@ -5,6 +5,7 @@ set -e
 
 # List of compositions to render
 compositions=(
+  "CourseRoadmap"
   "AggregateLifecycle"
   "CommandQueryFlow"
   "ContextMapDemo"
