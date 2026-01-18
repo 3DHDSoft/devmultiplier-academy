@@ -88,7 +88,7 @@ export const tools: Tool[] = [
     description: 'All-in-one audio/video editing with AI transcription, overdub, and studio sound. Edit audio like a document.',
     howIUseIt: 'I use Descript to clean up audio recordings and fix mistakes without re-recording. The "Overdub" feature lets me correct script errors by just typing the fix. Amazing for podcast-style content.',
     category: 'voice',
-    affiliateUrl: 'https://www.descript.com/?ref=PLACEHOLDER', // Replace with your affiliate link
+    affiliateUrl: 'https://get.descript.com/cq8kxi86z226',
     websiteUrl: 'https://www.descript.com',
     relatedCourses: ['ai-ui-design'],
   },

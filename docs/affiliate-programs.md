@@ -23,7 +23,7 @@ Track affiliate program applications for the Tools page.
 | Tool       | Status      | Application URL                                              | Affiliate Link                           | Notes  |
 | ---------- | ----------- | ------------------------------------------------------------ | ---------------------------------------- | ------ |
 | ElevenLabs | ✅ Approved | [elevenlabs.io](https://elevenlabs.io)                       | `https://try.elevenlabs.io/fqta2rsfzcn8` | Active |
-| Descript   | ⏳ Pending  | [descript.com/affiliate](https://www.descript.com/affiliate) | -                                        |        |
+| Descript   | ✅ Approved | [descript.com/affiliate](https://www.descript.com/affiliate) | `https://get.descript.com/cq8kxi86z226`  | Active |
 
 ## Code Assistants
 
