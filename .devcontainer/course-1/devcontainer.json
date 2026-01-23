@@ -1,0 +1,72 @@
+// Course 1: Simplified Development Environment for GitHub Codespaces
+// Optimized for 2-core machines (free tier compatible)
+// See: https://containers.dev/implementors/json_reference/
+{
+  "name": "Course 1 - Web Dev",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // 2 cores is sufficient for this simplified setup
+  "hostRequirements": {
+    "cpus": 2
+  },
+
+  // Minimal features - git only
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  // Port forwarding
+  "forwardPorts": [
+    3000, // Next.js App
+    5432  // PostgreSQL
+  ],
+
+  "portsAttributes": {
+    "3000": { "label": "Next.js App", "onAutoForward": "notify" },
+    "5432": { "label": "PostgreSQL", "onAutoForward": "silent" }
+  },
+
+  // Setup commands
+  "postCreateCommand": "bash .devcontainer/course-1/post-create.sh",
+  "postStartCommand": "echo '🚀 Ready to code!'",
+
+  // VS Code customizations - minimal essential extensions only
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Core development
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma",
+
+        // Git
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+
+        // Database
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+
+        // Testing
+        "vitest.explorer",
+
+        // Markdown
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        }
+      }
+    }
+  },
+
+  "containerEnv": {
+    "NODE_ENV": "development"
+  }
+}

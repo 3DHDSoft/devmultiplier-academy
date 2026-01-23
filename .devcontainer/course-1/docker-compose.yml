@@ -1,0 +1,78 @@
+# Course 1: Simplified Development Environment
+# Optimized for GitHub Codespaces free tier (2-core machines)
+#
+# Services:
+#   - app: Node.js development container
+#   - postgres: PostgreSQL database
+#
+# Usage:
+#   docker-compose up -d
+#   docker-compose down
+#   docker-compose down -v  # Also remove volumes
+
+name: course-1
+
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
+    container_name: course-1-app
+    command: sleep infinity
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/academy?schema=public
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: academy
+    volumes:
+      - ../..:/workspaces:cached
+    networks:
+      - course-1-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 3G
+        reservations:
+          cpus: "0.5"
+          memory: 1G
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: course-1-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: academy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - course-1-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d academy"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  course-1-net:
+    driver: bridge
