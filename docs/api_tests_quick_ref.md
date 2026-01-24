@@ -91,7 +91,7 @@ bun run e2e            # Playwright E2E tests (separate)
 
 ## Test Files Created
 
-### `src/app/api/__tests__/courses.test.ts`
+### `apps/web/apps/web/src/app/api/__tests__/courses.test.ts`
 
 ```
 10 tests covering:
@@ -101,7 +101,7 @@ bun run e2e            # Playwright E2E tests (separate)
 ✅ HTTP status codes
 ```
 
-### `src/app/api/__tests__/enrollments.test.ts`
+### `apps/web/apps/web/src/app/api/__tests__/enrollments.test.ts`
 
 ```
 15 tests covering:
@@ -116,7 +116,7 @@ bun run e2e            # Playwright E2E tests (separate)
   - Translation handling
 ```
 
-### `src/app/api/__tests__/user-profile.test.ts`
+### `apps/web/apps/web/src/app/api/__tests__/user-profile.test.ts`
 
 ```
 10 tests covering:
@@ -128,7 +128,7 @@ bun run e2e            # Playwright E2E tests (separate)
   - Password never returned
 ```
 
-### `src/app/api/__tests__/user-language.test.ts`
+### `apps/web/apps/web/src/app/api/__tests__/user-language.test.ts`
 
 ```
 14 tests covering:
@@ -139,7 +139,7 @@ bun run e2e            # Playwright E2E tests (separate)
 ✅ Error handling
 ```
 
-### `src/app/api/__tests__/register.test.ts`
+### `apps/web/apps/web/src/app/api/__tests__/register.test.ts`
 
 ```
 16 tests covering:
@@ -151,7 +151,7 @@ bun run e2e            # Playwright E2E tests (separate)
 ✅ Never returns password
 ```
 
-### `src/app/api/__tests__/progress.test.ts`
+### `apps/web/apps/web/src/app/api/__tests__/progress.test.ts`
 
 ```
 22 tests covering:

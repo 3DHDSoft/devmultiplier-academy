@@ -27,7 +27,7 @@ Users can view their recent login activity including:
 
 ### 2. Email Notifications for New Login Locations
 
-**Implementation:** `src/lib/email-service.ts` and `src/lib/login-logger.ts`
+**Implementation:** `apps/web/src/lib/email-service.ts` and `apps/web/apps/web/src/lib/login-logger.ts`
 
 **How it works:**
 
@@ -48,7 +48,7 @@ Users can view their recent login activity including:
 
 ### 3. Security Alerts for Failed Login Attempts
 
-**Implementation:** `src/lib/email-service.ts` and `src/lib/login-logger.ts`
+**Implementation:** `apps/web/src/lib/email-service.ts` and `apps/web/apps/web/src/lib/login-logger.ts`
 
 **How it works:**
 
@@ -245,7 +245,7 @@ await prisma.user.update({
 
 Currently set to 3 failed attempts in 15 minutes.
 
-To modify, edit `src/lib/login-logger.ts`:
+To modify, edit `apps/web/apps/web/src/lib/login-logger.ts`:
 
 ```typescript
 const FAILED_ATTEMPT_THRESHOLD = 3; // Change this value
@@ -256,7 +256,7 @@ const fifteenMinutesAgo = new Date(timestamp.getTime() - 15 * 60 * 1000); // Cha
 
 Currently checks for matching city + country combination.
 
-To make it stricter (country only) or looser (IP-based), modify `checkAndNotifyNewLocation()` in `src/lib/login-logger.ts`.
+To make it stricter (country only) or looser (IP-based), modify `checkAndNotifyNewLocation()` in `apps/web/apps/web/src/lib/login-logger.ts`.
 
 ## Email Integration
 
@@ -267,7 +267,7 @@ Your application is already set up with Resend and ready to send emails:
 - **API Key:** Configured in `.env.local`
 - **From Email:** `info@devmultiplier.com` (verified domain)
 - **Package:** `resend@^6.6.0` installed
-- **Implementation:** Fully integrated in `src/lib/email-service.ts`
+- **Implementation:** Fully integrated in `apps/web/src/lib/email-service.ts`
 
 **Test your email setup:**
 
@@ -284,7 +284,7 @@ This will send both types of security notifications to your inbox.
 
 ### Alternative Email Providers (if needed)
 
-If you want to switch from Resend, see comments in `src/lib/email-service.ts` for integration instructions with:
+If you want to switch from Resend, see comments in `apps/web/src/lib/email-service.ts` for integration instructions with:
 
 - SendGrid
 - AWS SES

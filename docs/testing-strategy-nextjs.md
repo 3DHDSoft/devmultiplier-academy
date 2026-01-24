@@ -522,7 +522,7 @@ sequenceDiagram
 ### Unit Test: Utility Function
 
 ```typescript
-// src/lib/format.ts
+// apps/web/src/lib/format.ts
 export function formatPrice(cents: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -530,7 +530,7 @@ export function formatPrice(cents: number): string {
   }).format(cents / 100);
 }
 
-// src/lib/format.test.ts
+// apps/web/src/lib/format.test.ts
 import { describe, it, expect } from 'vitest';
 import { formatPrice } from './format';
 

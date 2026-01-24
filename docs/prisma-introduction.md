@@ -19,7 +19,7 @@ Prisma is a next-generation ORM (Object-Relational Mapping) tool that makes work
 }}}%%
 graph TD
     App["Next.js App<br/>Server & Client"] -->|Prisma Client| PrismaLib["Prisma ORM<br/>Type-Safe Layer"]
-    PrismaLib -->|Generated Code| Schema["prisma/schema.prisma<br/>Data Models"]
+    PrismaLib -->|Generated Code| Schema["apps/web/prisma/schema.prisma<br/>Data Models"]
     PrismaLib -->|SQL Queries| DB[("PostgreSQL 18<br/>with PostGIS 3.6")]
 
     Schema -->|Migrations| Migrations["prisma/migrations/<br/>Version History"]
@@ -43,9 +43,9 @@ This project uses:
 
 - **Database**: PostgreSQL 18 with PostGIS 3.6
 - **Prisma Version**: 7+ (latest)
-- **Prisma Schema**: `prisma/schema.prisma`
+- **Prisma Schema**: `apps/web/prisma/schema.prisma`
 - **Prisma Config**: `prisma.config.ts` (Prisma 7+ requirement)
-- **Generated Client**: `src/generated/prisma`
+- **Generated Client**: `apps/web/src/generated/prisma`
 - **ID Generation**: PostgreSQL 18 native `uuidv7()` (time-ordered UUIDs)
 
 ## Prisma Workflow
@@ -102,7 +102,7 @@ import 'dotenv/config';
 import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
-  schema: 'prisma/schema.prisma',
+  schema: 'apps/web/prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',
   },
@@ -112,12 +112,12 @@ export default defineConfig({
 });
 ```
 
-**`prisma/schema.prisma`**
+**`apps/web/prisma/schema.prisma`**
 
 ```graphql
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../apps/web/src/generated/prisma"
 }
 
 datasource db {
@@ -155,7 +155,7 @@ bunx prisma dev  # runs Postgres locally in your terminal
 bunx create-db  # creates a free Prisma Postgres database
 ```
 
-Then, define your models in `prisma/schema.prisma` and run `prisma migrate dev` to apply your schema.
+Then, define your models in `apps/web/prisma/schema.prisma` and run `prisma migrate dev` to apply your schema.
 
 ```bash
 bunx prisma migrate dev --name init
@@ -254,12 +254,12 @@ DATABASE_URL="postgresql://admin:academy2026@postgres:5432/academy"
 
 ## Schema Structure
 
-The schema is defined in `prisma/schema.prisma`. Currently configured with:
+The schema is defined in `apps/web/prisma/schema.prisma`. Currently configured with:
 
 ```graphql
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../apps/web/src/generated/prisma"
 }
 
 datasource db {

@@ -127,7 +127,7 @@ bun run format:fix     # Auto-fix formatting
 - ✅ Utility functions
 - ✅ API route handlers
 
-**Location:** `src/__tests__/` and `src/*/__tests__/`
+**Location:** `apps/web/src/__tests__/` and `apps/web/src/*/__tests__/`
 
 ### E2E Tests (Playwright)
 

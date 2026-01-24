@@ -62,11 +62,11 @@ flowchart TB
 ### Files
 
 - **[instrumentation.node.ts](../instrumentation.node.ts)** - OpenTelemetry SDK initialization with metrics reader
-- **[src/lib/metrics.ts](../src/lib/metrics.ts)** - Metrics utility module with all metric definitions
+- **[apps/web/src/lib/metrics.ts](../apps/web/src/lib/metrics.ts)** - Metrics utility module with all metric definitions
 - **[middleware.ts](../middleware.ts)** - HTTP request and page view metrics collection
-- **[src/lib/login-logger.ts](../src/lib/login-logger.ts)** - Authentication metrics collection
-- **[src/lib/email-service.ts](../src/lib/email-service.ts)** - Email metrics collection
-- **[src/lib/ip-utils.ts](../src/lib/ip-utils.ts)** - API call metrics collection
+- **[apps/web/apps/web/src/lib/login-logger.ts](../apps/web/apps/web/src/lib/login-logger.ts)** - Authentication metrics collection
+- **[apps/web/src/lib/email-service.ts](../apps/web/src/lib/email-service.ts)** - Email metrics collection
+- **[apps/web/src/lib/ip-utils.ts](../apps/web/src/lib/ip-utils.ts)** - API call metrics collection
 
 ## Metrics Catalog
 

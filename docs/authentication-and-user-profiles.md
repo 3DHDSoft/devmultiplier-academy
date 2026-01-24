@@ -98,7 +98,7 @@ bun prisma init
 ### Complete Prisma Schema
 
 ```graphql
-// prisma/schema.prisma
+// apps/web/prisma/schema.prisma
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -107,7 +107,7 @@ bun prisma init
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../apps/web/src/generated/prisma"
 }
 
 datasource db {
@@ -355,7 +355,7 @@ import 'dotenv/config';
 import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
-  schema: 'prisma/schema.prisma',
+  schema: 'apps/web/prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',
   },
@@ -598,7 +598,7 @@ export async function getUserEnrollments(userId: string) {
 
 ### Enhanced i18n Config with Auth
 
-**`src/i18n/request.ts`**
+**`apps/web/src/i18n/request.ts`**
 
 ```typescript
 import { getRequestConfig } from 'next-intl/server';
@@ -627,7 +627,7 @@ export default getRequestConfig(async ({ locale, requestLocale }) => {
 
 ### Translation Messages with Auth Keys
 
-**`src/messages/en.json`** (partial)
+**`apps/web/src/messages/en.json`** (partial)
 
 ```json
 {

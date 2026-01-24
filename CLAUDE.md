@@ -109,9 +109,9 @@ import { prisma } from '@/lib/prisma';
 
 ```bash
 # Connection (in devcontainer)
-psql -h postgres -U devuser -d devdb
+psql -h postgres -U admin -d academy
 
-# Prisma commands
+# Prisma commands (run from apps/web/)
 bunx prisma generate       # Generate client after schema changes
 bunx prisma db push        # Push schema to database
 bunx prisma studio         # Open database browser

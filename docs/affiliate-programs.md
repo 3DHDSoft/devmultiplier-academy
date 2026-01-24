@@ -100,7 +100,7 @@ This positions me as someone who can drive qualified traffic to [Tool Name] thro
 
 ## Updating Tools
 
-When you receive an affiliate link, update `src/lib/tools.ts`:
+When you receive an affiliate link, update `apps/web/src/lib/tools.ts`:
 
 ```typescript
 // Find the tool entry and replace the affiliateUrl

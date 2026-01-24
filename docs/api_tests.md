@@ -21,7 +21,7 @@ This document describes the comprehensive API unit tests created for all major e
   'fontFamily': 'system-ui, -apple-system, sans-serif'
 }}}%%
 flowchart TD
-    A["Run: bun run test"] --> B["Vitest discovers tests<br/>in src/app/api/__tests__/**"]
+    A["Run: bun run test"] --> B["Vitest discovers tests<br/>in apps/web/apps/web/src/app/api/__tests__/**"]
     B --> C["Load vitest.setup.ts<br/>Mock Auth.js & Prisma"]
     C --> D["Execute API tests<br/>in parallel"]
 
@@ -63,7 +63,7 @@ flowchart TD
 
 ## Test Files
 
-### 1. `src/app/api/__tests__/courses.test.ts`
+### 1. `apps/web/apps/web/src/app/api/__tests__/courses.test.ts`
 
 Tests for `GET /api/courses` endpoint
 
@@ -94,7 +94,7 @@ const title = translations[0]?.title || 'Untitled Course';
 
 ---
 
-### 2. `src/app/api/__tests__/enrollments.test.ts`
+### 2. `apps/web/apps/web/src/app/api/__tests__/enrollments.test.ts`
 
 Tests for `POST /api/enrollments` and `GET /api/enrollments` endpoints
 
@@ -149,7 +149,7 @@ Tests for `POST /api/enrollments` and `GET /api/enrollments` endpoints
 
 ---
 
-### 3. `src/app/api/__tests__/user-profile.test.ts`
+### 3. `apps/web/apps/web/src/app/api/__tests__/user-profile.test.ts`
 
 Tests for `GET /api/user/profile` and `PATCH /api/user/profile` endpoints
 
@@ -197,7 +197,7 @@ PATCH /api/user/profile
 
 ---
 
-### 4. `src/app/api/__tests__/user-language.test.ts`
+### 4. `apps/web/apps/web/src/app/api/__tests__/user-language.test.ts`
 
 Tests for `PATCH /api/user/language` endpoint
 
@@ -260,7 +260,7 @@ PATCH / api / user / language;
 
 ---
 
-### 5. `src/app/api/__tests__/register.test.ts`
+### 5. `apps/web/apps/web/src/app/api/__tests__/register.test.ts`
 
 Tests for `POST /api/auth/register` endpoint
 
@@ -332,7 +332,7 @@ POST /api/auth/register
 
 ---
 
-### 6. `src/app/api/__tests__/progress.test.ts`
+### 6. `apps/web/apps/web/src/app/api/__tests__/progress.test.ts`
 
 Tests for progress tracking logic and endpoints
 

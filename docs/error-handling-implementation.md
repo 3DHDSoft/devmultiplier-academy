@@ -35,7 +35,7 @@ The error handling system provides:
 ### File Structure
 
 ```
-📦 src/lib/
+📦 apps/web/src/lib/
 ├── 📄 errors.ts              # Custom error class hierarchy
 ├── 📄 result.ts              # Result pattern (no-throw)
 ├── 📄 logger.ts              # Structured logging

@@ -92,26 +92,26 @@ Tests are organized in `__tests__` directories alongside the code they test:
 
 Current test coverage includes:
 
-### Authentication (`src/__tests__/auth.test.ts`)
+### Authentication (`apps/web/src/__tests__/auth.test.ts`)
 
 - Email validation
 - Password validation (8+ character requirement)
 - Schema parsing and error handling
 
-### Data Models (`src/__tests__/models.test.ts`)
+### Data Models (`apps/web/src/__tests__/models.test.ts`)
 
 - Course model structure
 - User model with locale/timezone
 - Enrollment progress tracking
 - Course progress calculations
 
-### API Utilities (`src/lib/__tests__/api.test.ts`)
+### API Utilities (`apps/web/src/lib/__tests__/api.test.ts`)
 
 - HTTP response handling (200, 400, 401, 500)
 - Course data transformation
 - Enrollment data transformation
 
-### API Routes (`src/app/api/__tests__/`)
+### API Routes (`apps/web/apps/web/src/app/api/__tests__/`)
 
 - Course CRUD operations
 - Enrollment management
@@ -120,7 +120,7 @@ Current test coverage includes:
 - Language preferences
 - Profile management
 
-### Components (`src/components/ui/__tests__/button.test.tsx`)
+### Components (`apps/web/src/components/ui/__tests__/button.test.tsx`)
 
 - Button variant types
 - Size options

@@ -26,8 +26,8 @@ This application is instrumented with OpenTelemetry for distributed tracing and 
 graph TB
     subgraph app["Next.js Application"]
         subgraph custom["Custom Spans"]
-            tracer["src/lib/tracer.ts<br/>(Utilities)"]
-            logger["src/lib/login-logger.ts<br/>(Security Tracing)"]
+            tracer["apps/web/src/lib/tracer.ts<br/>(Utilities)"]
+            logger["apps/web/src/lib/login-logger.ts<br/>(Security Tracing)"]
         end
 
         entry["instrumentation.ts<br/>(Entry Point)"]

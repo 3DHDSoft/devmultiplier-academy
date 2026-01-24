@@ -552,7 +552,7 @@ body {
 ### 3. Theme Toggle Implementation
 
 ```typescript
-// src/lib/theme.ts - Theme toggle utility
+// apps/web/src/lib/theme.ts - Theme toggle utility
 function toggleTheme() {
   const root = document.documentElement;
   const isDark = root.classList.contains('dark');

@@ -217,7 +217,7 @@ flowchart TD
 
 ### Metrics Collection
 
-1. **Application emits metrics** - Using OpenTelemetry SDK ([src/lib/metrics.ts](src/lib/metrics.ts))
+1. **Application emits metrics** - Using OpenTelemetry SDK ([apps/web/src/lib/metrics.ts](src/lib/metrics.ts))
 2. **OTLP Exporter sends to Grafana Cloud** - Every 60 seconds
 3. **Prometheus scrapes local endpoint** - Every 10 seconds (when implemented)
 4. **Grafana queries Prometheus** - Real-time dashboard updates
@@ -332,7 +332,7 @@ scrape_configs:
 
 ## Available Metrics
 
-Based on actual OpenTelemetry instrumentation and custom metrics in [src/lib/metrics.ts](src/lib/metrics.ts):
+Based on actual OpenTelemetry instrumentation and custom metrics in [apps/web/src/lib/metrics.ts](src/lib/metrics.ts):
 
 ### HTTP Client Metrics (Outbound Requests)
 

@@ -1,7 +1,7 @@
-# 3D HD Soft - DevMultiplier Academy
+# DevMultiplier Academy
 
-> **Course Series:** How to become a 10x - 100x developer in the age of AI **Website:**
-> [www.DevMultiplier.com](https://www.DevMultiplier.com)
+> **Course Series:** How to become a 10x - 100x developer in the age of AI
+> **Website:** [www.DevMultiplier.com](https://www.DevMultiplier.com)
 
 The official website for DevMultiplier Academy - helping developers become 10x-100x more effective in the age of AI.
 
@@ -9,8 +9,7 @@ The official website for DevMultiplier Academy - helping developers become 10x-1
 
 ### Prerequisites
 
-- **VS Code** with
-  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- **VS Code** with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - **Docker Desktop** (Windows/Mac) or **Docker Engine** (Linux)
 - **Git**
 
@@ -24,16 +23,17 @@ The official website for DevMultiplier Academy - helping developers become 10x-1
 That's it! Your environment is ready with:
 
 - ✅ Bun & Node.js 22
-- ✅ PostgreSQL 18 with sample DDD schemas
+- ✅ PostgreSQL 18
 - ✅ All VS Code extensions pre-installed
 
-### Local Development (without Docker)
+### Local Development
 
 ```bash
-# Install dependencies
+# Install dependencies (from repo root)
 bun install
 
 # Run development server
+cd apps/web
 bun run dev
 ```
 
@@ -42,31 +42,102 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)
-- **Styling:** Tailwind CSS
+- **Styling:** Tailwind CSS v4
 - **Language:** TypeScript
 - **Runtime:** Bun (with Node.js 22 compatibility)
-- **Database:** PostgreSQL 18
+- **Database:** PostgreSQL with Prisma ORM
+- **Auth:** NextAuth v5
 - **Hosting:** Vercel
-- **Course Platform:** Podia
 
-## Project Structure
+## Project Structure (Monorepo)
 
 ```
-src/
-├── 📁 app/                    # Next.js App Router pages
-│   ├── 📁 about/
-│   ├── 📁 contact/
-│   ├── 📁 courses/
-│   ├── 📁 pricing/
-│   ├── 📁 globals.css
-│   ├── 📁 layout.tsx
-│   └── 📁 page.tsx
-├── 📁 components/
-│   ├── 📁 layout/            # Header, Footer
-│   ├── 📁 sections/          # Page sections (Hero, Courses, etc.)
-│   └── 📁 ui/                # Reusable UI components
-└── 📁 lib/
-    └── 📄 utils.ts           # Utility functions
+📦 /                              # Monorepo root
+├── 📁 apps/
+│   └── 📁 web/                   # Next.js website
+│       ├── 📄 middleware.ts      # Auth + metrics middleware
+│       ├── 📄 instrumentation.ts # OpenTelemetry setup
+│       ├── 📁 prisma/
+│       │   └── 📄 schema.prisma  # Database schema
+│       ├── 📁 e2e/               # Playwright e2e tests
+│       └── 📁 src/
+│           ├── 📄 auth.ts        # NextAuth configuration
+│           ├── 📁 app/           # Next.js App Router pages
+│           ├── 📁 components/    # UI components
+│           │   ├── 📁 layout/    # Header, Footer
+│           │   ├── 📁 sections/  # Page sections (Hero, Pricing)
+│           │   └── 📁 ui/        # Reusable UI components
+│           ├── 📁 lib/           # Utilities and services
+│           └── 📁 generated/     # Generated Prisma client
+├── 📁 courses/
+│   └── 📁 ddd-to-cqrs/           # Course: DDD to CQRS
+│       ├── 📁 content/           # Lesson markdown files
+│       │   ├── 📁 module-1/
+│       │   ├── 📁 module-2/
+│       │   └── ...
+│       ├── 📁 code/              # Code snippets per lesson
+│       │   └── 📁 module-1/
+│       │       └── 📁 lesson-01/
+│       │           ├── 📁 before/
+│       │           └── 📁 after/
+│       └── 📁 production/        # Video/audio production assets
+├── 📁 packages/                  # Shared packages (future)
+├── 📁 docs/                      # Project documentation
+└── 📄 package.json               # Workspace root config
+```
+
+## Common Commands
+
+All commands should be run from `apps/web/` unless otherwise noted.
+
+### Development
+
+```bash
+cd apps/web
+
+# Start dev server
+bun run dev
+
+# Production build
+bun run build
+
+# Type checking
+bun run type-check
+
+# Linting & formatting
+bun run lint
+bun run lint:fix
+bun run format
+bun run format:fix
+```
+
+### Testing
+
+```bash
+cd apps/web
+
+# Unit tests (Vitest)
+bun test
+bun run test:watch
+bun run test:coverage
+
+# E2E tests (Playwright)
+bun run e2e
+bun run e2e:headed
+```
+
+### Database
+
+```bash
+cd apps/web
+
+# Prisma commands
+bunx prisma generate    # Generate client after schema changes
+bunx prisma db push     # Push schema to database
+bunx prisma studio      # Open database browser
+
+# Direct PostgreSQL access
+psql -h postgres -U admin -d academy
 ```
 
 ## Environment Overview
@@ -75,204 +146,48 @@ src/
 
 | Tool       | Version | Purpose                                       |
 | ---------- | ------- | --------------------------------------------- |
-| Bun        | Latest  | Primary runtime, package manager, test runner |
+| Bun        | 1.3+    | Primary runtime, package manager, test runner |
 | Node.js    | 22 LTS  | Compatibility when needed                     |
-| fnm        | Latest  | Node version management                       |
 | Git        | Latest  | Version control                               |
 | GitHub CLI | Latest  | GitHub integration                            |
 
-### Databases
+### Local Database
 
-| Database          | Port | Credentials               | Connection String                                      |
-| ----------------- | ---- | ------------------------- | ------------------------------------------------------ |
-| **PostgreSQL 18** | 5433 | `devuser` / `devpassword` | `postgresql://devuser:devpassword@postgres:5432/devdb` |
+| Database          | Port | Credentials             | Connection String                                        |
+| ----------------- | ---- | ----------------------- | -------------------------------------------------------- |
+| **PostgreSQL 18** | 5432 | `admin` / `academy2026` | `postgresql://admin:academy2026@postgres:5432/academy`   |
 
-### VS Code Extensions (Pre-installed)
+## Course Content Structure
 
-**AI & Code Generation:**
-
-- GitHub.copilot
-- GitHub.copilot-chat
-- anthropic.claude-code
-
-**Development & Formatting:**
-
-- dbaeumer.vscode-eslint
-- esbenp.prettier-vscode
-- bradlc.vscode-tailwindcss
-- prisma.prisma
-- humao.rest-client
-- ms-vscode.vscode-typescript-next
-- rvest.vs-code-prettier-eslint
-- inferrinizzard.prettier-sql-vscode
-
-**Database & SQL:**
-
-- mtxr.sqltools (Multi-DB support)
-- mtxr.sqltools-driver-pg (PostgreSQL)
-- doublefint.pgsql
-- bradymholt.pgformatter
-
-**Git & Version Control:**
-
-- eamodio.gitlens
-- donjayamanne.git-extension-pack
-- donjayamanne.githistory
-- huizhou.githd
-- github.vscode-github-actions
-- github.vscode-pull-request-github
-- codezombiech.gitignore
-- ziyasal.vscode-open-in-github
-
-**Markdown & Documentation:**
-
-- bierner.github-markdown-preview
-- bierner.markdown-checkbox
-- bierner.markdown-emoji
-- bierner.markdown-footnotes
-- bierner.markdown-mermaid
-- bierner.markdown-preview-github-styles
-- bierner.markdown-yaml-preamble
-- davidanson.vscode-markdownlint
-- yzhang.markdown-all-in-one
-- yzane.markdown-pdf
-- mdickin.markdown-shortcuts
-- shd101wyy.markdown-preview-enhanced
-- goessner.mdmath
-
-**Productivity & Tools:**
-
-- alefragnani.project-manager
-- mhutchie.git-graph
-- moshfeu.compare-folders
-- kisstkondoros.vscode-codemetrics
-
-**Docker & DevOps:**
-
-- ms-azuretools.vscode-docker
-- docker.docker
-- ms-azuretools.vscode-azureresourcegroups
-
-**.NET & Web Development:**
-
-- ms-dotnettools.csdevkit
-- ms-dotnettools.csharp
-- ms-windows-ai-studio.windows-ai-studio
-- teamsdevapp.vscode-ai-foundry
-
-**Data & Visualization:**
-
-- mechatroner.rainbow-csv
-- kumar-harsh.graphql-for-vscode
-- mohsen1.prettify-json
-
-**Configuration & Other:**
-
-- redhat.vscode-yaml
-- redhat.vscode-xml
-- streetsidesoftware.code-spell-checker
-
-## Sample Database Schema
-
-Both databases include identical DDD-inspired schemas demonstrating:
-
-### Bounded Contexts (as schemas)
+Course content is stored in `/courses/{course-id}/`:
 
 ```
-├── 📁 Orders/
-│   ├── 📁 Orders          (Aggregate Root)
-│   ├── 📁 OrderItems      (Child Entity)
-│   └── 📁 DomainEvents    (Event Store)
-├── 📁 Inventory/
-│   ├── 📁 Products        (Aggregate Root)
-│   └── 📁 StockMovements  (Child Entity)
-└── 📁 Customers/
-    ├── 📁 Customers       (Aggregate Root)
-    └── 📁 Addresses       (Value Object as table)
+courses/ddd-to-cqrs/
+├── content/              # Lesson markdown files
+│   ├── module-1/
+│   │   ├── lesson-0-genai-landscape.md
+│   │   ├── lesson-1-what-is-ddd.md
+│   │   ├── quiz-lesson-0.json
+│   │   └── quiz-lesson-1.json
+│   └── module-2/
+│       └── ...
+├── code/                 # Code examples
+│   └── module-1/
+│       └── lesson-01/
+│           ├── before/   # Starting code
+│           └── after/    # Completed code
+└── production/           # Video production assets
+    └── remotion/         # Remotion video projects
 ```
 
-### Key DDD Patterns Demonstrated
+## Deployment
 
-1. **Aggregate Roots** - `Orders`, `Products`, `Customers`
-2. **Child Entities** - Cascade delete, cannot exist without parent
-3. **Value Objects** - `Addresses` stored as separate table but owned by Customer
-4. **Domain Events** - JSON event storage for CQRS patterns
-5. **Optimistic Concurrency** - Version columns for conflict detection
+The site auto-deploys to Vercel on push to the `main` branch.
 
-## Common Commands
+### Custom Domain
 
-### Development
-
-```bash
-# Start dev server
-bun run dev
-
-# Run tests
-bun test
-
-# Type checking
-bun run typecheck
-
-# Format code
-bun run format
-```
-
-### Database CLI Access
-
-```bash
-# PostgreSQL
-psql -h postgres -U devuser -d devdb
-```
-
-### Useful SQL Queries
-
-**PostgreSQL - List all tables:**
-
-```sql
-SELECT schemaname, tablename
-FROM pg_tables
-WHERE schemaname IN ('orders', 'inventory', 'customers');
-```
-
-## Course Modules
-
-This environment supports all courses in the series:
-
-1. **From DDD to CQRS with AI Agents**
-   - Domain modeling exercises
-   - Event sourcing patterns
-   - CQRS implementation
-
-2. **DDD to Database Schema**
-   - Schema design from domain models
-   - Bounded context mapping
-   - Sample schemas included
-
-3. **AI-Assisted Database Optimization: SQL Server 2025 vs PostgreSQL 18**
-   - Side-by-side query comparison
-   - Performance tuning exercises
-   - Query plan analysis
-
-4. **Data-Driven REST API Development**
-   - API scaffolding from schemas
-   - OpenAPI generation
-   - Testing strategies
-
-5. **AI-Assisted UI Design and Implementation (Next.js)**
-   - Component generation
-   - Tailwind CSS styling
-   - Full-stack integration
-
-## Brand Colors
-
-| Color      | Hex       | Usage             |
-| ---------- | --------- | ----------------- |
-| Navy       | `#0A1628` | Primary, text     |
-| Blue       | `#3B82F6` | Accent, CTAs      |
-| Cyan       | `#06B6D4` | Secondary accent  |
-| Slate      | `#64748B` | Secondary text    |
-| Light Gray | `#E2E8F0` | Borders, dividers |
-| Off White  | `#F8FAFC` | Backgrounds       |
+1. Add `devmultiplier.com` in Vercel project settings
+2. Update DNS in Cloudflare to point to Vercel
 
 ## Troubleshooting
 
@@ -293,24 +208,15 @@ docker logs postgres-dev
 
 ```bash
 # Test PostgreSQL
-pg_isready -h postgres -U devuser -d devdb
+pg_isready -h postgres -U admin -d academy
 ```
 
 ### Port conflicts
 
-If ports 5433 or 3000 are already in use:
+If ports 5432 or 3000 are already in use:
 
 1. Stop conflicting services
 2. Or modify ports in `.devcontainer/docker-compose.yml`
-
-## Deployment
-
-The site auto-deploys to Vercel on push to the `main` branch.
-
-### Custom Domain
-
-1. Add `devmultiplier.com` in Vercel project settings
-2. Update DNS in Cloudflare to point to Vercel
 
 ## Support
 
@@ -319,8 +225,4 @@ The site auto-deploys to Vercel on push to the `main` branch.
 
 ## License
 
-© 2025 DevMultiplier Academy. A 3D HD Soft, LLC company. All rights reserved.
-
----
-
-_DevMultiplier Academy - 3D HD Soft - DevMultiplier Academy_
+© 2025-2026 DevMultiplier Academy. A 3D HD Soft, LLC company. All rights reserved.

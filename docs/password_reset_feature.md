@@ -258,14 +258,14 @@ Consider setting up a cron job or database trigger for automatic cleanup.
 
 ## UI Pages
 
-1. **Login Page** - [/src/app/(auth)/login/page.tsx](</src/app/(auth)/login/page.tsx>)
+1. **Login Page** - [/apps/web/src/app/(auth)/login/page.tsx](</apps/web/src/app/(auth)/login/page.tsx>)
    - Contains "Forgot password?" link
 
-2. **Forgot Password Page** - [/src/app/(auth)/forgot-password/page.tsx](</src/app/(auth)/forgot-password/page.tsx>)
+2. **Forgot Password Page** - [/apps/web/src/app/(auth)/forgot-password/page.tsx](</apps/web/src/app/(auth)/forgot-password/page.tsx>)
    - Email input form
    - Success/error messaging
 
-3. **Reset Password Page** - [/src/app/(auth)/reset-password/page.tsx](</src/app/(auth)/reset-password/page.tsx>)
+3. **Reset Password Page** - [/apps/web/src/app/(auth)/reset-password/page.tsx](</apps/web/src/app/(auth)/reset-password/page.tsx>)
    - Token validation
    - New password form
    - Password confirmation
@@ -321,12 +321,12 @@ Potential improvements:
 
 ## Related Files
 
-- Database Schema: [prisma/schema.prisma](../prisma/schema.prisma)
-- Forgot Password API: [src/app/api/auth/forgot-password/route.ts](../src/app/api/auth/forgot-password/route.ts)
-- Reset Password API: [src/app/api/auth/reset-password/route.ts](../src/app/api/auth/reset-password/route.ts)
-- Forgot Password Page: [src/app/(auth)/forgot-password/page.tsx](<../src/app/(auth)/forgot-password/page.tsx>)
-- Reset Password Page: [src/app/(auth)/reset-password/page.tsx](<../src/app/(auth)/reset-password/page.tsx>)
-- Login Page: [src/app/(auth)/login/page.tsx](<../src/app/(auth)/login/page.tsx>)
+- Database Schema: [apps/web/prisma/schema.prisma](../apps/web/prisma/schema.prisma)
+- Forgot Password API: [apps/web/apps/web/src/app/api/auth/forgot-password/route.ts](../apps/web/apps/web/src/app/api/auth/forgot-password/route.ts)
+- Reset Password API: [apps/web/apps/web/src/app/api/auth/reset-password/route.ts](../apps/web/apps/web/src/app/api/auth/reset-password/route.ts)
+- Forgot Password Page: [apps/web/apps/web/src/app/(auth)/forgot-password/page.tsx](<../apps/web/apps/web/src/app/(auth)/forgot-password/page.tsx>)
+- Reset Password Page: [apps/web/apps/web/src/app/(auth)/reset-password/page.tsx](<../apps/web/apps/web/src/app/(auth)/reset-password/page.tsx>)
+- Login Page: [apps/web/apps/web/src/app/(auth)/login/page.tsx](<../apps/web/apps/web/src/app/(auth)/login/page.tsx>)
 
 ---
 

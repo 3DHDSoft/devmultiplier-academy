@@ -462,7 +462,7 @@ export async function POST(req: NextRequest) {
 ## File Structure
 
 ```
-📦 src/app/api/
+📦 apps/web/apps/web/src/app/api/
 ├── 📁 user/
 │   ├── 📁 profile/
 │   │   └── 📄 route.ts      # GET, PATCH user profile

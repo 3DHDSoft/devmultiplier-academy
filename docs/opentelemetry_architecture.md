@@ -61,8 +61,8 @@ graph TB
     end
 
     subgraph "Application Code"
-        I[Custom Spans<br/>src/lib/tracer.ts]
-        J[Login Logger<br/>src/lib/login-logger.ts]
+        I[Custom Spans<br/>apps/web/src/lib/tracer.ts]
+        J[Login Logger<br/>apps/web/src/lib/login-logger.ts]
     end
 
     I --> B
@@ -157,7 +157,7 @@ export async function register() {
 
 ### 3. Tracer Utility
 
-**File**: [`src/lib/tracer.ts`](../src/lib/tracer.ts)
+**File**: [`apps/web/apps/web/src/lib/tracer.ts`](../apps/web/apps/web/src/lib/tracer.ts)
 
 Provides helper functions for creating custom spans in application code.
 
@@ -363,7 +363,7 @@ graph LR
 
 **Example: Login Monitoring**
 
-File: [`src/lib/login-logger.ts`](../src/lib/login-logger.ts)
+File: [`apps/web/apps/web/src/lib/login-logger.ts`](../apps/web/apps/web/src/lib/login-logger.ts)
 
 ```typescript
 export async function logLoginAttempt(/* ... */) {
@@ -384,7 +384,7 @@ export async function logLoginAttempt(/* ... */) {
 **Example: API Route Instrumentation**
 
 ```typescript
-// src/app/api/user/login-history/route.ts
+// apps/web/apps/web/src/app/api/user/login-history/route.ts
 import { withSpan } from '@/lib/tracer';
 
 export async function GET(request: Request) {
@@ -704,7 +704,7 @@ The application exposes Prometheus-compatible metrics via a `/api/metrics` endpo
 
 ### Implementation
 
-**File**: [`src/app/api/metrics/route.ts`](../src/app/api/metrics/route.ts)
+**File**: [`apps/web/apps/web/src/app/api/metrics/route.ts`](../apps/web/apps/web/src/app/api/metrics/route.ts)
 
 The metrics endpoint:
 
