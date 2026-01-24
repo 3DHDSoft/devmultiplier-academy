@@ -12,7 +12,9 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { createCheckoutSession } from '@/lib/stripe';
 import { withErrorHandling } from '@/lib/api-handler';
-import { ValidationError, NotFoundError, AuthenticationError } from '@/lib/errors';
+import { ValidationError, NotFoundError, AuthenticationError, AuthorizationError } from '@/lib/errors';
+import { apiLogger } from '@/lib/logger';
+import { checkBotId } from 'botid/server';
 
 const createSessionSchema = z.object({
   purchaseType: z.enum(['course', 'bundle', 'subscription']),
@@ -24,6 +26,13 @@ const createSessionSchema = z.object({
 
 export const POST = withErrorHandling(
   async (req: NextRequest) => {
+    // BotID check - block automated checkout attempts
+    const botCheck = await checkBotId();
+    if (botCheck.isBot) {
+      apiLogger.warn({ reason: 'bot_detected' }, 'Checkout blocked - bot detected');
+      throw new AuthorizationError('Access denied');
+    }
+
     const session = await auth();
 
     if (!session?.user?.id || !session?.user?.email) {

@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import { withAxiom } from 'next-axiom';
+import { withBotId } from 'botid/next/config';
 
 const nextConfig: NextConfig = {
   images: {
@@ -32,4 +33,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withAxiom(nextConfig);
+export default withBotId(withAxiom(nextConfig));
