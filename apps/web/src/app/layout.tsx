@@ -37,10 +37,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        {/* Axiom Web Vitals - must be before children - https://axiom.co/docs/apps/vercel*/}
         <AxiomWebVitals />
-        <SpeedInsights />
-        <Analytics />
+
         <LayoutWrapper>{children}</LayoutWrapper>
+
+        {/* Vercel Speed Insights https://vercel.com/docs/speed-insights */}
+        <SpeedInsights />
+
+        {/* Vercel Web Analytics https://vercel.com/docs/analytics */}
+        <Analytics />
       </body>
     </html>
   );

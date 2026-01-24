@@ -107,7 +107,7 @@ export const sessionCounter = meter.createCounter('active_sessions');
 ```typescript
 // src/app/layout.tsx
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 
 export default function RootLayout({ children }) {
   return (
