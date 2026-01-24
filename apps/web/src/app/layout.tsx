@@ -3,6 +3,7 @@ import './globals.css';
 import { LayoutWrapper } from '@/components/layout/layout-wrapper';
 import { AxiomWebVitals } from 'next-axiom';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: 'DevMultiplier Academy | Become a 10x-100x Developer in the Age of AI',
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <AxiomWebVitals />
         <SpeedInsights />
+        <Analytics />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
