@@ -1514,7 +1514,7 @@ AXIOM_TOKEN=xaat-xxx
 AXIOM_DATASET=nextjs-logs
 
 # Neon Database
-DATABASE_URL=postgresql://user:pass@ep-xxx.us-east-2.aws.neon.tech/dbname?sslmode=require
+DATABASE_URL=postgresql://user:pass@ep-xxx.us-east-2.aws.neon.tech/dbname?sslmode=verify-full
 
 # .env.production (production)
 NODE_ENV=production
@@ -1768,6 +1768,6 @@ If Axiom doesn't fit your needs, here are alternatives for Vercel + Neon:
 
 ---
 
-_Document Version: 1.0.0_  
-_Last Updated: January 2026_  
+_Document Version: 1.0.0_
+_Last Updated: January 2026_
 _Author: DevMultiplier Academy_

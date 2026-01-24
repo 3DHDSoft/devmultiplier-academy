@@ -1,8 +1,15 @@
 #!/bin/bash
 
-# Fix node_modules permissions
+# Fix workspace permissions for node user
+# The workspace may be mounted with different ownership, so we need to ensure
+# the node user can write to all necessary files (bun.lock, node_modules, etc.)
+sudo chown -R node:node /workspaces/devmultiplier-academy
+
+# Ensure node_modules directories exist with correct permissions
 sudo mkdir -p /workspaces/devmultiplier-academy/node_modules
+sudo mkdir -p /workspaces/devmultiplier-academy/apps/web/node_modules
 sudo chown -R node:node /workspaces/devmultiplier-academy/node_modules
+sudo chown -R node:node /workspaces/devmultiplier-academy/apps/web/node_modules
 
 set -e
 
@@ -30,10 +37,15 @@ echo "🤖 Installing Claude Code CLI..."
 sudo npm install -g @anthropic-ai/claude-code
 echo "✅ Claude Code CLI installed (run 'claude' to start)"
 
-# Install project dependencies if package.json exists
+# Install project dependencies (monorepo structure)
+echo "📦 Installing dependencies with Bun..."
+# Install root workspace dependencies
 if [ -f "package.json" ]; then
-    echo "📦 Installing bun dependencies with Bun..."
     bun install
+fi
+# Install web app dependencies
+if [ -f "apps/web/package.json" ]; then
+    cd apps/web && bun install && cd ../..
 fi
 
 # Wait for databases to be fully ready
@@ -84,9 +96,9 @@ echo "  🎭 Testing tools:"
 echo "     • Playwright: Chromium, Firefox, WebKit"
 echo ""
 echo "  🛠️ Useful commands:"
-echo "     • bun run dev        - Start development server"
-echo "     • bun test           - Run tests"
-echo "     • bun run e2e        - Run end-to-end tests"
+echo "     • cd apps/web && bun run dev  - Start development server"
+echo "     • cd apps/web && bun test     - Run tests"
+echo "     • cd apps/web && bun run e2e  - Run end-to-end tests"
 echo "     • psql -h postgres -U admin -d academy"
 echo ""
 echo "  🔧 Optional tools (start with --profile tools):"

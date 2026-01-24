@@ -4,11 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DevMultiplier Academy is a Next.js 16 course platform website with authentication, course management, and learning progress tracking. Uses Bun as the primary runtime and package manager.
+DevMultiplier Academy is a monorepo containing:
+
+- **Website**: Next.js 16 course platform with authentication, course management, and learning progress tracking
+- **Course Content**: Lesson materials, code snippets, and production assets for each course
+
+Uses Bun as the primary runtime and package manager with workspace support.
 
 ## Common Commands
 
 ```bash
+# From repository root - run web app commands
+cd apps/web
+
 # Development
 bun run dev              # Start dev server at localhost:3000
 bun run build            # Production build (runs prisma generate first)
@@ -42,32 +50,37 @@ bun run format:fix       # Prettier with auto-fix
 
 ### Directory Structure
 
-```
-📦 /
-├── 📄 middleware.ts              # Root middleware (auth + metrics)
-├── 📄 instrumentation.ts         # OpenTelemetry setup entry point
-├── 📁 prisma/
-│   └── 📄 schema.prisma          # Database schema
-└── 📁 src/
-    ├── 📄 auth.ts                # NextAuth configuration
-    ├── 📁 app/                   # Next.js App Router
-    │   ├── 📁 (auth)/            # Auth pages (login, register, forgot-password)
-    │   ├── 📁 (protected)/       # Protected pages (dashboard, profile, admin)
-    │   └── 📁 api/               # API routes
-    ├── 📁 components/
-    │   ├── 📁 layout/            # Header, Footer, LayoutWrapper
-    │   ├── 📁 sections/          # Hero, Courses, Pricing, CTA
-    │   └── 📁 ui/                # Reusable components (Button, etc.)
-    ├── 📁 lib/                   # Utilities and services
-    │   ├── 📄 prisma.ts          # Prisma client singleton
-    │   ├── 📄 metrics.ts         # OpenTelemetry metrics helpers
-    │   ├── 📄 email-service.ts   # Resend email integration
-    │   ├── 📄 login-logger.ts    # Login attempt logging
-    │   └── 📄 session-tracker.ts # Session validation
-    └── 📁 generated/prisma/      # Generated Prisma client (do not edit)
+```text
+📦 /                              # Monorepo root
+├── 📁 apps/
+│   └── 📁 web/                   # Next.js website
+│       ├── 📄 middleware.ts      # Root middleware (auth + metrics)
+│       ├── 📄 instrumentation.ts # OpenTelemetry setup entry point
+│       ├── 📁 prisma/
+│       │   └── 📄 schema.prisma  # Database schema
+│       └── 📁 src/
+│           ├── 📄 auth.ts        # NextAuth configuration
+│           ├── 📁 app/           # Next.js App Router
+│           ├── 📁 components/    # UI components
+│           ├── 📁 lib/           # Utilities and services
+│           └── 📁 generated/     # Generated Prisma client
+├── 📁 courses/
+│   └── 📁 ddd-to-cqrs/           # Course: DDD to CQRS
+│       ├── 📁 content/           # Lesson markdown files
+│       │   ├── 📁 module-1/
+│       │   └── 📁 module-2/
+│       ├── 📁 code/              # Code snippets per lesson
+│       │   └── 📁 module-1/
+│       │       └── 📁 lesson-01/
+│       │           ├── 📁 before/
+│       │           └── 📁 after/
+│       └── 📁 production/        # Video/audio assets
+├── 📁 packages/                  # Shared packages (future)
+└── 📄 package.json               # Workspace root
 ```
 
 **Legend:**
+
 - 📦 Project root
 - 📁 Directory
 - 📄 File
@@ -85,7 +98,9 @@ bun run format:fix       # Prettier with auto-fix
 **Observability**: OpenTelemetry instrumentation via `instrumentation.ts` (loads `instrumentation.node.ts` server-side). Metrics recorded for HTTP requests and page views in middleware. Note: In Next.js 15+, instrumentation is built-in and enabled by default - no `experimental.instrumentationHook` config needed.
 
 ### Path Alias
-Use `@/` to import from `src/`:
+
+Use `@/` to import from `apps/web/src/`:
+
 ```typescript
 import { prisma } from '@/lib/prisma';
 ```
@@ -102,8 +117,8 @@ bunx prisma db push        # Push schema to database
 bunx prisma studio         # Open database browser
 ```
 
-Schema location: `prisma/schema.prisma`
-Generated client: `src/generated/prisma/`
+Schema location: `apps/web/prisma/schema.prisma`
+Generated client: `apps/web/src/generated/prisma/`
 
 ## Environment Variables
 
@@ -116,8 +131,8 @@ Required variables (see `.env` for full list):
 
 ## Testing Conventions
 
-- Unit tests: `src/**/__tests__/*.test.{ts,tsx}` or `src/**/*.{test,spec}.{ts,tsx}`
-- E2e tests: `e2e/` directory
+- Unit tests: `apps/web/src/**/__tests__/*.test.{ts,tsx}` or `apps/web/src/**/*.{test,spec}.{ts,tsx}`
+- E2e tests: `apps/web/e2e/` directory
 - Test environment: happy-dom
 - Coverage thresholds: 70% for lines, functions, branches, statements
 

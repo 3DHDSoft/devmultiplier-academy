@@ -251,7 +251,8 @@ const courseModules = {
 
 async function getLessonContent(courseId: string, moduleId: string, fileName: string) {
   try {
-    const contentPath = path.join(process.cwd(), 'course-content', courseId, moduleId, fileName);
+    // Course content is in monorepo at /courses/{courseId}/content/{moduleId}/
+    const contentPath = path.join(process.cwd(), '..', '..', 'courses', courseId, 'content', moduleId, fileName);
     const fileContent = await fs.readFile(contentPath, 'utf8');
 
     // Store mermaid blocks to restore after rehype-pretty-code processing

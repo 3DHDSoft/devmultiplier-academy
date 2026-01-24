@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(export DATABASE_URL:*)"
+      "Bash(export DATABASE_URL:*)",
+      "Bash(pg_isready:*)",
+      "Bash(du:*)",
+      "Bash(test:*)"
     ]
   }
 }

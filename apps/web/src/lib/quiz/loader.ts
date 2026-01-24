@@ -1,7 +1,7 @@
 /**
  * Quiz Loader
  *
- * Loads quiz content from JSON files in the course-content directory.
+ * Loads quiz content from JSON files in the courses directory.
  * Supports locale fallback for i18n.
  */
 
@@ -9,7 +9,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import type { Quiz, QuizQuestionPublic } from './types';
 
-const COURSE_CONTENT_DIR = path.join(process.cwd(), 'course-content');
+// Course content is in monorepo at /courses/{courseId}/content/{moduleId}/
+const COURSES_DIR = path.join(process.cwd(), '..', '..', 'courses');
 
 /**
  * Load a quiz from JSON file.
@@ -22,7 +23,7 @@ const COURSE_CONTENT_DIR = path.join(process.cwd(), 'course-content');
  * @returns Quiz data or null if not found
  */
 export async function loadQuiz(courseId: string, moduleId: string, lessonId: string, locale?: string): Promise<Quiz | null> {
-  const baseDir = path.join(COURSE_CONTENT_DIR, courseId, moduleId);
+  const baseDir = path.join(COURSES_DIR, courseId, 'content', moduleId);
 
   // Try locale-specific file first if locale is provided and not 'en'
   if (locale && locale !== 'en') {
@@ -47,7 +48,7 @@ export async function loadQuiz(courseId: string, moduleId: string, lessonId: str
  * @returns true if quiz file exists
  */
 export async function quizExists(courseId: string, moduleId: string, lessonId: string): Promise<boolean> {
-  const quizPath = path.join(COURSE_CONTENT_DIR, courseId, moduleId, `quiz-${lessonId}.json`);
+  const quizPath = path.join(COURSES_DIR, courseId, 'content', moduleId, `quiz-${lessonId}.json`);
 
   try {
     await fs.access(quizPath);
@@ -106,7 +107,7 @@ async function tryLoadQuizFile(filePath: string): Promise<Quiz | null> {
  * @returns Array of quiz metadata
  */
 export async function listCourseQuizzes(courseId: string): Promise<{ moduleId: string; lessonId: string; quizId: string }[]> {
-  const courseDir = path.join(COURSE_CONTENT_DIR, courseId);
+  const courseDir = path.join(COURSES_DIR, courseId, 'content');
   const quizzes: { moduleId: string; lessonId: string; quizId: string }[] = [];
 
   try {

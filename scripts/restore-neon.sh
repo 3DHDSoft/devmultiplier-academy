@@ -22,7 +22,7 @@
 # Features:
 # - Reads `DATABASE_URL` from `.env.local`
 # - Always asks for confirmation (remote database!)
-# - Automatically adds `sslmode=require` for Neon
+# - Automatically adds `sslmode=verify-full` for Neon
 # - `--clean` drops objects before restore
 # - `--drop-db` drops entire database and recreates
 # - Shows table listing after restore
@@ -87,7 +87,7 @@ File Formats:
   .sql     - Plain SQL script (.sql), restore with psql
   .tar     - Tar archive (pg_restore)
 
-Note: Neon connection strings require SSL. This script automatically adds sslmode=require.
+Note: Neon connection strings require SSL. This script automatically adds sslmode=verify-full.
 
 EOF
     exit 1
@@ -132,9 +132,9 @@ ensure_ssl() {
     local conn="$1"
     if [[ "$conn" != *"sslmode="* ]]; then
         if [[ "$conn" == *"?"* ]]; then
-            echo "${conn}&sslmode=require"
+            echo "${conn}&sslmode=verify-full"
         else
-            echo "${conn}?sslmode=require"
+            echo "${conn}?sslmode=verify-full"
         fi
     else
         echo "$conn"
@@ -170,21 +170,21 @@ detect_format() {
 # Load DATABASE_URL from env file
 load_env() {
     local env_file="$1"
-    
+
     if [[ ! -f "$env_file" ]]; then
         log_error "Environment file not found: $env_file"
         exit 1
     fi
-    
+
     # Extract DATABASE_URL from env file (handles quotes and exports)
     local db_url
     db_url=$(grep -E "^DATABASE_URL=" "$env_file" | sed -E 's/^DATABASE_URL=["'"'"']?([^"'"'"']*)["'"'"']?$/\1/' | head -1)
-    
+
     if [[ -z "$db_url" ]]; then
         log_error "DATABASE_URL not found in $env_file"
         exit 1
     fi
-    
+
     echo "$db_url"
 }
 
@@ -315,24 +315,24 @@ START_TIME=$(date +%s)
 if [[ "$DROP_DB" == true ]]; then
     log_step "Dropping database '$DB_NAME' on Neon..."
     POSTGRES_CONN=$(get_postgres_conn "$CONNECTION")
-    
+
     # Terminate existing connections (Neon specific - use neon_superuser or owner)
     docker exec "$CONTAINER" psql "$POSTGRES_CONN" -c \
         "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$DB_NAME' AND pid <> pg_backend_pid();" 2>/dev/null || true
-    
+
     # Drop database
     docker exec "$CONTAINER" psql "$POSTGRES_CONN" -c "DROP DATABASE IF EXISTS \"$DB_NAME\";" || {
         log_error "Failed to drop database. You may need to drop it manually in Neon Console."
         exit 1
     }
-    
+
     # Create database
     log_step "Creating database '$DB_NAME' on Neon..."
     docker exec "$CONTAINER" psql "$POSTGRES_CONN" -c "CREATE DATABASE \"$DB_NAME\";" || {
         log_error "Failed to create database."
         exit 1
     }
-    
+
     # Re-ensure SSL in connection after database operations
     CONNECTION=$(ensure_ssl "$CONNECTION")
 fi
@@ -344,11 +344,11 @@ case $FORMAT in
     custom|tar)
         # Build pg_restore command
         RESTORE_OPTS="--no-owner --no-acl --verbose"
-        
+
         if [[ "$CLEAN_RESTORE" == true ]]; then
             RESTORE_OPTS="--clean --if-exists $RESTORE_OPTS"
         fi
-        
+
         # Stream backup file to container's pg_restore
         docker exec -i "$CONTAINER" pg_restore -d "$CONNECTION" $RESTORE_OPTS < "$BACKUP_FILE" 2>&1 | while read -r line; do
             if [[ "$line" == *"pg_restore:"* ]]; then
@@ -363,7 +363,7 @@ case $FORMAT in
         if [[ "$CLEAN_RESTORE" == true ]]; then
             log_warn "--clean flag ignored for plain SQL format"
         fi
-        
+
         # Stream SQL file to container's psql
         docker exec -i "$CONTAINER" psql "$CONNECTION" -v ON_ERROR_STOP=0 < "$BACKUP_FILE" 2>&1 | while read -r line; do
             if [[ -n "$line" ]]; then

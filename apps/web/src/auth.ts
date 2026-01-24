@@ -17,10 +17,6 @@ if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET is not set. Run: openssl rand -base64 32');
 }
 
-//TEST!!! to force a new deployment
-const i = 0;
-console.log(i);
-
 // Zod schema for email/password validation
 const signInSchema = z.object({
   email: z.string().email('Invalid email address'),

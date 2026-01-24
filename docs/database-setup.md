@@ -89,7 +89,7 @@ Use the unpooled connection for migrations:
 
 ```bash
 # Option 1: Inline DATABASE_URL
-DATABASE_URL="postgresql://neondb_owner:[pw]@[host]/neondb?sslmode=require&channel_binding=require" bun prisma migrate deploy
+DATABASE_URL="postgresql://neondb_owner:[pw]@[host]/neondb?sslmode=verify-full&channel_binding=require" bun prisma migrate deploy
 
 # Option 2: Using dotenv-cli with .env.vercel.cloud
 dotenv -e .env.vercel.cloud -- bun prisma migrate deploy
@@ -185,7 +185,7 @@ Add these manually:
 ### "Migration failed" on cloud
 
 - Use the **unpooled** connection URL (without `-pooler`)
-- Ensure `sslmode=require` is in the connection string
+- Ensure `sslmode=verify-full` is in the connection string
 
 ### Vercel build fails with database error
 

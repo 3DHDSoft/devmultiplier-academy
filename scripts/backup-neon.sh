@@ -32,11 +32,11 @@
 # To restore to a Neon database:
 #   docker exec -i postgres pg_restore \
 #     --no-owner --no-acl -d "$DATABASE_URL" < ./backups_cloud/neondb_20260112_071034.dump
-# 
+#
 # Or with clean restore (drops existing objects first):
 #   docker exec -i postgres pg_restore \
 #     --clean --if-exists --no-owner --no-acl -d "$DATABASE_URL" < ./backups_cloud/neondb_20260112_071034.dump
-		
+
 set -euo pipefail
 
 # Get script directory to find .env.local relative to project root
@@ -84,7 +84,7 @@ Formats:
   plain     - Plain SQL script (.sql), restore with psql
   tar       - Tar archive
 
-Note: Neon connection strings require SSL. This script automatically adds sslmode=require if not present.
+Note: Neon connection strings require SSL. This script automatically adds sslmode=verify-full if not present.
 
 EOF
     exit 1
@@ -123,9 +123,9 @@ ensure_ssl() {
     local conn="$1"
     if [[ "$conn" != *"sslmode="* ]]; then
         if [[ "$conn" == *"?"* ]]; then
-            echo "${conn}&sslmode=require"
+            echo "${conn}&sslmode=verify-full"
         else
-            echo "${conn}?sslmode=require"
+            echo "${conn}?sslmode=verify-full"
         fi
     else
         echo "$conn"
@@ -135,21 +135,21 @@ ensure_ssl() {
 # Load DATABASE_URL from env file
 load_env() {
     local env_file="$1"
-    
+
     if [[ ! -f "$env_file" ]]; then
         log_error "Environment file not found: $env_file"
         exit 1
     fi
-    
+
     # Extract DATABASE_URL from env file (handles quotes and exports)
     local db_url
     db_url=$(grep -E "^DATABASE_URL=" "$env_file" | sed -E 's/^DATABASE_URL=["'"'"']?([^"'"'"']*)["'"'"']?$/\1/' | head -1)
-    
+
     if [[ -z "$db_url" ]]; then
         log_error "DATABASE_URL not found in $env_file"
         exit 1
     fi
-    
+
     echo "$db_url"
 }
 
