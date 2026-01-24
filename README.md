@@ -225,4 +225,4 @@ If ports 5432 or 3000 are already in use:
 
 ## License
 
-© 2025-2026 DevMultiplier Academy. A 3D HD Soft, LLC company. All rights reserved.
+© 2026 DevMultiplier Academy. A 3D HD Soft, LLC company. All rights reserved.

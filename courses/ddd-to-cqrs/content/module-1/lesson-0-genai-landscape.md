@@ -134,7 +134,7 @@ class Money {
 
 **Advancement:** Better understanding of intent, but still operated in isolation from the codebase.
 
-### Generation 3: AI Agents (2025-2026)
+### Generation 3: AI Agents (2026)
 
 The current generation introduces **agentic AI**—autonomous systems that can explore codebases, make decisions, and
 execute multi-step workflows.
