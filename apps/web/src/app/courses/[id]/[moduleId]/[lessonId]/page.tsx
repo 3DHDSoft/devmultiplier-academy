@@ -360,7 +360,15 @@ function getNavigationInfo(courseId: string, moduleId: string, lessonId: string)
   const currentModule = modules[moduleIndex];
   if (!currentModule) return null;
 
-  const lessonIndex = currentModule.lessons.findIndex((l: { id: string }) => l.id === lessonId);
+  // Try to find lesson by ID first, then by filename
+  let lessonIndex = currentModule.lessons.findIndex((l: { id: string }) => l.id === lessonId);
+  if (lessonIndex === -1) {
+    // Try matching by filename (with or without .md extension)
+    const normalizedLessonId = lessonId.replace(/\.md$/, '');
+    lessonIndex = currentModule.lessons.findIndex((l: { file: string }) =>
+      l.file === lessonId || l.file === `${normalizedLessonId}.md` || l.file.replace(/\.md$/, '') === normalizedLessonId
+    );
+  }
   const lesson = currentModule.lessons[lessonIndex];
   if (!lesson) return null;
 
@@ -430,6 +438,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function LessonPage({ params }: PageProps) {
   const { id, moduleId, lessonId } = await params;
+
+  // Redirect .md URLs to clean URLs
+  if (lessonId.endsWith('.md')) {
+    redirect(`/courses/${id}/${moduleId}/${lessonId.replace(/\.md$/, '')}`);
+  }
 
   // Check authentication and authorization
   const session = await auth();
