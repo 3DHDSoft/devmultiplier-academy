@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { LayoutWrapper } from '@/components/layout/layout-wrapper';
 import { AxiomWebVitals } from 'next-axiom';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: 'DevMultiplier Academy | Become a 10x-100x Developer in the Age of AI',
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased">
         <AxiomWebVitals />
+        <SpeedInsights />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
